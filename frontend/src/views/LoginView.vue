@@ -18,7 +18,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
+import store from "@/store/index"
+
 export default {
     name: 'LoginView',
     data() {
@@ -30,7 +32,9 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['login']),
+        login() {
+            store.dispatch('login',{uid: this.uid, upw: this.upw })
+        },
         moveToSignup() {
             this.$router.push({ name: 'Signup' })
         }
