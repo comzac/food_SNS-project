@@ -1,43 +1,48 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import cookies from "vue-cookies";
 import axios from "axios";
 
 import SERVER from "../api/api";
-import router from "../router"
+import router from "../router";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    uid: null,
-    upw: null,
-    unick: null,
-    uemail: null,
-    uregdate: null,
-    ubirth: null,
-    usex: null
+    authData: cookies.get('auth-id'),
+    userData: {},
+  },
+  getters: {
+    isLogin: state => !!state.authData,
   },
   mutations: {
+    SET_COOKIE(state, id) {
+      state.authData = id;
+      cookies.set('auth-id', id);
+    },
     SET_USERDATA(state, userData) {
-      state.uid = userData.uid
-      state.upw = userData.upw
-      state.unick = userData.unick
-      state.uemail = userData.uemail
-      state.uregdate = userData.uregdate
-      state.ubirth = userData.ubirth
-      state.usex = userData.usex
+      state.userData = userData
     }
   },
   actions: {
     postAuthData({ commit }, info) {
-      axios.post(SERVER.URL + info.route, info.data)
+      console.log(info.data)
+      console.log(SERVER.URL + info.route)
+      axios.post(SERVER.URL + info.route, info.data, {
+        headers: {
+          "Content-type": "application/json"
+        }
+      })
         .then(res => {
+          console.log("response")
           console.log(res)
-          commit('SET_USERDATA', res.user)
+          commit('SET_USERDATA', res)
+          commit('SET_COOKIE', res.uid)
           router.push('/')
         })
-        .catch(console.log(err))
+        .catch(err => console.log(err.response))
     },
 
     login({ dispatch }, loginData) {
@@ -46,7 +51,16 @@ export default new Vuex.Store({
         route: SERVER.ROUTES.accounts.login
       }
       dispatch('postAuthData', info)
-    } 
+    },
+
+    signup({ dispatch }, signupData) {
+      const info = {
+        data: signupData,
+        route: SERVER.ROUTES.accounts.signup
+      }
+      dispatch('postAuthData', info)
+    }
+
   },
   modules: {
 
