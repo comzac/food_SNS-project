@@ -32,8 +32,11 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-
+router.beforeEach((to, from, next) => {
+  console.log('to : ', to)
+  console.log('from : ', from)
+  
+  next()
   // const pages = [
   //   'Signup', 'Login', 'Home'
   // ]
@@ -44,6 +47,6 @@ const router = new VueRouter({
   // const unauthRequired = needNotAuthPages.includes(to.name)
 
 
-// })
+})
 
 export default router
