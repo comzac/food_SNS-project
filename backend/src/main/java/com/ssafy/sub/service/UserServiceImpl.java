@@ -41,9 +41,18 @@ public class UserServiceImpl implements UserService{
 
 	
 	
+
+
 	@Override
-	public int pwcheck(UserDto dto) {
-		return userMapper.pwcheck(dto);
+	public UserDto pwreset(String uid, String upw) {
+		return userMapper.pwreset(uid, upw);
+	}
+
+
+
+	@Override
+	public int pwcheck(String uid, String upw) {
+		return userMapper.pwcheck(uid,upw);
 	}
 
 
