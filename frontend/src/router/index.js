@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import Login from "../views/user/Login.vue";
 import Signup from "../views/user/Signup.vue";
 import PasswordChoice from "../views/user/PasswordChoice.vue";
+import PasswordChoiceEmail from "../views/user/PasswordChoiceEmail.vue";
+import PasswordChoiceEmailVerification from "../views/user/PasswordChoiceEmailVerification.vue";
 import PasswordChange from "../views/user/PasswordChange.vue";
 
 Vue.use(VueRouter);
@@ -28,6 +30,16 @@ const routes = [
     path: "/user/password_choice",
     name: "PasswordChoice",
     component: PasswordChoice
+  },
+  {
+    path: "/user/password_choice_email",
+    name: "PasswordChoiceEmail",
+    component: PasswordChoiceEmail
+  },
+  {
+    path: "/user/password_choice_email_verification",
+    name: "PasswordChoiceEmailVerification",
+    component: PasswordChoiceEmailVerification
   },
   {
     path: "/user/password_change",

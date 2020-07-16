@@ -12,7 +12,7 @@
         offset-lg="4"
       > 
         <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
-        <router-link to="/user/password_choice_email">
+        <router-link to="/user/password_change">
           <v-text-field dark solo rounded append-icon="mdi-email" value="이메일로 찾기" readonluy type="button"></v-text-field>
         </router-link>
         <v-spacer><br><br><br><br></v-spacer>

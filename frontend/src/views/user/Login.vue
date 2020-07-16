@@ -81,6 +81,7 @@
           offset-lg="4"
         >
           <v-btn
+            blue
             :class="{disabled : !isSubmit}"
             :disabled="!isSubmit"
             @click="onLogin"
