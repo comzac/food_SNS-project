@@ -1,0 +1,144 @@
+<template>
+  <div>
+    <v-container class="fill-height" fluid>
+      <v-row class="text-center" align="center">
+        <v-col 
+          cols="12"
+          sm="8"
+          offset-sm="2"
+          md="6"
+          offset-md="3"
+          lg="4"
+          offset-lg="4"
+        >
+          <!-- <v-img
+            src="@/assets/honeycombo.png"
+            width="100%"
+          /> -->
+        </v-col>
+      </v-row>
+      <h1 class="display-2 font-weight-bold mb-3">
+        Login
+      </h1>     
+      <v-row class="text-center" align="center" justify="center">
+        <v-col 
+          cols="12"
+          sm="8"
+          offset-sm="2"
+          md="6"
+          offset-md="3"
+          lg="4"
+          offset-lg="4"
+        >
+          <v-spacer><br><br></v-spacer>
+          <v-text-field
+            v-model="loginData.uid"
+            prepend-icon="mdi-account"
+            id="id"
+            label="아이디를 입력하세요"
+            required
+            autofocus
+          ></v-text-field>
+          <v-text-field
+            v-model="loginData.upw"
+            @keyup.enter="login(loginData)"
+            prepend-icon="mdi-lock"
+            id="password"
+            label="비밀번호를 입력하세요."
+            required
+            type="password"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row class="text-right" align="end">
+        <v-col 
+          cols="12"
+          sm="8"
+          offset-sm="2"
+          md="6"
+          offset-md="3"
+          lg="4"
+          offset-lg="4"
+        >
+          <div>
+            <!-- <router-link to="/user/password_choice">비밀번호를 잊으셨나요?</router-link> -->
+          </div>
+        </v-col>
+      </v-row>
+      <v-row class="text-center" align="center">
+        <v-col
+          cols="12"
+          sm="8"
+          offset-sm="2"
+          md="6"
+          offset-md="3"
+          lg="4"
+          offset-lg="4"
+        >
+          <v-btn
+            blue
+            @click="login"
+            width="100%"
+            x-large
+          >LOGIN</v-btn>
+
+          <div>
+            <p>페이스북 트위터 구글</p>
+          </div>
+        </v-col>
+        <v-toolbar color="blue" dense flat min-width="100vw">
+          계정이 없습니까?
+        </v-toolbar>
+        <router-link to="/signup">
+          <v-footer
+            absolute
+            class="font-weight-medium"
+            color="blue"
+            dark
+          >
+            <v-col
+              class="text-center"
+              cols="12"
+              sm="8"
+              offset-sm="2"
+              md="6"
+              offset-md="3"
+              lg="4"
+              offset-lg="4"
+            >
+            <strong>SIGN UP</strong>
+            </v-col>
+          </v-footer>
+        </router-link>
+      </v-row>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+
+
+export default {
+  name: "LoginView", 
+  components: {
+  },
+  methods: {
+    ...mapActions(['login']),
+    moveToSignup() {
+        this.$router.push({ name: 'Signup' })
+    }
+  },
+  data() {
+    return {
+      loginData: {
+        uid: "",
+        upw: "",
+      },
+    }
+  }
+}
+</script>
+
+<style>
+</style>
