@@ -41,9 +41,6 @@ export default {
             },
         }
     },
-    watch() {
-
-    },
     methods: {
         ...mapActions(['idCheck', 'nickCheck', 'signupCheck']),
         toEmailVerification() {
@@ -54,10 +51,15 @@ export default {
                     return
                 }
             }
-            // if(!signupCheck({ 'uid': this.signupData.uid, 'unick': this.signupData.unick })) {
-            //     return
-            // }
-            this.$emit('toEmailVerification', this.signupData)
+            this.signupCheck({ 'uid': this.signupData.uid, 'unick': this.signupData.unick })
+                .then(res=>{
+                    if(res !== null) {
+                        alert(res + " 중복 확인해주세요.")
+                        return
+                    }else {
+                        this.$emit('toEmailVerification', this.signupData)
+                    }
+                })   
         }
     }
 
