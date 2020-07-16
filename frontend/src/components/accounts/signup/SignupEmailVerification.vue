@@ -8,7 +8,7 @@
         md="6"
         lg="4"
       > 
-        <v-spacer><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
         <v-text-field
           v-model="confirm"
           :error-messages="error.confirm"
@@ -17,7 +17,7 @@
           solo
           required
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br><br></v-spacer>
 
         <v-btn
           color="blue"
@@ -26,6 +26,7 @@
           width="100%"
           x-large
         >회원가입 완료</v-btn>
+        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
   </v-container>
