@@ -20,6 +20,10 @@
 		insert into user (uid, upw, unick, uemail, uregdate, ubirth, usex)
 		values (#{uid}, #{upw}, #{unick}, #{uemail}, now(), #{ubirth}, #{usex})
     </insert>
+
+    <select id="pwreset" resultType="com.ssafy.sub.dto.UserDto">
+		select * from user where uid = #{uid} and upw = #{upw}
+	</select>
     
     <update id="pwcheck" >
 		update user set upw	= #{upw} where uid = #{uid}	
