@@ -54,7 +54,9 @@ export default {
                     return
                 }
             }
-            if(signupCheck({ 'uid': this.signupData.uid, 'unick': this.signupData.unick})
+            // if(!signupCheck({ 'uid': this.signupData.uid, 'unick': this.signupData.unick })) {
+            //     return
+            // }
             this.$emit('toEmailVerification', this.signupData)
         }
     }
