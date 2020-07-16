@@ -1,15 +1,12 @@
 <template>
   <div>
     <v-container class="fill-height" fluid>
-      <v-row class="text-center" align="center" justify="start">
+      <v-row class="text-center" align="center" justify="center">
         <v-col 
           cols="12"
           sm="8"
-          offset-sm="2"
           md="6"
-          offset-md="3"
           lg="4"
-          offset-lg="4"
         >
           <v-img
             src="@/assets/honeycombo.png"

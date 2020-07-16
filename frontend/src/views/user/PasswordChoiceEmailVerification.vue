@@ -10,22 +10,21 @@
       > 
         <v-spacer><br><br><br><br></v-spacer>
         <v-text-field
-          v-model="email"
-          :error-messages="error.email"
-          label="E-mail."
+          v-model="confirm"
+          :error-messages="error.confirm"
+          label="Verification Code"
           outlined
           solo
           required
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br></v-spacer>
 
         <v-btn
           color="blue"
-          :class="{disabled : !isSubmit}"
           :disabled="!isSubmit"
+          @click="verify()"
           width="100%"
           x-large
-          @click="emailVerification()"
         >-></v-btn>
       </v-col>
     </v-row>
@@ -33,24 +32,23 @@
 </template>
 
 <script>
-import * as EmailValidator from "email-validator";
-import router from "@/router"
+import router from '@/router'
 
 export default {
-  name: "PasswordChange",
+  name: "PasswordChoiceEmailVerification",
   created() {
     this.component = this;
-  },  
+  },
   watch: {
-    email: function() {
+    confirm: function() {
       this.checkForm();
     }
   },
   methods: {
     checkForm() {
-      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
-        this.error.email = "이메일 형식이 아닙니다.";
-      else this.error.email = "";  
+      if (this.confirm.length != 6)
+        this.error.confirm = "확인 코드는 6자리 입니다.";
+      else this.error.confirm = "";  
 
       let isSubmit = true;
 
@@ -59,18 +57,20 @@ export default {
       });
       this.isSubmit = isSubmit;
     },
-    emailVerification() {
-      router.push({name: "PasswordChoiceEmailVerification"})
+    verify() {
+      // axios 보내고
+      // 인증 완료 되서 넘어 오면
+      router.push({ name: 'PasswordChange'})
     },
   },
   data: () => {
     return {
-      email: "",
+      confirm: "",
       error: {
-        email: false,
+        confirm: "",
       },
       isSubmit: false,
-      component: this
+      component: this,
     };
   }
 }
