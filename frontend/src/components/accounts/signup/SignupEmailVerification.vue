@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height" fluid>
-    <h1>Retrieve Your Password</h1>
+    <!-- <h1>Email Verification</h1> -->
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -10,47 +10,45 @@
       > 
         <v-spacer><br><br><br><br></v-spacer>
         <v-text-field
-          v-model="email"
-          :error-messages="error.email"
-          label="E-mail."
+          v-model="confirm"
+          :error-messages="error.confirm"
+          label="Verification Code"
           outlined
           solo
           required
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br></v-spacer>
 
         <v-btn
           color="blue"
-          :class="{disabled : !isSubmit}"
           :disabled="!isSubmit"
+          @click="verify()"
           width="100%"
           x-large
-          @click="emailVerification()"
-        >-></v-btn>
+        >회원가입 완료</v-btn>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import * as EmailValidator from "email-validator";
-import router from "@/router"
+import router from '@/router'
 
 export default {
-  name: "PasswordChange",
+  name: "SignupEmailVerification",
   created() {
     this.component = this;
-  },  
+  },
   watch: {
-    email: function() {
+    confirm: function() {
       this.checkForm();
     }
   },
   methods: {
     checkForm() {
-      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
-        this.error.email = "이메일 형식이 아닙니다.";
-      else this.error.email = "";  
+      if (this.confirm.length != 6)
+        this.error.confirm = "확인 코드는 6자리 입니다.";
+      else this.error.confirm = "";  
 
       let isSubmit = true;
 
@@ -59,18 +57,20 @@ export default {
       });
       this.isSubmit = isSubmit;
     },
-    emailVerification() {
-      router.push({name: "PasswordChoiceEmailVerification"})
+    verify() {
+      // axios 보내고
+      // 인증 완료 되서 넘어 오면
+      router.push({ name: 'Home'})
     },
   },
   data: () => {
     return {
-      email: "",
+      confirm: "",
       error: {
-        email: false,
+        confirm: "",
       },
       isSubmit: false,
-      component: this
+      component: this,
     };
   }
 }

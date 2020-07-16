@@ -131,7 +131,10 @@ export default new Vuex.Store({
 
       })
       .catch(err=>console.log(err.response))
-    }
+    },
+    signupCheck() {
+      
+    },
     // login(context, {uid, upw}) {
     //   http
     //     .post("/login", {

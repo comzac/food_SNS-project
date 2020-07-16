@@ -1,6 +1,6 @@
 <template>
   <v-container class="fill-height" fluid>
-    <h1>Retrieve Your Password</h1>
+    <!-- <h1>Email Verification</h1> -->
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -34,10 +34,9 @@
 
 <script>
 import * as EmailValidator from "email-validator";
-import router from "@/router"
 
 export default {
-  name: "PasswordChange",
+  name: "Signupemail",
   created() {
     this.component = this;
   },  
@@ -60,7 +59,9 @@ export default {
       this.isSubmit = isSubmit;
     },
     emailVerification() {
-      router.push({name: "PasswordChoiceEmailVerification"})
+      // email 보내기 + 받아서
+      const confirmCode='123456'
+      this.$emit('toEmailVerification', confirmCode)
     },
   },
   data: () => {
