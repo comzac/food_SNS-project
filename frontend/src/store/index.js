@@ -17,7 +17,6 @@ export default new Vuex.Store({
     isLogin: false,
     signupId: null,
     signupNick: null,
-    canSignup: false,
     idChecked: false,
     nickChecked: false,
   },
@@ -54,9 +53,23 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    postAuthData({ commit }, info) {
+    postAuthData({ state, commit }, info) {
       console.log(info.data)
       console.log(SERVER.URL + info.route)
+      
+      if(info.route === 'create') {
+        if(info.data.uid !== state.signupId) {
+          commit('SET_IDCHECK', false)
+          commit('SET_SIGNUPID', null)
+          alert("아이디 중복 확인을 해 주세요.")
+          return
+        }else if(info.data.unick !== state.signupNick) {
+          commit('SET_NICKCHECK', false)
+          commit('SET_SIGNUPNICK', null)
+          alert("닉네임 중복 확인을 해 주세요.")
+          return
+        }
+      }
       axios.post(SERVER.URL + info.route, info.data, {
         headers: {
           "Content-type": "application/json"
@@ -92,7 +105,7 @@ export default new Vuex.Store({
       axios.get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
         .then(res => {
           console.log(res.data)
-          if(res.data === "success") {
+          if(res.data === 'success') {
             alert("사용 가능한 아이디입니다.")
             commit('SET_IDCHECK', true)
             commit('SET_SIGNUPID', uid)

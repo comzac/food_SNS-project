@@ -16,7 +16,7 @@
         <div class="form-group">
             <input class="form-control" @keypress.enter="signup(signupData)" v-model="signupData.uemail" id="uemail" type="text" placeholder="이메일">
         </div>
-        <div class="form-group">
+        <div class="form-group"> 
             <input class="form-control" @keypress.enter="signup(signupData)" v-model="signupData.ubirth" id="ubirth" type="date" placeholder="생년월일">
         </div>
         <div class="form-group">
