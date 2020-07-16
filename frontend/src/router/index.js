@@ -4,6 +4,8 @@ import VueRouter from 'vue-router'
 import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
 import PasswordChoice from "../views/user/PasswordChoice.vue";
+import PasswordChoiceEmail from "../views/user/PasswordChoiceEmail.vue";
+import PasswordChange from "../views/user/PasswordChange.vue";
 
 import Home from '../views/Home.vue'
 
@@ -17,6 +19,8 @@ const routes = [
   { path: '/signup', name: 'Signup', component: SignupView },
   { path: '*', component: NotFoundComponent },
   { path: "/user/password_choice", name: "PasswordChoice", component: PasswordChoice },
+  { path: "/user/password_choice_email", name: "PasswordChoiceEmail", component: PasswordChoiceEmail },
+  { path: "/user/password_change", name: "PasswordChange", component: PasswordChange },
 ]
 
 const router = new VueRouter({
