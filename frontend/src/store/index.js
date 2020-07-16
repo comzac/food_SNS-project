@@ -133,15 +133,15 @@ export default new Vuex.Store({
       .catch(err=>console.log(err.response))
     },
 
-    // signupCheck({ state }, signupData){
-    //   if(state.signupId !== signupData.uid) {
-    //     return false
-    //   }else if(state.signupNick !== signupData.unick) {
-    //     return false
-    //   }else {
-    //     return true
-    //   }
-    // }
+    signupCheck({ state }, signupData){
+      if(state.signupId !== signupData.uid) {
+        return 'uid'
+      }else if(state.signupNick !== signupData.unick) {
+        return 'unick'
+      }else {
+        return null
+      }
+    }
     // login(context, {uid, upw}) {
     //   http
     //     .post("/login", {

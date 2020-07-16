@@ -1238,3 +1238,29 @@ java.lang.NullPointerException: null
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.36.jar:9.0.36]
 	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_192]
 
+2020-07-16 17:14:08.841  INFO 5648 --- [restartedMain] com.ssafy.sub.Test1Application           : Starting Test1Application on DESKTOP-KVCQHCD with PID 5648 (C:\Users\multicampus\skeleton-project\backend\build\classes\java\main started by multicampus in C:\Users\multicampus\skeleton-project\backend)
+2020-07-16 17:14:08.843  INFO 5648 --- [restartedMain] com.ssafy.sub.Test1Application           : No active profile set, falling back to default profiles: default
+2020-07-16 17:14:08.885  INFO 5648 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-07-16 17:14:08.885  INFO 5648 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-07-16 17:14:09.899  INFO 5648 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$a64e7ba] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-07-16 17:14:09.939  INFO 5648 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2020-07-16 17:14:10.544  INFO 5648 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-07-16 17:14:10.554  INFO 5648 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-07-16 17:14:10.555  INFO 5648 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.36]
+2020-07-16 17:14:10.756  INFO 5648 --- [restartedMain] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2020-07-16 17:14:10.759  INFO 5648 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-07-16 17:14:10.760  INFO 5648 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1875 ms
+2020-07-16 17:14:11.334  INFO 5648 --- [restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-07-16 17:14:11.399  INFO 5648 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-16 17:14:11.422  INFO 5648 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-07-16 17:14:11.452  INFO 5648 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2020-07-16 17:14:11.590  INFO 5648 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-07-16 17:14:11.591  INFO 5648 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2020-07-16 17:14:11.612  INFO 5648 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2020-07-16 17:14:11.638  INFO 5648 --- [restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2020-07-16 17:14:11.771  INFO 5648 --- [restartedMain] com.ssafy.sub.Test1Application           : Started Test1Application in 3.32 seconds (JVM running for 3.717)
+2020-07-16 17:14:21.828  INFO 5648 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-16 17:14:21.829  INFO 5648 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-07-16 17:14:21.834  INFO 5648 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2020-07-16 17:14:21.884  INFO 5648 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2020-07-16 17:14:22.123  INFO 5648 --- [http-nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
