@@ -4,6 +4,8 @@ export default {
         accounts: {
             login: "login",
             signup: "create",
+            idCheck: "idcheck/",
+            nickCheck: "nickcheck/",
         }
     }
 }
