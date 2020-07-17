@@ -32,6 +32,7 @@
           class="white--text"
           color="blue"
           @click="login(loginData)"
+          :disabled="loginData.uid==0||loginData.upw.length<8"
           width="100%"
           x-large
         >LOGIN</v-btn>

@@ -21,11 +21,12 @@
 
         <v-btn
           color="blue"
+          class="white--text"
           :disabled="!isSubmit"
           @click="verify()"
           width="100%"
           x-large
-        >-></v-btn>
+        ><i class="fa fa-arrow-right" aria-hidden="true"></i></v-btn>
         <v-spacer><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
@@ -33,8 +34,6 @@
 </template>
 
 <script>
-import router from '@/router'
-
 export default {
   name: "PasswordChoiceEmailVerification",
   created() {
@@ -61,7 +60,7 @@ export default {
     verify() {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
-      router.push({ name: 'PasswordChange'})
+      this.$router.push({ name: 'PasswordChange'})
     },
   },
   data: () => {

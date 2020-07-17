@@ -31,7 +31,7 @@
         <v-spacer><br><br><br><br></v-spacer>
         <v-btn
           color="blue"
-          :class="{disabled : !isSubmit}"
+          class="white--text"
           :disabled="!isSubmit || password!=passwordConfirm"
           width="100%"
           x-large
