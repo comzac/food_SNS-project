@@ -16,9 +16,9 @@
           required
           autofocus
         ></v-text-field>
+          <!-- @keyup.enter="login(loginData)" -->
         <v-text-field
           v-model="loginData.upw"
-          @keyup.enter="login(loginData)"
           prepend-icon="mdi-lock"
           label="비밀번호를 입력하세요."
           required
@@ -33,6 +33,7 @@
           color="blue"
           @click="login(loginData)"
           width="100%"
+          :disabled="loginData.uid==0||loginData.upw.length<8"
           x-large
         >LOGIN</v-btn>
         <v-spacer><br><br></v-spacer>
