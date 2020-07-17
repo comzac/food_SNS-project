@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" fluid>
+  <v-container fill-height fluid>
     <!-- <h1>Email Verification</h1> -->
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col
@@ -8,7 +8,7 @@
         md="6"
         lg="4"
       > 
-        <v-spacer><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
         <v-text-field
           v-model="email"
           :error-messages="error.email"
@@ -17,7 +17,7 @@
           solo
           required
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br><br></v-spacer>
 
         <v-btn
           color="blue"
@@ -27,6 +27,7 @@
           x-large
           @click="emailVerification()"
         >-></v-btn>
+        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
   </v-container>

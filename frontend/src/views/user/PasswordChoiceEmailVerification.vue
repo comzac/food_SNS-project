@@ -1,6 +1,5 @@
 <template>
   <v-container class="fill-height" fluid>
-    <h1>Retrieve Your Password</h1>
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -8,7 +7,8 @@
         md="6"
         lg="4"
       > 
-        <v-spacer><br><br><br><br></v-spacer>
+        <h1 class="text-left blue--text">Retrieve Your Password</h1>
+        <v-spacer><br><br><br><br><br><br><br><br><br></v-spacer>
         <v-text-field
           v-model="confirm"
           :error-messages="error.confirm"
@@ -17,7 +17,7 @@
           solo
           required
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br></v-spacer>
+        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
 
         <v-btn
           color="blue"
@@ -26,6 +26,7 @@
           width="100%"
           x-large
         >-></v-btn>
+        <v-spacer><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
   </v-container>

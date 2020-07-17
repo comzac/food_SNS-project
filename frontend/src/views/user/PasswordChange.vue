@@ -1,6 +1,5 @@
 <template>
   <v-container class="fill-height" fluid>
-    <h1>Change Your Password</h1>
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -8,7 +7,8 @@
         md="6"
         lg="4"
       > 
-        <v-spacer><br><br><br><br></v-spacer>
+        <h1 class="text-left blue--text">Change Your Password</h1>
+        <v-spacer><br><br><br><br><br><br></v-spacer>
         <v-text-field
           v-model="password"
           :error-messages="error.password"
@@ -36,6 +36,7 @@
           width="100%"
           x-large
         >비밀번호 변경</v-btn>
+        <v-spacer><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
   </v-container>

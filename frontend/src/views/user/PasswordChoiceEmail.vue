@@ -1,6 +1,5 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <h1>Retrieve Your Password</h1>
+  <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col
         cols="12"
@@ -8,7 +7,8 @@
         md="6"
         lg="4"
       > 
-        <v-spacer><br><br><br><br></v-spacer>
+        <h1 class="text-left blue--text">Retrieve Your Password</h1>
+        <v-spacer><br><br><br><br><br><br><br><br><br></v-spacer>
         <v-text-field
           v-model="email"
           :error-messages="error.email"
@@ -27,6 +27,7 @@
           x-large
           @click="emailVerification()"
         >-></v-btn>
+        <v-spacer><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
   </v-container>
