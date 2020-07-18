@@ -62,6 +62,7 @@ export default {
     emailVerification() {
       // email 보내기 + 받아서
       const confirmCode='123456'
+      
       this.$emit('toEmailVerification', confirmCode)
     },
   },

@@ -102,6 +102,10 @@ export default new Vuex.Store({
     },
 
     idCheck({commit}, uid) {
+      if(uid === null) {
+        alert('아이디를 입력하세요')
+        return
+      }
       axios.get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
         .then(res => {
           console.log(res.data)
@@ -132,8 +136,14 @@ export default new Vuex.Store({
       })
       .catch(err=>console.log(err.response))
     },
-    signupCheck() {
-      
+    signupCheck({ state }, signupData) {
+      if(state.signupId !== signupData.uid) {
+          return 'uid'
+        }else if(state.signupNick !== signupData.unick) {
+          return 'unick'
+        }else {
+          return null
+      }
     },
     // login(context, {uid, upw}) {
     //   http
