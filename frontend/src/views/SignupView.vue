@@ -1,8 +1,8 @@
 <template>
   <div class="signup">
     <BasicForm v-if='page === 1' @toEmailVerification='setSignupData' />
-    <SignupEmail v-if='page === 2' @toEmailVerification='emailVerification'/>
-    <SignupEmailVerification v-if='page === 3' />
+    <SignupEmail v-if='page === 2' @toEmailVerificationNumber='emailVerification'/>
+    <SignupEmailVerification v-if='page === 3' :code="confirmCode" @finishCheck="doSignup"/>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
 import BasicForm from '@/components/accounts/signup/BasicForm.vue'
 import SignupEmail from '@/components/accounts/signup/SignupEmail.vue'
 import SignupEmailVerification from '@/components/accounts/signup/SignupEmailVerification.vue'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'SignupView',
@@ -33,13 +34,18 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['signup']),
         setSignupData(signupData) {
             this.signupData = signupData
             this.page += 1
         },
-        emailVerification(confirmCode) {
-            this.confirmCode = confirmCode
+        emailVerification( userEmailData ) {
+            this.confirmCode = userEmailData.confirmCode
+            this.signupData.uemail = userEmailData.userEmail
             this.page += 1
+        },
+        doSignup() {
+            this.signup(this.signupData)
         }
     },
 }

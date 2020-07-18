@@ -5,7 +5,7 @@ import cookies from "vue-cookies";
 import axios from "axios";
 
 // import http from "@/util/http-common";
-import SERVER from "../api/api";
+import SERVER from "@/api/api";
 import router from "../router";
 
 Vue.use(Vuex);
@@ -53,23 +53,23 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    postAuthData({ state, commit }, info) {
+    postAuthData({ commit }, info) {
       console.log(info.data)
       console.log(SERVER.URL + info.route)
       
-      if(info.route === 'create') {
-        if(info.data.uid !== state.signupId) {
-          commit('SET_IDCHECK', false)
-          commit('SET_SIGNUPID', null)
-          alert("아이디 중복 확인을 해 주세요.")
-          return
-        }else if(info.data.unick !== state.signupNick) {
-          commit('SET_NICKCHECK', false)
-          commit('SET_SIGNUPNICK', null)
-          alert("닉네임 중복 확인을 해 주세요.")
-          return
-        }
-      }
+      // if(info.route === 'create') {
+      //   if(info.data.uid !== state.signupId) {
+      //     commit('SET_IDCHECK', false)
+      //     commit('SET_SIGNUPID', null)
+      //     alert("아이디 중복 확인을 해 주세요.")
+      //     return
+      //   }else if(info.data.unick !== state.signupNick) {
+      //     commit('SET_NICKCHECK', false)
+      //     commit('SET_SIGNUPNICK', null)
+      //     alert("닉네임 중복 확인을 해 주세요.")
+      //     return
+      //   }
+      // }
       axios.post(SERVER.URL + info.route, info.data, {
         headers: {
           "Content-type": "application/json"
