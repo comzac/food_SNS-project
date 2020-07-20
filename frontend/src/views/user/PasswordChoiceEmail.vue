@@ -21,12 +21,12 @@
 
         <v-btn
           color="blue"
-          :class="{disabled : !isSubmit}"
+          class="white--text"
           :disabled="!isSubmit"
           width="100%"
           x-large
           @click="emailVerification()"
-        >-></v-btn>
+        ><i class="fa fa-arrow-right" aria-hidden="true"></i></v-btn>
         <v-spacer><br><br><br><br></v-spacer>
       </v-col>
     </v-row>
@@ -35,7 +35,6 @@
 
 <script>
 import * as EmailValidator from "email-validator";
-import router from "@/router"
 
 export default {
   name: "PasswordChange",
@@ -61,7 +60,7 @@ export default {
       this.isSubmit = isSubmit;
     },
     emailVerification() {
-      router.push({name: "PasswordChoiceEmailVerification"})
+      this.$router.push({name: "PasswordChoiceEmailVerification"})
     },
   },
   data: () => {

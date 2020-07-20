@@ -10,11 +10,27 @@
         <h1 class="text-left blue--text">Retrieve Your Password</h1>
         <v-spacer><br><br><br><br><br><br><br><br><br></v-spacer>
         <router-link to="/user/password_choice_email" class="text-decoration-none">
-          <v-text-field background-color="blue" filled solo rounded append-icon="mdi-email" value="이메일로 찾기" readonluy type="button"></v-text-field>
+          <v-btn
+            class="white--text"
+            color="blue"
+            rounded
+            width="100%"
+            x-large
+          >
+            <v-spacer></v-spacer>이메일로 찾기<v-spacer></v-spacer><i class="fa fa-envelope" aria-hidden="true"></i>
+          </v-btn>
         </router-link>
         <v-spacer><br><br><br></v-spacer>
         <router-link to="/user/password_change" class="text-decoration-none">
-          <v-text-field background-color="blue" filled solo rounded append-icon="mdi-cellphone" value="휴대폰으로 찾기" readonluy type="button"></v-text-field>
+          <v-btn
+            class="white--text"
+            color="blue"
+            rounded
+            width="100%"
+            x-large
+          >
+            <v-spacer></v-spacer>휴대폰으로 찾기<v-spacer></v-spacer><i class="fa fa-mobile" aria-hidden="true"></i>
+          </v-btn>        
         </router-link>        
         <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
       </v-col>

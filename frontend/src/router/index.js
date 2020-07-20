@@ -7,7 +7,7 @@ import PasswordChoice from "../views/user/PasswordChoice.vue";
 import PasswordChoiceEmail from "../views/user/PasswordChoiceEmail.vue";
 import PasswordChoiceEmailVerification from "../views/user/PasswordChoiceEmailVerification.vue";
 import PasswordChange from "../views/user/PasswordChange.vue";
-
+import ErrorComponent from "../components/ErrorComponent.vue";
 
 import Home from '../views/Home.vue'
 
@@ -17,6 +17,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
+  { path: '/error', name: 'Error', component: ErrorComponent },
   { path: '/login', name: 'Login', component: LoginView },
   { path: '/signup', name: 'Signup', component: SignupView },
   { path: '*', component: NotFoundComponent },
