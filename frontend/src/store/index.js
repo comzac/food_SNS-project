@@ -88,35 +88,46 @@ export default new Vuex.Store({
     },
 
     idCheck({commit}, uid) {
-      if(uid === null) {
+      if(uid === "") {
         alert('아이디를 입력하세요')
-        return
+        commit('SET_IDCHECK', false)
+        return false
       }
-      axios.get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
-        .then(res => {
-          console.log(res.data)
-          if(res.data === 'success') {
-            alert("사용 가능한 아이디입니다.")
-            commit('SET_IDCHECK', true)
-            commit('SET_SIGNUPID', uid)
-          }else {
-            alert("이미 사용 중인 아이디입니다.")
-          }
-
-        })
-        .catch(err=>console.log(err.response))
+      return axios.get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
+      .then(res => {
+        console.log(res.data)
+        if(res.data === 'success') {
+          alert("사용 가능한 아이디입니다.")
+          commit('SET_IDCHECK', true)
+          commit('SET_SIGNUPID', uid)
+          return true
+        }else {
+          alert("이미 사용 중인 아이디입니다.")
+          commit('SET_IDCHECK', false)
+          return false
+        }
+      })
+      .catch(err=>console.log(err.response))
     },
 
     nickCheck({ commit }, unick) {
-      axios.get(SERVER.URL + SERVER.ROUTES.accounts.nickCheck + unick)
+      if(unick === "") {
+        alert('별명을 입력하세요')
+        commit('SET_IDCHECK', false)
+        return false
+      }      
+      return axios.get(SERVER.URL + SERVER.ROUTES.accounts.nickCheck + unick)
       .then(res => {
         console.log(res.data)
         if(res.data === "success") {
-          alert("사용 가능한 닉네임입니다.")
+          alert("사용 가능한 별명입니다.")
           commit('SET_NICKCHECK', true)
           commit('SET_SIGNUPNICK', unick)
+          return true
         }else {
-          alert("이미 사용 중인 닉네임입니다.")
+          alert("이미 사용 중인 별명입니다.")
+          commit('SET_NICKCHECK', false)
+          return false
         }
 
       })

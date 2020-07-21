@@ -10,7 +10,9 @@
           v-model="signupData.uid"
           color="#ff6666"
           append-outer-icon="mdi-check"
-          @click:append-outer="idcheck = !idcheck"
+          @click:append-outer="idCheck2(signupData.uid)"
+          :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
+          @input="idcheck = false"
         ></v-text-field>
 
         <v-text-field
@@ -21,7 +23,9 @@
           v-model="signupData.unick"
           color="#ff6666"
           append-outer-icon="mdi-check"
-          @click:append-outer="nickcheck = !nickcheck"
+          @click:append-outer="nickCheck2(signupData.unick)"
+          :error-messages="nickcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
+          @input="nickcheck = false"
         ></v-text-field>
 
         <v-text-field
@@ -33,6 +37,7 @@
           prepend-icon="mdi-lock-outline"
           v-model="signupData.upw"
           color="#ff6666"
+          :error-messages="pwdCheck(signupData.upw)?'':'비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'"
         ></v-text-field>
 
         <v-text-field
@@ -44,6 +49,7 @@
           prepend-icon="mdi-lock-outline"
           v-model="signupData.upw2"
           color="#ff6666"
+          :error-messages="pwdCheck2(signupData.upw, signupData.upw2)?'':'비밀번호와 동일하게 입력해주세요'"
         ></v-text-field>
 
         <v-text-field
@@ -53,6 +59,7 @@
           type="date"
           v-model="signupData.ubirth"
           color="#ff6666"
+          :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
         ></v-text-field>
 
         <v-int-field
@@ -69,7 +76,7 @@
         </v-radio-group>
         <!-- 영문, 숫자 혼용 확인 필요 -->
         <v-btn
-          :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || signupData.upw2!=signupData.upw || !idcheck || !nickcheck || signupData.upw.length<8"
+          :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
           @click="toEmailVerification()"
           color="#ff6666"
           class="white--text"
@@ -95,18 +102,10 @@ export default {
         ubirth: "",
         usex: ""
       },
-      signupData2: {
-        uid: "아이디",
-        unick: "별명",
-        upw: "비밀번호",
-        upw2: "비밀번호 확인",
-        ubirth: "생년월일",
-        usex: "성별"
-      },
       show1: false,
       show2: false,
       idcheck: false,
-      nickcheck: false
+      nickcheck: false,
     };
   },
   methods: {
@@ -124,6 +123,37 @@ export default {
       // 다른 방식 고려
       delete this.signupData.upw2;
       this.$emit("toEmailVerification", this.signupData);
+      delete this.signupData.upw2;
+      this.$emit("toEmailVerification", this.signupData);
+    },
+    pwdCheck(upw) {
+      let pattern1 = /[0-9]/;
+      let pattern2 = /[A-Za-z]/;
+      //특수문자 확인
+      // let pattern3 = /[~!@#$%^&*()_+|<>?:{}]/;
+      if (pattern1.test(upw) == false) {
+        return false;
+      }
+      if (pattern2.test(upw) == false) {
+        return false;
+      }
+      // if(pattern3.test(pwd) == false){
+      //     return false;
+      // }
+      if (upw.length < 8) return false;
+      return true;
+    },
+    pwdCheck2(upw,upw2) {
+      if (upw !== upw2) return false;
+      return true;
+    },
+    idCheck2(uid) {
+      this.idCheck(uid)
+        .then(res => res?this.idcheck=true:this.idcheck=false)
+    },
+    nickCheck2(unick) {
+      this.nickCheck(unick)
+        .then(res => res?this.nickcheck=true:this.nickcheck=false)
     }
   }
 };

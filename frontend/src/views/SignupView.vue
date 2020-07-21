@@ -21,18 +21,18 @@ export default {
     SignupEmailVerification
   },
   data() {
-    return {
-      page: 1,
-      signupData: {
-        uid: null,
-        unick: null,
-        upw: null,
-        uemail: null,
-        ubirth: null,
-        usex: null
-      },
-      confirmCode: ""
-    };
+      return {
+          page: 1,
+          signupData: {
+              uid: null,
+              upw: null,
+              unick: null,
+              uemail: null,
+              ubirth: null,
+              usex: null,
+          },
+          confirmCode: "",
+      }
   },
   methods: {
       ...mapActions(['signup']),
