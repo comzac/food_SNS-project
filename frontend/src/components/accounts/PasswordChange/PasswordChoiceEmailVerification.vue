@@ -1,9 +1,10 @@
 <template>
   <v-container class="fill-height" fluid>
-    <!-- <h1>Email Verification</h1> -->
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col cols="12" sm="8" md="6" lg="4">
+        <h1 class="text-left">Retrieve Your Password</h1>
         <v-spacer>
+          <br />
           <br />
           <br />
           <br />
@@ -30,6 +31,7 @@
           <br />
           <br />
           <br />
+          <br />
         </v-spacer>
 
         <v-btn
@@ -39,12 +41,10 @@
           @click="verify()"
           width="100%"
           x-large
-        >회원가입 완료</v-btn>
+        >
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </v-btn>
         <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
           <br />
           <br />
           <br />
@@ -57,7 +57,7 @@
 
 <script>
 export default {
-  name: "SignupEmailVerification",
+  name: "PasswordChoiceEmailVerification",
   created() {
     this.component = this;
   },
@@ -83,12 +83,14 @@ export default {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
       const num = Number(this.confirm)
+      // console.log(num)
+      // console.log(this.code.data)
       if(num === this.confirmCode.data) {
-        this.$emit('finishSignup')
+        this.$emit('toPasswordChange')
       }else {
         alert('인증번호를 확인해주세요.')
       }
-    },
+    }
   },
   data: () => {
     return {
@@ -101,7 +103,7 @@ export default {
     };
   },
   props: {
-    confirmCode: String,
+    confirmCode: String
   }
 };
 </script>
