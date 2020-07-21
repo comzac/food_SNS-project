@@ -2,13 +2,17 @@
   <v-container class="fill-height" fluid>
     <!-- <h1>Email Verification</h1> -->
     <v-row class="text-center" align="center" justify="center" no-gutters>
-      <v-col
-        cols="12"
-        sm="8"
-        md="6"
-        lg="4"
-      > 
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
         <v-text-field
           v-model="confirm"
           :error-messages="error.confirm"
@@ -16,25 +20,42 @@
           outlined
           solo
           required
+          color="#ff6666"
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
 
         <v-btn
-          color="blue"
+          color="#ff6666"
+          class="white--text"
           :disabled="!isSubmit"
           @click="verify()"
           width="100%"
           x-large
         >회원가입 완료</v-btn>
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-// import router from '@/router'
-
 export default {
   name: "SignupEmailVerification",
   created() {
@@ -49,7 +70,7 @@ export default {
     checkForm() {
       if (this.confirm.length != 6)
         this.error.confirm = "확인 코드는 6자리 입니다.";
-      else this.error.confirm = "";  
+      else this.error.confirm = "";
 
       let isSubmit = true;
 
@@ -69,28 +90,27 @@ export default {
       // console.log(this.code.data)
       if(num === this.code.data) {
         this.$emit('finishCheck')
+        this.$router.push({ name: "Home" })
       }else {
         alert('인증번호를 확인해주세요.')
       }
     },
-    
   },
   data: () => {
     return {
       confirm: "",
       error: {
-        confirm: "",
+        confirm: ""
       },
       isSubmit: false,
-      component: this,
+      component: this
     };
   },
   props: {
     code: String,
   }
-}
+};
 </script>
 
 <style>
-
 </style>

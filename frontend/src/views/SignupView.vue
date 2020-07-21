@@ -1,8 +1,9 @@
 <template>
-  <div class="signup">
+  <div class='signup'>
     <BasicForm v-if='page === 1' @toEmailVerification='setSignupData' />
-    <SignupEmail v-if='page === 2' @toEmailVerificationNumber='emailVerification'/>
-    <SignupEmailVerification v-if='page === 3' :code="confirmCode" @finishCheck="doSignup"/>
+    <SignupEmail v-if='page === 2' @toEmailVerification='emailVerification' />
+    <SignupEmailVerification v-if='page === 3' />
+    <v-btn @click='page-=1' v-if='page!==1'>뒤로가기</v-btn>
   </div>
 </template>
 
@@ -13,11 +14,30 @@ import SignupEmailVerification from '@/components/accounts/signup/SignupEmailVer
 import { mapActions } from 'vuex'
 
 export default {
-    name: 'SignupView',
-    components: {
-        BasicForm,
-        SignupEmail,
-        SignupEmailVerification,
+  name: "SignupView",
+  components: {
+    BasicForm,
+    SignupEmail,
+    SignupEmailVerification
+  },
+  data() {
+    return {
+      page: 1,
+      signupData: {
+        uid: null,
+        unick: null,
+        upw: null,
+        uemail: null,
+        ubirth: null,
+        usex: null
+      },
+      confirmCode: ""
+    };
+  },
+  methods: {
+    setSignupData(signupData) {
+      this.signupData = signupData;
+      this.page += 1;
     },
     data() {
         return {
@@ -52,5 +72,4 @@ export default {
 </script>
 
 <style>
-
 </style>
