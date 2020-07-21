@@ -68,6 +68,7 @@ export default {
             this.signup(this.signupData)
         }
     },
+  }
 }
 </script>
 

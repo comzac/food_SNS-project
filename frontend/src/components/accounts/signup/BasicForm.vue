@@ -1,62 +1,5 @@
 <template>
   <v-container>
-<<<<<<< HEAD
-    <v-form>
-      <v-text-field
-        label="아이디"
-        name="signup"
-        prepend-icon="mdi-account"
-        type="text"
-        v-model="signupData.uid"
-        @keypress.enter="toEmailVerification()"
-      ></v-text-field>
-
-      <!-- 아이디 중복 체크 -->
-      <!-- <button @click="idCheck(signupData.uid)">중복체크</button> -->
-    
-      <v-text-field
-        label="별명"
-        name="nickname"
-        prepend-icon="mdi-account-box"
-        type="text"
-        v-model="signupData.unick"
-        @keypress.enter="toEmailVerification()"
-      ></v-text-field>
-
-      <!-- 닉네임 중복 체크 -->
-      <!-- <button @click="nickCheck(signupData.unick)">중복체크</button> -->
-
-      <v-text-field
-        id="password"
-        label="비밀번호"
-        name="password"
-        prepend-icon="mdi-lock-outline"
-        type="password"
-        v-model="signupData.upw"
-        @keypress.enter="toEmailVerification()"
-      ></v-text-field>
-
-      <v-text-field
-        label="생년월일"
-        name="dob"
-        prepend-icon="mdi-account"
-        type="date"
-        v-model="signupData.ubirth"
-        @keypress.enter="toEmailVerification()"
-      ></v-text-field>
-
-      <v-text-field
-        label="성별"
-        name="gender"
-        prepend-icon="mdi-account"
-        type="number"
-        v-model="signupData.usex"
-        @keypress.enter="toEmailVerification()"
-      ></v-text-field>
-      <v-btn @click="toEmailVerification()">다음으로</v-btn>
-    </v-form>
-    </v-container>
-=======
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-text-field
@@ -134,7 +77,6 @@
       </v-col>
     </v-row>
   </v-container>
->>>>>>> feature/Header
 </template>
 
 <script>
@@ -179,21 +121,9 @@ export default {
           return;
         }
       }
-<<<<<<< HEAD
-      // this.signupCheck({"uid" : this.signupData.uid, "unick" : this.signupData.unick})
-      //   .then(res => {
-      //       if(res !== null) {
-      //           alert(res + "중복 확인해주세요.")
-      //       }else {
-      //           this.$emit("toEmailVerification", this.signupData)
-      //       }
-      //   })
-      this.$emit('toEmailVerification', this.signupData)
-=======
       // 다른 방식 고려
       delete this.signupData.upw2;
       this.$emit("toEmailVerification", this.signupData);
->>>>>>> feature/Header
     }
   }
 };
