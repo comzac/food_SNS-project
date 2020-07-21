@@ -57,6 +57,7 @@
 
 <script>
 import * as EmailValidator from "email-validator";
+import SERVER from '@/api/api'
 import axios from 'axios'
 
 export default {
@@ -83,7 +84,8 @@ export default {
       this.isSubmit = isSubmit;
     },
     emailVerification(email) {
-      axios.post('http://localhost:8080/echeck', {"userEmail": email})
+      console.log(SERVER.URL)
+      axios.post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {"userEmail": email})
         .then(res => {
           console.log(res)
           return res

@@ -86,9 +86,10 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
-      console.log(SERVER.URL)
-      console.log(email)
-      axios.post('http://localhost:8080/echeck', {"userEmail":email})
+      // console.log("SERVERURL" + SERVER.URL)
+      // console.log(SERVER.ROUTES.accounts.emailCheck)
+      // console.log(email)
+      axios.post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {"userEmail":email})
         .then(res => {
           console.log(res)
           return res
