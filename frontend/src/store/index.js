@@ -56,20 +56,6 @@ export default new Vuex.Store({
     postAuthData({ commit }, info) {
       console.log(info.data)
       console.log(SERVER.URL + info.route)
-      
-      // if(info.route === 'create') {
-      //   if(info.data.uid !== state.signupId) {
-      //     commit('SET_IDCHECK', false)
-      //     commit('SET_SIGNUPID', null)
-      //     alert("아이디 중복 확인을 해 주세요.")
-      //     return
-      //   }else if(info.data.unick !== state.signupNick) {
-      //     commit('SET_NICKCHECK', false)
-      //     commit('SET_SIGNUPNICK', null)
-      //     alert("닉네임 중복 확인을 해 주세요.")
-      //     return
-      //   }
-      // }
       axios.post(SERVER.URL + info.route, info.data, {
         headers: {
           "Content-type": "application/json"
@@ -136,48 +122,24 @@ export default new Vuex.Store({
       })
       .catch(err=>console.log(err.response))
     },
-    signupCheck({ state }, signupData) {
-      if(state.signupId !== signupData.uid) {
-          return 'uid'
-        }else if(state.signupNick !== signupData.unick) {
-          return 'unick'
-        }else {
-          return null
+
+    pwreset({ state }, password) {
+      const userData = {
+        "uid": state.userInfo.uid,
+        "upw": password
       }
-    },
-    // login(context, {uid, upw}) {
-    //   http
-    //     .post("/login", {
-    //       uid: uid,
-    //       upw: upw
-    //     })
-    //     .then(({ data }) => {
-    //       console.log(data);
-    //       context.commit('mutateIsLogin', true);
-    //       context.commit('mutateUserInfo', data);
-    //     })
-    //     .catch((error) => {
-    //       if (error.response.status == '404') {
-    //         alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-    //       } else {
-    //          alert('로그인 처리시 에러가 발생했습니다.');
-    //       }
-    //       console.log(error.response);
-    //     });
-    // },
-    // login({ commit }, loginData ) {
-    //   const data = [loginData.uid, loginData.upw]
-    //   console.log(data)
-    //   axios.post(SERVER.URL + SERVER.ROUTES.accounts.login, loginData)
-    //     .then(res => {
-    //       console.log("response")
-    //       console.log(res.data)
-    //       commit('SET_USERDATA', res.data)
-    //       commit('SET_COOKIE', res.uid)
-    //       router.push('/')
-    //     })
-    //     .catch(err => console.log(err.response))
-    // },
+      axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwcheck, userData)
+        .then(res => {
+          console.log(res)
+          if(res.data === "success"){
+            router.push({ name: "Home" })
+          }else {
+            alert("변경 실패")
+          }
+        })
+        .catch(err => console.log(err.response))
+    }
+
   },
   modules: {
 

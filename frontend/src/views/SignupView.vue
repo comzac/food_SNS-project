@@ -2,7 +2,7 @@
   <div class='signup'>
     <BasicForm v-if='page === 1' @toEmailVerification='setSignupData' />
     <SignupEmail v-if='page === 2' @toEmailVerification='emailVerification' />
-    <SignupEmailVerification v-if='page === 3' :confirmCode='confirmCode' />
+    <SignupEmailVerification v-if='page === 3' :confirmCode='confirmCode' @finishSignup='doSignup'/>
     <v-btn @click='page-=1' v-if='page!==1'>뒤로가기</v-btn>
   </div>
 </template>
@@ -47,6 +47,7 @@ export default {
       },
       doSignup() {
           this.signup(this.signupData)
+          this.$router.push({ name: "Home" })
       }
   },
 }

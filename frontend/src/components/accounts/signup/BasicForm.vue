@@ -55,17 +55,17 @@
           color="#ff6666"
         ></v-text-field>
 
-        <v-text-field
+        <v-int-field
           label="성별"
           name="gender"
           prepend-icon="mdi-account"
           v-model="signupData.usex"
           color="#ff6666"
           readonly
-        ></v-text-field>
+        ></v-int-field>
         <v-radio-group v-model="signupData.usex" row>
-          <v-radio color="#ff6666" label="male" value="male"></v-radio>
-          <v-radio color="#ff6666" label="female" value="female"></v-radio>
+          <v-radio color="#ff6666" label="male" value="1"></v-radio>
+          <v-radio color="#ff6666" label="female" value="2"></v-radio>
         </v-radio-group>
         <!-- 영문, 숫자 혼용 확인 필요 -->
         <v-btn

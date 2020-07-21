@@ -49,7 +49,7 @@
           :disabled="!isSubmit || password!=passwordConfirm"
           width="100%"
           x-large
-          
+          @click='pwreset(password)'
         >비밀번호 변경</v-btn>
         <v-spacer>
           <br />
