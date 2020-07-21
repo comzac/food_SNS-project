@@ -10,5 +10,5 @@ public interface UserService {
 	public int pwcheck(String uid, String upw);
 	public boolean send(String subject, String text, String from, String to, String filePath);
 	public UserDto pwreset(String uid, String upw);
-	
+	public String edcheck(String uemail);
 }

@@ -36,7 +36,7 @@ public class UserController {
 		System.out.println("log - login");
 		UserDto userDto = userService.login(userData.get("uid"), userData.get("upw"));
 		
-		if(userDto == null)
+		if(userDto == null) 
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.NOT_FOUND);
 		else
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.FOUND);
@@ -82,6 +82,19 @@ public class UserController {
 		System.out.println("log - nickchk");
 		String oldNick = userService.nickcheck(unick);
 		if (oldNick==null) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "이메일 중복 체크. 이미 있는 이메일인 경우 fail을 반환한다.", response = String.class)
+	@PostMapping(value = "/edcheck")
+	public ResponseEntity<String> edcheck(@RequestBody HashMap<String, String> userEmailData) {
+		System.out.println("log - edcheck");
+		String uemail = userEmailData.get("userEmail");
+		String edcheck = userService.edcheck(uemail);
+		System.out.println(edcheck);
+		if (edcheck==null) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
