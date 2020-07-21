@@ -21,53 +21,34 @@ export default {
     SignupEmailVerification
   },
   data() {
-    return {
-      page: 1,
-      signupData: {
-        uid: null,
-        unick: null,
-        upw: null,
-        uemail: null,
-        ubirth: null,
-        usex: null
-      },
-      confirmCode: ""
-    };
+      return {
+          page: 1,
+          signupData: {
+              uid: null,
+              upw: null,
+              unick: null,
+              uemail: null,
+              ubirth: null,
+              usex: null,
+          },
+          confirmCode: "",
+      }
   },
   methods: {
-    setSignupData(signupData) {
-      this.signupData = signupData;
-      this.page += 1;
-    },
-    data() {
-        return {
-            page: 1,
-            signupData: {
-                uid: null,
-                upw: null,
-                unick: null,
-                uemail: null,
-                ubirth: null,
-                usex: null,
-            },
-            confirmCode: "",
-        }
-    },
-    methods: {
-        ...mapActions(['signup']),
-        setSignupData(signupData) {
-            this.signupData = signupData
-            this.page += 1
-        },
-        emailVerification( userEmailData ) {
-            this.confirmCode = userEmailData.confirmCode
-            this.signupData.uemail = userEmailData.userEmail
-            this.page += 1
-        },
-        doSignup() {
-            this.signup(this.signupData)
-        }
-    },
+      ...mapActions(['signup']),
+      setSignupData(signupData) {
+          this.signupData = signupData
+          this.page += 1
+      },
+      emailVerification( userEmailData ) {
+          this.confirmCode = userEmailData.confirmCode
+          this.signupData.uemail = userEmailData.userEmail
+          this.page += 1
+      },
+      doSignup() {
+          this.signup(this.signupData)
+      },
+  },
 }
 </script>
 
