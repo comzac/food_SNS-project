@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="com.ssafy.sub.mapper.UserMapper">
 
-	<select id="login" parameterType="map" resultType="com.ssafy.sub.dto.UserDto">
+	<select id="login" parameterType="map" resultType="UserDto">
 		select * from user where uid = #{uid} and upw = #{upw}
 	</select>
 	
@@ -14,12 +14,12 @@
 		select unick from user where unick = #{unick}
 	</select>	
 	 
-	<insert id="create" parameterType="com.ssafy.sub.dto.UserDto">
+	 <insert id="create" parameterType="UserDto">
 		insert into user (uid, upw, unick, uemail, uregdate, ubirth, usex)
 		values (#{uid}, #{upw}, #{unick}, #{uemail}, now(), #{ubirth}, #{usex})
     </insert>
 
-    <select id="pwreset" resultType="com.ssafy.sub.dto.UserDto">
+     <select id="pwreset" resultType="UserDto">
 		select * from user where uid = #{uid} and upw = #{upw}
 	</select>
     

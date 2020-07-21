@@ -5,14 +5,23 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class UserDto {
-   private String uid;
-   private String upw;
-   private String unick;
-   private String uemail;
-   private Date uregdate;
-   private Date ubirth;
-   private int usex;
+	@ApiModelProperty(notes = "유저 아이디", required = true)
+	private String uid;
+	@ApiModelProperty(notes = "유저 패스워드", required = true)
+	private String upw;
+	@ApiModelProperty(notes = "유저 닉네임", required = true)
+	private String unick;
+	@ApiModelProperty(notes = "유저 이메일", required = true)
+	private String uemail;
+	@ApiModelProperty(notes = "유저 등록일", required = true)
+	private Date uregdate;
+	@ApiModelProperty(notes = "유저 생일", required = true)
+	private Date ubirth;
+	@ApiModelProperty(notes = "유저 성별", required = true)
+	private int usex;
    
    @JsonCreator
    public UserDto(
