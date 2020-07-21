@@ -4,7 +4,6 @@ import Vuex from "vuex";
 import cookies from "vue-cookies";
 import axios from "axios";
 
-// import http from "@/util/http-common";
 import SERVER from "@/api/api";
 import router from "../router";
 
@@ -24,14 +23,6 @@ export default new Vuex.Store({
     isLogin: state => !!state.authData,
   },
   mutations: {
-    // mutateIsLogin(state, isLogin){
-    //   state.isLogin = isLogin
-    //   console.log(7);
-    // },
-    // mutateUserInfo(state, userInfo){
-    //   state.userInfo = userInfo
-    // },
-
     SET_COOKIE(state, id) {
       state.authData = id;
       cookies.set('auth-id', id);
@@ -63,7 +54,7 @@ export default new Vuex.Store({
       })
         .then(res => {
           console.log("response")
-          console.log(res.data)
+          console.log(res)
           commit('SET_USERDATA', res.data)
           commit('SET_COOKIE', res.uid)
           router.push('/')
@@ -133,7 +124,22 @@ export default new Vuex.Store({
       })
       .catch(err=>console.log(err.response))
     },
-
+    getConfirmCode(context, email) {
+      return axios.post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {"userEmail":email})
+        .then(res => {
+          console.log(res)
+          return res
+        })
+        .then(confirmCode => {
+          if(confirmCode === "fail") {
+            alert('이메일을 확인해주세요.')
+            return ""
+          }else{
+            return confirmCode
+          }
+        })
+        .catch(err => console.log(err.response))
+    },
     pwreset(context , userEmailData) {
       axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwcheck, userEmailData)
         .then(res => {

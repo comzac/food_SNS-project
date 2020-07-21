@@ -56,9 +56,10 @@ public class UserController {
 
 	@ApiOperation(value = "인증 코드를 사용자의 이메일로 보내기. 메일이 전송되면 인증 코드를 반환한다.", response = String.class)
 	@PostMapping(value = "/echeck")
-	public ResponseEntity<String> createEmailCheck(String userEmail) {
+	public ResponseEntity<String> createEmailCheck(@RequestBody HashMap<String, String> userEmailData) {
 		final String SEND_EMAIL_ID = "ksb940925@gamil.com"; // 관리자 email
-
+		System.out.println(userEmailData.get("userEmail"));
+		String userEmail = userEmailData.get("userEmail");
 		// 이메일 인증
 		int random = new Random().nextInt(900000) + 100000;
 		String authCode = String.valueOf(random);
