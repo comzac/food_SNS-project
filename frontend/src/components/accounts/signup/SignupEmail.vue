@@ -57,9 +57,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import * as EmailValidator from "email-validator"
-import SERVER from "@/api/api"
-import axios from "axios"
 
 export default {
   name: "Signupemail",
@@ -72,6 +71,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['getConfirmCode']),
     checkForm() {
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
         this.error.email = "이메일 형식이 아닙니다.";
@@ -86,22 +86,12 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
-      // console.log("SERVERURL" + SERVER.URL)
-      // console.log(SERVER.ROUTES.accounts.emailCheck)
-      // console.log(email)
-      axios.post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {"userEmail":email})
-        .then(res => {
-          console.log(res)
-          return res
-        })
-        .then(confirmCode => {
-          if(confirmCode === "fail") {
-            alert('이메일을 확인해주세요.')
-          }else{
-            this.$emit('toEmailVerification', { "confirmCode": confirmCode, "userEmail": email })
-          }
-        })
-        .catch(err => console.log(err.response))
+      this.getConfirmCode(email)
+      .then(code => {
+        if(code !== "") {
+          this.$emit('toEmailVerification', { "confirmCode": code, "userEmail": email })
+        }
+      })
     },
   },
   data: () => {
