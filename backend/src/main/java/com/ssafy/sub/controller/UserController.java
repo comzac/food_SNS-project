@@ -36,7 +36,7 @@ public class UserController {
 		System.out.println("log - login");
 		UserDto userDto = userService.login(userData.get("uid"), userData.get("upw"));
 		
-		if(userDto == null)
+		if(userDto == null) 
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.NOT_FOUND);
 		else
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.FOUND);
