@@ -15,7 +15,6 @@
           @input="idcheck = false"
           autocapitalize='off'
           autocorrect='off'
-          @click:append-outer="idcheck = !idcheck"
         ></v-text-field>
 
         <v-text-field
@@ -124,8 +123,6 @@ export default {
         }
       }
       // 다른 방식 고려
-      delete this.signupData.upw2;
-      this.$emit("toEmailVerification", this.signupData);
       delete this.signupData.upw2;
       this.$emit("toEmailVerification", this.signupData);
     },
