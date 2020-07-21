@@ -10,6 +10,8 @@
           v-model="signupData.uid"
           color="#ff6666"
           append-outer-icon="mdi-check"
+          autocapitalize='off'
+          autocorrect='off'
           @click:append-outer="idcheck = !idcheck"
         ></v-text-field>
 
