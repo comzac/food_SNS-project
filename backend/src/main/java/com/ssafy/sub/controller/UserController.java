@@ -86,6 +86,19 @@ public class UserController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
+	
+	@ApiOperation(value = "이메일 중복 체크. 이미 있는 이메일인 경우 fail을 반환한다.", response = String.class)
+	@PostMapping(value = "/edcheck")
+	public ResponseEntity<String> edcheck(@RequestBody HashMap<String, String> userEmailData) {
+		System.out.println("log - edcheck");
+		String uemail = userEmailData.get("userEmail");
+		String edcheck = userService.edcheck(uemail);
+		System.out.println(edcheck);
+		if (edcheck==null) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 
 	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = UserDto.class)
 	@PostMapping(value = "/create")
