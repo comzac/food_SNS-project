@@ -7,6 +7,8 @@ export default {
             idCheck: "idcheck/",
             nickCheck: "nickcheck/",
             emailCheck: "echeck",
+            pwcheck: 'pwcheck',
+            pwreset: 'pwreset',
         }
     }
 }

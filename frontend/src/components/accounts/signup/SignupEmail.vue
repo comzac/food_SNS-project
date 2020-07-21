@@ -97,7 +97,7 @@ export default {
           if(confirmCode === "fail") {
             alert('이메일을 확인해주세요.')
           }else{
-            this.$emit('toEmailVerificationNumber', { "confirmCode": confirmCode, "userEmail": email })
+            this.$emit('toEmailVerification', { "confirmCode": confirmCode, "userEmail": email })
           }
         })
         .catch(err => console.log(err.response))
