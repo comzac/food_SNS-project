@@ -23,15 +23,11 @@ public class UserServiceImpl implements UserService{
 	public UserDto login(String uid, String upw) {
 		return userMapper.login(uid, upw);
 	}
-
-	
 	
 	@Override
 	public String idcheck(String uid) {
 		return userMapper.idcheck(uid);
 	}
-
-
 
 	@Override
 	public String nickcheck(String unick) {
@@ -39,30 +35,20 @@ public class UserServiceImpl implements UserService{
 
 	}
 
-	
-	
-
-
 	@Override
 	public UserDto pwreset(String uid, String upw) {
 		return userMapper.pwreset(uid, upw);
 	}
-
-
 
 	@Override
 	public int pwcheck(String uid, String upw) {
 		return userMapper.pwcheck(uid,upw);
 	}
 
-
-
 	@Override
 	public int create(UserDto dto) {
 		return userMapper.create(dto);
 	}
-
-
 
 	@Override
 	public boolean send(String subject, String text, String from, String to, String filePath) {
@@ -73,6 +59,11 @@ public class UserServiceImpl implements UserService{
 		javaMailSender.send(message);
 		
 		return true;
+	}
+	
+	@Override
+	public String edcheck(String uemail) {
+		return userMapper.edcheck(uemail);
 	}
 	
 }
