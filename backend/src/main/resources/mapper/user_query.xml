@@ -10,6 +10,7 @@
 		select uid from user where uid = #{uid}
 	</select>	
 	 
+	 
 	<select id="nickcheck" resultType="String">
 		select unick from user where unick = #{unick}
 	</select>	
