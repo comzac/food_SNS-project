@@ -26,5 +26,9 @@
     <update id="pwcheck" >
 		update user set upw	= #{upw} where uid = #{uid}	
 	</update>
+	
+	<select id="edcheck" resultType="String">
+		select uemail from user where uemail = #{uemail}
+	</select>
     
 </mapper>

@@ -13,4 +13,5 @@ public interface UserMapper {
 	public String nickcheck(String unick);
 	public UserDto pwreset(@Param("uid") String uid, @Param("upw") String upw);
 	public int pwcheck(@Param("uid") String uid, @Param("upw") String upw);
+	public String edcheck(@Param("uemail") String uemail);
 }
