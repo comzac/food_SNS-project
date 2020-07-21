@@ -23,6 +23,7 @@
 		select * from user where uid = #{uid} and upw = #{upw}
 	</select>
     
+    
     <update id="pwreset" >
 		update user set upw	= #{upw} where uemail = #{uemail}	
 	</update>
