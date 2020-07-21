@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import router from '@/router'
+// import router from '@/router'
 
 export default {
   name: "SignupEmailVerification",
@@ -59,10 +59,21 @@ export default {
       this.isSubmit = isSubmit;
     },
     verify() {
+      // console.log(typeof this.confirm)
+      // console.log(typeof this.code.data)
+      // console.log('click')
       // axios 보내고
       // 인증 완료 되서 넘어 오면
-      router.push({ name: 'Home'})
+      const num = Number(this.confirm)
+      // console.log(num)
+      // console.log(this.code.data)
+      if(num === this.code.data) {
+        this.$emit('finishCheck')
+      }else {
+        alert('인증번호를 확인해주세요.')
+      }
     },
+    
   },
   data: () => {
     return {
@@ -73,6 +84,9 @@ export default {
       isSubmit: false,
       component: this,
     };
+  },
+  props: {
+    code: String,
   }
 }
 </script>

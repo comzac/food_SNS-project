@@ -16,6 +16,7 @@
           outlined
           solo
           required
+          autofocus=""
         ></v-text-field>
         <v-spacer><br><br><br><br><br><br><br></v-spacer>
 
@@ -25,7 +26,7 @@
           :disabled="!isSubmit"
           width="100%"
           x-large
-          @click="emailVerification()"
+          @click="emailVerification(email)"
         >-></v-btn>
         <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
       </v-col>
@@ -34,7 +35,9 @@
 </template>
 
 <script>
-import * as EmailValidator from "email-validator";
+import * as EmailValidator from "email-validator"
+import SERVER from "@/api/api"
+import axios from "axios"
 
 export default {
   name: "Signupemail",
@@ -59,10 +62,23 @@ export default {
       });
       this.isSubmit = isSubmit;
     },
-    emailVerification() {
+    emailVerification(email) {
       // email 보내기 + 받아서
-      const confirmCode='123456'
-      this.$emit('toEmailVerification', confirmCode)
+      console.log(SERVER.URL)
+      console.log(email)
+      axios.post('http://localhost:8080/echeck', {"userEmail":email})
+        .then(res => {
+          console.log(res)
+          return res
+        })
+        .then(confirmCode => {
+          if(confirmCode === "fail") {
+            alert('이메일을 확인해주세요.')
+          }else{
+            this.$emit('toEmailVerificationNumber', { "confirmCode": confirmCode, "userEmail": email })
+          }
+        })
+        .catch(err => console.log(err.response))
     },
   },
   data: () => {

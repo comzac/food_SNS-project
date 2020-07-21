@@ -30,17 +30,23 @@
         prepend-icon="mdi-account"
         type="text"
         v-model="signupData.uid"
-        @keypress.enter="signup(signupData)"
+        @keypress.enter="toEmailVerification()"
       ></v-text-field>
 
+      <!-- 아이디 중복 체크 -->
+      <!-- <button @click="idCheck(signupData.uid)">중복체크</button> -->
+    
       <v-text-field
         label="별명"
         name="nickname"
         prepend-icon="mdi-account-box"
         type="text"
         v-model="signupData.unick"
-        @keypress.enter="signup(signupData)"
+        @keypress.enter="toEmailVerification()"
       ></v-text-field>
+
+      <!-- 닉네임 중복 체크 -->
+      <!-- <button @click="nickCheck(signupData.unick)">중복체크</button> -->
 
       <v-text-field
         id="password"
@@ -49,7 +55,7 @@
         prepend-icon="mdi-lock-outline"
         type="password"
         v-model="signupData.upw"
-        @keypress.enter="signup(signupData)"
+        @keypress.enter="toEmailVerification()"
       ></v-text-field>
 
       <v-text-field
@@ -58,7 +64,7 @@
         prepend-icon="mdi-account"
         type="date"
         v-model="signupData.ubirth"
-        @keypress.enter="signup(signupData)"
+        @keypress.enter="toEmailVerification()"
       ></v-text-field>
 
       <v-text-field
@@ -67,7 +73,7 @@
         prepend-icon="mdi-account"
         type="number"
         v-model="signupData.usex"
-        @keypress.enter="signup(signupData)"
+        @keypress.enter="toEmailVerification()"
       ></v-text-field>
       <v-btn @click="toEmailVerification()">다음으로</v-btn>
     </v-form>
@@ -101,14 +107,15 @@ export default {
           return;
         }
       }
-      if (
-        this.signupCheck({
-          uid: this.signupData.uid,
-          unick: this.signupData.unick
-        })
-      ) {
-        this.$emit("toEmailVerification", this.signupData);
-      }
+      // this.signupCheck({"uid" : this.signupData.uid, "unick" : this.signupData.unick})
+      //   .then(res => {
+      //       if(res !== null) {
+      //           alert(res + "중복 확인해주세요.")
+      //       }else {
+      //           this.$emit("toEmailVerification", this.signupData)
+      //       }
+      //   })
+      this.$emit('toEmailVerification', this.signupData)
     }
   }
 };

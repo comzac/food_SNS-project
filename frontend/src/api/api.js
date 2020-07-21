@@ -6,6 +6,7 @@ export default {
             signup: "create",
             idCheck: "idcheck/",
             nickCheck: "nickcheck/",
+            emailCheck: "echeck",
         }
     }
 }

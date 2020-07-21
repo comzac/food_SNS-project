@@ -51,7 +51,9 @@ public class UserController {
 
 	@ApiOperation(value = "인증 코드를 사용자의 이메일로 보내기. 메일이 전송되면 인증 코드를 반환한다.", response = String.class)
 	@PostMapping(value = "/echeck")
-	public String createEmailCheck(String userEmail) {
+	public String createEmailCheck(@RequestBody HashMap<String, String> userEmails) {
+		System.out.println(userEmails.get("userEmail"));
+		String userEmail = userEmails.get("userEmail");
 		final String SEND_EMAIL_ID = "ksb940925@gamil.com"; // 관리자 email
 
 		// 이메일 인증
@@ -61,7 +63,7 @@ public class UserController {
 		String subject = "회원가입 인증 코드 발급 안내 입니다.";
 		StringBuilder sb = new StringBuilder();
 		sb.append("귀하의 인증 코드는 " + authCode + "입니다.");
-
+		
 		if (userService.send(subject, sb.toString(), SEND_EMAIL_ID, userEmail, null)) {
 			return authCode; // vue에서 authCode로 일치 여부 확인 후 계정생성 버튼 활성화
 		} else {
