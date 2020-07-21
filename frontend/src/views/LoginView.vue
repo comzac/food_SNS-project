@@ -18,6 +18,8 @@
           required
           autofocus
           color="#ff6666"
+          autocapitalize='off'
+          autocorrect='off'
         ></v-text-field>
         <v-text-field
           v-model="loginData.upw"

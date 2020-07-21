@@ -13,6 +13,9 @@
           @click:append-outer="idCheck2(signupData.uid)"
           :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
           @input="idcheck = false"
+          autocapitalize='off'
+          autocorrect='off'
+          @click:append-outer="idcheck = !idcheck"
         ></v-text-field>
 
         <v-text-field
