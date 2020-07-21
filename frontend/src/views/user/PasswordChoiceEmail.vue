@@ -1,14 +1,19 @@
 <template>
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center" no-gutters>
-      <v-col
-        cols="12"
-        sm="8"
-        md="6"
-        lg="4"
-      > 
-        <h1 class="text-left blue--text">Retrieve Your Password</h1>
-        <v-spacer><br><br><br><br><br><br><br><br><br></v-spacer>
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <h1 class="text-left">Retrieve Your Password</h1>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
         <v-text-field
           v-model="email"
           :error-messages="error.email"
@@ -16,18 +21,35 @@
           outlined
           solo
           required
+          color="#ff6666"
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
 
         <v-btn
-          color="blue"
+          color="#ff6666"
           class="white--text"
           :disabled="!isSubmit"
           width="100%"
           x-large
           @click="emailVerification()"
-        ><i class="fa fa-arrow-right" aria-hidden="true"></i></v-btn>
-        <v-spacer><br><br><br><br></v-spacer>
+        >
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </v-btn>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
       </v-col>
     </v-row>
   </v-container>
@@ -40,7 +62,7 @@ export default {
   name: "PasswordChange",
   created() {
     this.component = this;
-  },  
+  },
   watch: {
     email: function() {
       this.checkForm();
@@ -50,7 +72,7 @@ export default {
     checkForm() {
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
         this.error.email = "이메일 형식이 아닙니다.";
-      else this.error.email = "";  
+      else this.error.email = "";
 
       let isSubmit = true;
 
@@ -60,22 +82,21 @@ export default {
       this.isSubmit = isSubmit;
     },
     emailVerification() {
-      this.$router.push({name: "PasswordChoiceEmailVerification"})
-    },
+      this.$router.push({ name: "PasswordChoiceEmailVerification" });
+    }
   },
   data: () => {
     return {
       email: "",
       error: {
-        email: false,
+        email: false
       },
       isSubmit: false,
       component: this
     };
   }
-}
+};
 </script>
 
 <style>
-
 </style>

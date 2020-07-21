@@ -1,14 +1,19 @@
 <template>
   <v-container class="fill-height" fluid>
     <v-row class="text-center" align="center" justify="center" no-gutters>
-      <v-col
-        cols="12"
-        sm="8"
-        md="6"
-        lg="4"
-      > 
-        <h1 class="text-left blue--text">Retrieve Your Password</h1>
-        <v-spacer><br><br><br><br><br><br><br><br><br></v-spacer>
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <h1 class="text-left">Retrieve Your Password</h1>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
         <v-text-field
           v-model="confirm"
           :error-messages="error.confirm"
@@ -16,18 +21,35 @@
           outlined
           solo
           required
+          color="#ff6666"
         ></v-text-field>
-        <v-spacer><br><br><br><br><br><br><br><br></v-spacer>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
 
         <v-btn
-          color="blue"
+          color="#ff6666"
           class="white--text"
           :disabled="!isSubmit"
           @click="verify()"
           width="100%"
           x-large
-        ><i class="fa fa-arrow-right" aria-hidden="true"></i></v-btn>
-        <v-spacer><br><br><br><br></v-spacer>
+        >
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </v-btn>
+        <v-spacer>
+          <br />
+          <br />
+          <br />
+          <br />
+        </v-spacer>
       </v-col>
     </v-row>
   </v-container>
@@ -48,7 +70,7 @@ export default {
     checkForm() {
       if (this.confirm.length != 6)
         this.error.confirm = "확인 코드는 6자리 입니다.";
-      else this.error.confirm = "";  
+      else this.error.confirm = "";
 
       let isSubmit = true;
 
@@ -60,22 +82,21 @@ export default {
     verify() {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
-      this.$router.push({ name: 'PasswordChange'})
-    },
+      this.$router.push({ name: "PasswordChange" });
+    }
   },
   data: () => {
     return {
       confirm: "",
       error: {
-        confirm: "",
+        confirm: ""
       },
       isSubmit: false,
-      component: this,
+      component: this
     };
   }
-}
+};
 </script>
 
 <style>
-
 </style>
