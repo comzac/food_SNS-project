@@ -123,12 +123,8 @@ export default new Vuex.Store({
       .catch(err=>console.log(err.response))
     },
 
-    pwreset({ state }, password) {
-      const userData = {
-        "uid": state.userInfo.uid,
-        "upw": password
-      }
-      axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwcheck, userData)
+    pwreset(context , userEmailData) {
+      axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwcheck, userEmailData)
         .then(res => {
           console.log(res)
           if(res.data === "success"){

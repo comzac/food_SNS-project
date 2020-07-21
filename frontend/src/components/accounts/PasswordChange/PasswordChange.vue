@@ -49,7 +49,7 @@
           :disabled="!isSubmit || password!=passwordConfirm"
           width="100%"
           x-large
-          @click='pwreset(password)'
+          @click='changePassword'
         >비밀번호 변경</v-btn>
         <v-spacer>
           <br />
@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import PV from "password-validator";
 
 export default {
@@ -88,7 +87,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['pwreset']),
     checkForm() {
       if (
         this.password.length > 7 &&
@@ -113,6 +111,9 @@ export default {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
+    },
+    changePassword() {
+      this.$emit('changePassword', this.password)
     }
   },
   data: () => {

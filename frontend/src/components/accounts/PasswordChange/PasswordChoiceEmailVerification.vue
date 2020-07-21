@@ -86,7 +86,7 @@ export default {
       // console.log(num)
       // console.log(this.code.data)
       if(num === this.confirmCode.data) {
-        this.$router.push({ name: "PasswordChange" })
+        this.$emit('toPasswordChange')
       }else {
         alert('인증번호를 확인해주세요.')
       }
