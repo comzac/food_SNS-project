@@ -21,7 +21,8 @@
    * **S03P12A108-46 | Modify show following list**
 2. Git Flow 바탕 branch naming
    * https://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html
-   * 기본적으로 develop branch 내에서 개발하고, 해당 branch로 merge request를 보낸다.
+   * develop branch를 만들고, 이를 front와 back branch로 나눈다.
+   * 기본적으로 front, back branch에서 각각 기능별로 개발하고, 이 branch들로 merge request를 보낸다.
    * **feature/알아서**
    * 안쓰는 기능이면 팀장한테 얘기
 
