@@ -36,7 +36,7 @@ public class UserController {
 		System.out.println("log - login");
 		UserDto userDto = userService.login(userData.get("uid"), userData.get("upw"));
 		
-		if(userDto == null)
+		if(userDto == null) 
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.NOT_FOUND);
 		else
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.FOUND);
@@ -86,6 +86,19 @@ public class UserController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
+	
+	@ApiOperation(value = "이메일 중복 체크. 이미 있는 이메일인 경우 fail을 반환한다.", response = String.class)
+	@PostMapping(value = "/edcheck")
+	public ResponseEntity<String> edcheck(@RequestBody HashMap<String, String> userEmailData) {
+		System.out.println("log - edcheck");
+		String uemail = userEmailData.get("userEmail");
+		String edcheck = userService.edcheck(uemail);
+		System.out.println(edcheck);
+		if (edcheck==null) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 
 	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = UserDto.class)
 	@PostMapping(value = "/create")
@@ -102,23 +115,23 @@ public class UserController {
 	// 3-1. 찾기
 	// 3-2. 재설정하러가기 ( 재설정하기 위해 현재 비밀번호 확인 )
 	@ApiOperation(value = "재설정하기 위해 현재 비밀번호 확인. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
-	@PostMapping(value = "/pwreset")
-	public ResponseEntity<String> pwreset(@RequestBody HashMap<String, String> userData) {
-		System.out.println("log - pwreset");
-		UserDto dto = userService.pwreset(userData.get("uid"), userData.get("upw"));
-
+	@PostMapping(value = "/pwcheck")
+	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData) {
+		System.out.println("log - pwcheck");
+		UserDto dto = userService.pwcheck(userData.get("uid"), userData.get("upw"));
 		if (dto == null) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}else {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
+		
 	}
 
-	@ApiOperation(value = "비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
-	@PostMapping(value = "/pwcheck")
-	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData) {
-		System.out.println("log - pwcheck");
-		int ret = userService.pwcheck(userData.get("uid"), userData.get("upw"));
+	@ApiOperation(value = "유저 이메일을 가지고 비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
+	@PostMapping(value = "/pwreset")
+	public ResponseEntity<String> pwreset(@RequestBody HashMap<String, String> userData) {
+		System.out.println("log - pwreset");
+		int ret = userService.pwreset(userData.get("uemail"), userData.get("upw"));
 		
 		if (ret == 0) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

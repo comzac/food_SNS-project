@@ -14,17 +14,22 @@
 		select unick from user where unick = #{unick}
 	</select>	
 	 
-	 <insert id="create" parameterType="UserDto">
+	<insert id="create" parameterType="UserDto">
 		insert into user (uid, upw, unick, uemail, uregdate, ubirth, usex)
 		values (#{uid}, #{upw}, #{unick}, #{uemail}, now(), #{ubirth}, #{usex})
     </insert>
 
-     <select id="pwreset" resultType="UserDto">
+    <select id="pwcheck" resultType="UserDto">
 		select * from user where uid = #{uid} and upw = #{upw}
 	</select>
     
-    <update id="pwcheck" >
-		update user set upw	= #{upw} where uid = #{uid}	
+    
+    <update id="pwreset" >
+		update user set upw	= #{upw} where uemail = #{uemail}	
 	</update>
+	
+	<select id="edcheck" resultType="String">
+		select uemail from user where uemail = #{uemail}
+	</select>
     
 </mapper>
