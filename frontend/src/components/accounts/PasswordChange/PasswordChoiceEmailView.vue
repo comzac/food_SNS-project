@@ -1,5 +1,5 @@
 <template>
-  <v-container class="fill-height" fluid>
+  <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center" no-gutters>
       <v-col cols="12" sm="8" md="6" lg="4">
         <h1 class="text-left">Retrieve Your Password</h1>
@@ -15,9 +15,9 @@
           <br />
         </v-spacer>
         <v-text-field
-          v-model="confirm"
-          :error-messages="error.confirm"
-          label="Verification Code"
+          v-model="email"
+          :error-messages="error.email"
+          label="E-mail."
           outlined
           solo
           required
@@ -38,9 +38,9 @@
           color="#ff6666"
           class="white--text"
           :disabled="!isSubmit"
-          @click="verify()"
           width="100%"
           x-large
+          @click="emailVerification(email)"
         >
           <i class="fa fa-arrow-right" aria-hidden="true"></i>
         </v-btn>
@@ -56,21 +56,24 @@
 </template>
 
 <script>
+import * as EmailValidator from "email-validator";
+import axios from 'axios'
+
 export default {
-  name: "PasswordChoiceEmailVerification",
+  name: "PasswordChoiceEmailView",
   created() {
     this.component = this;
   },
   watch: {
-    confirm: function() {
+    email: function() {
       this.checkForm();
     }
   },
   methods: {
     checkForm() {
-      if (this.confirm.length != 6)
-        this.error.confirm = "확인 코드는 6자리 입니다.";
-      else this.error.confirm = "";
+      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
+        this.error.email = "이메일 형식이 아닙니다.";
+      else this.error.email = "";
 
       let isSubmit = true;
 
@@ -79,17 +82,27 @@ export default {
       });
       this.isSubmit = isSubmit;
     },
-    verify() {
-      // axios 보내고
-      // 인증 완료 되서 넘어 오면
-      this.$router.push({ name: "PasswordChange" });
+    emailVerification(email) {
+      axios.post('http://localhost:8080/echeck', {"userEmail": email})
+        .then(res => {
+          console.log(res)
+          return res
+        })
+        .then(confirmCode => {
+          if(confirmCode === "fail") {
+            alert('이메일을 확인해주세요.')
+          }else{
+            this.$emit('toEmailVerification', confirmCode)
+          }
+        })
+        .catch(err => console.log(err.response))
     }
   },
   data: () => {
     return {
-      confirm: "",
+      email: "",
       error: {
-        confirm: ""
+        email: false
       },
       isSubmit: false,
       component: this

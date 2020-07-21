@@ -110,7 +110,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["idCheck", "nickCheck", "signupCheck"]),
+    ...mapActions(["idCheck", "nickCheck"]),
     toEmailVerification() {
       for (const [key, value] of Object.entries(this.signupData)) {
         if (key === "uemail") continue;

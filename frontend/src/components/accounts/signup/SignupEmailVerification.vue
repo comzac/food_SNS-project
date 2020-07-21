@@ -87,9 +87,7 @@ export default {
       // 인증 완료 되서 넘어 오면
       const num = Number(this.confirm)
       // console.log(num)
-      // console.log(this.code.data)
-      if(num === this.code.data) {
-        this.$emit('finishCheck')
+      if(num === this.confirmCode.data) {
         this.$router.push({ name: "Home" })
       }else {
         alert('인증번호를 확인해주세요.')
@@ -107,7 +105,7 @@ export default {
     };
   },
   props: {
-    code: String,
+    confirmCode: String,
   }
 };
 </script>
