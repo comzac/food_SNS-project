@@ -124,7 +124,22 @@ export default new Vuex.Store({
       })
       .catch(err=>console.log(err.response))
     },
-
+    getConfirmCode(context, email) {
+      return axios.post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {"userEmail":email})
+        .then(res => {
+          console.log(res)
+          return res
+        })
+        .then(confirmCode => {
+          if(confirmCode === "fail") {
+            alert('이메일을 확인해주세요.')
+            return ""
+          }else{
+            return confirmCode
+          }
+        })
+        .catch(err => console.log(err.response))
+    },
     pwreset(context , userEmailData) {
       axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwcheck, userEmailData)
         .then(res => {
