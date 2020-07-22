@@ -41,8 +41,8 @@ export default {
   },
   actions: {
     postAuthData({ commit }, info) {
-      console.log(info.data);
-      console.log(SERVER.URL + info.route);
+      // console.log(info.data);
+      // console.log(SERVER.URL + info.route);
       axios
         .post(SERVER.URL + info.route, info.data, {
           headers: {
@@ -50,8 +50,8 @@ export default {
           },
         })
         .then((res) => {
-          console.log("response");
-          console.log(res);
+          // console.log("response");
+          // console.log(res);
           commit("SET_USERDATA", res.data);
           commit("SET_COOKIE", res.data.uid);
           router.push("/");
@@ -84,7 +84,7 @@ export default {
       return axios
         .get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data === "success") {
             alert("사용 가능한 아이디입니다.");
             commit("SET_IDCHECK", true);
@@ -108,7 +108,7 @@ export default {
       return axios
         .get(SERVER.URL + SERVER.ROUTES.accounts.nickCheck + unick)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data === "success") {
             alert("사용 가능한 별명입니다.");
             commit("SET_NICKCHECK", true);
@@ -145,7 +145,7 @@ export default {
       axios
         .post(SERVER.URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.data === "success") {
             router.push({ name: "Home" });
           } else {
