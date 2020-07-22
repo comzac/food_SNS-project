@@ -39,7 +39,7 @@
           <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
           <v-divider class="mr-5" vertical></v-divider>
           <v-btn
-            :disabled="!isSubmit"
+            :disabled="!emailChecked"
             @click="emailVerification(email)"
             color="#ff6666"
             class="white--text"
