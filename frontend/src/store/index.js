@@ -49,14 +49,14 @@ export default new Vuex.Store({
       console.log(SERVER.URL + info.route)
       axios.post(SERVER.URL + info.route, info.data, {
         headers: {
-          "Content-type": "application/json"
+          "content-type": "application/json"
         }
       })
         .then(res => {
           console.log("response")
           console.log(res)
           commit('SET_USERDATA', res.data)
-          commit('SET_COOKIE', res.uid)
+          commit('SET_COOKIE', res.data.uid)
           router.push('/')
         })
         .catch(err => console.log(err.response))
@@ -141,7 +141,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err.response))
     },
     pwreset(context , userEmailData) {
-      axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwcheck, userEmailData)
+      axios.post(SERVER.URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
         .then(res => {
           console.log(res)
           if(res.data === "success"){
