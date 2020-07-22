@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.config.security.JwtTokenProvider;
 import com.ssafy.sub.dto.User;
-import com.ssafy.sub.dto.UserRepository;
 import com.ssafy.sub.exception.CUserNotFoundException;
 import com.ssafy.sub.model.response.CommonResult;
 import com.ssafy.sub.model.response.ListResult;
 import com.ssafy.sub.model.response.SingleResult;
+import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.ResponseService;
 
 import io.swagger.annotations.ApiImplicitParam;
