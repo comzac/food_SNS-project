@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.UserDto;
-import com.ssafy.sub.service.UserService;
+import com.ssafy.sub.service.UserServiceOld;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -27,7 +27,7 @@ public class UserController {
 	private static final String FAIL = "fail";
 	
 	@Autowired
-	private UserService userService;
+	private UserServiceOld userService;
 
 	// 1. 로그인
 	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = UserDto.class)
