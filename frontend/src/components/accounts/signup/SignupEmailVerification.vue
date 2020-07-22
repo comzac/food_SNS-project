@@ -31,15 +31,11 @@
           <br />
           <br />
         </v-spacer>
-
-        <v-btn
-          color="#ff6666"
-          class="white--text"
-          :disabled="!isSubmit"
-          @click="verify()"
-          width="100%"
-          x-large
-        >회원가입 완료</v-btn>
+        <div>
+          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <v-btn color="#ff6666" class="white--text" :disabled="!isSubmit" @click="verify()">회원가입 완료</v-btn>
+        </div>
         <v-spacer>
           <br />
           <br />

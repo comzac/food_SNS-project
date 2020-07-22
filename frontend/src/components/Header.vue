@@ -14,23 +14,16 @@
         />
       </router-link>
       <v-spacer></v-spacer>
-
-      <v-menu left bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item @click="() => {}">
-            <v-list-item-title class="red--text text-lighten-2">Profile</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="$router.push({name:'Login'})">
-            <v-list-item-title class="red--text text-lighten-2">Login</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <router-link class="text-decoration-none" :to="{name: 'Login'}">
+        <v-btn icon>
+          <v-icon>mdi-login</v-icon>
+        </v-btn>
+      </router-link>
+      <router-link class="text-decoration-none" :to="{name: 'Login'}">
+        <v-btn icon>
+          <v-icon>mdi-lead-pencil</v-icon>
+        </v-btn>
+      </router-link>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary color="#ff6666" class="whtie--text">
@@ -44,12 +37,13 @@
                 <v-icon>mdi-account</v-icon>
               </v-btn>
               <v-spacer></v-spacer>
-              <span>NickName</span>
+              <span>닉네임 우파루파</span>
               <v-spacer></v-spacer>
             </v-list-item>
             <v-list-item disabled></v-list-item>
           </router-link>
         </v-list-item-group>
+        <v-spacer></v-spacer>
         <v-list-item-group active-class="white--text" mandatory>
           <router-link :to="{ name: 'Home' }" class="text-decoration-none">
             <v-list-item>
@@ -100,6 +94,27 @@
             </v-list-item>
           </router-link>
         </v-list-item-group>
+      </v-list>
+      <v-spacer>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+      </v-spacer>
+      <v-list align="center">
+        <router-link :to="{name:'Login'}" class="text-decoration-none">
+          <v-btn class="red--text text--lighten-2" rounded>
+            <strong>로그아웃</strong>
+          </v-btn>
+        </router-link>
       </v-list>
     </v-navigation-drawer>
   </div>
