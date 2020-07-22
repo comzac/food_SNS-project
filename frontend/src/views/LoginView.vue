@@ -18,8 +18,8 @@
           required
           autofocus
           color="#ff6666"
-          autocapitalize='off'
-          autocorrect='off'
+          autocapitalize="off"
+          autocorrect="off"
         ></v-text-field>
         <v-text-field
           v-model="loginData.upw"
@@ -88,7 +88,7 @@ export default {
   name: "LoginView",
   components: {},
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions("accounts", ["login"]),
     moveToSignup() {
       this.$router.push({ name: "Signup" });
     }

@@ -13,8 +13,8 @@
           @click:append-outer="idCheck2(signupData.uid)"
           :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
           @input="idcheck = false"
-          autocapitalize='off'
-          autocorrect='off'
+          autocapitalize="off"
+          autocorrect="off"
         ></v-text-field>
 
         <v-text-field
@@ -107,11 +107,11 @@ export default {
       show1: false,
       show2: false,
       idcheck: false,
-      nickcheck: false,
+      nickcheck: false
     };
   },
   methods: {
-    ...mapActions(["idCheck", "nickCheck"]),
+    ...mapActions("accounts", ["idCheck", "nickCheck"]),
     toEmailVerification() {
       for (const [key, value] of Object.entries(this.signupData)) {
         if (key === "uemail") continue;
@@ -143,17 +143,19 @@ export default {
       if (upw.length < 8) return false;
       return true;
     },
-    pwdCheck2(upw,upw2) {
+    pwdCheck2(upw, upw2) {
       if (upw !== upw2) return false;
       return true;
     },
     idCheck2(uid) {
-      this.idCheck(uid)
-        .then(res => res?this.idcheck=true:this.idcheck=false)
+      this.idCheck(uid).then(res =>
+        res ? (this.idcheck = true) : (this.idcheck = false)
+      );
     },
     nickCheck2(unick) {
-      this.nickCheck(unick)
-        .then(res => res?this.nickcheck=true:this.nickcheck=false)
+      this.nickCheck(unick).then(res =>
+        res ? (this.nickcheck = true) : (this.nickcheck = false)
+      );
     }
   }
 };

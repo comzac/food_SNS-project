@@ -82,13 +82,13 @@ export default {
     verify() {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
-      const num = Number(this.confirm)
-      if(num === this.confirmCode.data) {
-        this.$emit('finishSignup')
-      }else {
-        alert('인증번호를 확인해주세요.')
+      const num = Number(this.confirm);
+      if (num === this.confirmCode.data) {
+        this.$emit("finishSignup");
+      } else {
+        alert("인증번호를 확인해주세요.");
       }
-    },
+    }
   },
   data: () => {
     return {
@@ -101,7 +101,7 @@ export default {
     };
   },
   props: {
-    confirmCode: String,
+    confirmCode: Object
   }
 };
 </script>

@@ -57,8 +57,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import * as EmailValidator from "email-validator"
+import { mapActions } from "vuex";
+import * as EmailValidator from "email-validator";
 
 export default {
   name: "Signupemail",
@@ -71,7 +71,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getConfirmCode']),
+    ...mapActions("accounts", ["getConfirmCode"]),
     checkForm() {
       if (this.email.length >= 0 && !EmailValidator.validate(this.email))
         this.error.email = "이메일 형식이 아닙니다.";
@@ -86,13 +86,15 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
-      this.getConfirmCode(email)
-      .then(code => {
-        if(code !== "") {
-          this.$emit('toEmailVerification', { "confirmCode": code, "userEmail": email })
+      this.getConfirmCode(email).then(code => {
+        if (code !== "") {
+          this.$emit("toEmailVerification", {
+            confirmCode: code,
+            userEmail: email
+          });
         }
-      })
-    },
+      });
+    }
   },
   data: () => {
     return {
