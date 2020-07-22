@@ -12,7 +12,7 @@ import com.ssafy.sub.dto.UserDto;
 import com.ssafy.sub.repo.UserMapper;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserServiceOld{
 
 	@Autowired
 	private UserMapper userMapper;
