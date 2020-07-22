@@ -57,32 +57,48 @@
         <v-text-field
           label="생년월일"
           name="dob"
-          prepend-icon="mdi-account"
+          prepend-icon="mdi-cake-variant"
           type="date"
           v-model="signupData.ubirth"
           color="#ff6666"
           :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
         ></v-text-field>
 
-        <v-int-field
-          label="성별"
-          name="gender"
-          prepend-icon="mdi-account"
-          v-model="signupData.usex"
-          color="#ff6666"
-          readonly
-        ></v-int-field>
         <v-radio-group v-model="signupData.usex" row>
-          <v-radio color="#ff6666" label="male" value="1"></v-radio>
-          <v-radio color="#ff6666" label="female" value="2"></v-radio>
+          <v-btn icon color="#ff6666">
+            <v-icon>mdi-gender-male-female</v-icon>
+          </v-btn>
+          <!-- <v-text-field
+            prepend-icon="mdi-gender-male-female"
+            flat
+            dense
+            readonly
+            color="#ff6666"
+            :error-messages="signupData.usex?'':'성별을 선택해주세요'"
+            :value="signupData.usex==1?'남성':signupData.usex==2?'여성':''"
+          ></v-text-field>-->
+          <v-spacer></v-spacer>
+          <v-radio color="#ff6666" label="남성" value="1"></v-radio>
+          <v-btn icon :color="signupData.usex==1?'#ff6666':''">
+            <v-icon>mdi-gender-male</v-icon>
+          </v-btn>
+          <v-radio color="#ff6666" label="여성" value="2"></v-radio>
+          <v-btn icon :color="signupData.usex==2?'#ff6666':''">
+            <v-icon>mdi-gender-female</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
         </v-radio-group>
         <!-- 영문, 숫자 혼용 확인 필요 -->
-        <v-btn
-          :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
-          @click="toEmailVerification()"
-          color="#ff6666"
-          class="white--text"
-        >다음으로</v-btn>
+        <div>
+          <v-btn disabled>뒤로가기</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <v-btn
+            :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
+            @click="toEmailVerification()"
+            color="#ff6666"
+            class="white--text"
+          >다음으로</v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -144,6 +160,7 @@ export default {
       return true;
     },
     pwdCheck2(upw, upw2) {
+      if (!this.pwdCheck(upw2)) return false;
       if (upw !== upw2) return false;
       return true;
     },

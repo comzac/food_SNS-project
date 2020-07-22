@@ -32,15 +32,16 @@
           <br />
           <br />
         </v-spacer>
-
-        <v-btn
-          color="#ff6666"
-          class="white--text"
-          :disabled="!isSubmit"
-          width="100%"
-          x-large
-          @click="emailVerification(email)"
-        >-></v-btn>
+        <div>
+          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <v-btn
+            :disabled="!isSubmit"
+            @click="emailVerification(email)"
+            color="#ff6666"
+            class="white--text"
+          >다음으로</v-btn>
+        </div>
         <v-spacer>
           <br />
           <br />
@@ -86,6 +87,7 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
+      alert("잠시 기다려주세요.");
       this.getConfirmCode(email).then(code => {
         if (code !== "") {
           this.$emit("toEmailVerification", {

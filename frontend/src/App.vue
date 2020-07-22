@@ -2,7 +2,9 @@
   <v-app>
     <Header />
     <v-content>
-      <router-view />
+      <transition name="view">
+        <router-view />
+      </transition>
     </v-content>
   </v-app>
 </template>
@@ -19,8 +21,19 @@ export default {
   })
 };
 </script>
-<style>
+<style scoped>
 h1 {
   color: #ff6666;
+}
+.view-enter-active,
+.view-leave-active {
+  transition: opacity 0s;
+}
+.view-leave-active {
+  position: absolute;
+}
+.view-enter,
+.view-leave-to {
+  opacity: 0;
 }
 </style>
