@@ -122,9 +122,27 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
-    getConfirmCode(context, email) {
+
+    emailCheck(context, email) {
       return axios
         .post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {
+          userEmail: email,
+        })
+        .then((res) => {
+          if (res.data === "success") {
+            alert("사용 가능한 이메일입니다.");
+            return true;
+          } else {
+            alert("이미 사용 중인 이메일입니다.");
+            return false;
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+
+    getConfirmCode(context, email) {
+      return axios
+        .post(SERVER.URL + SERVER.ROUTES.accounts.getConfirmCode, {
           userEmail: email,
         })
         .then((res) => {
