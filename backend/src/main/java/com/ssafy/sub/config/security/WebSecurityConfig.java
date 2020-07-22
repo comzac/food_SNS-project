@@ -11,6 +11,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ssafy.sub.filter.JwtAuthenticationFilter;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.UserDto;
-import com.ssafy.sub.mapper.UserMapper;
+import com.ssafy.sub.repo.UserMapper;
 
 @Service
 public class UserServiceImpl implements UserService{

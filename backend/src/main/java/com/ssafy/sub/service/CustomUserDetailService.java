@@ -1,11 +1,11 @@
-package com.ssafy.sub.config.security;
+package com.ssafy.sub.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.sub.dto.UserRepository;
+import com.ssafy.sub.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
