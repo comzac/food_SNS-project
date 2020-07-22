@@ -17,10 +17,13 @@
           v-model="email"
           :error-messages="error.email"
           label="E-mail."
+          @input="emailChecked=false"
           outlined
           solo
           required
           autofocus
+          append-outer-icon="mdi-check"
+          @click:append-outer="emailCheck2(email)"
           color="#ff6666"
         ></v-text-field>
         <v-spacer>
@@ -72,11 +75,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions("accounts", ["getConfirmCode"]),
+    ...mapActions("accounts", ["getConfirmCode", "emailCheck"]),
     checkForm() {
-      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
+      if (this.email.length >= 0 && !EmailValidator.validate(this.email)) {
         this.error.email = "이메일 형식이 아닙니다.";
-      else this.error.email = "";
+      } else if (!this.emailChecked) {
+        this.error.email = "오른쪽 체크를 눌러서 이메일 중복 확인해주세요.";
+      }
 
       let isSubmit = true;
 
@@ -96,6 +101,19 @@ export default {
           });
         }
       });
+    },
+    emailCheck2(email) {
+      this.emailCheck(email).then(res => {
+        // console.log(res);
+        // console.log(this.emailChecked);
+        res ? (this.emailChecked = true) : (this.emailChecked = false);
+        if (this.emailChecked) {
+          this.error.email = "";
+        } else {
+          this.error.email = "오른쪽 체크를 눌러서 이메일 중복 확인해주세요.";
+        }
+        // console.log(this.emailChecked);
+      });
     }
   },
   data: () => {
@@ -105,7 +123,8 @@ export default {
         email: false
       },
       isSubmit: false,
-      component: this
+      component: this,
+      emailChecked: false
     };
   }
 };

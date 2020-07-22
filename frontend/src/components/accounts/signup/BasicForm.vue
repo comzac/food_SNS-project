@@ -133,7 +133,7 @@ export default {
         if (key === "uemail") continue;
         if (value === "") {
           const key2 = this.signupData2[key];
-          console.log(key2);
+          // console.log(key2);
           alert(`${key2} 확인해주세요`);
           return;
         }
