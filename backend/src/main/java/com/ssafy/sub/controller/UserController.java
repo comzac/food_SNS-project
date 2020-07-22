@@ -39,7 +39,7 @@ public class UserController {
 		if(userDto == null) 
 			return new ResponseEntity<UserDto>(userDto, HttpStatus.NOT_FOUND);
 		else
-			return new ResponseEntity<UserDto>(userDto, HttpStatus.Ok);
+			return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
 	}
 
 	// 2. 회원가입
