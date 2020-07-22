@@ -103,7 +103,7 @@ public class UserSecurityController {
 
 	// 이메일 인증
 	@ApiOperation(value = "인증 코드를 사용자의 이메일로 보내기. 메일이 전송되면 인증 코드를 반환한다.", response = String.class)
-	@PostMapping(value = "users/e-valid")
+	@PostMapping(value = "/users/e-valid")
 	public ResponseEntity<String> createEmailCheck(@RequestBody HashMap<String, String> userEmailData) {
 		final String SEND_EMAIL_ID = "ksb940925@gamil.com"; // 관리자 email
 		System.out.println(userEmailData.get("userEmail"));
