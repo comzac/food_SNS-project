@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.FeedDto;
-import com.ssafy.sub.mapper.FeedMapper;
+import com.ssafy.sub.repo.FeedMapper;
 @Service
 public class FeedServiceImpl implements FeedService {
 

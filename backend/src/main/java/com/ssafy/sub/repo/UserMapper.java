@@ -1,4 +1,4 @@
-package com.ssafy.sub.mapper;
+package com.ssafy.sub.repo;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

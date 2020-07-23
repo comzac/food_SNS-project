@@ -12,17 +12,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.FeedDto;
+import com.ssafy.sub.model.response.ResponseMessage;
+import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.service.FeedService;
 
 import io.swagger.annotations.ApiOperation;
 
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/feeds")
 public class FeedController {
 
+	private ResponseMessage responseMessage;
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
@@ -31,13 +36,19 @@ public class FeedController {
 
 	// 1. list 조회
 	@ApiOperation(value = "feedList를 조회한다", response = FeedDto.class)
-	@GetMapping(value = "/feed")
-	public ResponseEntity<List<FeedDto>> feedList() {
+	@GetMapping
+	public ResponseEntity<Result> feedList() {
 		System.out.println("log - feedList");
-
-		List<FeedDto> feedDtoList = feedService.feedList();
 		
-		return new ResponseEntity<List<FeedDto>>(feedDtoList, HttpStatus.OK);
+		Result result;
+		List<FeedDto> feedDtoList = feedService.feedList();
+		if(feedDtoList==null) {
+			result = new Result(HttpStatus.NO_CONTENT, responseMessage.NOT_FOUND_FEED, null);
+			return new ResponseEntity<Result>(result, HttpStatus.NO_CONTENT);
+		}
+		
+		result = new Result(HttpStatus.OK, responseMessage.READ_ALL_FEEDS, feedDtoList);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
@@ -53,7 +64,7 @@ public class FeedController {
 	
 	// 3. list 추가
 	@ApiOperation(value = "feedList에 정보를 추가한다", response = String.class)
-	@PostMapping(value = "/feed")
+	@PostMapping(value = "/")
 	public ResponseEntity<String> feedInsert() {
 		System.out.println("log - feedInsert");
 
@@ -67,7 +78,7 @@ public class FeedController {
 	
 	// 4. list 상세
 	@ApiOperation(value = "특정 feed를 조회한다", response = FeedDto.class)
-	@GetMapping(value = "/feed/{id}")
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<FeedDto> feedDetail(@PathVariable int id) {
 		System.out.println("log - feedDetail");
 
@@ -78,7 +89,7 @@ public class FeedController {
 
 	// 5. list 수정
 	@ApiOperation(value = "feed의 정보를 수정한다", response = String.class)
-	@PutMapping(value = "/feed/{id}")
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<String> feedUpdate(@PathVariable int id, @RequestBody FeedDto dto) {
 		System.out.println("log - feedUpdate");
 
@@ -91,7 +102,7 @@ public class FeedController {
 	
 	// 6. list 삭제
 	@ApiOperation(value = "feed의 정보를 삭제한다", response = String.class)
-	@DeleteMapping(value = "/feed/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<String> feedDelete(@PathVariable int id) {
 		System.out.println("log - feedDelete");
 
