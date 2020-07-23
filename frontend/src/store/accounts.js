@@ -7,37 +7,36 @@ import router from "../router";
 export default {
   namespaced: true,
   state: {
-    authData: cookies.get("auth-id"),
-    userInfo: {},
-    isLogin: false,
-    signupId: null,
-    signupNick: null,
-    idChecked: false,
-    nickChecked: false,
+    authToken: cookies.get("auth-token"),
+    userData: {},
+    // signupId: null,
+    // signupNick: null,
+    // idChecked: false,
+    // nickChecked: false,
   },
   getters: {
-    isLogin: (state) => !!state.authData,
+    isLogin: (state) => !!state.authToken,
   },
   mutations: {
-    SET_COOKIE(state, id) {
-      state.authData = id;
-      cookies.set("auth-id", id);
+    SET_TOKEN(state, token) {
+      state.authToken = token;
+      cookies.set("auth-token", token);
     },
     SET_USERDATA(state, userData) {
       state.userData = userData;
     },
-    SET_IDCHECK(state, check) {
-      state.idChecked = check;
-    },
-    SET_SIGNUPID(state, id) {
-      state.signupId = id;
-    },
-    SET_NICKCHECK(state, check) {
-      state.nickChecked = check;
-    },
-    SET_SIGNUPNICK(state, nick) {
-      state.signupNick = nick;
-    },
+    // SET_IDCHECK(state, check) {
+    //   state.idChecked = check;
+    // },
+    // SET_SIGNUPID(state, id) {
+    //   state.signupId = id;
+    // },
+    // SET_NICKCHECK(state, check) {
+    //   state.nickChecked = check;
+    // },
+    // SET_SIGNUPNICK(state, nick) {
+    //   state.signupNick = nick;
+    // },
   },
   actions: {
     postAuthData({ commit }, info) {
@@ -51,11 +50,12 @@ export default {
           },
         })
         .then((res) => {
-          console.log("response");
+          // console.log("response");
           console.log(res);
+          // commit("SET_TOKEN", res.headers.X-AUTH-TOKEN);
+          commit("SET_TOKEN", res.data);
           commit("SET_USERDATA", res.data);
-          commit("SET_COOKIE", res.data.uid);
-          router.push("/");
+          router.push({ name: "Home" });
         })
         .catch((err) => console.log(err.response));
     },
@@ -76,6 +76,13 @@ export default {
       dispatch("postAuthData", info);
     },
 
+    logout({ commit }) {
+      commit("SET_TOKEN", null);
+      commit("SET_USERDATA", {});
+      cookies.remove("auth-token");
+      router.replace({ name: "Login" });
+    },
+
     idCheck({ commit }, uid) {
       if (uid === "") {
         alert("아이디를 입력하세요");
@@ -93,22 +100,22 @@ export default {
           // console.log(res.data);
           if (res.data === "success") {
             alert("사용 가능한 아이디입니다.");
-            commit("SET_IDCHECK", true);
-            commit("SET_SIGNUPID", uid);
+            // commit("SET_IDCHECK", true);
+            // commit("SET_SIGNUPID", uid);
             return true;
           } else {
             alert("이미 사용 중인 아이디입니다.");
-            commit("SET_IDCHECK", false);
+            // commit("SET_IDCHECK", false);
             return false;
           }
         })
         .catch((err) => console.log(err.response));
     },
 
-    nickCheck({ commit }, unick) {
+    nickCheck(context, unick) {
       if (unick === "") {
         alert("별명을 입력하세요");
-        commit("SET_IDCHECK", false);
+        // commit("SET_IDCHECK", false);
         return false;
       }
       return axios
@@ -122,12 +129,12 @@ export default {
           // console.log(res.data);
           if (res.data === "success") {
             alert("사용 가능한 별명입니다.");
-            commit("SET_NICKCHECK", true);
-            commit("SET_SIGNUPNICK", unick);
+            // commit("SET_NICKCHECK", true);
+            // commit("SET_SIGNUPNICK", unick);
             return true;
           } else {
             alert("이미 사용 중인 별명입니다.");
-            commit("SET_NICKCHECK", false);
+            // commit("SET_NICKCHECK", false);
             return false;
           }
         })
@@ -182,7 +189,7 @@ export default {
     },
     pwreset(context, userEmailData) {
       axios
-        .post(
+        .put(
           SERVER.BASE_URL +
             SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.pwreset,
