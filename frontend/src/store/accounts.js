@@ -44,7 +44,7 @@ export default {
       // console.log(info.data);
       // console.log(SERVER.URL + info.route);
       axios
-        .post(SERVER.URL + info.route, info.data, {
+        .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
             "content-type": "application/json",
           },
@@ -82,7 +82,7 @@ export default {
         return false;
       }
       return axios
-        .get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
+        .get(SERVER.BASE_URL + SERVER.ROUTES.accounts.idCheck + uid)
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
@@ -106,7 +106,7 @@ export default {
         return false;
       }
       return axios
-        .get(SERVER.URL + SERVER.ROUTES.accounts.nickCheck + unick)
+        .get(SERVER.BASE_URL + SERVER.ROUTES.accounts.nickCheck + unick)
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
@@ -125,7 +125,7 @@ export default {
 
     emailCheck(context, email) {
       return axios
-        .post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {
+        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.emailCheck, {
           userEmail: email,
         })
         .then((res) => {
@@ -142,7 +142,7 @@ export default {
 
     getConfirmCode(context, email) {
       return axios
-        .post(SERVER.URL + SERVER.ROUTES.accounts.getConfirmCode, {
+        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.getConfirmCode, {
           userEmail: email,
         })
         .then((res) => {
@@ -161,7 +161,7 @@ export default {
     },
     pwreset(context, userEmailData) {
       axios
-        .post(SERVER.URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
+        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
         .then((res) => {
           // console.log(res);
           if (res.data === "success") {
