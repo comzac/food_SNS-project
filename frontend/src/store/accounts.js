@@ -43,6 +43,7 @@ export default {
     postAuthData({ commit }, info) {
       // console.log(info.data);
       // console.log(SERVER.URL + info.route);
+      // console.log(SERVER.ROUTES.accounts.URL);
       axios
         .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
@@ -62,7 +63,7 @@ export default {
     login({ dispatch }, loginData) {
       const info = {
         data: loginData,
-        route: SERVER.ROUTES.accounts.login,
+        route: SERVER.ROUTES.accounts.URL + SERVER.ROUTES.accounts.login,
       };
       dispatch("postAuthData", info);
     },
@@ -70,7 +71,7 @@ export default {
     signup({ dispatch }, signupData) {
       const info = {
         data: signupData,
-        route: SERVER.ROUTES.accounts.signup,
+        route: SERVER.ROUTES.accounts.URL + SERVER.ROUTES.accounts.signup,
       };
       dispatch("postAuthData", info);
     },
@@ -82,7 +83,12 @@ export default {
         return false;
       }
       return axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.accounts.idCheck + uid)
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.idCheck +
+            uid
+        )
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
@@ -106,7 +112,12 @@ export default {
         return false;
       }
       return axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.accounts.nickCheck + unick)
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.nickCheck +
+            unick
+        )
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
@@ -125,9 +136,14 @@ export default {
 
     emailCheck(context, email) {
       return axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.emailCheck, {
-          userEmail: email,
-        })
+        .post(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.emailCheck,
+          {
+            userEmail: email,
+          }
+        )
         .then((res) => {
           if (res.data === "success") {
             alert("사용 가능한 이메일입니다.");
@@ -142,9 +158,14 @@ export default {
 
     getConfirmCode(context, email) {
       return axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.getConfirmCode, {
-          userEmail: email,
-        })
+        .post(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.getConfirmCode,
+          {
+            userEmail: email,
+          }
+        )
         .then((res) => {
           console.log(res);
           return res;
@@ -161,7 +182,12 @@ export default {
     },
     pwreset(context, userEmailData) {
       axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
+        .post(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.pwreset,
+          userEmailData
+        )
         .then((res) => {
           // console.log(res);
           if (res.data === "success") {
