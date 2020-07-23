@@ -70,9 +70,9 @@ export default {
     this.component = this;
   },
   watch: {
-    email: function() {
+    email: function () {
       this.checkForm();
-    }
+    },
   },
   methods: {
     ...mapActions("accounts", ["getConfirmCode", "emailCheck"]),
@@ -85,7 +85,7 @@ export default {
 
       let isSubmit = true;
 
-      Object.values(this.error).map(v => {
+      Object.values(this.error).map((v) => {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
@@ -93,20 +93,26 @@ export default {
     emailVerification(email) {
       // email 보내기 + 받아서
       alert("잠시 기다려주세요.");
-      this.getConfirmCode(email).then(code => {
+      this.getConfirmCode(email).then((code) => {
         if (code !== "") {
           this.$emit("toEmailVerification", {
             confirmCode: code,
-            userEmail: email
+            userEmail: email,
           });
         }
       });
     },
     emailCheck2(email) {
-      this.emailCheck(email).then(res => {
+      this.emailCheck(email).then((res) => {
         // console.log(res);
         // console.log(this.emailChecked);
-        res ? (this.emailChecked = true) : (this.emailChecked = false);
+        if (res === true) {
+          alert("사용 가능한 이메일입니다.");
+          this.emailChecked = true;
+        } else {
+          alert("이미 사용 중인 이메일입니다.");
+          this.emailChecked = false;
+        }
         if (this.emailChecked) {
           this.error.email = "";
         } else {
@@ -114,19 +120,19 @@ export default {
         }
         // console.log(this.emailChecked);
       });
-    }
+    },
   },
   data: () => {
     return {
       email: "",
       error: {
-        email: false
+        email: false,
       },
       isSubmit: false,
       component: this,
-      emailChecked: false
+      emailChecked: false,
     };
-  }
+  },
 };
 </script>
 
