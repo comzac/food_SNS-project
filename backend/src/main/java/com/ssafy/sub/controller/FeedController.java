@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedDto;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
+import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.service.FeedService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,15 +35,17 @@ public class FeedController {
 	
 	@Autowired
 	private FeedService feedService;
-
+	@Autowired
+	private FeedRepository feedRepository;
+	
 	// 1. list 조회
 	@ApiOperation(value = "feedList를 조회한다", response = FeedDto.class)
 	@GetMapping
 	public ResponseEntity<Result> feedList() {
 		System.out.println("log - feedList");
-		
 		Result result;
-		List<FeedDto> feedDtoList = feedService.feedList();
+		
+		List<Feed> feedDtoList = feedRepository.findAll();
 		if(feedDtoList==null) {
 			result = new Result(HttpStatus.NO_CONTENT, responseMessage.NOT_FOUND_FEED, null);
 			return new ResponseEntity<Result>(result, HttpStatus.NO_CONTENT);

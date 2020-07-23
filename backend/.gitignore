@@ -59,4 +59,4 @@ out/
 log/
 
 ### yml ###
-!**/src/main/resources/application.yml
+*.yml

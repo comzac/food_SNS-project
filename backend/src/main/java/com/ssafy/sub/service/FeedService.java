@@ -2,8 +2,11 @@ package com.ssafy.sub.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.sub.dto.FeedDto;
 
+@Service("FeedService")
 public interface FeedService {
 	
 	public List<FeedDto> feedList();
