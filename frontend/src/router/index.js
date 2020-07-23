@@ -5,12 +5,13 @@ import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
 import PasswordChoice from "../views/user/PasswordChoice.vue";
 import PasswordChoiceEmail from "../views/user/PasswordChoiceEmail.vue";
-import ErrorComponent from "../components/ErrorComponent.vue";
+import UserDetailView from "@/views/user/UserDetailView";
 
 import Home from "../views/Home.vue";
 // import FeedItem2 from "../views/FeedItem2.vue";
 
 import NotFoundComponent from "../components/NotFoundComponent.vue";
+import ErrorComponent from "../components/ErrorComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,11 @@ const routes = [
     path: "/user/password_choice_email",
     name: "PasswordChoiceEmail",
     component: PasswordChoiceEmail,
+  },
+  {
+    path: "/userdetail", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
+    name: "UserDetail",
+    component: UserDetailView,
   },
   // {
   //   path: "/feed/:fid",
