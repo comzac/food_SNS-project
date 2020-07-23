@@ -104,23 +104,25 @@
         </v-list-item-group>
       </v-list>
       <v-list color="#ff6666" flat align="center">
-        <router-link :to="{name:'Login'}" class="text-decoration-none">
-          <v-btn class="red--text text--lighten-2" rounded>
-            <strong>로그아웃</strong>
-          </v-btn>
-        </router-link>
+        <v-btn class="red--text text--lighten-2" rounded @click="logout">
+          <strong>로그아웃</strong>
+        </v-btn>
       </v-list>
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Header",
   components: {},
   data: () => ({
-    drawer: false
+    drawer: false,
   }),
-  methods: {}
+  methods: {
+    ...mapActions("accounts", ["logout"]),
+  },
 };
 </script>
