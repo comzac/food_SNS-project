@@ -21,6 +21,9 @@
           outlined
           solo
           required
+          autofocus
+          append-outer-icon="mdi-check"
+          @click:append-outer="emailCheck2(email)"
           color="#ff6666"
         ></v-text-field>
         <v-spacer>
@@ -33,17 +36,16 @@
           <br />
           <br />
         </v-spacer>
-
-        <v-btn
-          color="#ff6666"
-          class="white--text"
-          :disabled="!isSubmit"
-          width="100%"
-          x-large
-          @click="emailVerification(email)"
-        >
-          <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        </v-btn>
+        <div>
+          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <v-btn
+            :disabled="!emailChecked"
+            @click="emailVerification(email)"
+            color="#ff6666"
+            class="white--text"
+          >다음으로</v-btn>
+        </div>
         <v-spacer>
           <br />
           <br />
@@ -65,46 +67,66 @@ export default {
     this.component = this;
   },
   watch: {
-    email: function() {
+    email: function () {
       this.checkForm();
-    }
+    },
   },
   methods: {
-    ...mapActions("accounts", ["getConfirmCode"]),
+    ...mapActions("accounts", ["getConfirmCode", "emailCheck"]),
     checkForm() {
-      if (this.email.length >= 0 && !EmailValidator.validate(this.email))
+      if (this.email.length >= 0 && !EmailValidator.validate(this.email)) {
         this.error.email = "이메일 형식이 아닙니다.";
-      else this.error.email = "";
+      } else if (!this.emailChecked) {
+        this.error.email = "오른쪽 체크를 눌러서 가입 여부를 확인해주세요";
+      }
 
       let isSubmit = true;
 
-      Object.values(this.error).map(v => {
+      Object.values(this.error).map((v) => {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
     },
     emailVerification(email) {
       // console.log(SERVER.URL)
-      this.getConfirmCode(email).then(code => {
+      alert("잠시 기다려주세요.");
+      this.getConfirmCode(email).then((code) => {
         if (code !== "") {
           this.$emit("toEmailVerification", {
             confirmCode: code,
-            uemail: email
+            uemail: email,
           });
         }
       });
-    }
+    },
+    emailCheck2(email) {
+      this.emailCheck(email).then((res) => {
+        if (res === true) {
+          alert("가입된 이메일이 아닙니다.");
+          this.emailChecked = false;
+        } else {
+          alert("가입된 이메일입니다.");
+          this.emailChecked = true;
+        }
+        if (this.emailChecked) {
+          this.error.email = "";
+        } else {
+          this.error.email = "오른쪽 체크를 눌러서 가입 여부를 확인해주세요";
+        }
+      });
+    },
   },
   data: () => {
     return {
       email: "",
       error: {
-        email: false
+        email: false,
       },
       isSubmit: false,
-      component: this
+      component: this,
+      emailChecked: false,
     };
-  }
+  },
 };
 </script>
 

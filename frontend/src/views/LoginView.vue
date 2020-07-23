@@ -2,13 +2,8 @@
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
-        <h1 class="text-left">Login</h1>
+        <h1 class="text-left red--text text--lighten-2">Login</h1>
         <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
           <br />
         </v-spacer>
         <v-text-field
@@ -37,8 +32,6 @@
           >비밀번호를 잊으셨나요?</router-link>
         </div>
         <v-spacer>
-          <br />
-          <br />
           <br />
         </v-spacer>
         <v-btn
