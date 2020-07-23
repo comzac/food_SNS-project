@@ -2,7 +2,7 @@ import cookies from "vue-cookies";
 import axios from "axios";
 
 import SERVER from "@/api/api";
-import router from "../router";
+import router from "@/router";
 
 export default {
   namespaced: true,
@@ -16,6 +16,7 @@ export default {
   },
   getters: {
     isLogin: (state) => !!state.authToken,
+    config: (state) => ({ headers: { "X-AUTH-TOKEN": state.authToken } }),
   },
   mutations: {
     SET_TOKEN(state, token) {

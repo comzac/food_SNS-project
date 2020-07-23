@@ -14,7 +14,10 @@ export default {
       logout: "logout",
     },
     feeds: {
-      URL: "feed/",
+      URL: "feeds/",
+      home: "home",
+      mypage: "mypage",
+      search: "search",
     },
   },
 };
