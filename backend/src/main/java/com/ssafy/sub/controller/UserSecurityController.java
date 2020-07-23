@@ -60,12 +60,11 @@ public class UserSecurityController {
 	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = UserDto.class)
 	@PostMapping("/join")
 	public ResponseEntity<String> join(@RequestBody Map<String, String> user) {
-
 		User member = User.builder().uid(user.get("uid")).uemail(user.get("uemail")).unick(user.get("unick"))
 				.upw(passwordEncoder.encode(user.get("upw"))).roles(Collections.singletonList("ROLE_USER")) // 최초 가입시
 																											// USER 로 설정
 				.build();
-
+		System.out.println("Join");
 		String uid = userService.join(member).getUid();
 
 		return new ResponseEntity<String>(uid, HttpStatus.CREATED);

@@ -11,7 +11,6 @@ public class FeedDto {
 	private Date regdate;
 	private Date editdate;
 	
-	
 	public FeedDto() {
 		super();
 	}
