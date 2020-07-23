@@ -8,8 +8,9 @@ import PasswordChoiceEmail from "../views/user/PasswordChoiceEmail.vue";
 import ErrorComponent from "../components/ErrorComponent.vue";
 
 import Home from "../views/Home.vue";
+// import FeedItem2 from "../views/FeedItem2.vue";
 
-import NotFoundComponent from "../components/NotFoundComponent";
+import NotFoundComponent from "../components/NotFoundComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,11 @@ const routes = [
     name: "PasswordChoiceEmail",
     component: PasswordChoiceEmail,
   },
+  // {
+  //   path: "/feed/:fid",
+  //   name: "FeedItem2",
+  //   component: FeedItem2,
+  // },
 ];
 
 const router = new VueRouter({

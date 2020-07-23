@@ -44,7 +44,7 @@ export default {
       // console.log(info.data);
       // console.log(SERVER.URL + info.route);
       axios
-        .post(SERVER.BASE_URL + info.route, info.data, {
+        .post(SERVER.URL + info.route, info.data, {
           headers: {
             "content-type": "application/json",
           },
@@ -56,7 +56,10 @@ export default {
           commit("SET_COOKIE", res.data.uid);
           router.push("/");
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          alert("로그인 정보를 확인해주세요.");
+          console.log(err.response);
+        });
     },
 
     login({ dispatch }, loginData) {
@@ -82,7 +85,7 @@ export default {
         return false;
       }
       return axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.accounts.idCheck + uid)
+        .get(SERVER.URL + SERVER.ROUTES.accounts.idCheck + uid)
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
@@ -106,7 +109,7 @@ export default {
         return false;
       }
       return axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.accounts.nickCheck + unick)
+        .get(SERVER.URL + SERVER.ROUTES.accounts.nickCheck + unick)
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
@@ -125,7 +128,7 @@ export default {
 
     emailCheck(context, email) {
       return axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.emailCheck, {
+        .post(SERVER.URL + SERVER.ROUTES.accounts.emailCheck, {
           userEmail: email,
         })
         .then((res) => {
@@ -142,7 +145,7 @@ export default {
 
     getConfirmCode(context, email) {
       return axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.getConfirmCode, {
+        .post(SERVER.URL + SERVER.ROUTES.accounts.getConfirmCode, {
           userEmail: email,
         })
         .then((res) => {
@@ -161,7 +164,7 @@ export default {
     },
     pwreset(context, userEmailData) {
       axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
+        .post(SERVER.URL + SERVER.ROUTES.accounts.pwreset, userEmailData)
         .then((res) => {
           // console.log(res);
           if (res.data === "success") {

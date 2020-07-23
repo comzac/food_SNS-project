@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <Header />
-    <v-content>
+    <v-main>
       <transition name="view">
         <router-view />
       </transition>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

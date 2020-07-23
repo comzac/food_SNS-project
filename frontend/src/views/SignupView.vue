@@ -1,5 +1,5 @@
 <template>
-  <div class="signup">
+  <v-container class="signup" fill-height>
     <BasicForm v-if="page === 1" @toEmailVerification="setSignupData" />
     <SignupEmail v-if="page === 2" @toEmailVerification="emailVerification" @pageDown="page-=1" />
     <SignupEmailVerification
@@ -9,7 +9,7 @@
       @pageDown="page-=1"
     />
     <v-btn @click="page-=1" v-if="page!==1">뒤로가기</v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>
