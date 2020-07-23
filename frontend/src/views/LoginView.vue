@@ -18,8 +18,8 @@
           required
           autofocus
           color="#ff6666"
-          autocapitalize='off'
-          autocorrect='off'
+          autocapitalize="off"
+          autocorrect="off"
         ></v-text-field>
         <v-text-field
           v-model="loginData.upw"
@@ -51,7 +51,6 @@
         >LOGIN</v-btn>
         <v-spacer>
           <br />
-          <br />
         </v-spacer>
         <p class="red--text text--lighten-2">SNS 로그인</p>
         <v-layout class="red--text text--lighten-2" justify-space-around>
@@ -68,10 +67,13 @@
           <br />
         </v-spacer>
         <p class="red--text text--lighten-2">게정이 없습니까?</p>
+        <v-spacer>
+          <br />
+        </v-spacer>
       </v-col>
 
       <router-link to="/signup">
-        <v-footer absolute class="font-weight-medium" color="#ff6666" dark>
+        <v-footer absolute class="font-weight-medium" color="#ff6666" dark height="56">
           <v-col class="text-center" cols="12">
             <strong>SIGN UP</strong>
           </v-col>
@@ -88,7 +90,7 @@ export default {
   name: "LoginView",
   components: {},
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions("accounts", ["login"]),
     moveToSignup() {
       this.$router.push({ name: "Signup" });
     }

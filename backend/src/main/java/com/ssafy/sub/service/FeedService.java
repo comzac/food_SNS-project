@@ -19,4 +19,5 @@ public interface FeedService {
 
 	public int feedUpdate(int id, FeedDto dto);
 
-	public int feedDelete(int id);}
+	public int feedDelete(int id);
+	}

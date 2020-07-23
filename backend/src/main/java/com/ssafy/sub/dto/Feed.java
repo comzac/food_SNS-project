@@ -26,6 +26,7 @@ import lombok.ToString;
 @ToString
 public class Feed {
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

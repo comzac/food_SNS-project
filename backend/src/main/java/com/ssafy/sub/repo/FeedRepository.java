@@ -14,4 +14,5 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 //	@Transactional
 //	@Modifying
 //	@Query("UPDATE ")
+	
 }

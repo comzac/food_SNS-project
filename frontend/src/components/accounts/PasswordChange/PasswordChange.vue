@@ -49,7 +49,7 @@
           :disabled="!isSubmit || password!=passwordConfirm"
           width="100%"
           x-large
-          @click='changePassword'
+          @click="changePassword"
         >비밀번호 변경</v-btn>
         <v-spacer>
           <br />
@@ -113,7 +113,7 @@ export default {
       this.isSubmit = isSubmit;
     },
     changePassword() {
-      this.$emit('changePassword', this.password)
+      this.$emit("changePassword", this.password);
     }
   },
   data: () => {

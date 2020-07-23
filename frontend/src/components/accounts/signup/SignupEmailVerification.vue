@@ -31,15 +31,11 @@
           <br />
           <br />
         </v-spacer>
-
-        <v-btn
-          color="#ff6666"
-          class="white--text"
-          :disabled="!isSubmit"
-          @click="verify()"
-          width="100%"
-          x-large
-        >회원가입 완료</v-btn>
+        <div>
+          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <v-btn color="#ff6666" class="white--text" :disabled="!isSubmit" @click="verify()">회원가입 완료</v-btn>
+        </div>
         <v-spacer>
           <br />
           <br />
@@ -82,13 +78,13 @@ export default {
     verify() {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
-      const num = Number(this.confirm)
-      if(num === this.confirmCode.data) {
-        this.$emit('finishSignup')
-      }else {
-        alert('인증번호를 확인해주세요.')
+      const num = Number(this.confirm);
+      if (num === this.confirmCode.data) {
+        this.$emit("finishSignup");
+      } else {
+        alert("인증번호를 확인해주세요.");
       }
-    },
+    }
   },
   data: () => {
     return {
@@ -101,7 +97,7 @@ export default {
     };
   },
   props: {
-    confirmCode: String,
+    confirmCode: Object
   }
 };
 </script>

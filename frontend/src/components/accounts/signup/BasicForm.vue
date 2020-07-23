@@ -13,8 +13,8 @@
           @click:append-outer="idCheck2(signupData.uid)"
           :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
           @input="idcheck = false"
-          autocapitalize='off'
-          autocorrect='off'
+          autocapitalize="off"
+          autocorrect="off"
         ></v-text-field>
 
         <v-text-field
@@ -57,32 +57,48 @@
         <v-text-field
           label="생년월일"
           name="dob"
-          prepend-icon="mdi-account"
+          prepend-icon="mdi-cake-variant"
           type="date"
           v-model="signupData.ubirth"
           color="#ff6666"
           :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
         ></v-text-field>
 
-        <v-int-field
-          label="성별"
-          name="gender"
-          prepend-icon="mdi-account"
-          v-model="signupData.usex"
-          color="#ff6666"
-          readonly
-        ></v-int-field>
         <v-radio-group v-model="signupData.usex" row>
-          <v-radio color="#ff6666" label="male" value="1"></v-radio>
-          <v-radio color="#ff6666" label="female" value="2"></v-radio>
+          <v-btn icon color="#ff6666">
+            <v-icon>mdi-gender-male-female</v-icon>
+          </v-btn>
+          <!-- <v-text-field
+            prepend-icon="mdi-gender-male-female"
+            flat
+            dense
+            readonly
+            color="#ff6666"
+            :error-messages="signupData.usex?'':'성별을 선택해주세요'"
+            :value="signupData.usex==1?'남성':signupData.usex==2?'여성':''"
+          ></v-text-field>-->
+          <v-spacer></v-spacer>
+          <v-radio color="#ff6666" label="남성" value="1"></v-radio>
+          <v-btn icon :color="signupData.usex==1?'#ff6666':''">
+            <v-icon>mdi-gender-male</v-icon>
+          </v-btn>
+          <v-radio color="#ff6666" label="여성" value="2"></v-radio>
+          <v-btn icon :color="signupData.usex==2?'#ff6666':''">
+            <v-icon>mdi-gender-female</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
         </v-radio-group>
         <!-- 영문, 숫자 혼용 확인 필요 -->
-        <v-btn
-          :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
-          @click="toEmailVerification()"
-          color="#ff6666"
-          class="white--text"
-        >다음으로</v-btn>
+        <div>
+          <v-btn disabled>뒤로가기</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <v-btn
+            :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
+            @click="toEmailVerification()"
+            color="#ff6666"
+            class="white--text"
+          >다음으로</v-btn>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -107,17 +123,17 @@ export default {
       show1: false,
       show2: false,
       idcheck: false,
-      nickcheck: false,
+      nickcheck: false
     };
   },
   methods: {
-    ...mapActions(["idCheck", "nickCheck"]),
+    ...mapActions("accounts", ["idCheck", "nickCheck"]),
     toEmailVerification() {
       for (const [key, value] of Object.entries(this.signupData)) {
         if (key === "uemail") continue;
         if (value === "") {
           const key2 = this.signupData2[key];
-          console.log(key2);
+          // console.log(key2);
           alert(`${key2} 확인해주세요`);
           return;
         }
@@ -143,17 +159,20 @@ export default {
       if (upw.length < 8) return false;
       return true;
     },
-    pwdCheck2(upw,upw2) {
+    pwdCheck2(upw, upw2) {
+      if (!this.pwdCheck(upw2)) return false;
       if (upw !== upw2) return false;
       return true;
     },
     idCheck2(uid) {
-      this.idCheck(uid)
-        .then(res => res?this.idcheck=true:this.idcheck=false)
+      this.idCheck(uid).then(res =>
+        res ? (this.idcheck = true) : (this.idcheck = false)
+      );
     },
     nickCheck2(unick) {
-      this.nickCheck(unick)
-        .then(res => res?this.nickcheck=true:this.nickcheck=false)
+      this.nickCheck(unick).then(res =>
+        res ? (this.nickcheck = true) : (this.nickcheck = false)
+      );
     }
   }
 };

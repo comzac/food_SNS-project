@@ -82,13 +82,13 @@ export default {
     verify() {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
-      const num = Number(this.confirm)
+      const num = Number(this.confirm);
       // console.log(num)
       // console.log(this.code.data)
-      if(num === this.confirmCode.data) {
-        this.$emit('toPasswordChange')
-      }else {
-        alert('인증번호를 확인해주세요.')
+      if (num === this.confirmCode.data) {
+        this.$emit("toPasswordChange");
+      } else {
+        alert("인증번호를 확인해주세요.");
       }
     }
   },
