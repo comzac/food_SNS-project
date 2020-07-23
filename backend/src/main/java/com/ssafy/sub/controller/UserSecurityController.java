@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +44,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/users")
 public class UserSecurityController {
 
 	private static final String SUCCESS = "success";
@@ -56,7 +58,7 @@ public class UserSecurityController {
 
 	// 회원가입
 	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = UserDto.class)
-	@PostMapping("/users/join")
+	@PostMapping("/join")
 	public ResponseEntity<String> join(@RequestBody Map<String, String> user) {
 
 		User member = User.builder().uid(user.get("uid")).uemail(user.get("uemail")).unick(user.get("unick"))
@@ -71,7 +73,7 @@ public class UserSecurityController {
 
 	// 로그인
 	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = UserDto.class)
-	@PostMapping("/users/login")
+	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody Map<String, String> user, HttpServletResponse response) {
 		System.out.println(user.toString());
 
@@ -89,7 +91,7 @@ public class UserSecurityController {
 
 	// 아이디 중복체크
 	@ApiOperation(value = "아이디 중복 체크. 이미 있는 아이디인 경우 fail을 반환한다.", response = String.class)
-	@GetMapping("/users/uid-dup/{uid}")
+	@GetMapping("/uid-dup/{uid}")
 	public ResponseEntity<String> idCheck(@PathVariable String uid) {
 		System.out.println(uid);
 
@@ -103,7 +105,7 @@ public class UserSecurityController {
 
 	// 이메일 인증
 	@ApiOperation(value = "인증 코드를 사용자의 이메일로 보내기. 메일이 전송되면 인증 코드를 반환한다.", response = String.class)
-	@PostMapping(value = "/users/e-valid")
+	@PostMapping(value = "/e-valid")
 	public ResponseEntity<String> createEmailCheck(@RequestBody HashMap<String, String> userEmailData) {
 		final String SEND_EMAIL_ID = "ksb940925@gamil.com"; // 관리자 email
 		System.out.println(userEmailData.get("userEmail"));
@@ -124,7 +126,7 @@ public class UserSecurityController {
 	}
 
 	@ApiOperation(value = "닉네임 중복 체크. 이미 있는 닉네임인 경우 fail을 반환한다.", response = String.class)
-	@GetMapping(value = "/users/unick-dup/{unick}")
+	@GetMapping(value = "/unick-dup/{unick}")
 	public ResponseEntity<String> nickcheck(@PathVariable String unick) {
 
 		System.out.println("log - nickchk");
@@ -139,7 +141,7 @@ public class UserSecurityController {
 	
 	// 이메일 중복 체크
 	@ApiOperation(value = "이메일 중복 체크. 이미 있는 이메일인 경우 fail을 반환한다.", response = String.class)
-	@PostMapping(value = "/users/e-dup")
+	@PostMapping(value = "/e-dup")
 	public ResponseEntity<String> edcheck(@RequestBody HashMap<String, String> userEmailData) {
 		System.out.println("log - edcheck");
 		String uemail = userEmailData.get("userEmail");
@@ -153,7 +155,7 @@ public class UserSecurityController {
 	
 	// 재설정을 위한 현재 비밀번호 확인
 	@ApiOperation(value = "재설정하기 위해 현재 비밀번호 확인. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
-	@PostMapping(value = "/users/pw-dup")
+	@PostMapping(value = "/pw-dup")
 	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData) {
 		System.out.println("log - pwcheck");
 
@@ -169,7 +171,7 @@ public class UserSecurityController {
 
 	
 	@ApiOperation(value = "유저 이메일을 가지고 비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
-	@PutMapping(value = "/users/pw-reset")
+	@PutMapping(value = "/pw-reset")
 	public ResponseEntity<String> pwreset(@RequestBody HashMap<String, String> userData) {
 		System.out.println("log - pwreset");
 		
