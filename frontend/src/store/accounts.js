@@ -51,8 +51,8 @@ export default {
           },
         })
         .then((res) => {
-          // console.log("response");
-          // console.log(res);
+          console.log("response");
+          console.log(res);
           commit("SET_USERDATA", res.data);
           commit("SET_COOKIE", res.data.uid);
           router.push("/");
