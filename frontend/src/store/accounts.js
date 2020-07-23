@@ -153,10 +153,8 @@ export default {
         )
         .then((res) => {
           if (res.data === "success") {
-            alert("사용 가능한 이메일입니다.");
             return true;
           } else {
-            alert("이미 사용 중인 이메일입니다.");
             return false;
           }
         })
