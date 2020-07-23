@@ -1,45 +1,65 @@
 package com.ssafy.sub.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.sub.dto.FeedDto;
-import com.ssafy.sub.repo.FeedMapper;
+import com.ssafy.sub.dto.Feed;
+import com.ssafy.sub.exception.RestException;
+import com.ssafy.sub.model.response.ResponseMessage;
+import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.repo.FeedRepository;
 @Service
 public class FeedServiceImpl implements FeedService {
 
-	
 	@Autowired
-	FeedMapper feedMapper;
+	FeedRepository feedRepository;
 	
 	@Override
-	public List<FeedDto> feedList() {
-		return feedMapper.feedList();
+	public List<Feed> feedHomeList() {
+		return feedRepository.findAll();
+	}
+	
+	@Override
+	public List<Feed> feedMypageList(int uid) {
+		return feedRepository.findAll();
 	}
 
 	@Override
-	public FeedDto feedDetail(int id) {
-		return feedMapper.feedDetail(id);
-
+	public Feed feedDetail(int id) {
+		return feedRepository.findById(id)
+					.orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_FEED, HttpStatus.NOT_FOUND));
 	}
 
 	@Override
-	public int feedInsert() {
-		return feedMapper.feedInsert();
-
+	public Feed feedInsert(Feed feed) {
+		return feedRepository.save(feed);
 	}
 
 	@Override
-	public int feedUpdate(int id, FeedDto dto) {
-		return feedMapper.feedUpdate(id, dto);
-
+	@Transactional
+	public Feed feedUpdate(int id, Feed feed) {
+		Date now = new Date();
+		Optional<Feed> updateFeed = feedRepository.findById(id);
+		if(!updateFeed.isPresent()) throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_FEED, HttpStatus.NOT_FOUND);
+		updateFeed.get().setTitle(feed.getTitle());
+		updateFeed.get().setContent(feed.getContent());
+		updateFeed.get().setEditdate(now);
+		
+		feed.setRegdate(updateFeed.get().getRegdate());
+		feed.setEditdate(now);
+		return updateFeed.get();
 	}
 
 	@Override
-	public int feedDelete(int id) {
-		return feedMapper.feedDelete(id);
+	public Long feedDelete(int id) {
+		return feedRepository.deleteById(id);
 	}
 
 	

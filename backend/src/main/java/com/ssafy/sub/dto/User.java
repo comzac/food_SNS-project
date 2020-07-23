@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +25,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -55,6 +58,7 @@ public class User implements UserDetails {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(length = 100)
+//	@CreatedDate
 	private Date uregdate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -77,7 +81,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return uemail;
+        return uid;
     }
 
     @Override
