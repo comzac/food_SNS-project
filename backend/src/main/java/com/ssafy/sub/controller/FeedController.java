@@ -37,7 +37,7 @@ public class FeedController {
 	private FeedService feedService;
 	@Autowired
 	private FeedRepository feedRepository;
-	
+	 
 	// 1. list 조회
 	@ApiOperation(value = "feedList를 조회한다", response = FeedDto.class)
 	@GetMapping
