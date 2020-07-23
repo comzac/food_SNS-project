@@ -56,7 +56,10 @@ export default {
           commit("SET_COOKIE", res.data.uid);
           router.push("/");
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          alert("로그인 정보를 확인해주세요.");
+          console.log(err.response);
+        });
     },
 
     login({ dispatch }, loginData) {

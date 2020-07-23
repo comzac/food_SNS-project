@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden">
-    <v-app-bar app color="#ff6666" dark>
+    <v-app-bar app color="#ff6666" dark height="56px">
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
@@ -26,24 +26,32 @@
       </router-link>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary color="#ff6666" class="whtie--text">
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+      color="#ff6666"
+      class="whtie--text"
+      width="200px"
+    >
       <v-list nav dense flat>
-        <v-list-item-group active-class="white--text" mandatory>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
-            <v-list-item disabled></v-list-item>
-            <v-list-item>
-              <v-spacer></v-spacer>
-              <v-btn icon large color="#ff6666" style="background-color:#ffffff;">
-                <v-icon>mdi-account</v-icon>
-              </v-btn>
-              <v-spacer></v-spacer>
-              <span>닉네임 우파루파</span>
-              <v-spacer></v-spacer>
-            </v-list-item>
-            <v-list-item disabled></v-list-item>
-          </router-link>
-        </v-list-item-group>
-        <v-spacer></v-spacer>
+        <v-spacer>
+          <br />
+        </v-spacer>
+        <v-list-item two-line>
+          <v-list-item-avatar>
+            <img src="@/assets/profile_default.png" />
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="white--text">닉네임 우파루파</v-list-item-title>
+            <v-list-item-subtitle class="white--text">
+              <small>fishfish99</small>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-spacer>
+          <br />
+        </v-spacer>
         <v-list-item-group active-class="white--text" mandatory>
           <router-link :to="{ name: 'Home' }" class="text-decoration-none">
             <v-list-item>
@@ -95,21 +103,7 @@
           </router-link>
         </v-list-item-group>
       </v-list>
-      <v-spacer>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-      </v-spacer>
-      <v-list align="center">
+      <v-list color="#ff6666" flat align="center">
         <router-link :to="{name:'Login'}" class="text-decoration-none">
           <v-btn class="red--text text--lighten-2" rounded>
             <strong>로그아웃</strong>
