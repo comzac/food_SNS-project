@@ -1,8 +1,13 @@
 <template>
   <div class="signup">
     <BasicForm v-if="page === 1" @toEmailVerification="setSignupData" />
-    <SignupEmail v-if="page === 2" @toEmailVerification="emailVerification" />
-    <SignupEmailVerification v-if="page === 3" :confirmCode="confirmCode" @finishSignup="doSignup" />
+    <SignupEmail v-if="page === 2" @toEmailVerification="emailVerification" @pageDown="page-=1" />
+    <SignupEmailVerification
+      v-if="page === 3"
+      :confirmCode="confirmCode"
+      @finishSignup="doSignup"
+      @pageDown="page-=1"
+    />
     <v-btn @click="page-=1" v-if="page!==1">뒤로가기</v-btn>
   </div>
 </template>
@@ -47,6 +52,7 @@ export default {
     },
     doSignup() {
       this.signup(this.signupData);
+      alert("회원가입이 완료되었습니다.");
       this.$router.push({ name: "Home" });
     }
   }
