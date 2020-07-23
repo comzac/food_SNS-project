@@ -19,6 +19,7 @@ import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedDto;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
+import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.service.FeedService;
 
@@ -29,7 +30,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/feeds")
 public class FeedController {
 
-	private ResponseMessage responseMessage;
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
@@ -47,11 +47,11 @@ public class FeedController {
 		
 		List<Feed> feedDtoList = feedRepository.findAll();
 		if(feedDtoList==null) {
-			result = new Result(HttpStatus.NO_CONTENT, responseMessage.NOT_FOUND_FEED, null);
+			result = new Result(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_FEED, null);
 			return new ResponseEntity<Result>(result, HttpStatus.NO_CONTENT);
 		}
 		
-		result = new Result(HttpStatus.OK, responseMessage.READ_ALL_FEEDS, feedDtoList);
+		result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedDtoList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
