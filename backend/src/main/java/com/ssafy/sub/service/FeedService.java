@@ -4,20 +4,22 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ssafy.sub.dto.FeedDto;
+import com.ssafy.sub.dto.Feed;
 
 @Service("FeedService")
 public interface FeedService {
 	
-	public List<FeedDto> feedList();
+	public List<Feed> feedHomeList();
+	
+	public List<Feed> feedMypageList(int uid);
 
 	// search가 빠짐 (기준 설정이 필요)
 
-	public FeedDto feedDetail(int id);
+	public Feed feedDetail(int id);
 
-	public int feedInsert();
+	public Feed feedInsert(Feed feed);
 
-	public int feedUpdate(int id, FeedDto dto);
+	public Feed feedUpdate(int id, Feed feed);
 
-	public int feedDelete(int id);
+	public Long feedDelete(int id);
 	}

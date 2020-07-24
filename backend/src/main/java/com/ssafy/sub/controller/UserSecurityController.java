@@ -79,7 +79,7 @@ public class UserSecurityController {
         result.put("unick", member.getUnick());
         
         // JWT 생성
-        String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        String token = jwtTokenProvider.createToken(member, member.getRoles());
 		response.setHeader("X-AUTH-TOKEN", token);
 
 		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, result), HttpStatus.CREATED);
@@ -104,7 +104,7 @@ public class UserSecurityController {
         result.put("unick", member.getUnick());
 		
 		// JWT 생성
-		String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+		String token = jwtTokenProvider.createToken(member, member.getRoles());
 		response.setHeader("X-AUTH-TOKEN", token);
 
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result), HttpStatus.OK);

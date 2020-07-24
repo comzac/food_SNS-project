@@ -2,10 +2,8 @@ package com.ssafy.sub.dto;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,9 +31,12 @@ public class Feed {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "uid")//, insertable = false, updatable = false)
-	private User user;
+//	@ManyToOne//(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "uid")//, insertable = false, updatable = false)
+//	private User user;
+	
+	@Column
+	private int uid;
 	
 	@Column
 	private String title;
