@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import BasicForm from "@/components/accounts/signup/BasicForm.vue";
-import SignupEmail from "@/components/accounts/signup/SignupEmail.vue";
-import SignupEmailVerification from "@/components/accounts/signup/SignupEmailVerification.vue";
+import BasicForm from "@/components/accounts/signup/BasicForm";
+import SignupEmail from "@/components/accounts/signup/SignupEmail";
+import SignupEmailVerification from "@/components/accounts/signup/SignupEmailVerification";
 import { mapActions } from "vuex";
 
 export default {
@@ -23,7 +23,7 @@ export default {
   components: {
     BasicForm,
     SignupEmail,
-    SignupEmailVerification
+    SignupEmailVerification,
   },
   data() {
     return {
@@ -34,9 +34,9 @@ export default {
         unick: null,
         uemail: null,
         ubirth: null,
-        usex: null
+        usex: null,
       },
-      confirmCode: ""
+      confirmCode: "",
     };
   },
   methods: {
@@ -54,8 +54,8 @@ export default {
       this.signup(this.signupData);
       alert("회원가입이 완료되었습니다.");
       this.$router.push({ name: "Home" });
-    }
-  }
+    },
+  },
 };
 </script>
 

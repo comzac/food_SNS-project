@@ -34,21 +34,23 @@
       class="whtie--text"
       width="200px"
     >
-      <v-list nav dense flat>
+      <v-list nav dense>
         <v-spacer>
           <br />
         </v-spacer>
-        <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="@/assets/profile_default.png" />
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title class="white--text">닉네임 우파루파</v-list-item-title>
-            <v-list-item-subtitle class="white--text">
-              <small>fishfish99</small>
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+        <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+          <v-list-item two-line>
+            <v-list-item-avatar>
+              <img src="@/assets/profile_default.png" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="white--text">닉네임 우파루파</v-list-item-title>
+              <v-list-item-subtitle class="white--text">
+                <small>fishfish99</small>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </router-link>
         <v-spacer>
           <br />
         </v-spacer>
