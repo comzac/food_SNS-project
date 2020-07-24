@@ -189,6 +189,31 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    pwcheck({ state, rootGetters }, password) {
+      const config = rootGetters["accounts/config"];
+      const requestData = {
+        "uid": state.userData.uid,
+        "upw": password
+      }
+      return axios
+        .post(
+          SERVER.BASE_URL + 
+            SERVER.ROUTES.accounts.URL + 
+            SERVER.ROUTES.accounts.pwcheck,
+          requestData,
+          config
+        )
+        .then(res => {
+          if(res.data === "success") {
+            return true
+          } else {
+            return false
+          }
+        })
+        .catch(err => console.log(err))
+    },
+
     pwreset(context, userEmailData) {
       axios
         .put(
