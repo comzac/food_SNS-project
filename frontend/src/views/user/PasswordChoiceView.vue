@@ -50,7 +50,7 @@
 
 <script>
 export default {
-  name: "PasswordChoice"
+  name: "PasswordChoiceView",
 };
 </script>
 

@@ -1,17 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import LoginView from "@/views/LoginView.vue";
-import SignupView from "@/views/SignupView.vue";
-import PasswordChoice from "@/views/user/PasswordChoiceView.vue";
-import PasswordChoiceEmail from "@/views/user/PasswordChoiceEmailView.vue";
+import LoginView from "@/views/LoginView";
+import SignupView from "@/views/SignupView";
+import PasswordChoice from "@/views/user/PasswordChoiceView";
+import PasswordChoiceEmail from "@/views/user/PasswordChoiceEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
 
-import Home from "@/views/Home.vue";
+import Home from "@/views/Home";
 // import FeedItem2 from "../views/FeedItem2.vue";
 
-import NotFoundComponent from "@/components/NotFoundComponent.vue";
-import ErrorComponent from "@/components/ErrorComponent.vue";
+import NotFoundComponent from "@/components/NotFoundComponent";
+import ErrorComponent from "@/components/ErrorComponent";
 
 Vue.use(VueRouter);
 
@@ -70,7 +70,7 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }
 
-  const publicPages = ["Signup", "Login", "NotFound"];
+  const publicPages = ["Home", "Signup", "Login", "NotFound"];
   const needNotAuthPages = ["Signup", "Login"];
 
   const authRequired = !publicPages.includes(to.name);
