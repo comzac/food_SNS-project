@@ -15,7 +15,7 @@ export default {
     // nickChecked: false,
   },
   getters: {
-    isLogin: (state) => !!state.authToken,
+    isLoggedIn: (state) => !!state.authToken,
     config: (state) => ({ headers: { "X-AUTH-TOKEN": state.authToken } }),
   },
   mutations: {
