@@ -19,7 +19,7 @@ import PasswordChoiceEmailVerification from "@/components/accounts/passwordchang
 import PasswordChange from "@/components/accounts/passwordchange/PasswordChange";
 
 export default {
-  name: "PasswordChoiceEmail",
+  name: "PasswordChoiceEmailView",
   components: {
     PasswordChoiceEmail,
     PasswordChoiceEmailVerification,
