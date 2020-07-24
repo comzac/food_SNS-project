@@ -53,8 +53,8 @@ export default {
         .then((res) => {
           // console.log("response");
           console.log(res);
-          // commit("SET_TOKEN", res.headers.X-AUTH-TOKEN);
-          commit("SET_TOKEN", res.data);
+          commit("SET_TOKEN", res.headers('X-AUTH-TOKEN'));
+          // commit("SET_TOKEN", res.data);
           commit("SET_USERDATA", res.data);
           router.push({ name: "Home" });
         })
