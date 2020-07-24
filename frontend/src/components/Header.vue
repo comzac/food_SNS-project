@@ -14,13 +14,14 @@
         />
       </router-link>
       <v-spacer></v-spacer>
+
       <router-link class="text-decoration-none" :to="{name: 'Login'}">
-        <v-btn icon>
+        <v-btn icon v-if="!isLoggedIn" class="mr-n3">
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link class="text-decoration-none" :to="{name: 'Login'}">
-        <v-btn icon>
+      <router-link class="text-decoration-none" :to="{name: 'FeedCreateView'}">
+        <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
       </router-link>
@@ -115,7 +116,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Header",
@@ -123,6 +124,9 @@ export default {
   data: () => ({
     drawer: false,
   }),
+  computed: {
+    ...mapGetters("accounts", ["isLoggedIn"]),
+  },
   methods: {
     ...mapActions("accounts", ["logout"]),
   },

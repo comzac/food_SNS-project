@@ -1,23 +1,21 @@
 <template>
   <v-container>
-    <v-row class="text-center" align="center" justify="center" no-gutters>
+    <v-row class="text-center" align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
-        <v-card>
-          <v-card-title>
-            <v-row class="text-left" row>
-              <v-btn icon x-large color="#ff6666">
-                <img src="@/assets/profile_default.png" width="40" />
-              </v-btn>
-              <v-text-field
-                solo
-                dense
-                flat
-                color="#888888"
-                readonly
-                class="red--text text--lighten-2"
-                :value="user.unick"
-                :messages="user.uid"
-              ></v-text-field>
+        <v-hover v-slot:default="{ hover }">
+          <v-card :class="`elevation-${hover ? 24 : 6}`" class="transition-swing">
+            <v-list-item>
+              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+                <v-list-item-avatar color="#ff6666">
+                  <img src="@/assets/profile_default.png" width="40" />
+                </v-list-item-avatar>
+              </router-link>
+              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+                <v-list-item-content>
+                  <v-list-item-title class="text-left red--text text--lighten-2">{{ user.unick }}</v-list-item-title>
+                  <v-list-item-subtitle class="text-left red--text text--lighten-2">{{ user.uid }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </router-link>
               <v-spacer></v-spacer>
               <v-menu left bottom>
                 <template v-slot:activator="{ on, attrs }">
@@ -44,48 +42,48 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-            </v-row>
-          </v-card-title>
-          <v-img
-            class="white--text"
-            height="300px"
-            src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-          >
-            <v-spacer>
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-            </v-spacer>
-            <span>Like_</span>
-            <span>2387</span>
-            <v-btn icon color="grey">
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon color="#ff6666">
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-          </v-img>
-          <v-card-text>
-            <p class="text-left">
-              <strong>{{ feed.title }}</strong>
-            </p>
-            <p
-              :class="overflow"
-              @click="(overflow=='text-left')?overflow='text-left text-overflow':overflow='text-left'"
-            >{{ feed.content }}</p>
-            <div class="text-left">
-              <p>#{{ feedhashtag.fid }}</p>
-            </div>
-            <!-- Comment module ?? -->
-          </v-card-text>
-        </v-card>
+            </v-list-item>
+            <v-img
+              class="white--text"
+              height="300px"
+              src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            >
+              <v-spacer>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+              </v-spacer>
+              <span>Like_</span>
+              <span>2387</span>
+              <v-btn icon color="grey">
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+              <v-btn icon color="#ff6666">
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+            </v-img>
+            <v-card-text>
+              <p class="text-left">
+                <strong>{{ feed.title }}</strong>
+              </p>
+              <p
+                :class="overflow"
+                @click="(overflow=='text-left')?overflow='text-left text-overflow':overflow='text-left'"
+              >{{ feed.content }}</p>
+              <div class="text-left">
+                <p>#{{ feedhashtag.fid }}</p>
+              </div>
+              <!-- Comment module ?? -->
+            </v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
   </v-container>
@@ -97,7 +95,7 @@ export default {
   props: {
     feed: Object,
     feedhashtag: Object,
-    feedlike: Object
+    feedlike: Object,
   },
   components: {},
   data() {
@@ -114,10 +112,10 @@ export default {
         uregdate: "",
         ubirth: "",
         usex: "",
-        roles: ""
-      }
+        roles: "",
+      },
     };
-  }
+  },
 };
 </script>
 

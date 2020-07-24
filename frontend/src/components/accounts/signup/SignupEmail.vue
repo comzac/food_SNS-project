@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height fluid>
     <!-- <h1>Email Verification</h1> -->
-    <v-row class="text-center" align="center" justify="center" no-gutters>
+    <v-row class="text-center" align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-spacer>
           <br />
