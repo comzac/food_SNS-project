@@ -6,12 +6,12 @@
 
 <script>
 // @ is an alias to /src
-import FeedItem from "@/components/FeedItem.vue";
+import FeedItem from "@/components/FeedItem";
 
 export default {
   name: "Home",
   components: {
-    FeedItem
+    FeedItem,
   },
   data() {
     return {
@@ -22,20 +22,20 @@ export default {
         content:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
         regdate: "2018-07-22",
-        editdate: "2020-07-23"
+        editdate: "2020-07-23",
       },
       feedhashtag: {
         fid: 1,
-        hid: 1
+        hid: 1,
       },
       feedlike: {
         uid: 1,
-        fid: 1
+        fid: 1,
       },
       page: 0,
-      isEnd: false
+      isEnd: false,
     };
   },
-  methods: {}
+  methods: {},
 };
 </script>

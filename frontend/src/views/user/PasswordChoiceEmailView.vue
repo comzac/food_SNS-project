@@ -14,14 +14,14 @@
 <script>
 import { mapActions } from "vuex";
 
-import PasswordChoiceEmailComponent from "@/components/accounts/passwordchange/PasswordChoiceEmail.vue";
-import PasswordChoiceEmailVerification from "@/components/accounts/passwordchange/PasswordChoiceEmailVerification.vue";
-import PasswordChange from "@/components/accounts/passwordchange/PasswordChange.vue";
+import PasswordChoiceEmail from "@/components/accounts/passwordchange/PasswordChoiceEmail";
+import PasswordChoiceEmailVerification from "@/components/accounts/passwordchange/PasswordChoiceEmailVerification";
+import PasswordChange from "@/components/accounts/passwordchange/PasswordChange";
 
 export default {
   name: "PasswordChoiceEmail",
   components: {
-    PasswordChoiceEmailComponent,
+    PasswordChoiceEmail,
     PasswordChoiceEmailVerification,
     PasswordChange,
   },
