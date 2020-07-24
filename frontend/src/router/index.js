@@ -3,12 +3,12 @@ import VueRouter from "vue-router";
 
 import LoginView from "@/views/LoginView";
 import SignupView from "@/views/SignupView";
-import PasswordChoice from "@/views/user/PasswordChoiceView";
-import PasswordChoiceEmail from "@/views/user/PasswordChoiceEmailView";
+import PasswordChoiceView from "@/views/user/PasswordChoiceView";
+import PasswordChoiceEmailView from "@/views/user/PasswordChoiceEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
 
 import Home from "@/views/Home";
-// import FeedItem2 from "../views/FeedItem2.vue";
+// import FeedItem2 from "../views/FeedItem2";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -34,13 +34,13 @@ const routes = [
   {
     path: "/user/password_choice",
     name: "PasswordChoice",
-    component: PasswordChoice,
+    component: PasswordChoiceView,
     meta: { title: "비밀번호 찾기" },
   },
   {
     path: "/user/password_choice_email",
     name: "PasswordChoiceEmail",
-    component: PasswordChoiceEmail,
+    component: PasswordChoiceEmailView,
     meta: { title: "이메일 인증번호 입력" },
   },
   {
