@@ -1,10 +1,11 @@
 <template>
   <div>
-    <PasswordChoiceEmail v-if="page === 1" @toEmailVerification="setConfirmCode" />
+    <PasswordChoiceEmailComponent v-if="page === 1" @toEmailVerification="setConfirmCode" />
     <PasswordChoiceEmailVerification
       v-if="page === 2"
       :confirmCode="confirmCode"
       @toPasswordChange="toPasswordChange"
+      @pageDown="page-=1"
     />
     <PasswordChange v-if="page === 3" @changePassword="doPasswordReset" />
   </div>
@@ -13,14 +14,14 @@
 <script>
 import { mapActions } from "vuex";
 
-import PasswordChoiceEmail from "@/components/accounts/passwordchange/PasswordChoiceEmail.vue";
+import PasswordChoiceEmailComponent from "@/components/accounts/passwordchange/PasswordChoiceEmail.vue";
 import PasswordChoiceEmailVerification from "@/components/accounts/passwordchange/PasswordChoiceEmailVerification.vue";
 import PasswordChange from "@/components/accounts/passwordchange/PasswordChange.vue";
 
 export default {
   name: "PasswordChoiceEmail",
   components: {
-    PasswordChoiceEmail,
+    PasswordChoiceEmailComponent,
     PasswordChoiceEmailVerification,
     PasswordChange,
   },
