@@ -10,8 +10,13 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +25,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,6 +41,10 @@ public class User implements UserDetails {
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	
+	@Column(length =100, nullable = false)
 	private String uid;
 	
 	@Column(length = 100, nullable = false)
@@ -45,9 +56,12 @@ public class User implements UserDetails {
 	@Column(length = 100, nullable = false, unique = true)
 	private String uemail;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(length = 100)
+//	@CreatedDate
 	private Date uregdate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(length = 100)
 	private Date ubirth;
 	
@@ -67,7 +81,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return uemail;
+        return uid;
     }
 
     @Override
@@ -94,5 +108,4 @@ public class User implements UserDetails {
 	public String getPassword() {
 		return null;
 	}
-   
 }

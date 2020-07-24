@@ -58,8 +58,5 @@ out/
 ### log ###
 log/
 
-### properties ###
-!**/src/main/resources/application.properties
 ### yml ###
-!**/src/main/resources/application.yml
 *.yml

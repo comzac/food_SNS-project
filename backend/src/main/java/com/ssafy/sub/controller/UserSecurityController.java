@@ -28,9 +28,13 @@ import com.ssafy.sub.config.security.JwtTokenProvider;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserDto;
 import com.ssafy.sub.exception.CUserNotFoundException;
+import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.CommonResult;
 import com.ssafy.sub.model.response.ListResult;
+import com.ssafy.sub.model.response.ResponseMessage;
+import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.SingleResult;
+import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.ResponseService;
 import com.ssafy.sub.service.UserService;
@@ -57,36 +61,53 @@ public class UserSecurityController {
 	private final UserService userService;
 
 	// 회원가입
-	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = UserDto.class)
+	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = Result.class)
 	@PostMapping("/join")
-	public ResponseEntity<String> join(@RequestBody Map<String, String> user) {
-
+	public ResponseEntity<Result> join(@RequestBody Map<String, String> user, HttpServletResponse response) {
+		System.out.println("Users - join");
+		
 		User member = User.builder().uid(user.get("uid")).uemail(user.get("uemail")).unick(user.get("unick"))
 				.upw(passwordEncoder.encode(user.get("upw"))).roles(Collections.singletonList("ROLE_USER")) // 최초 가입시
 																											// USER 로 설정
 				.build();
+		userService.join(member).getUid();
+		
+		// User 반환 정보
+		Map<String,String> result = new HashMap<String, String>();
+        result.put("uid", member.getUid());
+        result.put("uemail", member.getUemail());
+        result.put("unick", member.getUnick());
+        
+        // JWT 생성
+        String token = jwtTokenProvider.createToken(member, member.getRoles());
+		response.setHeader("X-AUTH-TOKEN", token);
 
-		String uid = userService.join(member).getUid();
-
-		return new ResponseEntity<String>(uid, HttpStatus.CREATED);
+		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, result), HttpStatus.CREATED);
 	}
 
 	// 로그인
-	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = UserDto.class)
+	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = Result.class)
 	@PostMapping("/login")
-	public ResponseEntity<User> login(@RequestBody Map<String, String> user, HttpServletResponse response) {
+	public ResponseEntity<Result> login(@RequestBody Map<String, String> user, HttpServletResponse response) {
 		System.out.println(user.toString());
 
-		User member = userService.findByUid(user.get("uid"));
+		User member = userRepository.findByUid(user.get("uid"))
+				.orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_ID, HttpStatus.NOT_FOUND));
 
 		if (!passwordEncoder.matches(user.get("upw"), member.getUpw())) {
-			throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_PW, HttpStatus.NOT_FOUND);
 		}
 
-		String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+		Map<String,String> result = new HashMap<String, String>();
+        result.put("uid", member.getUid());
+        result.put("uemail", member.getUemail());
+        result.put("unick", member.getUnick());
+		
+		// JWT 생성
+		String token = jwtTokenProvider.createToken(member, member.getRoles());
 		response.setHeader("X-AUTH-TOKEN", token);
 
-		return new ResponseEntity<User>(member, HttpStatus.OK);
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result), HttpStatus.OK);
 	}
 
 	// 아이디 중복체크
@@ -139,7 +160,6 @@ public class UserSecurityController {
 	}
 
 	
-	// 이메일 중복 체크
 	@ApiOperation(value = "이메일 중복 체크. 이미 있는 이메일인 경우 fail을 반환한다.", response = String.class)
 	@PostMapping(value = "/e-dup")
 	public ResponseEntity<String> edcheck(@RequestBody HashMap<String, String> userEmailData) {
@@ -153,7 +173,6 @@ public class UserSecurityController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	// 재설정을 위한 현재 비밀번호 확인
 	@ApiOperation(value = "재설정하기 위해 현재 비밀번호 확인. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
 	@PostMapping(value = "/pw-dup")
 	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData) {
@@ -168,13 +187,11 @@ public class UserSecurityController {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 	}
-
 	
 	@ApiOperation(value = "유저 이메일을 가지고 비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
 	@PutMapping(value = "/pw-reset")
 	public ResponseEntity<String> pwreset(@RequestBody HashMap<String, String> userData) {
 		System.out.println("log - pwreset");
-		
 		
 		int ret = userService.pwreset(passwordEncoder.encode(userData.get("upw")), userData.get("uemail"));
 		

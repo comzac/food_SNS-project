@@ -2,26 +2,24 @@ package com.ssafy.sub.exception;
 
 import org.springframework.http.HttpStatus;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class RestException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	private HttpStatus status;
+	private int statusCode;
 	private String message;
+	private HttpStatus status;
 
-	public RestException(HttpStatus status, String message) {
-		this.status = status;
+	public RestException(int statusCode, String message) {
+		this.statusCode = statusCode;
 		this.message = message;
-	}
-
-	public HttpStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(HttpStatus status) {
-		this.status = status;
-	}
-
-	public String getMessage() {
-		return message;
 	}
 }

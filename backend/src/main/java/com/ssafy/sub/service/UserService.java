@@ -25,10 +25,10 @@ public class UserService {
 
 	// jpaRepository 호출
 	public User join(User user) {
+		System.out.println("Join-service");
+		System.out.println(user.toString());
 		return userRepository.save(user);
 	}
-	
-
 
 	// custom repository 호출
 	

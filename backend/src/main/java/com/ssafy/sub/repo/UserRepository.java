@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUnick(String unick);
 	User findByUemail(String uemail);
 	Long deleteByUid(String uid);
-	
+
 	@Transactional
     @Modifying
     @Query("UPDATE User u SET u.upw = :upw WHERE u.uemail = :uemail")

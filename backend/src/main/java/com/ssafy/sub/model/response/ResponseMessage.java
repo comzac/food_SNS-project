@@ -3,8 +3,9 @@ package com.ssafy.sub.model.response;
 public class ResponseMessage {
 
     public static final String LOGIN_SUCCESS = "로그인 성공";
-    public static final String LOGIN_FAIL = "로그인 실패";
-
+    public static final String LOGIN_FAIL_ID = "아이디를 확인해주세요";
+    public static final String LOGIN_FAIL_PW = "비밀번호를 확인해주세요";
+    
     public static final String READ_USER = "회원 정보 조회 성공";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String ALREADY_USER = "이미 존재하는 Email입니다.";
@@ -13,22 +14,16 @@ public class ResponseMessage {
     public static final String UPDATE_USER = "회원 정보 수정 성공";
     public static final String FAIL_UPDATE_USER = "회원 정보 수정 실패";
     public static final String DELETE_USER = "회원 탈퇴 성공";
-
-
+    
     public static final String READ_ALL_FEEDS = "모든 피드 조회 성공";
     public static final String READ_FEED = "피드 조회 성공";
     public static final String NOT_FOUND_FEED = "피드가 존재하지 않습니다.";
-
-
-    public static final String READ_ALL_CONTENTS = "모든 컨텐츠 조회 성공";
-    public static final String READ_CONTENT = "컨텐츠 조회 성공";
-    public static final String NOT_FOUND_CONTENT = "컨텐츠가 존재하지 않습니다.";
-    public static final String CREATE_CONTENT = "컨텐츠 작성 성공";
-    public static final String FAIL_CREATE_CONTENT = "컨텐츠 작성 실패";
-    public static final String UPDATE_CONTENT = "컨텐츠 수정 성공";
-    public static final String FAIL_UPDATE_CONTENT = "컨텐츠 수정 실패";
-    public static final String DELETE_CONTENT = "컨텐츠 삭제 성공";
-    public static final String LIKE_CONTENT = "컨텐츠 좋아요/해제 성공";
+    public static final String CREATE_FEED = "피드 작성 성공";
+    public static final String FAIL_CREATE_FEED = "피드 작성 실패";
+    public static final String UPDATE_FEED = "피드 업데이트 성공";
+    public static final String FAIL_UPDATE_FEED = "피드 업데이트 실패";
+    public static final String DELETE_FEED = "피드 삭제 성공";
+    public static final String FAIL_DELETE_FEED = "피드 업데이트 실패";
 
     public static final String READ_ALL_COMMENTS = "모든 댓글 조회 성공";
     public static final String READ_COMMENT = "댓글 조회 성공";
