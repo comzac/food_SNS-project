@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PasswordChoiceEmailComponent v-if="page === 1" @toEmailVerification="setConfirmCode" />
+    <PasswordChoiceEmail v-if="page === 1" @toEmailVerification="setConfirmCode" />
     <PasswordChoiceEmailVerification
       v-if="page === 2"
       :confirmCode="confirmCode"
