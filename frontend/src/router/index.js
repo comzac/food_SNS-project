@@ -1,17 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import LoginView from "../views/LoginView.vue";
-import SignupView from "../views/SignupView.vue";
-import PasswordChoice from "../views/user/PasswordChoice.vue";
-import PasswordChoiceEmail from "../views/user/PasswordChoiceEmail.vue";
+import LoginView from "@/views/LoginView.vue";
+import SignupView from "@/views/SignupView.vue";
+import PasswordChoice from "@/views/user/PasswordChoiceView.vue";
+import PasswordChoiceEmail from "@/views/user/PasswordChoiceEmailView.vue";
 import UserDetailView from "@/views/user/UserDetailView";
 
-import Home from "../views/Home.vue";
+import Home from "@/views/Home.vue";
 // import FeedItem2 from "../views/FeedItem2.vue";
 
-import NotFoundComponent from "../components/NotFoundComponent.vue";
-import ErrorComponent from "../components/ErrorComponent.vue";
+import NotFoundComponent from "@/components/NotFoundComponent.vue";
+import ErrorComponent from "@/components/ErrorComponent.vue";
 
 Vue.use(VueRouter);
 

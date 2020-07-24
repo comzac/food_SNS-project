@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PasswordChoiceEmailView v-if="page === 1" @toEmailVerification="setConfirmCode" />
+    <PasswordChoiceEmail v-if="page === 1" @toEmailVerification="setConfirmCode" />
     <PasswordChoiceEmailVerification
       v-if="page === 2"
       :confirmCode="confirmCode"
@@ -13,16 +13,16 @@
 <script>
 import { mapActions } from "vuex";
 
-import PasswordChoiceEmailView from "@/components/accounts/PasswordChange/PasswordChoiceEmailView.vue";
-import PasswordChoiceEmailVerification from "@/components/accounts/PasswordChange/PasswordChoiceEmailVerification.vue";
-import PasswordChange from "@/components/accounts/PasswordChange/PasswordChange.vue";
+import PasswordChoiceEmail from "@/components/accounts/passwordchange/PasswordChoiceEmail.vue";
+import PasswordChoiceEmailVerification from "@/components/accounts/passwordchange/PasswordChoiceEmailVerification.vue";
+import PasswordChange from "@/components/accounts/passwordchange/PasswordChange.vue";
 
 export default {
   name: "PasswordChoiceEmail",
   components: {
-    PasswordChoiceEmailView,
+    PasswordChoiceEmail,
     PasswordChoiceEmailVerification,
-    PasswordChange
+    PasswordChange,
   },
   data() {
     return {
@@ -30,8 +30,8 @@ export default {
       confirmCode: "",
       userEmailData: {
         uemail: "",
-        upw: ""
-      }
+        upw: "",
+      },
     };
   },
   methods: {
@@ -47,8 +47,8 @@ export default {
     doPasswordReset(password) {
       this.userEmailData.upw = password;
       this.pwreset(this.userEmailData);
-    }
-  }
+    },
+  },
 };
 </script>
 
