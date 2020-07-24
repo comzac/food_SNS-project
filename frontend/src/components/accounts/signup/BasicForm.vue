@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row class="text-center" align="center" justify="center" no-gutters>
+    <v-row class="text-center" align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-text-field
           label="아이디"
@@ -118,12 +118,12 @@ export default {
         upw2: "",
         uemail: "",
         ubirth: "",
-        usex: ""
+        usex: "",
       },
       show1: false,
       show2: false,
       idcheck: false,
-      nickcheck: false
+      nickcheck: false,
     };
   },
   methods: {
@@ -165,16 +165,16 @@ export default {
       return true;
     },
     idCheck2(uid) {
-      this.idCheck(uid).then(res =>
+      this.idCheck(uid).then((res) =>
         res ? (this.idcheck = true) : (this.idcheck = false)
       );
     },
     nickCheck2(unick) {
-      this.nickCheck(unick).then(res =>
+      this.nickCheck(unick).then((res) =>
         res ? (this.nickcheck = true) : (this.nickcheck = false)
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
