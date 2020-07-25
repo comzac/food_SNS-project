@@ -77,7 +77,7 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }
 
-  const publicPages = ["Home", "Signup", "Login", "NotFound"];
+  const publicPages = ["Home", "Signup", "Login", "NotFound", "PasswordChoice", "PasswordChoiceEmail"];
   const needNotAuthPages = ["Signup", "Login"];
 
   const authRequired = !publicPages.includes(to.name);

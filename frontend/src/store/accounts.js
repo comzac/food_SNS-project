@@ -51,16 +51,16 @@ export default {
           },
         })
         .then((res) => {
-          // console.log("response");
           console.log(res);
-          commit("SET_TOKEN", res.headers('X-AUTH-TOKEN'));
-          // commit("SET_TOKEN", res.data);
-          commit("SET_USERDATA", res.data);
+          const data = res.data.data
+          commit("SET_TOKEN", data.token);
+          delete data.token
+          commit("SET_USERDATA", data);
           router.push({ name: "Home" });
         })
         .catch((err) => {
           alert("로그인 정보를 확인해주세요.");
-          console.log(err.response);
+          console.log(err);
         });
     },
 
