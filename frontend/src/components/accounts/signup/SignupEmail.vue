@@ -92,13 +92,16 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
-      alert("잠시 기다려주세요.");
+      alert("잠시만 기다려주세요.");
       this.getConfirmCode(email).then((code) => {
         if (code !== "") {
+          alert("인증번호가 발송되었습니다.")
           this.$emit("toEmailVerification", {
             confirmCode: code,
             userEmail: email,
           });
+        } else {
+          alert("인증번호 발송에 실패하였습니다.");
         }
       });
     },
