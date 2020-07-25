@@ -15,8 +15,7 @@ export default {
     },
     feeds: {
       URL: "feeds/",
-      home: "home",
-      mypage: "mypage",
+      page: "page/",
       search: "search",
     },
   },
