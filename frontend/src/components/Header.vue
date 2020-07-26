@@ -29,7 +29,7 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      absolute
+      fixed
       temporary
       color="#ff6666"
       class="whtie--text"
