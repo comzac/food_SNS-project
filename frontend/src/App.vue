@@ -11,6 +11,7 @@
 
 <script>
 import Header from "@/components/Header";
+
 export default {
   name: "App",
   components: {
@@ -22,6 +23,11 @@ export default {
 };
 </script>
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+
+* {
+  font-family: "Jua", sans-serif;
+}
 h1 {
   color: #ff6666;
 }

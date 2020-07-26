@@ -14,17 +14,28 @@
           autocapitalize="off"
           autocorrect="off"
         ></v-text-field>
+        <video width="100%" controls :src="video" type="video/mp4" autoplay></video>
+        <v-file-input
+          prepend-icon
+          accept=".mp4"
+          outlined
+          solo
+          label="비디오 선택"
+          @change="previewVideo"
+          color="#ff6666"
+          :error-messages="video?'':'눌러서 비디오을 선택하세요 (.mp4 파일만 업로드 됩니다.)'"
+        ></v-file-input>
         <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
         <!-- 사진 입력 -->
         <v-file-input
           prepend-icon
-          accept="image/*"
+          accept=".png, .jpeg, .gif, .jpg"
           outlined
           solo
           label="사진 선택"
           @change="previewImage"
           color="#ff6666"
-          :error-messages="imageData?'':'눌러서 사진을 선택하세요'"
+          :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg 파일만 업로드 됩니다.)'"
         ></v-file-input>
         <v-spacer></v-spacer>
         <v-textarea
@@ -84,6 +95,7 @@ export default {
         editdate: "",
       },
       feedhashtag: [],
+      video: "",
     };
   },
   methods: {
@@ -107,17 +119,36 @@ export default {
     //   }
     // },
     previewImage(file) {
-      // Reference to the DOM input element
-      var reader = new FileReader();
-      // Define a callback function to run, when FileReader finishes its job
-      reader.onload = (file) => {
-        // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-        // Read image as base64 and set to imageData
-        this.imageData = file.target.result;
-        this.feed.uploadImageFile = file.target.result;
-      };
-      // Start the reader job - read file as a data url (base64 format)
-      reader.readAsDataURL(file);
+      console.log(file);
+      if (file.size > 20 * 1024 * 1024) {
+        alert("파일 사이즈가 20mb 보다 큽니다.");
+        return false;
+      } else {
+        // Reference to the DOM input element
+        var reader = new FileReader();
+        // Define a callback function to run, when FileReader finishes its job
+        reader.onload = (file) => {
+          // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+          // Read image as base64 and set to imageData
+          this.imageData = file.target.result;
+          this.feed.uploadImageFile = file.target.result;
+        };
+        // Start the reader job - read file as a data url (base64 format)
+        reader.readAsDataURL(file);
+      }
+    },
+    previewVideo(file) {
+      console.log(file);
+      if (file.size > 20 * 1024 * 1024) {
+        alert("파일 사이즈가 20mb 보다 큽니다.");
+        return false;
+      } else {
+        var reader = new FileReader();
+        reader.onload = (file) => {
+          this.video = file.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
     },
   },
 };
