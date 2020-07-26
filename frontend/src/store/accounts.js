@@ -52,9 +52,9 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          const data = res.data.data
-          commit("SET_TOKEN", data.token);
-          delete data.token
+          const data = res.data.data;
+          commit("SET_TOKEN", data);
+          delete data.token;
           commit("SET_USERDATA", data);
           router.push({ name: "Home" });
         })
@@ -193,25 +193,25 @@ export default {
     pwcheck({ state, rootGetters }, password) {
       const config = rootGetters["accounts/config"];
       const requestData = {
-        "uid": state.userData.uid,
-        "upw": password
-      }
+        uid: state.userData.uid,
+        upw: password,
+      };
       return axios
         .post(
-          SERVER.BASE_URL + 
-            SERVER.ROUTES.accounts.URL + 
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.pwcheck,
           requestData,
           config
         )
-        .then(res => {
-          if(res.data === "success") {
-            return true
+        .then((res) => {
+          if (res.data === "success") {
+            return true;
           } else {
-            return false
+            return false;
           }
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
 
     pwreset(context, userEmailData) {
