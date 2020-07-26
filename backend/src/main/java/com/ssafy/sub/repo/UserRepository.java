@@ -16,6 +16,7 @@ import com.ssafy.sub.dto.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUid(String uid);
+	User findById(int id);
 	User findByUnick(String unick);
 	User findByUemail(String uemail);
 	Long deleteByUid(String uid);

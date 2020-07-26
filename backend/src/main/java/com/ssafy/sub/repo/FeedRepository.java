@@ -1,5 +1,6 @@
 package com.ssafy.sub.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -13,4 +14,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 	
 	@Transactional
 	Long deleteById(int id);
+
+	List<Feed> findByUid(int uid);
 }

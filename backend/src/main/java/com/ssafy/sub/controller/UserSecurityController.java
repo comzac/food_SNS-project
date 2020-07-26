@@ -2,12 +2,18 @@
 package com.ssafy.sub.controller;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,12 +31,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.config.security.JwtTokenProvider;
+import com.ssafy.sub.dto.Token;
 import com.ssafy.sub.dto.User;
-import com.ssafy.sub.dto.UserDto;
-import com.ssafy.sub.exception.CUserNotFoundException;
 import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.CommonResult;
-import com.ssafy.sub.model.response.ListResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.SingleResult;
@@ -50,7 +54,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*")
 @RequestMapping("/users")
 public class UserSecurityController {
-
+ 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
@@ -59,29 +63,33 @@ public class UserSecurityController {
 	private final UserRepository userRepository;
 	private final ResponseService responseService;
 	private final UserService userService;
+	
+	@Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
 	// 회원가입
 	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = Result.class)
 	@PostMapping("/join")
 	public ResponseEntity<Result> join(@RequestBody Map<String, String> user, HttpServletResponse response) {
 		System.out.println("Users - join");
-		
+
 		User member = User.builder().uid(user.get("uid")).uemail(user.get("uemail")).unick(user.get("unick"))
 				.upw(passwordEncoder.encode(user.get("upw"))).roles(Collections.singletonList("ROLE_USER")) // 최초 가입시
 																											// USER 로 설정
 				.build();
 		userService.join(member).getUid();
-		
+
 		// User 반환 정보
-		Map<String,String> result = new HashMap<String, String>();
+		Map<String, String> result = new HashMap<String, String>();
         result.put("uid", member.getUid());
         result.put("uemail", member.getUemail());
         result.put("unick", member.getUnick());
         
         // JWT 생성
         String token = jwtTokenProvider.createToken(member, member.getRoles());
-		response.setHeader("X-AUTH-TOKEN", token);
-
+		response.addHeader("X-AUTH-TOKEN", token);
+		result.put("token", token);
+		
 		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, result), HttpStatus.CREATED);
 	}
 
@@ -91,23 +99,60 @@ public class UserSecurityController {
 	public ResponseEntity<Result> login(@RequestBody Map<String, String> user, HttpServletResponse response) {
 		System.out.println(user.toString());
 
-		User member = userRepository.findByUid(user.get("uid"))
-				.orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_ID, HttpStatus.NOT_FOUND));
+		User member = userRepository.findByUid(user.get("uid")).orElseThrow(
+				() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_ID, HttpStatus.NOT_FOUND));
 
 		if (!passwordEncoder.matches(user.get("upw"), member.getUpw())) {
 			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_PW, HttpStatus.NOT_FOUND);
 		}
 
-		Map<String,String> result = new HashMap<String, String>();
-        result.put("uid", member.getUid());
-        result.put("uemail", member.getUemail());
-        result.put("unick", member.getUnick());
-		
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("uid", member.getUid());
+		result.put("uemail", member.getUemail());
+		result.put("unick", member.getUnick());
+
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(member, member.getRoles());
-		response.setHeader("X-AUTH-TOKEN", token);
+		response.addHeader("X-AUTH-TOKEN", token);
+		result.put("token", token);
+		
+		ValueOperations<String, Object> vop = redisTemplate.opsForValue();
+		Token jsonToken=new Token();
+		jsonToken.setUsername(member.getUid());
+		jsonToken.setRefreshToken(token);
+		vop.set(member.getUid(), jsonToken);
+		
+		System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(member.getUid()));
+//		System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(member.getU);
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result),
+				HttpStatus.OK);
+	}
+	
+	// 로그아웃
+	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = Result.class)
+	@GetMapping("/logout")
+	public ResponseEntity<Result> logout(HttpServletRequest request) {
+		System.out.println("logout");
+		
+		String username = null;
+		String token = jwtTokenProvider.resolveToken(request);
+		if(jwtTokenProvider.validateToken(token)) {
+			username = jwtTokenProvider.getUName(token);
+			
+			Date expirationDate = jwtTokenProvider.getExpirationDate(token);
+			System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(username));
+			redisTemplate.delete(username);
+			System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(username));
+//			log.info("redis value : "+redisTemplate.opsForValue().get(Constant.REDIS_PREFIX + token));
+			
+			String accessToken = token;
+//			logger.info(" logout ing : " + accessToken);
+	        redisTemplate.opsForValue().set(accessToken, new Token(accessToken, null));
+	        redisTemplate.expire(accessToken, 10*6*1000, TimeUnit.MILLISECONDS);
+	        System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(token));
+		}
 
-		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result), HttpStatus.OK);
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, null), HttpStatus.OK);
 	}
 
 	// 아이디 중복체크
@@ -159,7 +204,6 @@ public class UserSecurityController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 
-	
 	@ApiOperation(value = "이메일 중복 체크. 이미 있는 이메일인 경우 fail을 반환한다.", response = String.class)
 	@PostMapping(value = "/e-dup")
 	public ResponseEntity<String> edcheck(@RequestBody HashMap<String, String> userEmailData) {
@@ -167,12 +211,12 @@ public class UserSecurityController {
 		String uemail = userEmailData.get("userEmail");
 		User memeber = userService.edcheck(uemail);
 
-		if (memeber==null) {
+		if (memeber == null) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
-	
+
 	@ApiOperation(value = "재설정하기 위해 현재 비밀번호 확인. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
 	@PostMapping(value = "/pw-dup")
 	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData) {
@@ -182,53 +226,48 @@ public class UserSecurityController {
 
 		if (!passwordEncoder.matches(userData.get("upw"), member.getUpw())) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-		}
-		else {
+		} else {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 	}
-	
+
 	@ApiOperation(value = "유저 이메일을 가지고 비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
 	@PutMapping(value = "/pw-reset")
 	public ResponseEntity<String> pwreset(@RequestBody HashMap<String, String> userData) {
 		System.out.println("log - pwreset");
-		
+
 		int ret = userService.pwreset(passwordEncoder.encode(userData.get("upw")), userData.get("uemail"));
-		
+
 		if (ret == 0) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-		}else {
+		} else {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	// ========================================= //
-	
-	
+
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
 	@GetMapping(value = "/users")
-	public ListResult<User> findAllUser() {
+	public ResponseEntity findAllUser() {
 		// 결과데이터가 여러건인경우 getListResult를 이용해서 결과를 출력한다.
-		return responseService.getListResult(userRepository.findAll());
+		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, userRepository.findAll()), HttpStatus.CREATED);
 	}
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 단건 조회", notes = "회원번호(msrl)로 회원을 조회한다")
 	@GetMapping(value = "/user")
-	public SingleResult<User> findUserById(@ApiParam(value = "언어", defaultValue = "ko") @RequestParam String lang) {
+	public ResponseEntity<Result> findUserById() {
 		// SecurityContext에서 인증받은 회원의 정보를 얻어온다.
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String id = authentication.getName();
+		
 		// 결과데이터가 단일건인경우 getSingleResult를 이용해서 결과를 출력한다.
-		return responseService.getSingleResult(userRepository.findByUid(id).orElseThrow(CUserNotFoundException::new));
+		return new ResponseEntity<Result>(
+				new Result(StatusCode.OK, ResponseMessage.READ_USER, userRepository.findById(Integer.parseInt(id))),
+				HttpStatus.OK);
+//     return responseService.getSingleResult(userRepository.findById(Integer.parseInt(id)).orElseThrow(CUserNotFoundException::new));
 	}
 
 	@ApiImplicitParams({
@@ -252,6 +291,4 @@ public class UserSecurityController {
 		return responseService.getSuccessResult();
 	}
 
-	
-	
 }

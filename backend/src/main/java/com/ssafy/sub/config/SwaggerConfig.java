@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
 	@Bean
-	public Docket postsApi() {
+	public Docket postsApi() { 
 		return new Docket(DocumentationType.SWAGGER_2)
 				.groupName("ssafyVueBoard")
 				.apiInfo(apiInfo())

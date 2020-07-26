@@ -2,30 +2,24 @@ package com.ssafy.sub.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.ssafy.sub.repo.FeedQueryDsl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.sub.config.security.JwtTokenProvider;
 import com.ssafy.sub.dto.Feed;
+import com.ssafy.sub.dto.User;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.service.FeedService;
+import com.ssafy.sub.service.UserService;
 
-import io.jsonwebtoken.Claims;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = "*")
@@ -38,15 +32,17 @@ public class FeedController {
 	
 	@Autowired
 	private FeedService feedService;
+	@Autowired
+	private UserService userService;
 	 
 	// 1. list 조회
-	@ApiOperation(value = "feedList를 조회한다", response = Result.class)
-	@GetMapping(value="/home")
-	public ResponseEntity<Result> feedHomeList() {
-		System.out.println("log - feedHomeList");
+	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
+	@GetMapping(value="/page")
+	public ResponseEntity<Result> feedHomePage() {
+		System.out.println("log - feedUserPage");
 		Result result;
 		
-		List<Feed> feedList = feedService.feedHomeList();
+		List<Feed> feedList = feedService.feedHomePageList();
 		
 		// null값 처리 안하는걸로 그래도 혹시 코드 필요할지 몰라서 남겨둠
 //		if(feedList==null) {
@@ -58,16 +54,15 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "내 피드 목록을 조회한다", response = Result.class)
-	@GetMapping(value="/mypage")
-	public ResponseEntity<Result> feedMypageList(Authentication authentication) {
-		System.out.println("log - feedMypageList");
+	@ApiOperation(value = "유저의 개인 피드 목록을 조회한다", response = Result.class)
+	@GetMapping(value="/page/{uid}")
+	public ResponseEntity<Result> feedUserPage(@PathVariable String uid, Authentication authentication) {
+		System.out.println("log - feedUserPage");
 
-		Claims claims = (Claims) authentication.getPrincipal();
-		int uid = claims.get("id", Integer.class);
-		List<Feed> feedList = feedService.feedMypageList(uid);
+		int user_id = userService.findByUid(uid).getId();
+		List<Feed> feedList = feedService.feedUserPageList(user_id);
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList);
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feedList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
@@ -83,16 +78,18 @@ public class FeedController {
 //	}
 	
 	// 3. list 추가
-	@ApiOperation(value = "feedList에 정보를 추가한다", response = String.class)
+	@ApiOperation(value = "feedList에 정보를 추가한다", response = Result.class)
 	@PostMapping
-	public ResponseEntity<String> feedInsert(@RequestBody Feed feed, HttpServletRequest request) {
+	public ResponseEntity<Result> feedInsert(@RequestBody Feed feed, Authentication authentication) {
 		System.out.println("log - feedInsert");
-//		String token = jwtTokenProvider.resolveToken(request);
-//		int uid = jwtTokenProvider.getUserId(token);
-//		
-//		feed.setUid(uid);
+
+		User user = (User) authentication.getPrincipal();
+		feed.setUid(user.getId());
+		
 		feedService.feedInsert(feed);
-		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		
+		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, null);
+		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 	
 	// 4. list 상세
@@ -130,5 +127,23 @@ public class FeedController {
 		Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
-	
+
+	// 7. list by follower 조회
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
+	@ApiOperation(value = "팔로우한 유저들의 피드", response = Result.class)
+	@PostMapping(value="/page/follower")
+	public ResponseEntity<Result> feedFollowerPage() {
+		System.out.println("log - feedFollowerPage");
+		Result result;
+		
+		String id;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		id = authentication.getName();
+		
+		List<Feed> feedList = feedService.findAllByFollower(Integer.parseInt(id));
+
+		result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
 }

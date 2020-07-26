@@ -16,10 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,9 @@ public class User implements UserDetails {
 //	@GeneratedValue: 원하는 키 생성 전략 / IDENTITY: 기본키 생성을 db에 위임
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
+//	@JsonProperty: 데이터 어떤식으로 접근할지 / Access.WRITE_ONLY 읽어올 때 제외됨
+//	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -47,6 +51,7 @@ public class User implements UserDetails {
 	@Column(length =100, nullable = false)
 	private String uid;
 	
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(length = 100, nullable = false)
 	private String upw;
 	
@@ -58,7 +63,7 @@ public class User implements UserDetails {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(length = 100)
-//	@CreatedDate
+//	@CreationTimestamp
 	private Date uregdate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -80,31 +85,37 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getUsername() {
-        return uid;
+        return String.valueOf(id);
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isEnabled() {
         return true;
     }
 
 	@Override
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	public String getPassword() {
 		return null;
 	}
