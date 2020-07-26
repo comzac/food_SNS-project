@@ -64,7 +64,7 @@
               <v-list-item-title>어디로가</v-list-item-title>
             </v-list-item>
           </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
+          <router-link :to="{ name: 'UserEdit' }" class="text-decoration-none">
             <v-list-item>
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>

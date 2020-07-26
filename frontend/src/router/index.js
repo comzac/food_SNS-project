@@ -6,6 +6,7 @@ import SignupView from "@/views/SignupView";
 import PasswordChoiceView from "@/views/user/PasswordChoiceView";
 import PasswordChoiceEmailView from "@/views/user/PasswordChoiceEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
+import UserEditView from "@/views/user/UserEditView";
 
 import Home from "@/views/Home";
 
@@ -56,6 +57,12 @@ const routes = [
     name: "FeedCreateView",
     component: FeedCreateView,
   },
+  {
+    path: "/user/edit",
+    name: "UserEdit",
+    component: UserEditView,
+    meta: { title: "회원정보 수정" },
+  },
   // {
   //   path: "/feed/:fid",
   //   name: "FeedItem2",
@@ -77,7 +84,14 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }
 
-  const publicPages = ["Home", "Signup", "Login", "NotFound", "PasswordChoice", "PasswordChoiceEmail"];
+  const publicPages = [
+    "Home",
+    "Signup",
+    "Login",
+    "NotFound",
+    "PasswordChoice",
+    "PasswordChoiceEmail",
+  ];
   const needNotAuthPages = ["Signup", "Login"];
 
   const authRequired = !publicPages.includes(to.name);
