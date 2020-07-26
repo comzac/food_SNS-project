@@ -7,19 +7,23 @@ export default {
   namespaced: true,
   state: {
     feeds: [],
+    userFeeds: [],
   },
   getters: {},
   mutations: {
     SET_FEEDS(state, feeds) {
       state.feeds = feeds;
     },
+    SET_USERFEEDS(state, userFeeds) {
+      state.userFeeds = userFeeds
+    }
   },
   actions: {
     fetchFeeds({ commit, rootGetters }) {
       const config = rootGetters["accounts/config"];
       axios
         .get(
-          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.home,
+          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
           null,
           config
         )
@@ -28,6 +32,21 @@ export default {
           commit("SET_FEEDS", res.data);
         })
         .catch((err) => console.log(err));
+    },
+
+    getUserFeed({ commit, rootGetters }, userId) {
+      const config = rootGetters["accounts/cofnig"];
+      axios
+        .get(
+          SERVER.BASE_URL + SERVER.ROUTES.feed.URL + SERVER.ROUTES.feeds.page + userId,
+          null,
+          config
+        )
+        .then(res => {
+          console.log(res)
+          commit("SET_USERFEEDS", res.data)
+        })
+        .catch(err => console.log(err.response))
     },
 
     insertFeed({ rootGetters }, feedData) {

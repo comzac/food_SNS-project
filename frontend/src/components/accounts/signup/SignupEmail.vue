@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height fluid>
     <!-- <h1>Email Verification</h1> -->
-    <v-row class="text-center" align="center" justify="center" no-gutters>
+    <v-row class="text-center" align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-spacer>
           <br />
@@ -92,13 +92,16 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
-      alert("잠시 기다려주세요.");
+      alert("잠시만 기다려주세요.");
       this.getConfirmCode(email).then((code) => {
         if (code !== "") {
+          alert("인증번호가 발송되었습니다.")
           this.$emit("toEmailVerification", {
             confirmCode: code,
             userEmail: email,
           });
+        } else {
+          alert("인증번호 발송에 실패하였습니다.");
         }
       });
     },

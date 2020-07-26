@@ -14,13 +14,14 @@
         />
       </router-link>
       <v-spacer></v-spacer>
+
       <router-link class="text-decoration-none" :to="{name: 'Login'}">
-        <v-btn icon>
+        <v-btn icon v-if="!isLoggedIn" class="mr-n3">
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link class="text-decoration-none" :to="{name: 'Login'}">
-        <v-btn icon>
+      <router-link class="text-decoration-none" :to="{name: 'FeedCreateView'}">
+        <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
       </router-link>
@@ -28,7 +29,7 @@
 
     <v-navigation-drawer
       v-model="drawer"
-      absolute
+      fixed
       temporary
       color="#ff6666"
       class="whtie--text"
@@ -63,7 +64,7 @@
               <v-list-item-title>어디로가</v-list-item-title>
             </v-list-item>
           </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
+          <router-link :to="{ name: 'UserEdit' }" class="text-decoration-none">
             <v-list-item>
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
@@ -115,7 +116,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Header",
@@ -123,6 +124,9 @@ export default {
   data: () => ({
     drawer: false,
   }),
+  computed: {
+    ...mapGetters("accounts", ["isLoggedIn"]),
+  },
   methods: {
     ...mapActions("accounts", ["logout"]),
   },

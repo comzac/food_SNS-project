@@ -1,5 +1,6 @@
 export default {
   BASE_URL: "http://localhost:8080/",
+  // BASE_URL: "http://192.168.0.3:8080/",
   ROUTES: {
     accounts: {
       URL: "users/",
@@ -15,8 +16,7 @@ export default {
     },
     feeds: {
       URL: "feeds/",
-      home: "home",
-      mypage: "mypage",
+      page: "page/",
       search: "search",
     },
   },

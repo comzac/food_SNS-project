@@ -3,9 +3,20 @@
     <div class="home" v-for="datum in feed_data" :key="datum.feed.id">
       <FeedItem :feed="datum.feed" :feedhashtag="datum.feedhashtag" :feedlike="datum.feedlike" />
     </div>
-    <v-btn color="#ff6666" fixed small bottom right fab @click="top()">
-      <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
-    </v-btn>
+    <v-hover v-slot:default="{ hover }" open-delay="200">
+      <v-btn
+        :color="hover ? '#ef5656' : '#ff6666'"
+        :elevation="hover ? 24 : 2"
+        fixed
+        small
+        bottom
+        right
+        fab
+        @click="top()"
+      >
+        <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
+      </v-btn>
+    </v-hover>
   </div>
 </template>
 
@@ -73,7 +84,7 @@ export default {
     window.addEventListener("scroll", this.infiniteScroll);
   },
   destroyed() {
-    window.removeEventListner("scroll", this.infiniteScroll);
+    window.removeEventListener("scroll", this.infiniteScroll);
   },
 };
 </script>

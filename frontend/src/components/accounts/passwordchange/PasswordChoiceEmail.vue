@@ -89,13 +89,16 @@ export default {
     },
     emailVerification(email) {
       // console.log(SERVER.URL)
-      alert("잠시 기다려주세요.");
+      alert("잠시만 기다려주세요.");
       this.getConfirmCode(email).then((code) => {
         if (code !== "") {
+          alert("인증번호가 발송되었습니다.")
           this.$emit("toEmailVerification", {
             confirmCode: code,
             uemail: email,
           });
+        } else {
+          alert("인증번호 발송에 실패하였습니다.")
         }
       });
     },

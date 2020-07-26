@@ -6,9 +6,12 @@ import SignupView from "@/views/SignupView";
 import PasswordChoiceView from "@/views/user/PasswordChoiceView";
 import PasswordChoiceEmailView from "@/views/user/PasswordChoiceEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
+import UserEditView from "@/views/user/UserEditView";
 
 import Home from "@/views/Home";
+
 // import FeedItem2 from "../views/FeedItem2";
+import FeedCreateView from "@/views/feed/FeedCreateView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -49,6 +52,17 @@ const routes = [
     component: UserDetailView,
     meta: { title: "usernickname · HoneyCombo" }, // 이거도 나중에 유저마다 이름 다르게 변경해야함 (컴포넌트 내에서 변경가능)
   },
+  {
+    path: "/feed/create",
+    name: "FeedCreateView",
+    component: FeedCreateView,
+  },
+  {
+    path: "/user/edit",
+    name: "UserEdit",
+    component: UserEditView,
+    meta: { title: "회원정보 수정" },
+  },
   // {
   //   path: "/feed/:fid",
   //   name: "FeedItem2",
@@ -70,7 +84,14 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }
 
-  const publicPages = ["Home", "Signup", "Login", "NotFound"];
+  const publicPages = [
+    "Home",
+    "Signup",
+    "Login",
+    "NotFound",
+    "PasswordChoice",
+    "PasswordChoiceEmail",
+  ];
   const needNotAuthPages = ["Signup", "Login"];
 
   const authRequired = !publicPages.includes(to.name);

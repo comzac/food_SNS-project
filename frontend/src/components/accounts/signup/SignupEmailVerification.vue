@@ -1,7 +1,7 @@
 <template>
   <v-container class="fill-height" fluid>
     <!-- <h1>Email Verification</h1> -->
-    <v-row class="text-center" align="center" justify="center" no-gutters>
+    <v-row class="text-center" align="center" justify="center">
       <v-col cols="12" sm="8" md="6" lg="4">
         <v-spacer>
           <br />
@@ -58,9 +58,9 @@ export default {
     this.component = this;
   },
   watch: {
-    confirm: function() {
+    confirm: function () {
       this.checkForm();
-    }
+    },
   },
   methods: {
     checkForm() {
@@ -70,7 +70,7 @@ export default {
 
       let isSubmit = true;
 
-      Object.values(this.error).map(v => {
+      Object.values(this.error).map((v) => {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
@@ -84,21 +84,21 @@ export default {
       } else {
         alert("인증번호를 확인해주세요.");
       }
-    }
+    },
   },
   data: () => {
     return {
       confirm: "",
       error: {
-        confirm: ""
+        confirm: "",
       },
       isSubmit: false,
-      component: this
+      component: this,
     };
   },
   props: {
-    confirmCode: Object
-  }
+    confirmCode: Object,
+  },
 };
 </script>
 

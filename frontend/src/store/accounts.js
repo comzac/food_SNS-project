@@ -51,16 +51,16 @@ export default {
           },
         })
         .then((res) => {
-          // console.log("response");
           console.log(res);
-          // commit("SET_TOKEN", res.headers.X-AUTH-TOKEN);
-          commit("SET_TOKEN", res.data);
-          commit("SET_USERDATA", res.data);
+          const data = res.data.data;
+          commit("SET_TOKEN", data);
+          delete data.token;
+          commit("SET_USERDATA", data);
           router.push({ name: "Home" });
         })
         .catch((err) => {
           alert("로그인 정보를 확인해주세요.");
-          console.log(err.response);
+          console.log(err);
         });
     },
 
@@ -189,6 +189,31 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    pwcheck({ state, rootGetters }, password) {
+      const config = rootGetters["accounts/config"];
+      const requestData = {
+        uid: state.userData.uid,
+        upw: password,
+      };
+      return axios
+        .post(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.pwcheck,
+          requestData,
+          config
+        )
+        .then((res) => {
+          if (res.data === "success") {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+
     pwreset(context, userEmailData) {
       axios
         .put(
