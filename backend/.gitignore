@@ -60,3 +60,10 @@ log/
 
 ### yml ###
 *.yml
+
+
+### generated ###
+generated
+
+### bin ### 
+bin

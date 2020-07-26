@@ -7,6 +7,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +28,12 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenProvider {
 	private String secretKey = "webfirewood";
     // 토큰 유효시간 30분
-    private long tokenValidTime = 30 * 60 * 1000L;
+    private long tokenValidTime = 10 * 60 * 1000L;
     
     private final UserDetailsService userDetailsService;
+
+	@Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
@@ -40,8 +45,7 @@ public class JwtTokenProvider {
     public String createToken(User user, List<String> roles) {
     	System.out.println(user.getUsername());
         Claims claims = Jwts.claims().setSubject(user.getUsername()); // JWT payload 에 저장되는 정보단위
-        claims.put("id", user.getId());
-//        claims.put("uid", user.getUid());
+        claims.put("uid", user.getUid());
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
         return Jwts.builder()
@@ -55,36 +59,42 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-    	System.out.println("getAuthentication");
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // 토큰에서 회원 정보 추출
+    // 토큰에서 회원 아이디 추출
     public String getUserPk(String token) {
+//    	System.out.println("userPk: "+Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
     
-    // 토큰에서 회원 아이디 추출
-    public int getUserId(String token) {
-    	System.out.println("Get Id");
-    	int id = Integer.parseInt((String) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("id"));
-    	return id;
+    // 토큰에서 회원 이름 추출
+    public String getUName(String token) {
+    	Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+    	return claims.getBody().get("uid", String.class);
     }
 
     // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
-    	System.out.println("Token");
         return request.getHeader("X-AUTH-TOKEN");
     }
 
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
+        	System.out.println(redisTemplate.opsForValue().get(jwtToken));
+        	if(redisTemplate.opsForValue().get(jwtToken) != null) return false;
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
         }
+    }
+    
+    // 만료일자 확인
+    public Date getExpirationDate(String jwtToken) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+        return claims.getBody().getExpiration();
     }
 }

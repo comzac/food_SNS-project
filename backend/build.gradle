@@ -1,6 +1,7 @@
 plugins {
    id 'org.springframework.boot' version '2.3.1.RELEASE'
    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+   id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
    id 'java'
    id 'war'
 }
@@ -44,6 +45,10 @@ dependencies {
    // jpa
    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
    
+   // query dsl 
+   compile("com.querydsl:querydsl-apt") 
+   compile("com.querydsl:querydsl-jpa")
+   
    // spring security
    implementation 'org.springframework.boot:spring-boot-starter-security'
    testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -57,6 +62,42 @@ dependencies {
    // lombok
    compileOnly 'org.projectlombok:lombok'
    annotationProcessor 'org.projectlombok:lombok'
+   
+   // Redis
+   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+   implementation 'it.ozimov:embedded-redis:0.7.2'
+   // https://mvnrepository.com/artifact/com.github.kstyrc/embedded-redis
+   testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
+   // https://mvnrepository.com/artifact/redis.clients/jedis
+   compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
+   
+   
+}
+
+// querydsl 적용 
+apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
+def querydslSrcDir = 'src/main/generated'
+
+querydsl {
+	 library = "com.querydsl:querydsl-apt" 
+	 jpa = true 
+	 querydslSourcesDir = querydslSrcDir 
+}
+
+compileQuerydsl{
+	 options.annotationProcessorPath = configurations.querydsl 
+} 
+
+configurations {
+	querydsl.extendsFrom compileClasspath 
+} 
+  
+sourceSets {
+   main {
+	    java{ 
+	    	srcDirs = ['src/main/java', querydslSrcDir] 
+	    	} 
+    	} 
 }
 
 test {

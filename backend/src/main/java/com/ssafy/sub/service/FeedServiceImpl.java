@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ssafy.sub.repo.FeedQueryDsl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,30 @@ public class FeedServiceImpl implements FeedService {
 
 	@Autowired
 	FeedRepository feedRepository;
-	
+	@Autowired
+	FeedQueryDsl feedQueryDsl;
+
 	@Override
-	public List<Feed> feedHomeList() {
+	public List<Feed> feedHomePageList() {
 		return feedRepository.findAll();
 	}
 	
 	@Override
-	public List<Feed> feedMypageList(int uid) {
-		return feedRepository.findAll();
+	public List<Feed> feedUserPageList(int uid) {
+		return feedRepository.findByUid(uid);
+	}
+
+	@Override
+	public List<Feed> findAllByFollower(int id) {
+		List<Feed> test = feedQueryDsl.findAllByFollower(id);
+		
+		for (Feed feed : test) {
+			System.out.println(feed.toString());
+		}
+		
+		if(test.size() == 0)
+			System.out.println("null z?");
+		return test;
 	}
 
 	@Override

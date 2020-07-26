@@ -16,8 +16,8 @@ public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
+//    @Cacheable(value = CacheKey.USER, key = "#userPk", unless = "#result == null")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUemail(username);
-                
+        return userRepository.findById(Integer.parseInt(username));
     }
 }

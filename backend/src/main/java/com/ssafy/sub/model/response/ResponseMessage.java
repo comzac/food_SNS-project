@@ -5,6 +5,7 @@ public class ResponseMessage {
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAIL_ID = "아이디를 확인해주세요";
     public static final String LOGIN_FAIL_PW = "비밀번호를 확인해주세요";
+    public static final String LOGOUT = "로그아웃";
     
     public static final String READ_USER = "회원 정보 조회 성공";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
@@ -16,6 +17,7 @@ public class ResponseMessage {
     public static final String DELETE_USER = "회원 탈퇴 성공";
     
     public static final String READ_ALL_FEEDS = "모든 피드 조회 성공";
+    public static final String READ_USER_FEEDS = "해당 유저 피드 조회 성공";
     public static final String READ_FEED = "피드 조회 성공";
     public static final String NOT_FOUND_FEED = "피드가 존재하지 않습니다.";
     public static final String CREATE_FEED = "피드 작성 성공";
