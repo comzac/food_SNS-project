@@ -23,10 +23,13 @@ export default {
 };
 </script>
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+.notosanskr * {
+  font-family: "Noto Sans KR", sans-serif;
+}
 
 * {
-  font-family: "Jua", sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 h1 {
   color: #ff6666;
