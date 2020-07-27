@@ -64,13 +64,15 @@ export default {
     passwordCheck() {
       this.pwcheck(this.password).then((checkResult) => {
         if (checkResult) {
-          this.password = "";
           this.$router.push({ name: "UserEdit" });
         } else {
           alert("비밀번호가 일치하지 않습니다.");
-          this.password = "";
         }
+        this.password = "";
       });
+    },
+    clearPassword() {
+      if (!this.dialog) this.password = "";
     },
   },
   computed: {
@@ -78,6 +80,9 @@ export default {
       if (this.password.length < 8) return true;
       else return false;
     },
+  },
+  updated() {
+    this.clearPassword();
   },
 };
 </script>
