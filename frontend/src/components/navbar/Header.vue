@@ -56,7 +56,10 @@
           <br />
         </v-spacer>
         <v-list-item-group active-class="white--text" mandatory>
-          <NavigationListItem v-for="listItem in listItemData" :key="listItem.id" :data="listItem" />
+          <div v-for="listItem in listItemData" :key="listItem.id">
+            <NavigationListItem v-if="listItem.title !== 'Account'" :listItem="listItem" />
+            <PasswordCheckModal v-if="listItem.title === 'Account'" :listItem="listItem" />
+          </div>
         </v-list-item-group>
       </v-list>
       <v-list color="#ff6666" flat align="center">
@@ -71,11 +74,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NavigationListItem from "./NavigationListItem";
+import PasswordCheckModal from "./PasswordCheckModal";
 
 export default {
   name: "Header",
   components: {
     NavigationListItem,
+    PasswordCheckModal,
   },
   data: () => ({
     drawer: false,

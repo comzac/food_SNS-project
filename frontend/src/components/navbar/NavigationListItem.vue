@@ -1,10 +1,10 @@
 <template>
-  <router-link :to="data.link" class="text-decoration-none">
+  <router-link :to="listItem.link" class="text-decoration-none">
     <v-list-item>
       <v-list-item-icon>
-        <v-icon>{{ data.icon }}</v-icon>
+        <v-icon>{{ listItem.icon }}</v-icon>
       </v-list-item-icon>
-      <v-list-item-title>{{ data.title }}</v-list-item-title>
+      <v-list-item-title>{{ listItem.title }}</v-list-item-title>
     </v-list-item>
   </router-link>
 </template>
@@ -13,7 +13,7 @@
 export default {
   name: "NavigationListItem",
   props: {
-    data: Object,
+    listItem: Object,
   },
 };
 </script>

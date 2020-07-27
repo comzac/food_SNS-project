@@ -89,16 +89,16 @@ export default {
       cookies.remove("auth-token");
       axios
         .get(
-          SERVER.BASE_URL 
-          + SERVER.ROUTES.accounts.URL
-          + SERVER.ROUTES.accounts.logout,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.logout,
           null,
           getters.config
-          )
-        .then(res => {
-          console.log(res)
+        )
+        .then((res) => {
+          console.log(res);
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => console.log(err.response));
 
       router.replace({ name: "Login" });
     },
@@ -204,17 +204,13 @@ export default {
         });
     },
 
-    pwcheck({ state, getters }, password) {
-      const requestData = {
-        uid: state.userData.uid,
-        upw: password,
-      };
+    pwcheck({ getters }, password) {
       return axios
         .post(
           SERVER.BASE_URL +
             SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.pwcheck,
-          requestData,
+          password,
           getters.config
         )
         .then((res) => {
@@ -224,7 +220,7 @@ export default {
             return false;
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.response));
     },
 
     pwreset(context, userEmailData) {
