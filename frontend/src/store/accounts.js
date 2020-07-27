@@ -52,10 +52,13 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          // 백 수정 전 쓸 commit
           const data = res.data.data;
           commit("SET_TOKEN", data);
           delete data.token;
-          commit("SET_USERDATA", data);
+          // 백 수정된 후 쓸 commit
+          // commit("SET_TOKEN", res.headers.token)
+          commit("SET_USERDATA", res.data);
           router.push({ name: "Home" });
         })
         .catch((err) => {
