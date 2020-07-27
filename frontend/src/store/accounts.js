@@ -191,10 +191,6 @@ export default {
             userEmail: email,
           }
         )
-        .then((res) => {
-          console.log(res);
-          return res;
-        })
         .then((confirmCode) => {
           if (confirmCode === "fail") {
             alert("이메일을 확인해주세요.");
@@ -203,7 +199,9 @@ export default {
             return confirmCode;
           }
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          return err.response;
+        });
     },
 
     pwcheck({ state, getters }, password) {
@@ -240,6 +238,7 @@ export default {
         .then((res) => {
           // console.log(res);
           if (res.data === "success") {
+            alert("비밀번호가 변경되었습니다.");
             router.push({ name: "Home" });
           } else {
             alert("변경 실패");
