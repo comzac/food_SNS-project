@@ -83,10 +83,23 @@ export default {
       dispatch("postAuthData", info);
     },
 
-    logout({ commit }) {
+    logout({ commit, getters }) {
       commit("SET_TOKEN", null);
       commit("SET_USERDATA", {});
       cookies.remove("auth-token");
+      axios
+        .get(
+          SERVER.BASE_URL 
+          + SERVER.ROUTES.accounts.URL
+          + SERVER.ROUTES.accounts.logout,
+          null,
+          getters.config
+          )
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log(err.response))
+
       router.replace({ name: "Login" });
     },
 
@@ -193,8 +206,7 @@ export default {
         .catch((err) => console.log(err.response));
     },
 
-    pwcheck({ state, rootGetters }, password) {
-      const config = rootGetters["accounts/config"];
+    pwcheck({ state, getters }, password) {
       const requestData = {
         uid: state.userData.uid,
         upw: password,
@@ -205,7 +217,7 @@ export default {
             SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.pwcheck,
           requestData,
-          config
+          getters.config
         )
         .then((res) => {
           if (res.data === "success") {
