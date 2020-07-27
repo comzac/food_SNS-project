@@ -56,54 +56,7 @@
           <br />
         </v-spacer>
         <v-list-item-group active-class="white--text" mandatory>
-          <router-link :to="{ name: 'Home' }" class="text-decoration-none">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-home</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>어디로가</v-list-item-title>
-            </v-list-item>
-          </router-link>
-          <router-link :to="{ name: 'UserEdit' }" class="text-decoration-none">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Account</v-list-item-title>
-            </v-list-item>
-          </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-magnify</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Search</v-list-item-title>
-            </v-list-item>
-          </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-bell</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Notifications</v-list-item-title>
-            </v-list-item>
-          </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-email</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Messages</v-list-item-title>
-            </v-list-item>
-          </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon>mdi-cog</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Settings</v-list-item-title>
-            </v-list-item>
-          </router-link>
+          <NavigationListItem v-for="listItem in listItemData" :key="listItem.id" :data="listItem" />
         </v-list-item-group>
       </v-list>
       <v-list color="#ff6666" flat align="center">
@@ -117,12 +70,33 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import NavigationListItem from "./NavigationListItem";
 
 export default {
   name: "Header",
-  components: {},
+  components: {
+    NavigationListItem,
+  },
   data: () => ({
     drawer: false,
+    listItemData: [
+      { id: "1", link: { name: "Home" }, icon: "mdi-home", title: "Home" },
+      {
+        id: "2",
+        link: { name: "UserEdit" },
+        icon: "mdi-account",
+        title: "Account",
+      },
+      { id: "3", link: { name: "" }, icon: "mdi-magnify", title: "Search" },
+      {
+        id: "4",
+        link: { name: "" },
+        icon: "mdi-bell",
+        title: "Notification",
+      },
+      { id: "5", link: { name: "" }, icon: "mdi-email", title: "Messages" },
+      { id: "6", link: { name: "" }, icon: "mdi-cog", title: "Settings" },
+    ],
   }),
   computed: {
     ...mapGetters("accounts", ["isLoggedIn"]),
