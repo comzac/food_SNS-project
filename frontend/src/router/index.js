@@ -10,6 +10,9 @@ import UserEditView from "@/views/user/UserEditView";
 
 import Home from "@/views/Home";
 
+import SearchingView from "@/views/SearchingView";
+import SearchedView from "@/views/SearchedView";
+
 // import FeedItem2 from "../views/FeedItem2";
 import FeedCreateView from "@/views/feed/FeedCreateView";
 
@@ -63,6 +66,17 @@ const routes = [
     component: UserEditView,
     meta: { title: "회원정보 수정" },
   },
+  {
+    path: "/search",
+    name: "SearchingView",
+    component: SearchingView,
+  },
+  {
+    path: "/search/:keyword",
+    name: "SearchedView",
+    component: SearchedView,
+  },
+
   // {
   //   path: "/feed/:fid",
   //   name: "FeedItem2",

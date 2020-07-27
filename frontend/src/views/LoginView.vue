@@ -17,12 +17,14 @@
           autocorrect="off"
         ></v-text-field>
         <v-text-field
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="show1 = !show1"
+          :type="show1 ? 'text' : 'password'"
           v-model="loginData.upw"
           @keyup.enter="login(loginData)"
           prepend-icon="mdi-lock"
           label="비밀번호를 입력하세요."
           required
-          type="password"
           color="#ff6666"
         ></v-text-field>
         <div class="text-right">
@@ -86,16 +88,17 @@ export default {
     ...mapActions("accounts", ["login"]),
     moveToSignup() {
       this.$router.push({ name: "Signup" });
-    }
+    },
   },
   data() {
     return {
       loginData: {
         uid: "",
-        upw: ""
-      }
+        upw: "",
+      },
+      show1: false,
     };
-  }
+  },
 };
 </script>
 

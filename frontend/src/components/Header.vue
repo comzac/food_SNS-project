@@ -72,7 +72,7 @@
               <v-list-item-title>Account</v-list-item-title>
             </v-list-item>
           </router-link>
-          <router-link :to="{ name: '' }" class="text-decoration-none">
+          <router-link :to="{ name: 'SearchingView' }" class="text-decoration-none">
             <v-list-item>
               <v-list-item-icon>
                 <v-icon>mdi-magnify</v-icon>
