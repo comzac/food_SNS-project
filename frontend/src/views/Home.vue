@@ -41,8 +41,8 @@ export default {
             title: "엄마가 섬그늘에",
             content:
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
-            regdate: "2018-07-22",
-            editdate: "2020-07-23",
+            regdate: "2020-07-26T15:00:00.000+00:00",
+            editdate: null,
           },
           feedhashtag: {
             fid: 1,
