@@ -90,7 +90,7 @@
         </v-radio-group>
         <!-- 영문, 숫자 혼용 확인 필요 -->
         <div>
-          <v-btn disabled>뒤로가기</v-btn>
+          <v-btn color="#ff6666" class="white--text" @click="$router.push({ name: 'Login' })">뒤로가기</v-btn>
           <v-divider class="mr-5" vertical></v-divider>
           <v-btn
             :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
