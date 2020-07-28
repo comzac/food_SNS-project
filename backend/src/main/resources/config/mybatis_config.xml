@@ -3,7 +3,7 @@
 
 <configuration>
 	<mappers>
-		<mapper resource="mapper/user_query.xml" />
+<!-- 		<mapper resource="mapper/user_query.xml" /> -->
 <!-- 		<mapper resource="mapper/feed_query.xml" /> -->
 	</mappers>
 	

@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -73,11 +74,18 @@ public class User implements UserDetails {
 	@Column
 	private int usex;
 	
+	@Transient
+	private DBProfile DBProfile;
+	@Transient
+	private Profile profile;
+		
 	@ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<String> roles = new ArrayList<>();
 	
 	@Override
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)

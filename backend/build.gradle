@@ -72,6 +72,7 @@ dependencies {
    compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
    
    
+   
 }
 
 // querydsl 적용 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.Feed;
+import com.ssafy.sub.dto.Hashtag;
 
 @Service("FeedService")
 public interface FeedService {
@@ -25,5 +26,13 @@ public interface FeedService {
 
 	public Long feedDelete(int id);
 
-
+	public List<Hashtag> findAllHashtag();
+	
+	public boolean findByContent(String content);
+	
+	public Hashtag hashtagInsert(String content);
+	
+	public Hashtag hashtagUpdate(int hid, String content);
+	
+	public Hashtag hashtagDetail(int hid);
 }

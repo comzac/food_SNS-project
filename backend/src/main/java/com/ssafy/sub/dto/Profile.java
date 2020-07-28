@@ -1,11 +1,10 @@
 package com.ssafy.sub.dto;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,34 +19,21 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 @Entity
-@Table(name = "files")
-public class DBFile {
-
+@ToString
+public class Profile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private int id;
-
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private int fid;
+	private int id;
 	
-    private String name;
-
-    private String type;
-
-    @Lob
-    private byte[] data;
-
-	public DBFile(int fid, String name, String type, byte[] data) {
-		this.fid = fid;
-		this.name = name;
-		this.type = type;
-		this.data = data;
-	}
-    
-    
+	@Column(name = "user_id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private int uid;
+	
+	@Column(name = "text")
+	private String text;
+	
 
 }

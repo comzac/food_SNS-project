@@ -23,8 +23,8 @@ import lombok.ToString;
 @ToString
 @Builder
 @Entity
-@Table(name = "files")
-public class DBFile {
+@Table(name = "profiles")
+public class DBProfile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class DBFile {
     private int id;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private int fid;
+	private String uid;
 	
     private String name;
 
@@ -40,14 +40,5 @@ public class DBFile {
 
     @Lob
     private byte[] data;
-
-	public DBFile(int fid, String name, String type, byte[] data) {
-		this.fid = fid;
-		this.name = name;
-		this.type = type;
-		this.data = data;
-	}
-    
-    
 
 }
