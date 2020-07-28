@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.StatusCode;
@@ -39,6 +40,23 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	// userSimple만들고 반환
+	public UserSimple getSimpleUser(String uid) {
+		User user = userRepository.findByUid(uid).
+				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
+		
+		UserSimple userSimple = new UserSimple();
+		userSimple.setUid(user.getUid());
+		userSimple.setUnick(user.getUnick());
+
+		if(dbProfileRepository.findByUid(String.valueOf(user.getId())).get()!=null) {
+			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+			userSimple.setUprofile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+		}
+		
+		return userSimple;
+	}
+	
 	// custom repository 호출
 	
 	// uid -> Optional<user> findByUid()
@@ -46,7 +64,8 @@ public class UserService {
 		User user = userRepository.findByUid(uid).
 				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
 //		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get().toString());
-//		user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+//		if(dbProfileRepository.findByUid(String.valueOf(user.getId()))
+		user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
 		return user;
 	}
 	
