@@ -10,6 +10,9 @@ import UserEditView from "@/views/user/UserEditView";
 
 import Home from "@/views/Home";
 
+import SearchingView from "@/views/SearchingView";
+import SearchedView from "@/views/SearchedView";
+
 // import FeedItem2 from "../views/FeedItem2";
 import FeedCreateView from "@/views/feed/FeedCreateView";
 
@@ -47,7 +50,7 @@ const routes = [
     meta: { title: "이메일로 비밀번호 찾기" },
   },
   {
-    path: "/userdetail", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
+    path: "/userdetail/:uid", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
     name: "UserDetail",
     component: UserDetailView,
     meta: { title: "usernickname · HoneyCombo" }, // 이거도 나중에 유저마다 이름 다르게 변경해야함 (컴포넌트 내에서 변경가능)
@@ -63,6 +66,17 @@ const routes = [
     component: UserEditView,
     meta: { title: "회원정보 수정" },
   },
+  {
+    path: "/search",
+    name: "SearchingView",
+    component: SearchingView,
+  },
+  {
+    path: "/search/:keyword",
+    name: "SearchedView",
+    component: SearchedView,
+  },
+
   // {
   //   path: "/feed/:fid",
   //   name: "FeedItem2",
