@@ -41,9 +41,6 @@ export default {
   },
   actions: {
     postAuthData({ commit }, info) {
-      // console.log(info.data);
-      // console.log(SERVER.URL + info.route);
-      // console.log(SERVER.ROUTES.accounts.URL);
       axios
         .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
@@ -52,13 +49,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          // 백 수정 전 쓸 commit
-          const data = res.data.data;
-          commit("SET_TOKEN", data);
-          delete data.token;
-          // 백 수정된 후 쓸 commit
-          // commit("SET_TOKEN", res.headers.token)
-          commit("SET_USERDATA", res.data);
+          commit("SET_TOKEN", res.headers.token);
           router.push({ name: "Home" });
         })
         .catch((err) => {
@@ -210,7 +201,7 @@ export default {
           SERVER.BASE_URL +
             SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.pwcheck,
-          password,
+          { upw: password },
           getters.config
         )
         .then((res) => {

@@ -9,6 +9,7 @@ import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.QFeed;
 import com.ssafy.sub.dto.QRelationship;
 
+
 @Repository
 public class FeedQueryDsl extends QuerydslRepositorySupport {
 

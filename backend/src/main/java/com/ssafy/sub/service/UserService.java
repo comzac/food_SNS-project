@@ -53,8 +53,8 @@ public class UserService {
 	public User findById(int id) {
 		try {
 			User user = userRepository.findById(id);
-			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
-			user.setProfile(profileRepository.findByUid(id));
+//			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+//			user.setProfile(profileRepository.findByUid(id));
 			
 			return user;
 		}catch (Exception e) {

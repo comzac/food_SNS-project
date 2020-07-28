@@ -233,13 +233,19 @@ public class UserSecurityController {
 
 	@ApiOperation(value = "재설정하기 위해 현재 비밀번호 확인. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
 	@PostMapping(value = "/pw-dup")
-	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData) {
+	public ResponseEntity<String> pwcheck(@RequestBody HashMap<String, String> userData, HttpServletRequest request) {
 		System.out.println("log - pwcheck");
 		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String id = authentication.getName();
-
-		User member = userService.findById(Integer.parseInt(id));
+		String username = null;
+		String token = jwtTokenProvider.resolveToken(request);
+		System.out.println("token: "+token);
+		if(jwtTokenProvider.validateToken(token)) {
+			username = jwtTokenProvider.getUserPk(token);
+		}
+		System.out.println("username: "+username);
+		//User member = userService.findById(Integer.parseInt(id));
+		User member = userService.findById(Integer.parseInt(username));
+		System.out.println(member.toString());
 
 		if (!passwordEncoder.matches(userData.get("upw"), member.getUpw())) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.UNAUTHORIZED);
