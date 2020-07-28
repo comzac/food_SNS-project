@@ -5,12 +5,13 @@
         <v-icon dark>mdi-account</v-icon>
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="title">Nickname</v-list-item-title>
-        <v-list-item-subtitle>thisisID</v-list-item-subtitle>
+        <v-list-item-title class="title">{{unick}}</v-list-item-title>
+        <v-list-item-subtitle>{{uid}}</v-list-item-subtitle>
       </v-list-item-content>
-      <v-btn color="grey" fab small dark>
+      <v-btn v-if="mypage" color="grey" fab small dark>
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
+      <v-chip v-if="!mypage" @click="alert('동작')">follow</v-chip>
     </v-list-item>
 
     <v-card-text class="text-center">
@@ -44,7 +45,26 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      mypage: this.userDetailData.mypage,
+      unick: this.userDetailData.user.unick,
+      uid: this.userDetailData.user.uid,
+    };
+  },
+  props: {
+    userDetailData: Object,
+  },
+  methods: {
+    setDocumentTitle() {
+      document.title = this.unick + " · HoneyCombo";
+    },
+  },
+  mounted() {
+    this.setDocumentTitle();
+  },
+};
 </script>
 
 <style scoped>

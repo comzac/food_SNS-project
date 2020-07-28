@@ -50,10 +50,9 @@ const routes = [
     meta: { title: "이메일로 비밀번호 찾기" },
   },
   {
-    path: "/userdetail/:uid", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
+    path: "/userdetail/:uid",
     name: "UserDetail",
     component: UserDetailView,
-    meta: { title: "usernickname · HoneyCombo" }, // 이거도 나중에 유저마다 이름 다르게 변경해야함 (컴포넌트 내에서 변경가능)
   },
   {
     path: "/feed/create",
