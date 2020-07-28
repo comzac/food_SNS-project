@@ -24,13 +24,12 @@ public class Hashtag {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hashtag_id")
 	private int id;
 	
 	@Column(name = "content")
 	private String content;
 	
-//	@OneToMany(mappedBy = "hashtag")
+//	@OneToMany(mappedBy = "hashtag") 
 //	@Transient
 //	private List<FeedHashtag> feedHashtag = new ArrayList<>();
 }

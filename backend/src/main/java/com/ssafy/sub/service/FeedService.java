@@ -35,4 +35,6 @@ public interface FeedService {
 	public Hashtag hashtagUpdate(int hid, String content);
 	
 	public Hashtag hashtagDetail(int hid);
+	
+	public int getFeedCount(int uid);
 }

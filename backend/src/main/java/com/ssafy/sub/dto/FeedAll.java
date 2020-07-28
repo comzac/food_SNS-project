@@ -27,7 +27,7 @@ public class FeedAll {
 	private List<DBFile> dbFiles;
 	
 	// 댓글
-//	private List<Comment>
+//	private List<Comment> comment;
 	
 	// 유저 정보
 	private UserSimple user;

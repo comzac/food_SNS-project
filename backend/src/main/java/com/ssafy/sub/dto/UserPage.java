@@ -31,8 +31,5 @@ public class UserPage {
 	
 	// 유저가 쓴 피드 수
 	private int feedCount;
-	
-	// 해당 유저의 페이지인지 여부
-	private boolean mypage;
 
 }

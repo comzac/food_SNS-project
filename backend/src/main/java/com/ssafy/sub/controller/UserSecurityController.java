@@ -274,7 +274,7 @@ public class UserSecurityController {
 	@GetMapping(value = "/")
 	public ResponseEntity findAllUser() {
 		// 결과데이터가 여러건인경우 getListResult를 이용해서 결과를 출력한다.
-		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, userRepository.findAll()), HttpStatus.CREATED);
+		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.READ_ALL_USERS, userRepository.findAll()), HttpStatus.CREATED);
 	}
 
 	@ApiImplicitParams({
