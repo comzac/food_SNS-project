@@ -40,7 +40,9 @@
                 <v-list-item-content class="text-left">
                   <v-list-item-title class="black--text">{{ comment.unick }}</v-list-item-title>
                   <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="gray--text">{{ computeYMD(comment.regdate) }}</v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="gray--text"
+                  >{{ computeYMD(comment.regdate) }} {{ comment.editdate?'(수정됨)':'' }}</v-list-item-subtitle>
                 </v-list-item-content>
               </router-link>
               <v-spacer></v-spacer>
@@ -102,6 +104,7 @@ export default {
         content: commentData,
         unick: "댓글 작성자",
         regdate: String(new Date()),
+        editdate: "",
       };
       this.comments.unshift(comment2);
       this.commentData = "";
@@ -142,6 +145,7 @@ export default {
         content: "첫번째 댓글 테스트",
         unick: "TEST Kim",
         regdate: "2020-07-26T15:00:00.000+00:00",
+        editdate: "",
       };
       this.comments.unshift(comment2);
     },
