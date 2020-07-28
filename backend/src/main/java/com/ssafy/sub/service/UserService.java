@@ -45,8 +45,8 @@ public class UserService {
 	public User findByUid(String uid){
 		User user = userRepository.findByUid(uid).
 				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
-		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get().toString());
-		user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+//		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get().toString());
+//		user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
 		return user;
 	}
 	

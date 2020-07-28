@@ -54,15 +54,15 @@ public class Feed {
 	@Column
 	private Date editdate;
 	
-	@OneToMany 
-	@JoinColumn(name = "files_id")
-	private Collection<DBFile> dbFiles;
+//	@OneToMany 
+//	@JoinColumn(name = "files_id")
+//	private Collection<DBFile> dbFiles;
 	
 //	@OneToMany(mappedBy="feed")
 	@Transient
     private List<Hashtag> hashtag = new ArrayList<>();
 	
 	@Transient
-    private List<DBFile> dbFile = new ArrayList<>();
+    private List<DBFile> dbFiles = new ArrayList<>();
 
 }
