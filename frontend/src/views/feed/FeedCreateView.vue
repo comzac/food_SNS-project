@@ -58,7 +58,7 @@
           solo
           name="태그"
           type="text"
-          v-model="feedhashtag"
+          v-model="hashtag"
           color="#ff6666"
           autocapitalize="off"
           autocorrect="off"
@@ -68,8 +68,8 @@
           <v-divider class="mr-5" vertical></v-divider>
           <!-- 클릭하면 피드 상세 페이지로 -->
           <v-btn
-            :disabled="!feed.title || !feed.content || !feed.uploadImageFile"
-            @click="()=>{}"
+            :disabled="!feed.title || !feed.content || !fileData"
+            @click="insertFeedByFormData()"
             color="#ff6666"
             class="white--text"
           >작성 완료</v-btn>
@@ -80,25 +80,25 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "FeedCreateView",
   components: {},
   data() {
     return {
       imageData: "",
+      fileData: [],
       feed: {
-        uid: "",
         title: "",
-        uploadImageFile: "",
         content: "",
-        regdate: "",
-        editdate: "",
       },
-      feedhashtag: [],
+      hashtag: "",
       video: "",
     };
   },
   methods: {
+    ...mapActions("feeds", ["insertFeed"]),
     // previewImage(event) {
     //   // Reference to the DOM input element
     //   console.log(event.target);
@@ -131,7 +131,7 @@ export default {
           // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
           // Read image as base64 and set to imageData
           this.imageData = file.target.result;
-          this.feed.uploadImageFile = file.target.result;
+          this.fileData.push(file.target.result);
         };
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(file);
@@ -145,10 +145,27 @@ export default {
       } else {
         var reader = new FileReader();
         reader.onload = (file) => {
+          this.fileData.push(file.target.result);
           this.video = file.target.result;
         };
         reader.readAsDataURL(file);
       }
+    },
+
+    insertFeedByFormData() {
+      const form = new FormData();
+
+      form.append("feed", this.feed);
+      const hash = this.hashtag.split("#");
+      hash.forEach((tag) => {
+        if (tag !== "") {
+          form.append("hashtag", tag.trim());
+        }
+      });
+      this.fileData.forEach((file) => {
+        form.append("file", file);
+      });
+      this.insertFeed(form);
     },
   },
 };
