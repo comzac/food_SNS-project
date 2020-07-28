@@ -50,7 +50,7 @@ const routes = [
     meta: { title: "이메일 인증번호 입력" },
   },
   {
-    path: "/userdetail", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
+    path: "/userdetail/:uid", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
     name: "UserDetail",
     component: UserDetailView,
     meta: { title: "usernickname · HoneyCombo" }, // 이거도 나중에 유저마다 이름 다르게 변경해야함 (컴포넌트 내에서 변경가능)
