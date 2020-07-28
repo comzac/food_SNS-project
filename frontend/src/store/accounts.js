@@ -8,7 +8,7 @@ export default {
   namespaced: true,
   state: {
     authToken: cookies.get("auth-token"),
-    userData: {},
+    userSimpleData: {},
     // signupId: null,
     // signupNick: null,
     // idChecked: false,
@@ -23,8 +23,8 @@ export default {
       state.authToken = token;
       cookies.set("auth-token", token);
     },
-    SET_USERDATA(state, userData) {
-      state.userData = userData;
+    SET_USERSIMPLEDATA(state, userSimpleData) {
+      state.userSimpleData = userSimpleData;
     },
     // SET_IDCHECK(state, check) {
     //   state.idChecked = check;
@@ -75,15 +75,12 @@ export default {
     },
 
     logout({ commit, getters }) {
-      commit("SET_TOKEN", null);
-      commit("SET_USERDATA", {});
-      cookies.remove("auth-token");
+      console.log(getters.config);
       axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.logout,
-          null,
           getters.config
         )
         .then((res) => {
@@ -91,6 +88,9 @@ export default {
         })
         .catch((err) => console.log(err.response));
 
+      commit("SET_TOKEN", null);
+      commit("SET_USERSIMPLEDATA", {});
+      cookies.remove("auth-token");
       router.replace({ name: "Login" });
     },
 

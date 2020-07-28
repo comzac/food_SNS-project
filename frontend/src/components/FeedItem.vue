@@ -5,12 +5,19 @@
         <v-hover v-slot:default="{ hover }">
           <v-card :class="`elevation-${hover ? 24 : 6}`" class="transition-swing">
             <v-list-item>
-              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+              <router-link
+                :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
+                class="text-decoration-none"
+              >
+                <!-- 추후에 params.uid은 피드의 uid으로 바꿔야함. -->
                 <v-list-item-avatar color="#ff6666">
                   <img src="@/assets/profile_default.png" width="40" />
                 </v-list-item-avatar>
               </router-link>
-              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+              <router-link
+                :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
+                class="text-decoration-none"
+              >
                 <v-list-item-content>
                   <v-list-item-title class="text-left red--text text--lighten-2">{{ user.unick }}</v-list-item-title>
                   <v-list-item-subtitle class="text-left red--text text--lighten-2">{{ user.uid }}</v-list-item-subtitle>
