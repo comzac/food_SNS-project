@@ -96,7 +96,12 @@ export default {
         icon: "mdi-account",
         title: "Account",
       },
-      { id: "3", link: { name: "" }, icon: "mdi-magnify", title: "Search" },
+      {
+        id: "3",
+        link: { name: "SearchingView" },
+        icon: "mdi-magnify",
+        title: "Search",
+      },
       {
         id: "4",
         link: { name: "" },

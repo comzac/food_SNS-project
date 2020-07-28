@@ -14,7 +14,9 @@ import SearchingView from "@/views/SearchingView";
 import SearchedView from "@/views/SearchedView";
 
 // import FeedItem2 from "../views/FeedItem2";
+import FeedView from "@/views/feed/FeedView";
 import FeedCreateView from "@/views/feed/FeedCreateView";
+import CommentView from "@/views/feed/CommentView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -54,11 +56,24 @@ const routes = [
     name: "UserDetail",
     component: UserDetailView,
   },
+
+  // feed
+  {
+    path: "/feed/:fid",
+    name: "FeedView",
+    component: FeedView,
+  },
   {
     path: "/feed/create",
     name: "FeedCreateView",
     component: FeedCreateView,
   },
+  {
+    path: "/feed/comment/:fid/",
+    name: "CommentView",
+    component: CommentView,
+  },
+
   {
     path: "/user/edit",
     name: "UserEdit",
