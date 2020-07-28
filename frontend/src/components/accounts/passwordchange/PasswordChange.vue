@@ -1,65 +1,42 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row class="text-center" align="center" justify="center" no-gutters>
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <h1 class="text-left">Change Your Password</h1>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <v-text-field
-          v-model="password"
-          :error-messages="error.password"
-          label="Password"
-          outlined
-          solo
-          required
-          color="#ff6666"
-          type="password"
-        ></v-text-field>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <v-text-field
-          v-model="passwordConfirm"
-          :error-messages="error.passwordConfirm"
-          label="Password Confirmation"
-          outlined
-          solo
-          required
-          color="#ff6666"
-          type="password"
-        ></v-text-field>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <v-btn
-          color="#ff6666"
-          class="white--text"
-          :disabled="!isSubmit || password!=passwordConfirm"
-          width="100%"
-          x-large
-          @click="changePassword"
-        >비밀번호 변경</v-btn>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-col cols="12" sm="8" md="6" lg="4">
+    <h1 class="text-left red--text text--lighten-2 ml-3">비밀번호 변경</h1>
+    <br />
+    <br />
+    <v-text-field
+      v-model="password"
+      :error-messages="error.password"
+      label="Password"
+      outlined
+      solo
+      required
+      color="#ff6666"
+      type="password"
+      class="mt-10 mb-7"
+    ></v-text-field>
+
+    <v-text-field
+      v-model="passwordConfirm"
+      :error-messages="error.passwordConfirm"
+      label="Password Confirmation"
+      outlined
+      solo
+      required
+      color="#ff6666"
+      type="password"
+      class="mt-10 mb-7"
+    ></v-text-field>
+    <br />
+    <br />
+    <v-btn
+      color="#ff6666"
+      class="white--text"
+      :disabled="!isSubmit || password!=passwordConfirm"
+      width="100%"
+      x-large
+      @click="changePassword"
+    >비밀번호 변경</v-btn>
+  </v-col>
 </template>
 
 <script>
@@ -84,7 +61,7 @@ export default {
     },
     passwordConfirm() {
       this.checkForm();
-    }
+    },
   },
   methods: {
     checkForm() {
@@ -107,14 +84,14 @@ export default {
 
       let isSubmit = true;
 
-      Object.values(this.error).map(v => {
+      Object.values(this.error).map((v) => {
         if (v) isSubmit = false;
       });
       this.isSubmit = isSubmit;
     },
     changePassword() {
       this.$emit("changePassword", this.password);
-    }
+    },
   },
   data: () => {
     return {
@@ -123,12 +100,12 @@ export default {
       passwordSchema: new PV(),
       error: {
         password: "",
-        passowrdConfirm: ""
+        passowrdConfirm: "",
       },
       isSubmit: false,
-      component: this
+      component: this,
     };
-  }
+  },
 };
 </script>
 

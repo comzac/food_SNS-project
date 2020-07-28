@@ -44,6 +44,9 @@
             color="#ff6666"
             class="white--text"
           >다음으로</v-btn>
+          <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+          </v-overlay>
         </div>
         <v-spacer>
           <br />
@@ -92,15 +95,19 @@ export default {
     },
     emailVerification(email) {
       // email 보내기 + 받아서
-      alert("잠시만 기다려주세요.");
+      const signupEmailComponent = this;
+      signupEmailComponent.overlay = !signupEmailComponent.overlay;
       this.getConfirmCode(email).then((code) => {
-        if (code !== "") {
-          alert("인증번호가 발송되었습니다.")
+        console.log("code : ", code);
+        if (code.status === 200) {
+          signupEmailComponent.overlay = !signupEmailComponent.overlay;
+          alert("인증번호가 발송되었습니다.");
           this.$emit("toEmailVerification", {
             confirmCode: code,
             userEmail: email,
           });
         } else {
+          signupEmailComponent.overlay = !signupEmailComponent.overlay;
           alert("인증번호 발송에 실패하였습니다.");
         }
       });
@@ -134,6 +141,7 @@ export default {
       isSubmit: false,
       component: this,
       emailChecked: false,
+      overlay: false,
     };
   },
 };

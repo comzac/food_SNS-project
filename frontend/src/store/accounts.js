@@ -52,10 +52,13 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          // 백 수정 전 쓸 commit
           const data = res.data.data;
           commit("SET_TOKEN", data);
           delete data.token;
-          commit("SET_USERDATA", data);
+          // 백 수정된 후 쓸 commit
+          // commit("SET_TOKEN", res.headers.token)
+          commit("SET_USERDATA", res.data);
           router.push({ name: "Home" });
         })
         .catch((err) => {
@@ -80,10 +83,23 @@ export default {
       dispatch("postAuthData", info);
     },
 
-    logout({ commit }) {
+    logout({ commit, getters }) {
       commit("SET_TOKEN", null);
       commit("SET_USERDATA", {});
       cookies.remove("auth-token");
+      axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.logout,
+          null,
+          getters.config
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err.response));
+
       router.replace({ name: "Login" });
     },
 
@@ -175,10 +191,6 @@ export default {
             userEmail: email,
           }
         )
-        .then((res) => {
-          console.log(res);
-          return res;
-        })
         .then((confirmCode) => {
           if (confirmCode === "fail") {
             alert("이메일을 확인해주세요.");
@@ -187,22 +199,19 @@ export default {
             return confirmCode;
           }
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          return err.response;
+        });
     },
 
-    pwcheck({ state, rootGetters }, password) {
-      const config = rootGetters["accounts/config"];
-      const requestData = {
-        uid: state.userData.uid,
-        upw: password,
-      };
+    pwcheck({ getters }, password) {
       return axios
         .post(
           SERVER.BASE_URL +
             SERVER.ROUTES.accounts.URL +
             SERVER.ROUTES.accounts.pwcheck,
-          requestData,
-          config
+          password,
+          getters.config
         )
         .then((res) => {
           if (res.data === "success") {
@@ -211,7 +220,7 @@ export default {
             return false;
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.response));
     },
 
     pwreset(context, userEmailData) {
@@ -225,6 +234,7 @@ export default {
         .then((res) => {
           // console.log(res);
           if (res.data === "success") {
+            alert("비밀번호가 변경되었습니다.");
             router.push({ name: "Home" });
           } else {
             alert("변경 실패");

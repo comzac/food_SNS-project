@@ -44,7 +44,7 @@ const routes = [
     path: "/user/password_choice_email",
     name: "PasswordChoiceEmail",
     component: PasswordChoiceEmailView,
-    meta: { title: "이메일 인증번호 입력" },
+    meta: { title: "이메일로 비밀번호 찾기" },
   },
   {
     path: "/userdetail", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',

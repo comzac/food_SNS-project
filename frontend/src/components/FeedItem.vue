@@ -71,7 +71,11 @@
             </v-img>
             <v-card-text>
               <p class="text-left">
-                <strong>{{ feed.title }}</strong>
+                <v-row class="space-around mx-0">
+                  <strong>{{ feed.title }}</strong>
+                  <v-spacer></v-spacer>
+                  <small>{{ ymd2 }}</small>
+                </v-row>
               </p>
               <p
                 :class="overflow"
@@ -92,16 +96,36 @@
 <script>
 export default {
   name: "FeedItem",
+  components: {},
   props: {
     feed: Object,
     feedhashtag: Object,
     feedlike: Object,
   },
-  components: {},
+  computed: {
+    ymd2() {
+      if (this.ymd < 60) {
+        return `${this.ymd}초 전`;
+      } else if (this.ymd < 3600) {
+        return `${parseInt(this.ymd / 60)}분 전`;
+      } else if (this.ymd < 86400) {
+        return `${parseInt(this.ymd / 3600)}시간 전`;
+      } else if (this.ymd < 86400 * 2) {
+        return `어제`;
+      } else if (this.ymd < 86400 * 7) {
+        return `${parseInt(this.ymd / 86400)}일 전`;
+      } else {
+        return `${parseInt(this.ymd / 604800)}주 전`;
+      }
+    },
+  },
   data() {
     return {
       overflow: "text-left text-overflow",
       hashtag: {},
+      ymd:
+        parseInt(new Date().getTime() / 1000) -
+        parseInt(new Date(this.feed.regdate).getTime() / 1000),
       user: {
         // 받아오는 것만 남긴다
         id: this.feed.uid,

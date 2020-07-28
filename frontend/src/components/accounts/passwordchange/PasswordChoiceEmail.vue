@@ -1,60 +1,41 @@
 <template>
-  <v-container fill-height fluid>
-    <v-row class="text-center" align="center" justify="center" no-gutters>
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <h1 class="text-left">Retrieve Your Password</h1>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <v-text-field
-          v-model="email"
-          :error-messages="error.email"
-          label="E-mail."
-          outlined
-          solo
-          required
-          autofocus
-          append-outer-icon="mdi-check"
-          @click:append-outer="emailCheck2(email)"
-          color="#ff6666"
-        ></v-text-field>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <div>
-          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
-          <v-divider class="mr-5" vertical></v-divider>
-          <v-btn
-            :disabled="!emailChecked"
-            @click="emailVerification(email)"
-            color="#ff6666"
-            class="white--text"
-          >다음으로</v-btn>
-        </div>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-col cols="12" sm="8" md="6" lg="4">
+    <h1 class="text-left red--text text--lighten-2 ml-3">이메일로 찾기</h1>
+    <br />
+    <br />
+    <v-text-field
+      v-model="email"
+      :error-messages="error.email"
+      label="E-mail."
+      outlined
+      solo
+      required
+      autofocus
+      append-outer-icon="mdi-check"
+      @click:append-outer="emailCheck2(email)"
+      color="#ff6666"
+      class="mt-10 mb-7"
+    ></v-text-field>
+    <br />
+    <br />
+    <div>
+      <v-btn
+        color="#ff6666"
+        class="white--text"
+        @click="$router.push({ name: 'PasswordChoice' })"
+      >뒤로가기</v-btn>
+      <v-divider class="mr-5" vertical></v-divider>
+      <v-btn
+        :disabled="!emailChecked"
+        @click="emailVerification(email)"
+        color="#ff6666"
+        class="white--text"
+      >다음으로</v-btn>
+      <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
+    </div>
+  </v-col>
 </template>
 
 <script>
@@ -89,16 +70,19 @@ export default {
     },
     emailVerification(email) {
       // console.log(SERVER.URL)
-      alert("잠시만 기다려주세요.");
+      const signupEmailComponent = this;
+      signupEmailComponent.overlay = !signupEmailComponent.overlay;
       this.getConfirmCode(email).then((code) => {
-        if (code !== "") {
-          alert("인증번호가 발송되었습니다.")
+        if (code.status === 200) {
+          signupEmailComponent.overlay = !signupEmailComponent.overlay;
+          alert("인증번호가 발송되었습니다.");
           this.$emit("toEmailVerification", {
             confirmCode: code,
             uemail: email,
           });
         } else {
-          alert("인증번호 발송에 실패하였습니다.")
+          signupEmailComponent.overlay = !signupEmailComponent.overlay;
+          alert("인증번호 발송에 실패하였습니다.");
         }
       });
     },
@@ -128,6 +112,7 @@ export default {
       isSubmit: false,
       component: this,
       emailChecked: false,
+      overlay: false,
     };
   },
 };

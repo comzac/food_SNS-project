@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <PasswordChoiceEmail v-if="page === 1" @toEmailVerification="setConfirmCode" />
-    <PasswordChoiceEmailVerification
-      v-if="page === 2"
-      :confirmCode="confirmCode"
-      @toPasswordChange="toPasswordChange"
-      @pageDown="page-=1"
-    />
-    <PasswordChange v-if="page === 3" @changePassword="doPasswordReset" />
-  </div>
+  <v-container fill-height fluid>
+    <v-row class="text-center" align="center" justify="center">
+      <PasswordChoiceEmail v-if="page === 1" @toEmailVerification="setConfirmCode" />
+      <PasswordChoiceEmailVerification
+        v-if="page === 2"
+        :confirmCode="confirmCode"
+        @toPasswordChange="toPasswordChange"
+        @pageDown="page-=1"
+      />
+      <PasswordChange v-if="page === 3" @changePassword="doPasswordReset" />
+    </v-row>
+  </v-container>
 </template>
 
 <script>
