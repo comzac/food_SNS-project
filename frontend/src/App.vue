@@ -23,6 +23,10 @@ export default {
 };
 </script>
 <style scoped>
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+.notosanskr * {
+  font-family: "Noto Sans KR", sans-serif;
+}
 h1 {
   color: #ff6666;
 }
