@@ -14,7 +14,9 @@ import SearchingView from "@/views/SearchingView";
 import SearchedView from "@/views/SearchedView";
 
 // import FeedItem2 from "../views/FeedItem2";
+import FeedView from "@/views/feed/FeedView";
 import FeedCreateView from "@/views/feed/FeedCreateView";
+import CommentView from "@/views/feed/CommentView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -55,11 +57,24 @@ const routes = [
     component: UserDetailView,
     meta: { title: "usernickname · HoneyCombo" }, // 이거도 나중에 유저마다 이름 다르게 변경해야함 (컴포넌트 내에서 변경가능)
   },
+
+  // feed
+  {
+    path: "/feed/:fid",
+    name: "FeedView",
+    component: FeedView,
+  },
   {
     path: "/feed/create",
     name: "FeedCreateView",
     component: FeedCreateView,
   },
+  {
+    path: "/feed/comment/:fid/",
+    name: "CommentView",
+    component: CommentView,
+  },
+
   {
     path: "/user/edit",
     name: "UserEdit",

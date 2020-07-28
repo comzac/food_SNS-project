@@ -26,7 +26,7 @@
         </div>
         <div v-for="search_user in search_users" :key="search_user.uid">
           <v-text-field
-            @click="$router.push({ name: 'UserProfile', params: { uid: search_user.uid } })"
+            @click="$router.push({ name: 'UserDetail', params: { uid: search_user.uid } })"
             :value="` ${search_user.uid} - 게시물 ${search_user.count}`"
             color="#ff6666"
             readonly
