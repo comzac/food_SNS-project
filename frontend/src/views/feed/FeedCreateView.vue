@@ -58,11 +58,27 @@
           solo
           name="태그"
           type="text"
-          v-model="feedhashtag"
+          v-model="hashtag"
           color="#ff6666"
+          append-icon="mdi-plus"
+          @click:append="createHashtag(hashtag)"
+          @keyup.enter.space="createHashtag(hashtag)"
+          error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
           autocapitalize="off"
           autocorrect="off"
         ></v-text-field>
+        <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+          <v-btn
+            outlined
+            class="red--text text--lighten-2"
+            color="#ff6666"
+            small
+            @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
+          ># {{ tag }}</v-btn>
+        </div>
+        <v-spacer>
+          <br />
+        </v-spacer>
         <div>
           <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
           <v-divider class="mr-5" vertical></v-divider>
@@ -85,6 +101,7 @@ export default {
   components: {},
   data() {
     return {
+      hashtag: "",
       imageData: "",
       feed: {
         uid: "",
@@ -149,6 +166,17 @@ export default {
         };
         reader.readAsDataURL(file);
       }
+    },
+    createHashtag(hashtag) {
+      hashtag = hashtag.replace(/#/gi, "").replace(/ /gi, "");
+      console.log(this.feedhashtag);
+      if (this.feedhashtag.includes(hashtag) || hashtag == "") {
+        this.hashtag = "";
+      } else {
+        this.feedhashtag.push(hashtag);
+        this.hashtag = "";
+      }
+      console.log(this.feedhashtag);
     },
   },
 };
