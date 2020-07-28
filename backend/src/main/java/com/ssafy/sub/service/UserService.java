@@ -6,6 +6,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.exception.RestException;
+import com.ssafy.sub.model.response.ResponseMessage;
+import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.repo.DBProfileRepository;
+import com.ssafy.sub.repo.ProfileRepository;
 import com.ssafy.sub.repo.UserRepository;
 
 @Service("UserService")
@@ -19,6 +24,10 @@ public class UserService {
 
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	DBProfileRepository dbProfileRepository;
+	@Autowired
+	ProfileRepository profileRepository;
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
@@ -34,8 +43,23 @@ public class UserService {
 	
 	// uid -> Optional<user> findByUid()
 	public User findByUid(String uid){
-		return userRepository.findByUid(uid).
-				orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+		User user = userRepository.findByUid(uid).
+				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
+		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get().toString());
+		user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+		return user;
+	}
+	
+	public User findById(int id) {
+		try {
+			User user = userRepository.findById(id);
+			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+			user.setProfile(profileRepository.findByUid(id));
+			
+			return user;
+		}catch (Exception e) {
+			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER);
+		}
 	}
 
 	// uid -> Optional<user> findByUid()
@@ -61,7 +85,7 @@ public class UserService {
 	
 	
 	// no repository 
-	public boolean send(String subject, String text, String from, String to, String filePath) {
+	public boolean send(String subject, String text, String to, String filePath) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(to);
 		message.setSubject(subject);
@@ -70,16 +94,5 @@ public class UserService {
 		
 		return true;
 	}
-
-
-
-
-
-
-
-
-
-
-
 	
 }

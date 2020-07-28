@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="com.ssafy.sub.repo.UserMapper">
+<!-- <?xml version="1.0" encoding="UTF-8" ?> -->
+<!-- <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  -->
+<!-- <mapper namespace="com.ssafy.sub.repo.UserMapper"> -->
 
-	<select id="login" parameterType="map" resultType="UserDto">
-		select * from user where uid = #{uid} and upw = #{upw}
-	</select>
+<!-- 	<select id="login" parameterType="map" resultType="UserDto"> -->
+<!-- 		select * from user where uid = #{uid} and upw = #{upw} -->
+<!-- 	</select> -->
 	
 	
-	<select id="idcheck" resultType="String">
-		select uid from user where uid = #{uid}
-	</select>	
+<!-- 	<select id="idcheck" resultType="String"> -->
+<!-- 		select uid from user where uid = #{uid} -->
+<!-- 	</select>	 -->
 	 
 	 
-	<select id="nickcheck" resultType="String">
-		select unick from user where unick = #{unick}
-	</select>	
+<!-- 	<select id="nickcheck" resultType="String"> -->
+<!-- 		select unick from user where unick = #{unick} -->
+<!-- 	</select>	 -->
 	 
-	<insert id="create" parameterType="UserDto">
-		insert into user (uid, upw, unick, uemail, uregdate, ubirth, usex)
-		values (#{uid}, #{upw}, #{unick}, #{uemail}, now(), #{ubirth}, #{usex})
-    </insert>
+<!-- 	<insert id="create" parameterType="UserDto"> -->
+<!-- 		insert into user (uid, upw, unick, uemail, uregdate, ubirth, usex) -->
+<!-- 		values (#{uid}, #{upw}, #{unick}, #{uemail}, now(), #{ubirth}, #{usex}) -->
+<!--     </insert> -->
 
-    <select id="pwcheck" resultType="UserDto">
-		select * from user where uid = #{uid} and upw = #{upw}
-	</select>
+<!--     <select id="pwcheck" resultType="UserDto"> -->
+<!-- 		select * from user where uid = #{uid} and upw = #{upw} -->
+<!-- 	</select> -->
     
     
-    <update id="pwreset" >
-		update user set upw	= #{upw} where uemail = #{uemail}	
-	</update>
+<!--     <update id="pwreset" > -->
+<!-- 		update user set upw	= #{upw} where uemail = #{uemail}	 -->
+<!-- 	</update> -->
 	
-	<select id="edcheck" resultType="String">
-		select uemail from user where uemail = #{uemail}
-	</select>
+<!-- 	<select id="edcheck" resultType="String"> -->
+<!-- 		select uemail from user where uemail = #{uemail} -->
+<!-- 	</select> -->
     
-</mapper>
+<!-- </mapper> -->

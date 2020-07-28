@@ -1,20 +1,31 @@
 package com.ssafy.sub.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import com.ssafy.sub.repo.FeedQueryDsl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.model.response.UserFeedResult;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.UserService;
 
@@ -42,7 +53,15 @@ public class FeedController {
 		System.out.println("log - feedUserPage");
 		Result result;
 		
-		List<Feed> feedList = feedService.feedHomePageList();
+		List<Feed> feedList = new ArrayList<Feed>();
+		List<User> userList = new ArrayList<User>();
+		
+		feedList = feedService.feedHomePageList();
+		User user;
+		for(int i=0; i<feedList.size(); i++) {
+			user = userService.findById(feedList.get(i).getUid());
+			userList.add(user);
+		}
 		
 		// null값 처리 안하는걸로 그래도 혹시 코드 필요할지 몰라서 남겨둠
 //		if(feedList==null) {
@@ -54,16 +73,31 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "유저의 개인 피드 목록을 조회한다", response = Result.class)
+	@ApiOperation(value = "유저의 개인 피드 목록을 조회한다", response = UserFeedResult.class)
 	@GetMapping(value="/page/{uid}")
-	public ResponseEntity<Result> feedUserPage(@PathVariable String uid, Authentication authentication) {
+	public ResponseEntity feedUserPage(@PathVariable String uid, Authentication authentication) {
 		System.out.println("log - feedUserPage");
-
-		int user_id = userService.findByUid(uid).getId();
-		List<Feed> feedList = feedService.feedUserPageList(user_id);
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feedList);
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
+		String user_id = null;
+		try {
+			user_id = authentication.getName();
+		}catch (Exception e) {
+			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
+		}
+		
+		User user = userService.findByUid(uid);
+		List<Feed> feedList = feedService.feedUserPageList(user.getId());
+		
+		// 새로운 result form 하나 만들어서  = 유저정보 + result
+		String mypage = null;
+		if(Integer.parseInt(user_id)!=user.getId()) {
+			mypage="true";
+		}else {
+			mypage="false";
+		}
+		
+		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feedList, user, mypage);
+		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
 	}
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
@@ -80,11 +114,19 @@ public class FeedController {
 	// 3. list 추가
 	@ApiOperation(value = "feedList에 정보를 추가한다", response = Result.class)
 	@PostMapping
-	public ResponseEntity<Result> feedInsert(@RequestBody Feed feed, Authentication authentication) {
+	public ResponseEntity<Result> feedInsert(@RequestBody Map<String, String> feeds, Authentication authentication) {
+		//@RequestBody Map<String, String> feed
 		System.out.println("log - feedInsert");
 
 		User user = (User) authentication.getPrincipal();
-		feed.setUid(user.getId());
+		Feed feed = Feed.builder().title(feeds.get("title")).content(feeds.get("content"))
+				.uid(user.getId()).regdate(new Date()).build();
+		
+		String hashtags[] = feeds.get("hashtag").split("#");
+		String hashContent;
+		for(String hashtag: hashtags) {
+			
+		}
 		
 		feedService.feedInsert(feed);
 		

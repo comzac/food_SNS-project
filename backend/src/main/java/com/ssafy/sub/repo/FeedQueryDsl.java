@@ -2,12 +2,12 @@ package com.ssafy.sub.repo;
 
 import java.util.List;
 
-import com.ssafy.sub.dto.QFeed;
-import com.ssafy.sub.dto.QRelationShip;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.sub.dto.Feed;
+import com.ssafy.sub.dto.QFeed;
+import com.ssafy.sub.dto.QRelationship;
 
 @Repository
 public class FeedQueryDsl extends QuerydslRepositorySupport {
@@ -18,7 +18,7 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 
 	public List<Feed> findAllByFollower(int id){
 		QFeed feed = QFeed.feed;
-		QRelationShip relationShip = QRelationShip.relationShip;
+		QRelationship relationShip = QRelationship.relationship;
 		System.out.println(id + "DSL");
 		return from(feed)
 				.leftJoin(relationShip)

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.service.CustomUserDetailService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -31,6 +32,7 @@ public class JwtTokenProvider {
     private long tokenValidTime = 10 * 60 * 1000L;
     
     private final UserDetailsService userDetailsService;
+    private final CustomUserDetailService cUserDetailsService;
 
 	@Autowired
     RedisTemplate<String, Object> redisTemplate;
@@ -59,7 +61,7 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = cUserDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
