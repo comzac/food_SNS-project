@@ -15,8 +15,8 @@ export default {
       state.feeds = feeds;
     },
     SET_USERFEEDS(state, userFeeds) {
-      state.userFeeds = userFeeds
-    }
+      state.userFeeds = userFeeds;
+    },
   },
   actions: {
     fetchFeeds({ commit, rootGetters }) {
@@ -38,21 +38,28 @@ export default {
       const config = rootGetters["accounts/cofnig"];
       axios
         .get(
-          SERVER.BASE_URL + SERVER.ROUTES.feed.URL + SERVER.ROUTES.feeds.page + userId,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feed.URL +
+            SERVER.ROUTES.feeds.page +
+            userId,
           null,
           config
         )
-        .then(res => {
-          console.log(res)
-          commit("SET_USERFEEDS", res.data)
+        .then((res) => {
+          console.log(res);
+          commit("SET_USERFEEDS", res.data);
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => console.log(err.response));
     },
 
-    insertFeed({ rootGetters }, feedData) {
+    insertFeed({ rootGetters }, formData) {
+      console.log(formData);
       const config = rootGetters["accounts/config"];
+      config.headers["Content-Type"] = "multipart/form-data";
+      config.headers["Accept"] = "application/json";
+      console.log(formData.getAll("hashtag"));
       axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
+        .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, formData, config)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     },
