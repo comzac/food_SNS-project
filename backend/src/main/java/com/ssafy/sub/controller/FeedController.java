@@ -1,7 +1,6 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.dto.UserPage;
+import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
@@ -37,9 +38,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/feeds")
 public class FeedController {
-
-	private static final String SUCCESS = "success";
-	private static final String FAIL = "fail";
 	
 	@Autowired
 	private FeedService feedService;
@@ -49,9 +47,8 @@ public class FeedController {
 	// 1. list 조회
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
 	@GetMapping(value="/page")
-	public ResponseEntity<Result> feedHomePage() {
+	public ResponseEntity feedHomePage() {
 		System.out.println("log - feedUserPage");
-		Result result;
 		
 		List<Feed> feedList = new ArrayList<Feed>();
 		List<User> userList = new ArrayList<User>();
@@ -63,20 +60,41 @@ public class FeedController {
 			userList.add(user);
 		}
 		
-		// null값 처리 안하는걸로 그래도 혹시 코드 필요할지 몰라서 남겨둠
-//		if(feedList==null) {
-//			result = new Result(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_FEED, null);
-//			return new ResponseEntity<Result>(result, HttpStatus.NO_CONTENT);
-//		}
+		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList, userList, false);
+		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
+	}
+	
+	// 7. list by follower 조회
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
+	@ApiOperation(value = "팔로우한 유저들의 피드", response = Result.class)
+	@PostMapping(value="/page/follower")
+	public ResponseEntity feedFollowerPage() {
+		System.out.println("log - feedFollowerPage");
 		
-		result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList);
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
+		String id;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		id = authentication.getName();
+		
+		List<Feed> feedList = feedService.findAllByFollower(Integer.parseInt(id));	// follower의 feedList 들고옴
+		List<User> userList = new ArrayList<User>();
+		
+		User user;	// 해당 user의 정보를 들고와서 userList에 넣어줌
+		for(int i=0; i<feedList.size(); i++) {
+			user = userService.findById(feedList.get(i).getUid());
+			userList.add(user);
+		}
+
+		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList, userList, false);
+		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "유저의 개인 피드 목록을 조회한다", response = UserFeedResult.class)
 	@GetMapping(value="/page/{uid}")
 	public ResponseEntity feedUserPage(@PathVariable String uid, Authentication authentication) {
 		System.out.println("log - feedUserPage");
+		UserPage userPage = null;
+		UserSimple simpleUser = userService.getSimpleUser(uid);
 		
 		String user_id = null;
 		try {
@@ -85,15 +103,16 @@ public class FeedController {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
 		}
 		
+		// url로 들어온 유저의 정보
 		User user = userService.findByUid(uid);
 		List<Feed> feedList = feedService.feedUserPageList(user.getId());
 		
+		userPage.setUser(simpleUser);
+		userPage.setFeed(feedList);
 		// 새로운 result form 하나 만들어서  = 유저정보 + result
-		String mypage = null;
+		boolean mypage = true;
 		if(Integer.parseInt(user_id)!=user.getId()) {
-			mypage="true";
-		}else {
-			mypage="false";
+			mypage=false;
 		}
 		
 		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feedList, user, mypage);
@@ -114,21 +133,20 @@ public class FeedController {
 	// 3. list 추가
 	@ApiOperation(value = "feedList에 정보를 추가한다", response = Result.class)
 	@PostMapping
-	public ResponseEntity<Result> feedInsert(@RequestBody Map<String, String> feeds, Authentication authentication) {
-		//@RequestBody Map<String, String> feed
+	public ResponseEntity<Result> feedInsert(@RequestBody Map<String, Map<String, String>> feeds, Authentication authentication) {
 		System.out.println("log - feedInsert");
 
 		User user = (User) authentication.getPrincipal();
-		Feed feed = Feed.builder().title(feeds.get("title")).content(feeds.get("content"))
-				.uid(user.getId()).regdate(new Date()).build();
+//		Feed feed = Feed.builder().title(feeds.get("title")).content(feeds.get("content"))
+//				.uid(user.getId()).regdate(new Date()).build();
 		
-		String hashtags[] = feeds.get("hashtag").split("#");
-		String hashContent;
-		for(String hashtag: hashtags) {
-			
-		}
-		
-		feedService.feedInsert(feed);
+//		String hashtags[] = feeds.get("hashtag");
+//		String hashContent;
+//		for(String hashtag: hashtags) {
+//			
+//		}
+//		
+//		feedService.feedInsert(feed);
 		
 		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
@@ -137,13 +155,26 @@ public class FeedController {
 	// 4. list 상세
 	@ApiOperation(value = "특정 feed를 조회한다", response = Result.class)
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Result> feedDetail(@PathVariable int id) {
+	public ResponseEntity feedDetail(@PathVariable int id, Authentication authentication) {
 		System.out.println("log - feedDetail");
-
-		Feed feed = feedService.feedDetail(id);
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FEED, feed);
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
+		String user_id = null;
+		try {
+			user_id = authentication.getName();
+		}catch (Exception e) {
+			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
+		}
+		
+		Feed feed = feedService.feedDetail(id);
+		User user = userService.findById(feed.getUid());
+
+		boolean mypage = true;
+		if(Integer.parseInt(user_id)!=feed.getUid()) {
+			mypage=false;
+		}
+		
+		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feed, user, mypage);
+		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
 	}
 
 	// 5. list 수정
@@ -170,22 +201,5 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	// 7. list by follower 조회
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
-	@ApiOperation(value = "팔로우한 유저들의 피드", response = Result.class)
-	@PostMapping(value="/page/follower")
-	public ResponseEntity<Result> feedFollowerPage() {
-		System.out.println("log - feedFollowerPage");
-		Result result;
-		
-		String id;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		id = authentication.getName();
-		
-		List<Feed> feedList = feedService.findAllByFollower(Integer.parseInt(id));
-
-		result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList);
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
-	}
+	
 }

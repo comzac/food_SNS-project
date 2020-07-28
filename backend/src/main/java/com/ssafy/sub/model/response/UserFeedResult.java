@@ -14,5 +14,5 @@ public class UserFeedResult {
     private String message;	// 메세지
     private Object feed;	// feedList
     private Object user;	// user정보
-    private String mypage;	// mypage 설정
+    private boolean mypage;	// mypage 설정
 }
