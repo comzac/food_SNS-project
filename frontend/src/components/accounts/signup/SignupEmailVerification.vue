@@ -1,54 +1,49 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <!-- <h1>Email Verification</h1> -->
-    <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <v-text-field
-          v-model="confirm"
-          :error-messages="error.confirm"
-          label="Verification Code"
-          outlined
-          solo
-          required
-          color="#ff6666"
-        ></v-text-field>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <div>
-          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
-          <v-divider class="mr-5" vertical></v-divider>
-          <v-btn color="#ff6666" class="white--text" :disabled="!isSubmit" @click="verify()">회원가입 완료</v-btn>
-        </div>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-card class="mx-auto" flat max-width="350">
+    <v-spacer>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </v-spacer>
+    <v-text-field
+      v-model="confirm"
+      :error-messages="error.confirm"
+      label="Verification Code"
+      outlined
+      solo
+      required
+      color="#ff6666"
+    ></v-text-field>
+    <v-spacer>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </v-spacer>
+    <div>
+      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+      <v-divider class="mr-5" vertical></v-divider>
+      <v-btn color="#ff6666" class="white--text" :disabled="!isSubmit" @click="verify()">회원가입 완료</v-btn>
+    </div>
+    <v-spacer>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </v-spacer>
+  </v-card>
 </template>
 
 <script>

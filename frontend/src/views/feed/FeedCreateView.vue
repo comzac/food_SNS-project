@@ -1,95 +1,97 @@
 <template>
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-text-field
-          label="제목"
-          outlined
-          solo
-          name="title"
-          type="text"
-          v-model="feed.title"
-          color="#ff6666"
-          :error-messages="feed.title?'':'제목을 입력해주세요'"
-          autocapitalize="off"
-          autocorrect="off"
-        ></v-text-field>
-        <video width="100%" controls :src="video" type="video/mp4" autoplay></video>
-        <v-file-input
-          prepend-icon
-          accept=".mp4"
-          outlined
-          solo
-          label="비디오 선택"
-          @change="previewVideo"
-          color="#ff6666"
-          :error-messages="video?'':'눌러서 비디오을 선택하세요 (.mp4 파일만 업로드 됩니다.)'"
-        ></v-file-input>
-        <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
-        <!-- 사진 입력 -->
-        <v-file-input
-          prepend-icon
-          accept=".png, .jpeg, .gif, .jpg"
-          outlined
-          solo
-          label="사진 선택"
-          @change="previewImage"
-          color="#ff6666"
-          :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg 파일만 업로드 됩니다.)'"
-        ></v-file-input>
-        <v-spacer></v-spacer>
-        <v-textarea
-          color="#ff6666"
-          v-model="feed.content"
-          auto-grow
-          label="내용"
-          outlined
-          solo
-          :error-messages="feed.content?'':'내용을 입력하세요'"
-          single-line
-        ></v-textarea>
-        <v-spacer>
-          <br />
-        </v-spacer>
-        <!-- 수정 필요 -->
-        <v-text-field
-          label="태그"
-          outlined
-          solo
-          name="태그"
-          type="text"
-          v-model="hashtag"
-          color="#ff6666"
-          append-icon="mdi-plus"
-          @click:append="createHashtag(hashtag)"
-          @keyup.enter.space.,="createHashtag(hashtag)"
-          error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
-          autocapitalize="off"
-          autocorrect="off"
-        ></v-text-field>
-        <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
-          <v-btn
+      <v-col cols="12">
+        <v-card flat max-width="614" class="mx-auto">
+          <v-text-field
+            label="제목"
             outlined
-            class="red--text text--lighten-2"
+            solo
+            name="title"
+            type="text"
+            v-model="feed.title"
             color="#ff6666"
-            small
-            @click="tag.splice(feedhashtag.indexOf(tag), 1)"
-          ># {{ tag }}</v-btn>
-        </div>
-        <v-spacer>
-          <br />
-        </v-spacer>
-        <div>
-          <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
-          <v-divider class="mr-5" vertical></v-divider>
-          <!-- 클릭하면 피드 상세 페이지로 -->
-          <v-btn
-            :disabled="!feed.title || !feed.content || !fileData"
-            @click="insertFeedByFormData()"
+            :error-messages="feed.title?'':'제목을 입력해주세요'"
+            autocapitalize="off"
+            autocorrect="off"
+          ></v-text-field>
+          <video width="100%" controls :src="video" type="video/mp4" autoplay></video>
+          <v-file-input
+            prepend-icon
+            accept=".mp4"
+            outlined
+            solo
+            label="비디오 선택"
+            @change="previewVideo"
             color="#ff6666"
-            class="white--text"
-          >작성 완료</v-btn>
-        </div>
+            :error-messages="video?'':'눌러서 비디오을 선택하세요 (.mp4 파일만 업로드 됩니다.)'"
+          ></v-file-input>
+          <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
+          <!-- 사진 입력 -->
+          <v-file-input
+            prepend-icon
+            accept=".png, .jpeg, .gif, .jpg"
+            outlined
+            solo
+            label="사진 선택"
+            @change="previewImage"
+            color="#ff6666"
+            :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg 파일만 업로드 됩니다.)'"
+          ></v-file-input>
+          <v-spacer></v-spacer>
+          <v-textarea
+            color="#ff6666"
+            v-model="feed.content"
+            auto-grow
+            label="내용"
+            outlined
+            solo
+            :error-messages="feed.content?'':'내용을 입력하세요'"
+            single-line
+          ></v-textarea>
+          <v-spacer>
+            <br />
+          </v-spacer>
+          <!-- 수정 필요 -->
+          <v-text-field
+            label="태그"
+            outlined
+            solo
+            name="태그"
+            type="text"
+            v-model="hashtag"
+            color="#ff6666"
+            append-icon="mdi-plus"
+            @click:append="createHashtag(hashtag)"
+            @keyup.enter.space.,="createHashtag(hashtag)"
+            error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
+            autocapitalize="off"
+            autocorrect="off"
+          ></v-text-field>
+          <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+            <v-btn
+              outlined
+              class="red--text text--lighten-2"
+              color="#ff6666"
+              small
+              @click="tag.splice(feedhashtag.indexOf(tag), 1)"
+            ># {{ tag }}</v-btn>
+          </div>
+          <v-spacer>
+            <br />
+          </v-spacer>
+          <div>
+            <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+            <v-divider class="mr-5" vertical></v-divider>
+            <!-- 클릭하면 피드 상세 페이지로 -->
+            <v-btn
+              :disabled="!feed.title || !feed.content || !fileData"
+              @click="insertFeedByFormData()"
+              color="#ff6666"
+              class="white--text"
+            >작성 완료</v-btn>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

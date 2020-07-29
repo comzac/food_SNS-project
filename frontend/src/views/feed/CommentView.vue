@@ -2,8 +2,8 @@
   <div>
     <v-container>
       <v-row class="text-center" align="center" justify="center">
-        <v-col cols="12" sm="8" md="6" lg="4">
-          <v-card flat class="text-left">
+        <v-col cols="12">
+          <v-card flat class="text-left mx-auto" max-width="614">
             <p>
               <strong>{{ feed.title }}</strong>
             </p>
@@ -12,84 +12,100 @@
           <v-spacer>
             <br />
           </v-spacer>
-          <v-row class="ma-0">
-            <v-avatar width="56" height="56">
-              <!-- <v-icon>mdi-account</v-icon> -->
-              <img src="@/assets/profile_default.png" />
-            </v-avatar>
-            <v-text-field
-              rounded
-              outlined
-              label="댓글달기"
-              type="text"
-              v-model="commentData"
-              color="#ff6666"
-              append-icon="mdi-send"
-              @click:append="createComment(commentData)"
-              @keyup.enter="createComment(commentData)"
-            ></v-text-field>
-          </v-row>
-          <div v-for="comment in comments" :key="comment.id">
-            <v-list-item class="ma-0 pa-0">
-              <router-link
-                :to="{ name: 'UserDetail', params: { uid: comment.uid} }"
-                class="text-decoration-none"
-              >
-                <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
-                  <img src="@/assets/profile_default.png" />
-                </v-list-item-avatar>
-              </router-link>
-              <v-list-item-content class="text-left">
+          <v-card flat class="mx-auto" max-width="614">
+            <v-row class="ma-0">
+              <v-avatar width="56" height="56">
+                <!-- <v-icon>mdi-account</v-icon> -->
+                <img src="@/assets/profile_default.png" />
+              </v-avatar>
+              <v-text-field
+                rounded
+                outlined
+                label="댓글달기"
+                type="text"
+                v-model="commentData"
+                color="#ff6666"
+                append-icon="mdi-send"
+                @click:append="createComment(commentData)"
+                @keyup.enter="createComment(commentData)"
+              ></v-text-field>
+            </v-row>
+            <div v-for="comment in comments" :key="comment.id">
+              <v-list-item class="ma-0 pa-0">
                 <router-link
                   :to="{ name: 'UserDetail', params: { uid: comment.uid} }"
                   class="text-decoration-none"
                 >
-                  <v-list-item-title class="black--text">{{ comment.unick }}</v-list-item-title>
+                  <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
+                    <img src="@/assets/profile_default.png" />
+                  </v-list-item-avatar>
                 </router-link>
-                <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
-                <v-list-item-subtitle
-                  class="gray--text"
-                >{{ computeYMD(comment.regdate) }} {{ comment.editdate?'(수정됨)':'' }}</v-list-item-subtitle>
-              </v-list-item-content>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon color="#ff6666">mdi-heart</v-icon>
-                <v-icon color="#ff6666">mdi-heart-outline</v-icon>
-              </v-btn>
-              <v-menu left bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-horizontal</v-icon>
-                  </v-btn>
-                </template>
+                <v-list-item-content class="text-left">
+                  <router-link
+                    :to="{ name: 'UserDetail', params: { uid: comment.uid} }"
+                    class="text-decoration-none"
+                  >
+                    <v-list-item-title class="black--text">{{ comment.unick }}</v-list-item-title>
+                  </router-link>
+                  <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="gray--text"
+                  >{{ computeYMD(comment.regdate) }} {{ comment.editdate?'(수정됨)':'' }}</v-list-item-subtitle>
+                </v-list-item-content>
+                <v-spacer></v-spacer>
+                <v-btn icon>
+                  <v-icon color="#ff6666">mdi-heart</v-icon>
+                  <v-icon color="#ff6666">mdi-heart-outline</v-icon>
+                </v-btn>
+                <v-menu left bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
+                      <v-icon>mdi-dots-horizontal</v-icon>
+                    </v-btn>
+                  </template>
 
-                <v-list class="text-center">
-                  <v-list-item @click="showEdit(comment.id)">
-                    <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="() => {}">
-                    <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="() => {}">
-                    <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="() => {}">
-                    <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-list-item>
-            <EditComment
-              class="update"
-              :id="comment.id"
-              style="display: none;"
-              :comment="comment"
-              @editComment="editComment()"
-            />
-          </div>
+                  <v-list class="text-center">
+                    <v-list-item @click="showEdit(comment.id)">
+                      <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item @click="() => {}">
+                      <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item @click="() => {}">
+                      <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item @click="() => {}">
+                      <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </v-list-item>
+              <EditComment
+                class="update"
+                :id="comment.id"
+                style="display: none;"
+                :comment="comment"
+                @editComment="editComment()"
+              />
+            </div>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
+    <v-hover v-slot:default="{ hover }" open-delay="200">
+      <v-btn
+        :color="hover ? '#ef5656' : '#ff6666'"
+        :elevation="hover ? 24 : 2"
+        fixed
+        small
+        bottom
+        right
+        fab
+        @click="top()"
+      >
+        <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
+      </v-btn>
+    </v-hover>
   </div>
 </template>
 

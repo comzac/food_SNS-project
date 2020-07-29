@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="344" class="mx-auto mt-10" outlined>
+  <v-card class="mx-auto mt-10" flat max-width="975" outlined>
     <v-list-item>
       <v-list-item-avatar color="grey">
         <v-icon dark>mdi-account</v-icon>

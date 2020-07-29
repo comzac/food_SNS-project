@@ -1,9 +1,14 @@
 <template>
   <v-container>
     <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
+      <v-col cols="12">
         <v-hover v-slot:default="{ hover }">
-          <v-card :class="`elevation-${hover ? 24 : 6}`" class="transition-swing">
+          <v-card
+            :class="`elevation-${hover ? 24 : 6}`"
+            class="transition-swing ma-auto"
+            max-width="614"
+            outlined
+          >
             <v-list-item>
               <router-link
                 :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
