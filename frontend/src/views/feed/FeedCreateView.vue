@@ -16,6 +16,7 @@
         ></v-text-field>
         <video width="100%" controls :src="video" type="video/mp4" autoplay></video>
         <v-file-input
+          v-if="!isUpdatePage"
           prepend-icon
           accept=".mp4"
           outlined
@@ -28,6 +29,7 @@
         <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
         <!-- 사진 입력 -->
         <v-file-input
+          v-if="!isUpdatePage"
           prepend-icon
           accept=".png, .jpeg, .gif, .jpg"
           outlined
@@ -84,6 +86,14 @@
           <v-divider class="mr-5" vertical></v-divider>
           <!-- 클릭하면 피드 상세 페이지로 -->
           <v-btn
+            v-if="isUpdatePage"
+            :disabled="!feed.title || !feed.content || !fileData"
+            @click="updateFeedByFormData()"
+            color="#ff6666"
+            class="white--text"
+          >작성 완료</v-btn>
+          <v-btn
+            v-else
             :disabled="!feed.title || !feed.content || !fileData"
             @click="insertFeedByFormData()"
             color="#ff6666"
@@ -96,11 +106,17 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "FeedCreateView",
   components: {},
+  computed: {
+    ...mapState("feeds", ["selectedFeed"]),
+    isUpdatePage() {
+      return !!this.$route.params.fid;
+    },
+  },
   data() {
     return {
       hashtag: "",
@@ -115,26 +131,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions("feeds", ["insertFeed"]),
-    // previewImage(event) {
-    //   // Reference to the DOM input element
-    //   console.log(event.target);
-    //   var input = event.target;
-    //   // Ensure that you have a file before attempting to read it
-    //   if (input.files && input.files[0]) {
-    //     // create a new FileReader to read this image and convert to base64 format
-    //     var reader = new FileReader();
-    //     // Define a callback function to run, when FileReader finishes its job
-    //     reader.onload = (event) => {
-    //       // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-    //       // Read image as base64 and set to imageData
-    //       this.imageData = event.target.result;
-    //       console.log(event.target);
-    //     };
-    //     // Start the reader job - read file as a data url (base64 format)
-    //     reader.readAsDataURL(input.files[0]);
-    //   }
-    // },
+    ...mapActions("feeds", ["insertFeed", "updateFeed", "getFeedDetail"]),
+
     previewImage(file) {
       console.log(file);
       if (file.size > 20 * 1024 * 1024) {
@@ -184,11 +182,28 @@ export default {
       this.insertFeed(form);
     },
 
+    updateFeedByFormData() {
+      const form = new FormData();
+
+      form.append("feed", this.feed);
+      this.feedhashtag.forEach((tag) => {
+        if (tag !== "") {
+          form.append("hashtag", tag);
+        }
+      });
+      this.fileData.forEach((file) => {
+        form.append("file", file);
+      });
+      form.append("id", this.$route.params.fid);
+      this.updateFeed(form);
+    },
+
     createHashtag(hashtag) {
       hashtag = hashtag
         .replace(/#/gi, "")
         .replace(/ /gi, "")
         .replace(/,/gi, "");
+      console.log(hashtag);
       if (this.feedhashtag.includes(hashtag) || hashtag == "") {
         this.hashtag = "";
       } else {
@@ -197,6 +212,19 @@ export default {
       }
       console.log(this.feedhashtag);
     },
+
+    initData() {
+      this.feed.title = this.selectedFeed.title;
+      this.feed.content = this.selectedFeed.content;
+      this.fileData = this.selectedFeed.dbFiles;
+      this.feedhashtag = this.selectedFeed.hashtag;
+    },
+  },
+
+  created() {
+    if (this.$route.params.fid) {
+      this.getFeedDetail(this.$route.params.fid).then(this.initData());
+    }
   },
 };
 </script>
