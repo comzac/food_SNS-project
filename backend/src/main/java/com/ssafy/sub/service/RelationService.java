@@ -13,4 +13,8 @@ public interface RelationService  {
 
 	List<Relationship> relationFollowingList(int uid);
 
+	Relationship followInsert(int id, int rid);
+
+	long followDelete(int id, int rid);
+
 }

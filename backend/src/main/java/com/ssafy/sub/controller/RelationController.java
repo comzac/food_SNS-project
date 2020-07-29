@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class RelationController {
 			
 			FollowerList = relationService.relationFollowerList(Integer.parseInt(id));
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, FollowerList);
+			Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWER, FollowerList);
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}
 		
@@ -57,7 +58,7 @@ public class RelationController {
 			
 			FollowingList = relationService.relationFollowingList(Integer.parseInt(id));
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, FollowingList);
+			Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWING, FollowingList);
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}
 	
@@ -69,10 +70,22 @@ public class RelationController {
 			
 			Relationship relationship; 
 			String id = authentication.getName();
-			//relationship = relationService.followInsert(Integer.parseInt(id),rid);
+			relationship = relationService.followInsert(Integer.parseInt(id),rid);
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, relationship);
+			Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, relationship);
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}	
 		
+		// 3. 팔로우 삭제
+		@ApiOperation(value = "팔로우 삭제", response = Result.class)
+		@DeleteMapping(value="/")
+		public ResponseEntity<Result> followDelete(Authentication authentication, @RequestParam int rid) {
+			System.out.println("log - followDelete");
+			
+			String id = authentication.getName();
+			long ret = relationService.followDelete(Integer.parseInt(id), rid);
+
+			Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FOLLOWER, ret);
+			return new ResponseEntity<Result>(result, HttpStatus.OK);
+		}	
 }
