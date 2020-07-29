@@ -58,7 +58,7 @@
           solo
           name="태그"
           type="text"
-          v-model="feedhashtag"
+          v-model="hashtag"
           color="#ff6666"
           append-icon="mdi-plus"
           @click:append="createHashtag(hashtag)"
