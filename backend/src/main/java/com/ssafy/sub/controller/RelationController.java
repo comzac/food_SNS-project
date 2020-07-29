@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Relationship;
@@ -59,4 +61,18 @@ public class RelationController {
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}
 	
+		// 3. 팔로우 추가
+		@ApiOperation(value = "팔로우 추가", response = Result.class)
+		@PostMapping(value="/")
+		public ResponseEntity<Result> followInsert(Authentication authentication, @RequestParam int rid) {
+			System.out.println("log - followInsert");
+			
+			Relationship relationship; 
+			String id = authentication.getName();
+			//relationship = relationService.followInsert(Integer.parseInt(id),rid);
+
+			Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, relationship);
+			return new ResponseEntity<Result>(result, HttpStatus.OK);
+		}	
+		
 }
