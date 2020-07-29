@@ -6,16 +6,19 @@
         <router-view />
       </transition>
     </v-main>
+    <Signup v-if="$route.name=='Login'" />
   </v-app>
 </template>
 
 <script>
 import Header from "@/components/navbar/Header";
+import Signup from "@/components/navbar/Signup";
 
 export default {
   name: "App",
   components: {
     Header,
+    Signup,
   },
   data: () => ({
     //

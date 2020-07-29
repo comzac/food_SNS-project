@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12" sm="8" md="6" lg="4">
+  <v-card class="mx-auto" flat max-width="975" outlined>
     <h2 class="text-left red--text text--lighten-2 ml-3">회원정보 수정</h2>
     <br />
     <v-container>
@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-col>
+  </v-card>
 </template>
 
 <script>

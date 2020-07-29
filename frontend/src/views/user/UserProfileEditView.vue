@@ -1,17 +1,16 @@
 <template>
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12"></v-col>
-      <UserEdit />
+      <UserProfileEdit />
     </v-row>
   </v-container>
 </template>
 
 <script>
-import UserEdit from "@/components/accounts/useredit/UserEdit";
+import UserProfileEdit from "@/components/accounts/useredit/UserProfileEdit";
 export default {
   components: {
-    UserEdit,
+    UserProfileEdit,
   },
 };
 </script>

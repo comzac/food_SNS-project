@@ -72,7 +72,10 @@
         <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
           <v-btn
             outlined
-            class="red--text text--lighten-2"
+            solo
+            name="title"
+            type="text"
+            v-model="feed.title"
             color="#ff6666"
             small
             @click="tag.splice(feedhashtag.indexOf(tag), 1)"
@@ -97,9 +100,37 @@
             :disabled="!feed.title || !feed.content || !fileData"
             @click="insertFeedByFormData()"
             color="#ff6666"
-            class="white--text"
-          >작성 완료</v-btn>
-        </div>
+            append-icon="mdi-plus"
+            @click:append="createHashtag(hashtag)"
+            @keyup.enter.space.,="createHashtag(hashtag)"
+            error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
+            autocapitalize="off"
+            autocorrect="off"
+          ></v-text-field>
+          <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+            <v-btn
+              outlined
+              class="red--text text--lighten-2"
+              color="#ff6666"
+              small
+              @click="tag.splice(feedhashtag.indexOf(tag), 1)"
+            ># {{ tag }}</v-btn>
+          </div>
+          <v-spacer>
+            <br />
+          </v-spacer>
+          <div>
+            <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+            <v-divider class="mr-5" vertical></v-divider>
+            <!-- 클릭하면 피드 상세 페이지로 -->
+            <v-btn
+              :disabled="!feed.title || !feed.content || !fileData"
+              @click="insertFeedByFormData()"
+              color="#ff6666"
+              class="white--text"
+            >작성 완료</v-btn>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

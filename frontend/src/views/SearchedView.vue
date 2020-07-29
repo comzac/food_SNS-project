@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card max-width="344" class="mx-auto" flat>
+    <v-card max-width="614" class="mx-auto" flat>
       <v-container>
         <v-row class="mx-0 align-center">
           <h1 class="red--text text--lighten-2">#{{ keyword }}</h1>

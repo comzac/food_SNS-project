@@ -24,6 +24,7 @@
                 hint="계속하려면 비밀번호를 다시 입력하세요"
                 persistent-hint
                 required
+                @keypress.enter="passwordCheck"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -62,14 +63,16 @@ export default {
   methods: {
     ...mapActions("accounts", ["pwcheck"]),
     passwordCheck() {
-      this.pwcheck(this.password).then((checkResult) => {
-        if (checkResult) {
-          this.$router.push({ name: "UserEdit" });
-        } else {
-          alert("비밀번호가 일치하지 않습니다.");
-        }
-        this.password = "";
-      });
+      if (this.password.length >= 8) {
+        this.pwcheck(this.password).then((checkResult) => {
+          if (checkResult) {
+            this.$router.push({ name: "UserEdit" });
+          } else {
+            alert("비밀번호가 일치하지 않습니다.");
+          }
+          this.password = "";
+        });
+      }
     },
     clearPassword() {
       if (!this.dialog) this.password = "";

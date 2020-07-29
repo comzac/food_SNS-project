@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="344" class="mx-auto mt-10" outlined>
+  <v-card class="mx-auto mt-10" flat max-width="975" outlined>
     <v-list-item>
       <v-list-item-avatar color="grey">
         <v-icon dark>mdi-account</v-icon>
@@ -8,7 +8,7 @@
         <v-list-item-title class="title">{{unick}}</v-list-item-title>
         <v-list-item-subtitle>{{uid}}</v-list-item-subtitle>
       </v-list-item-content>
-      <v-btn v-if="mypage" color="grey" fab small dark>
+      <v-btn v-if="mypage" color="grey" fab small dark @click="toProfileEdit">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
       <v-chip v-if="!mypage" @click="alert('동작')">follow</v-chip>
@@ -59,6 +59,9 @@ export default {
   methods: {
     setDocumentTitle() {
       document.title = this.unick + " · HoneyCombo";
+    },
+    toProfileEdit() {
+      this.$router.push({ name: "UserProfileEdit", params: { uid: this.uid } });
     },
   },
   mounted() {
