@@ -1,7 +1,9 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,24 +18,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ssafy.sub.dto.Comment;
 import com.ssafy.sub.dto.DBFile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedAll;
-import com.ssafy.sub.dto.FeedHashtag;
 import com.ssafy.sub.dto.Hashtag;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserPage;
 import com.ssafy.sub.dto.UserSimple;
+import com.ssafy.sub.exception.FileStorageException;
 import com.ssafy.sub.model.response.FeedAllResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.model.response.UploadFileResponse;
 import com.ssafy.sub.model.response.UserFeedResult;
 import com.ssafy.sub.model.response.UserPageResult;
+import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
+import com.ssafy.sub.service.FileStorageService;
 import com.ssafy.sub.service.UserService;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -49,28 +57,68 @@ public class FeedController {
 	private FeedService feedService;
 	@Autowired
 	private UserService userService;
-	 
+	@Autowired
+	private CommentService commentService;
+	@Autowired
+	private FileStorageService fileStorageService;
+	
 	// 1. list 조회
-	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
-	@GetMapping(value="/page")
-	public ResponseEntity feedHomePage() {
-		System.out.println("log - feedUserHomePage");
-		
-		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
-		List<Feed> feedList = new ArrayList<Feed>();
-		
-		feedList = feedService.feedHomePageList();
-		User user; Feed feed; FeedAll feedAll;
-		for(int i=0; i<feedList.size(); i++) {
-			feed = feedList.get(i);
-			user = userService.findById(feed.getUid());
+		@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
+		@GetMapping(value="/page")
+		public ResponseEntity feedHomePage(Authentication authentication) {
+			System.out.println("log - feedUserHomePage");
 			
+			String loginUserId = authentication.getName();
+			List<FeedAll> feedAllList = new ArrayList<FeedAll>();
+			List<Feed> feedList = new ArrayList<Feed>();
 			
+			feedList = feedService.feedHomePageList();
+
+			User user; UserSimple userSimple; Feed feed; 
+			FeedAll feedAll; 
+			int fid;
+			for(int i=0; i<feedList.size(); i++) {
+				feedAll = new FeedAll();
+				
+				// feed 넣기
+				feed = feedList.get(i);
+				feedAll.setFeed(feed);
+				fid = feed.getId();
+				
+				// user이름 조회
+				user = userService.findById(feed.getUid());
+				userSimple = userService.getSimpleUser(user.getUid());	// user 탈퇴하면 어떻게 처리할건지
+				feedAll.setUser(userSimple);
+				
+				// comment
+				List<Comment> commentList = commentService.commentList(fid);
+				feedAll.setComment(commentList);
+				
+				// hashtag
+				List<Hashtag> hashtagList = feedService.feedHashtagList(fid);
+				feedAll.setHashtag(hashtagList);
+				
+				// like
+				boolean like = false;
+				feedAll.setLike(like);
+				
+				// likeCount
+				int likeCount = 0;
+				feedAll.setLikeCount(likeCount);
+				
+				// 내 피드인지 여부
+				boolean mypage=true;
+				if(feed.getUid()!=Integer.parseInt(loginUserId)) {
+					mypage=false;
+				}
+				feedAll.setMypage(mypage);
+				
+				feedAllList.add(feedAll);
+			}
+			
+			FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
+			return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 		}
-		
-		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
-		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
-	}
 	
 	// 7. list by follower 조회
 	@ApiImplicitParams({
@@ -120,6 +168,7 @@ public class FeedController {
 		List<Feed> feedList = feedService.feedUserPageList(user.getId());
 		int feedCount = feedService.getFeedCount(user.getId());
 		
+		
 		userPage.setUser(userSimple);
 		userPage.setFeed(feedList);
 //		userPage.setFollowerCount(followerCount);
@@ -155,19 +204,28 @@ public class FeedController {
 
 		User user = (User) authentication.getPrincipal();
 		
-		// user는 token으로
+		// user는 token으로 Feed
 		Feed feed = feedAll.getFeed();
 		System.out.println(feed.toString());
 		feed.setUid(user.getId());
-		feedService.feedInsert(feed);
+		Feed insertedFeed = feedService.feedInsert(feed);
 		
 		// hashtag는 일단 빈칸
 		List<Hashtag> hashtagList = feedAll.getHashtag();
 //		feedService.feedHashtagListInsert(hashtagList);
 		
 		// dbfiles에 넣어야함
-		List<DBFile> dbFiles = feedAll.getDbFiles();
-		feed.setDbFiles(dbFiles);
+		MultipartFile[] files = feedAll.getDbFiles();
+		
+		Arrays.asList(files).stream().map(file -> {
+			try {
+				return uploadFile(file, feed.getId());
+			} catch (FileStorageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}).collect(Collectors.toList());
 		
 		// comment 등록
 		
@@ -175,6 +233,16 @@ public class FeedController {
 		
 		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
+	}
+	
+	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fid") int fid)
+			throws FileStorageException {
+		DBFile dbFile = fileStorageService.storeFile(file, fid);
+
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
+				.path(Integer.toString(dbFile.getId())).toUriString();
+
+		return new UploadFileResponse(dbFile.getName(), fileDownloadUri, file.getContentType(), file.getSize());
 	}
 	
 	// 4. list 상세
