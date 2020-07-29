@@ -16,34 +16,42 @@
             autocorrect="off"
           ></v-text-field>
           <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-          <div v-for="preview in previews" :key="preview">
-            <video
+          <div v-for="(preview,i) in previews" :key="i" id="previews">
+            <v-responsive
               v-if="preview.includes('data:video/mp4', 0)"
+              v-show="i==i2"
+              aspect-ratio="1"
+              class="align-center"
+            >
+              <video :id="i" :src="preview" controls type="video/mp4" width="100%" class="my-auto"></video>
+            </v-responsive>
+            <v-img
+              v-if="!preview.includes('data:video/mp4', 0)"
+              v-show="i==i2"
+              :id="i"
               :src="preview"
-              autoplay
-              controls
-              type="video/mp4"
               width="100%"
-            ></video>
-            <img v-if="!preview.includes('data:video/mp4', 0)" :src="preview" width="100%" />
+              aspect-ratio="1"
+            ></v-img>
           </div>
+          <!-- 슬라이더 -->
+          <v-slider
+            prepend-icon="mdi-chevron-double-left"
+            @click:prepend="i2>1?i2-=1:i2=0"
+            append-icon="mdi-chevron-double-right"
+            @click:append="i2<previews.length-1?i2+=1:i2=previews.length-1"
+            v-if="previews.length>0"
+            v-model="i2"
+            :max="previews.length-1"
+            step="1"
+            thumb-color="#ff6666"
+            thumb-labels="always"
+            thumb-size="40"
+          >
+            <template v-slot:thumb-label>{{ i2 + 1 }}</template>
+          </v-slider>
 
-          <!-- <v-file-input
-            multiple
-            v-if="!isUpdatePage"
-            prepend-icon
-            accept=".mp4"
-            outlined
-            solo
-            label="비디오 선택"
-            @change="previewVideo"
-            color="#ff6666"
-            :error-messages="video?'':'눌러서 비디오을 선택하세요 (.mp4 파일만 업로드 됩니다.)'"
-          ></v-file-input>
-          <div v-for="preview in previews" :key="preview">
-            <v-img :src="preview" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
-          </div>-->
-          <!-- 사진 입력 -->
+          <!-- 사진 비디오 입력 -->
           <v-file-input
             multiple
             v-if="!isUpdatePage"
@@ -143,6 +151,7 @@ export default {
   },
   data() {
     return {
+      i2: 0,
       previews: [],
       hashtag: "",
       imageData: "",
@@ -203,22 +212,6 @@ export default {
       //   reader.readAsDataURL(file);
       // }
     },
-    previewVideo(file) {
-      this.previews = [];
-      console.log(file);
-      if (file.size > 20 * 1024 * 1024) {
-        alert("파일 사이즈가 20mb 보다 큽니다.");
-        return false;
-      } else {
-        var reader = new FileReader();
-        reader.onload = (file) => {
-          this.fileData.push(file.target.result);
-          this.video = file.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-
     insertFeedByFormData() {
       const form = new FormData();
 
