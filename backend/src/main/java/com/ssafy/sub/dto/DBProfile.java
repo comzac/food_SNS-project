@@ -41,4 +41,5 @@ public class DBProfile {
     @Lob
     private byte[] data;
 
+    private String text;
 }

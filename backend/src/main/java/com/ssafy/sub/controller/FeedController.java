@@ -2,7 +2,6 @@ package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Feed;
+import com.ssafy.sub.dto.FeedAll;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserPage;
 import com.ssafy.sub.dto.UserSimple;
+import com.ssafy.sub.model.response.FeedAllResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.model.response.UserFeedResult;
+import com.ssafy.sub.model.response.UserPageResult;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.UserService;
 
@@ -50,18 +52,20 @@ public class FeedController {
 	public ResponseEntity feedHomePage() {
 		System.out.println("log - feedUserPage");
 		
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
-		List<User> userList = new ArrayList<User>();
 		
 		feedList = feedService.feedHomePageList();
-		User user;
+		User user; Feed feed; FeedAll feedAll;
 		for(int i=0; i<feedList.size(); i++) {
-			user = userService.findById(feedList.get(i).getUid());
-			userList.add(user);
+			feed = feedList.get(i);
+			user = userService.findById(feed.getUid());
+			
+			
 		}
 		
-		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList, userList, false);
-		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
+		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
+		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
 	
 	// 7. list by follower 조회
@@ -93,12 +97,16 @@ public class FeedController {
 	@GetMapping(value="/page/{uid}")
 	public ResponseEntity feedUserPage(@PathVariable String uid, Authentication authentication) {
 		System.out.println("log - feedUserPage");
-		UserPage userPage = null;
-		UserSimple simpleUser = userService.getSimpleUser(uid);
+		UserPage userPage = new UserPage();	//넘길 객체
+		
+		// user정보
+		UserSimple userSimple = userService.getSimpleUser(uid);
+		System.out.println(userSimple.toString());
 		
 		String user_id = null;
 		try {
 			user_id = authentication.getName();
+//			System.out.println(user_id);
 		}catch (Exception e) {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
 		}
@@ -106,17 +114,22 @@ public class FeedController {
 		// url로 들어온 유저의 정보
 		User user = userService.findByUid(uid);
 		List<Feed> feedList = feedService.feedUserPageList(user.getId());
+		int feedCount = feedService.getFeedCount(user.getId());
 		
-		userPage.setUser(simpleUser);
+		userPage.setUser(userSimple);
 		userPage.setFeed(feedList);
-		// 새로운 result form 하나 만들어서  = 유저정보 + result
+//		userPage.setFollowerCount(followerCount);
+//		userPage.setFollowingCount(followingCount);
+		userPage.setFeedCount(feedCount);
+		
+		// 로그인한 유저인지 확인
 		boolean mypage = true;
 		if(Integer.parseInt(user_id)!=user.getId()) {
 			mypage=false;
 		}
 		
-		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feedList, user, mypage);
-		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
+		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, userPage, mypage);
+		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
@@ -133,20 +146,20 @@ public class FeedController {
 	// 3. list 추가
 	@ApiOperation(value = "feedList에 정보를 추가한다", response = Result.class)
 	@PostMapping
-	public ResponseEntity<Result> feedInsert(@RequestBody Map<String, Map<String, String>> feeds, Authentication authentication) {
+	public ResponseEntity<Result> feedInsert(@RequestBody FeedAll feedAll, Authentication authentication) {
 		System.out.println("log - feedInsert");
 
 		User user = (User) authentication.getPrincipal();
-//		Feed feed = Feed.builder().title(feeds.get("title")).content(feeds.get("content"))
-//				.uid(user.getId()).regdate(new Date()).build();
+		Feed feed = feedAll.getFeed();
+		System.out.println(feed.toString());
+		feedService.feedInsert(feedAll.getFeed());
 		
-//		String hashtags[] = feeds.get("hashtag");
-//		String hashContent;
-//		for(String hashtag: hashtags) {
-//			
-//		}
-//		
-//		feedService.feedInsert(feed);
+		// user는 token으로
+		// hashtag는 일단 빈칸
+		// dbfiles에 넣어야함
+		// comment 등록
+		// 
+		feedAll.getUser();
 		
 		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);

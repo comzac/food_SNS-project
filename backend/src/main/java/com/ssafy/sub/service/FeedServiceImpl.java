@@ -54,7 +54,7 @@ public class FeedServiceImpl implements FeedService {
 //				System.out.println(hashtagRepository.findById(fh.getHashtagId()).get().toString());
 //				hashtagList.add(hashtagRepository.findById(fh.getHashtagId()).get());
 //			}
-			feeds.get(i).setHashtag(hashtagList);
+//			feeds.get(i).setHashtag(hashtagList);
 		}
 		
 		return feeds;
@@ -139,6 +139,14 @@ public class FeedServiceImpl implements FeedService {
 	public Hashtag hashtagDetail(int hid) {
 		return hashtagRepository.findById(hid)
 				.orElseThrow(() -> new RestException(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_HASHTAG));
+	}
+
+	@Override
+	public int getFeedCount(int uid) {
+		// feed 수
+		int feedCount = 0;
+		feedCount = feedRepository.findByUid(uid).size();
+		return feedCount;
 	}
 	
 	
