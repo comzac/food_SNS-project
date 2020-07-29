@@ -151,11 +151,8 @@ export default {
   },
   data() {
     return {
-<<<<<<< HEAD
       i2: 0,
-=======
       feedData: {},
->>>>>>> feature/front/insertfeed
       previews: [],
       hashtag: "",
       imageData: "",
