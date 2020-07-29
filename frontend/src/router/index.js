@@ -82,7 +82,7 @@ const routes = [
     component: FeedCreateView,
   },
   {
-    path: "/feed/comment/:fid/",
+    path: "/feed/comment/:fid",
     name: "CommentView",
     component: CommentView,
   },

@@ -7,7 +7,6 @@
         :feedlike="datum.feedlike"
         style="max-width: 614;"
       />
-      <br />
     </div>
     <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-btn

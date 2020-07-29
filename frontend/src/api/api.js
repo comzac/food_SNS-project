@@ -13,11 +13,16 @@ export default {
       pwcheck: "pw-dup",
       pwreset: "pw-reset",
       logout: "logout",
+      simple: "simple",
     },
     feeds: {
       URL: "feeds/",
       page: "page/",
       search: "search",
+    },
+    files: {
+      URL: "files/",
+      upload: "upload/multipleFiles",
     },
   },
 };
