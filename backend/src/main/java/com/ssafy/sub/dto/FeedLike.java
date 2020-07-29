@@ -1,14 +1,18 @@
 package com.ssafy.sub.dto;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.IdClass;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -16,9 +20,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="feed_hashtag")
-public class FeedHashtag {
+@ToString
+public class FeedLike {
 	
 	@EmbeddedId
-    protected FeedHashtagKey feedHashtagkey;
+    protected FeedLikeKey feedLikekey;
+	
 }
