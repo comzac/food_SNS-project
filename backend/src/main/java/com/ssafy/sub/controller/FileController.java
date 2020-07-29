@@ -64,9 +64,7 @@ public class FileController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@PostMapping("/upload/multipleFiles")
-	public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-
-		int fid = 2;
+	public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam int fid) {
 
 		return Arrays.asList(files).stream().map(file -> {
 			try {
