@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="344" class="mx-auto" flat>
+  <v-card class="mx-auto" flat max-width="975">
     <v-container>
       <v-row>
         <v-col cols="4" v-for="item in items" :key="item">

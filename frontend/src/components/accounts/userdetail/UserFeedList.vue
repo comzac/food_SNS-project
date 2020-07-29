@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="344" class="mx-auto" outlined>
+  <v-card class="mx-auto" flat max-width="975" outlined>
     <v-container>
       <v-row>
         <v-col cols="4" v-for="feed in feeds" :key="feed.id">

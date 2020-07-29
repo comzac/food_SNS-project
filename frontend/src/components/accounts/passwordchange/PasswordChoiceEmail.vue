@@ -1,6 +1,6 @@
 <template>
-  <v-col cols="12" sm="8" md="6" lg="4">
-    <h1 class="text-left red--text text--lighten-2 ml-3">이메일로 찾기</h1>
+  <v-card class="mx-auto" flat max-width="350">
+    <h1 class="text-left ml-3" style="color:#ff6666;">이메일로 찾기</h1>
     <br />
     <br />
     <v-text-field
@@ -35,7 +35,7 @@
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
     </div>
-  </v-col>
+  </v-card>
 </template>
 
 <script>

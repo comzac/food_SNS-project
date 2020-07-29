@@ -1,6 +1,6 @@
 <template>
-  <v-col cols="12" sm="8" md="6" lg="4">
-    <h1 class="text-left red--text text--lighten-2 ml-3">인증번호 입력</h1>
+  <v-card class="mx-auto" flat max-width="350">
+    <h1 class="text-left ml-3" style="color:#ff6666;">인증번호 입력</h1>
     <br />
     <br />
     <v-text-field
@@ -21,7 +21,7 @@
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn :disabled="!isSubmit" @click="verify" color="#ff6666" class="white--text">다음으로</v-btn>
     </div>
-  </v-col>
+  </v-card>
 </template>
 
 <script>

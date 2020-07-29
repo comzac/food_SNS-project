@@ -1,37 +1,39 @@
 <template>
   <v-container fluid>
     <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-text-field
-          v-model="keyword"
-          append-icon="mdi-magnify"
-          @input="delaySearch()"
-          @click:append-outer="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
-          @keyup.enter="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
-          label="검색어를 입력하세요"
-          required
-          autofocus
-          color="#ff6666"
-          autocapitalize="off"
-          autocorrect="off"
-          class="mb-0 pb-0"
-        ></v-text-field>
-        <div v-for="item in items" :key="item.name">
+      <v-col cols="12">
+        <v-card max-width="614" class="mx-auto" flat>
           <v-text-field
-            @click="$router.push({ name: 'SearchedView', params: { keyword: item.name } })"
-            :value="`#${item.name} - 게시물 ${item.count}`"
+            v-model="keyword"
+            append-icon="mdi-magnify"
+            @input="delaySearch()"
+            @click:append-outer="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
+            @keyup.enter="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
+            label="검색어를 입력하세요"
+            required
+            autofocus
             color="#ff6666"
-            readonly
+            autocapitalize="off"
+            autocorrect="off"
+            class="mb-0 pb-0"
           ></v-text-field>
-        </div>
-        <div v-for="search_user in search_users" :key="search_user.uid">
-          <v-text-field
-            @click="$router.push({ name: 'UserDetail', params: { uid: search_user.uid } })"
-            :value="` ${search_user.uid} - 게시물 ${search_user.count}`"
-            color="#ff6666"
-            readonly
-          ></v-text-field>
-        </div>
+          <div v-for="item in items" :key="item.name">
+            <v-text-field
+              @click="$router.push({ name: 'SearchedView', params: { keyword: item.name } })"
+              :value="`#${item.name} - 게시물 ${item.count}`"
+              color="#ff6666"
+              readonly
+            ></v-text-field>
+          </div>
+          <div v-for="search_user in search_users" :key="search_user.uid">
+            <v-text-field
+              @click="$router.push({ name: 'UserDetail', params: { uid: search_user.uid } })"
+              :value="` ${search_user.uid} - 게시물 ${search_user.count}`"
+              color="#ff6666"
+              readonly
+            ></v-text-field>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

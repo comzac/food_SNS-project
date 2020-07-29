@@ -3,7 +3,8 @@
     <!-- 댓글 하나 -->
     <router-link
       :to="{ name: 'CommentView', params: { fid: fid }}"
-      class="text-decoration-none red--text text--lighten-2"
+      class="text-decoration-none"
+      style="color: #ff6666;"
     >
       <p class="text-left ma-0">
         <strong>댓글 {{ comments.length }}개 모두 보기</strong>

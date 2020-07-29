@@ -1,66 +1,61 @@
 <template>
-  <v-container fill-height fluid>
-    <!-- <h1>Email Verification</h1> -->
-    <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <v-text-field
-          v-model="email"
-          :error-messages="error.email"
-          label="E-mail."
-          @input="emailChecked=false"
-          outlined
-          solo
-          required
-          autofocus
-          append-outer-icon="mdi-check"
-          @click:append-outer="emailCheck2(email)"
-          color="#ff6666"
-        ></v-text-field>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-        <div>
-          <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
-          <v-divider class="mr-5" vertical></v-divider>
-          <v-btn
-            :disabled="!emailChecked"
-            @click="emailVerification(email)"
-            color="#ff6666"
-            class="white--text"
-          >다음으로</v-btn>
-          <v-overlay :value="overlay">
-            <v-progress-circular indeterminate size="64"></v-progress-circular>
-          </v-overlay>
-        </div>
-        <v-spacer>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-        </v-spacer>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-card class="mx-auto" flat max-width="350">
+    <v-spacer>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </v-spacer>
+    <v-text-field
+      v-model="email"
+      :error-messages="error.email"
+      label="E-mail."
+      @input="emailChecked=false"
+      outlined
+      solo
+      required
+      autofocus
+      append-outer-icon="mdi-check"
+      @click:append-outer="emailCheck2(email)"
+      color="#ff6666"
+    ></v-text-field>
+    <v-spacer>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </v-spacer>
+    <div>
+      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+      <v-divider class="mr-5" vertical></v-divider>
+      <v-btn
+        :disabled="!emailChecked"
+        @click="emailVerification(email)"
+        color="#ff6666"
+        class="white--text"
+      >다음으로</v-btn>
+      <v-overlay :value="overlay">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
+    </div>
+    <v-spacer>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </v-spacer>
+  </v-card>
 </template>
 
 <script>
