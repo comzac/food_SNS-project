@@ -2,6 +2,8 @@ package com.ssafy.sub.dto;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +26,7 @@ public class FeedAll {
 	private List<Hashtag> hashtag;
 	
 	// 미디어(사진들)
-	private List<DBFile> dbFiles;
+	private MultipartFile[] dbFiles;
 	
 	// 댓글
 	private List<Comment> comment;
