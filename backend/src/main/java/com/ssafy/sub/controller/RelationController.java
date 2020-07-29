@@ -30,62 +30,71 @@ public class RelationController {
 
 	@Autowired
 	RelationService relationService;
-	
-		// 1. 팔로우 조회
-		@ApiOperation(value = "팔로우 조회", response = Result.class)
-		@GetMapping(value="/follower")
-		public ResponseEntity<Result> relationFollowerList(Authentication authentication) {
-			System.out.println("log - relationFollowerList");
-			
-			List<Relationship> FollowerList = new ArrayList<Relationship>();
-			String id = authentication.getName();
-			
-			FollowerList = relationService.relationFollowerList(Integer.parseInt(id));
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWER, FollowerList);
+	// 1. 팔로우 조회
+	@ApiOperation(value = "팔로우 조회", response = Result.class)
+	@GetMapping(value = "/follower")
+	public ResponseEntity<Result> relationFollowerList(Authentication authentication) {
+		System.out.println("log - relationFollowerList");
+
+		List<Relationship> FollowerList = new ArrayList<Relationship>();
+		String id = authentication.getName();
+
+		FollowerList = relationService.relationFollowerList(Integer.parseInt(id));
+
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWER, FollowerList);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
+
+	// 2. 팔로잉 조회
+	@ApiOperation(value = "팔로잉 조회", response = Result.class)
+	@GetMapping(value = "/following")
+	public ResponseEntity<Result> relationFollowingList(Authentication authentication) {
+		System.out.println("log - relationFollowingList");
+
+		List<Relationship> FollowingList = new ArrayList<Relationship>();
+		String id = authentication.getName();
+
+		FollowingList = relationService.relationFollowingList(Integer.parseInt(id));
+
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWING, FollowingList);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
+
+	// 3. 팔로우 추가
+	@ApiOperation(value = "팔로우 추가", response = Result.class)
+	@PostMapping(value = "/")
+	public ResponseEntity<Result> followInsert(Authentication authentication, @RequestParam int rid) {
+		System.out.println("log - followInsert");
+
+		Relationship relationship;
+		String id = authentication.getName();
+		
+		if (Integer.parseInt(id) == rid) {
+			Result result = new Result(StatusCode.OK, ResponseMessage.FAIL_CREATE_FOLLOWER_SAME, null);
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}
-		
-		
-		// 2. 팔로잉 조회
-		@ApiOperation(value = "팔로잉 조회", response = Result.class)
-		@GetMapping(value="/following")
-		public ResponseEntity<Result> relationFollowingList(Authentication authentication) {
-			System.out.println("log - relationFollowingList");
-			
-			List<Relationship> FollowingList = new ArrayList<Relationship>();
-			String id = authentication.getName();
-			
-			FollowingList = relationService.relationFollowingList(Integer.parseInt(id));
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWING, FollowingList);
+		relationship = relationService.followInsert(Integer.parseInt(id), rid);
+		
+		if (relationship == null) {
+			Result result = new Result(StatusCode.OK, ResponseMessage.FAIL_CREATE_FOLLOWER_DUP, null);
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}
-	
-		// 3. 팔로우 추가
-		@ApiOperation(value = "팔로우 추가", response = Result.class)
-		@PostMapping(value="/")
-		public ResponseEntity<Result> followInsert(Authentication authentication, @RequestParam int rid) {
-			System.out.println("log - followInsert");
-			
-			Relationship relationship; 
-			String id = authentication.getName();
-			relationship = relationService.followInsert(Integer.parseInt(id),rid);
+		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, relationship);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, relationship);
-			return new ResponseEntity<Result>(result, HttpStatus.OK);
-		}	
-		
-		// 3. 팔로우 삭제
-		@ApiOperation(value = "팔로우 삭제", response = Result.class)
-		@DeleteMapping(value="/")
-		public ResponseEntity<Result> followDelete(Authentication authentication, @RequestParam int rid) {
-			System.out.println("log - followDelete");
-			
-			String id = authentication.getName();
-			long ret = relationService.followDelete(Integer.parseInt(id), rid);
+	// 3. 팔로우 삭제
+	@ApiOperation(value = "팔로우 삭제", response = Result.class)
+	@DeleteMapping(value = "/")
+	public ResponseEntity<Result> followDelete(Authentication authentication, @RequestParam int rid) {
+		System.out.println("log - followDelete");
 
-			Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FOLLOWER, ret);
-			return new ResponseEntity<Result>(result, HttpStatus.OK);
-		}	
+		String id = authentication.getName();
+		long ret = relationService.followDelete(Integer.parseInt(id), rid);
+
+		Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FOLLOWER, ret);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
 }
