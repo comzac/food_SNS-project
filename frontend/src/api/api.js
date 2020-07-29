@@ -13,6 +13,7 @@ export default {
       pwcheck: "pw-dup",
       pwreset: "pw-reset",
       logout: "logout",
+      simple: "simple",
     },
     feeds: {
       URL: "feeds/",

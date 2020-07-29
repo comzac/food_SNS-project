@@ -1,7 +1,7 @@
 <template>
   <div>
-    <UserProfile v-if="userDetailData" :userDetailData="userDetailData" />
-    <UserFeedList v-if="userDetailData" :userDetailData="userDetailData" />
+    <UserProfile v-if="userProfileData" :userDetailData="userProfileData" />
+    <UserFeedList v-if="userProfileData" :userDetailData="userProfileData" />
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
@@ -24,29 +24,29 @@ export default {
     UserFeedList,
   },
   computed: {
-    ...mapState("feeds", ["userDetailData"]),
+    ...mapState("feeds", ["userProfileData"]),
   },
   methods: {
-    ...mapActions("feeds", ["getUserDetailData"]),
-    ...mapMutations("feeds", ["SET_USERDETAILDATA"]),
+    ...mapActions("feeds", ["getUserPageData"]),
+    ...mapMutations("feeds", ["SET_USERPROFILEDATA"]),
   },
   created() {
-    this.getUserDetailData(this.$route.params.uid);
+    this.getUserPageData(this.$route.params.uid);
     setTimeout(() => {
       this.overlay = false;
     }, 800);
   },
   beforeRouteUpdate(to, from, next) {
-    this.SET_USERDETAILDATA(null);
+    this.SET_USERPROFILEDATA(null);
     this.overlay = true;
-    this.getUserDetailData(to.params.uid);
+    this.getUserPageData(to.params.uid);
     setTimeout(() => {
       this.overlay = false;
     }, 800);
     next();
   },
   beforeDestroy() {
-    this.SET_USERDETAILDATA(null);
+    this.SET_USERPROFILEDATA(null);
     this.overlay = true;
   },
 };

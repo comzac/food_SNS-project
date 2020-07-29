@@ -45,13 +45,18 @@
         >
           <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
           <v-list-item two-line>
-            <v-list-item-avatar>
-              <img src="@/assets/profile_default.png" />
+            <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
+              <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
+              <v-img
+                v-if="authUserImgData"
+                :src="`data:${authUserImgType};base64,${authUserImgData}`"
+                :alt="authUserImgName"
+              />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">닉네임 우파루파</v-list-item-title>
+              <v-list-item-title class="white--text">{{ authUserUnick}}</v-list-item-title>
               <v-list-item-subtitle class="white--text">
-                <small>fishfish99</small>
+                <small>{{authUserUid}}</small>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -113,7 +118,14 @@ export default {
     ],
   }),
   computed: {
-    ...mapGetters("accounts", ["isLoggedIn"]),
+    ...mapGetters("accounts", [
+      "isLoggedIn",
+      "authUserImgData",
+      "authUserImgType",
+      "authUserImgName",
+      "authUserUid",
+      "authUserUnick",
+    ]),
   },
   methods: {
     ...mapActions("accounts", ["logout"]),

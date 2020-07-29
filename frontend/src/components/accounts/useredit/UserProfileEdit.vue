@@ -1,7 +1,15 @@
 <template>
   <v-col cols="12" sm="8" md="6" lg="4">
     <h2 class="text-left red--text text--lighten-2 ml-3">프로필 수정</h2>
-    <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
+    <v-list-item-avatar size="70" :color="authUserImgData ? 'white' : 'grey'">
+      <v-icon large v-if="!authUserImgData && !imageData" dark>mdi-account</v-icon>
+      <v-img
+        v-if="authUserImgData && !imageData"
+        :src="`data:${authUserImgType};base64,${authUserImgData}`"
+        :alt="authUserImgName"
+      />
+      <v-img v-if="imageData" :src="imageData" />
+    </v-list-item-avatar>
     <!-- 사진 입력 -->
     <v-file-input
       v-model="data.img"
@@ -12,7 +20,7 @@
       label="사진 선택"
       @change="previewImage"
       color="#ff6666"
-      :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg 파일만 업로드 됩니다.)'"
+      error-messages="png, jpeg, gif, jpg 파일만 업로드 됩니다."
     ></v-file-input>
 
     <!-- 프로필 문구 -->
@@ -38,13 +46,18 @@
       :error-messages="nickcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
       @input="nickcheck = false"
     ></v-text-field>
-    <v-btn color="grey" class="white--text mx-3" width="40%" @click="$router.go(-1)">취소</v-btn>
-    <v-btn color="#ff6666" width="40%" class="white--text mx-3" @click="setUserDetailData(data)">진행</v-btn>
+    <v-btn color="grey" class="white--text mx-3 mt-5" width="40%" @click="$router.go(-1)">취소</v-btn>
+    <v-btn
+      color="#ff6666"
+      width="40%"
+      class="white--text mx-3 mt-5"
+      @click="setUserProfileData(data)"
+    >진행</v-btn>
   </v-col>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -61,9 +74,18 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters("accounts", [
+      "authUserImgData",
+      "authUserImgType",
+      "authUserImgName",
+      "authUserProfileText",
+      "authUserUnick",
+    ]),
+  },
   methods: {
     ...mapActions("accounts", ["nickCheck"]),
-    ...mapActions("feeds", ["setUserDetailData"]),
+    ...mapActions("feeds", ["setUserProfileData"]),
     nickCheck2(unick) {
       // if분기로 받아온 unick과 입력한 값이 다를 때만 nickCheck 하도록
       this.nickCheck(unick).then((res) =>
@@ -72,8 +94,8 @@ export default {
     },
     previewImage(file) {
       if (file) {
-        if (file.size > 20 * 1024 * 1024) {
-          alert("파일 사이즈가 20mb 보다 큽니다.");
+        if (file.size > 20 * 200 * 1024) {
+          alert("프로필 사진은 200MB를 넘을 수 없습니다.");
           return false;
         } else {
           // Reference to the DOM input element
@@ -89,6 +111,13 @@ export default {
         }
       }
     },
+    setInitData() {
+      (this.data.unick = this.authUserUnick),
+        (this.data.text = this.authUserProfileText);
+    },
+  },
+  created() {
+    this.setInitData();
   },
 };
 </script>
