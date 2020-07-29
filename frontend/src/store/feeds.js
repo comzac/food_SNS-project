@@ -86,7 +86,9 @@ export default {
       console.log(feedData.dbFiles);
       delete feedData.dbFiles;
       console.log(config);
-      form.append("files", mediaData);
+      mediaData.forEach((file) => {
+        form.append("files", file);
+      });
       console.log(feedData);
       axios
         .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
