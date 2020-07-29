@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import Header from "@/components/navbar/Header";
 import Signup from "@/components/navbar/Signup";
 
@@ -23,6 +24,15 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    ...mapActions("accounts", ["getUserSimpleData"]),
+  },
+  created() {
+    this.getUserSimpleData();
+  },
+  beforeUpdate() {
+    this.getUserSimpleData();
+  },
 };
 </script>
 <style scoped>

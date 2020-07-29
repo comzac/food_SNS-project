@@ -17,6 +17,12 @@ export default {
   getters: {
     isLoggedIn: (state) => !!state.authToken,
     config: (state) => ({ headers: { "X-AUTH-TOKEN": state.authToken } }),
+    authUserImgData: (state) => state.userSimpleData.uprofile.data,
+    authUserImgType: (state) => state.userSimpleData.uprofile.type,
+    authUserImgName: (state) => state.userSimpleData.uprofile.name,
+    authUserProfileText: (state) => state.userSimpleData.uprofile.text,
+    authUserUid: (state) => state.userSimpleData.uid,
+    authUserUnick: (state) => state.userSimpleData.unick,
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -232,6 +238,21 @@ export default {
           }
         })
         .catch((err) => console.log(err.response));
+    },
+    getUserSimpleData({ state, commit, getters }) {
+      if (Object.keys(state.userSimpleData).length === 0) {
+        axios
+          .get(
+            SERVER.BASE_URL +
+              SERVER.ROUTES.accounts.URL +
+              SERVER.ROUTES.accounts.simple,
+            getters.config
+          )
+          .then((res) => {
+            commit("SET_USERSIMPLEDATA", res.data.data);
+          })
+          .catch((err) => console.log(err));
+      }
     },
   },
 };

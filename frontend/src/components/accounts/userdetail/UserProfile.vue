@@ -1,8 +1,9 @@
 <template>
   <v-card class="mx-auto mt-10" flat max-width="975" outlined>
     <v-list-item>
-      <v-list-item-avatar color="grey">
-        <v-icon dark>mdi-account</v-icon>
+      <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
+        <v-icon v-if="!imgData" dark>mdi-account</v-icon>
+        <v-img v-if="imgData" :src="`data:${imgType};base64,${imgData}`" :alt="imgName" />
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="title">{{unick}}</v-list-item-title>
@@ -14,29 +15,26 @@
       <v-chip v-if="!mypage" @click="alert('동작')">follow</v-chip>
     </v-list-item>
 
-    <v-card-text class="text-center">
-      맛잘알입니다
-      <br />꿀조합 다이어리
-    </v-card-text>
+    <v-card-text class="text-center">{{ profileText }}</v-card-text>
 
     <v-card-actions class="justify-center">
       <v-btn text>
         <div class="d-flex flex-column">
-          <span>140</span>
+          <span>{{numPosts}}</span>
           <span class="caption font-weight-light">POSTS</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
       <v-btn text>
         <div class="d-flex flex-column">
-          <span>140</span>
+          <span>{{numFollowings}}</span>
           <span class="caption font-weight-light">FOLLOWINGS</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
       <v-btn text>
         <div class="d-flex flex-column">
-          <span>24K</span>
+          <span>{{numFollowers}}</span>
           <span class="caption font-weight-light">FOLLOWERS</span>
         </div>
       </v-btn>
@@ -46,12 +44,45 @@
 
 <script>
 export default {
-  data() {
-    return {
-      mypage: this.userDetailData.mypage,
-      unick: this.userDetailData.user.unick,
-      uid: this.userDetailData.user.uid,
-    };
+  computed: {
+    mypage() {
+      return this.userDetailData.mypage;
+    },
+    unick() {
+      return this.userDetailData.userFeeds.user.unick;
+    },
+    uid() {
+      return this.userDetailData.userFeeds.user.uid;
+    },
+    imgData() {
+      if (this.userDetailData.userFeeds.user.uprofile) {
+        return this.userDetailData.userFeeds.user.uprofile.data;
+      } else {
+        return false;
+      }
+    },
+    imgType() {
+      return this.userDetailData.userFeeds.user.uprofile.type;
+    },
+    imgName() {
+      return this.userDetailData.userFeeds.user.uprofile.name;
+    },
+    profileText() {
+      if (this.userDetailData.userFeeds.user.uprofile) {
+        return this.userDetailData.userFeeds.user.uprofile.text;
+      } else {
+        return false;
+      }
+    },
+    numPosts() {
+      return this.userDetailData.userFeeds.feedCount;
+    },
+    numFollowings() {
+      return this.userDetailData.userFeeds.followingCount;
+    },
+    numFollowers() {
+      return this.userDetailData.userFeeds.followerCount;
+    },
   },
   props: {
     userDetailData: Object,

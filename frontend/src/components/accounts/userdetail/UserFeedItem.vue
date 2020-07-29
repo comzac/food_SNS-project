@@ -1,9 +1,27 @@
 <template>
-  <v-skeleton-loader class="mx-auto" max-width="300" max-height="300" type="image"></v-skeleton-loader>
+  <!-- <v-img src="https://picsum.photos/350/165?random" :aspect-ratio="1" contain class="grey darken-4"></v-img> -->
+  <v-img @click="moveToFeed" :aspect-ratio="1" contain class="grey darken-4"></v-img>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    feed: Object,
+  },
+  computed: {
+    fid() {
+      return this.feed.id;
+    },
+  },
+  methods: {
+    moveToFeed() {
+      this.$router.push({
+        name: "FeedView",
+        params: { fid: this.fid, uid: this.$route.params.uid },
+      });
+    },
+  },
+};
 </script>
 
 <style>

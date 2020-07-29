@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// import router from "@/router";
+import router from "@/router";
 import SERVER from "@/api/api";
 
 export default {
   namespaced: true,
   state: {
     feeds: null,
-    userDetailData: null,
+    userProfileData: null,
     selectedFeed: null,
   },
   getters: {
@@ -17,8 +17,8 @@ export default {
     SET_FEEDS(state, feeds) {
       state.feeds = feeds;
     },
-    SET_USERDETAILDATA(state, userDetailData) {
-      state.userDetailData = userDetailData;
+    SET_USERPROFILEDATA(state, userProfileData) {
+      state.userProfileData = userProfileData;
     },
     SET_SELECTEDFEED(state, feed) {
       state.selectedFeed = feed;
@@ -39,7 +39,7 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    getUserDetailData({ commit, rootGetters }, uid) {
+    getUserPageData({ commit, rootGetters }, uid) {
       const config = rootGetters["accounts/config"];
       axios
         .get(
@@ -50,12 +50,36 @@ export default {
           config
         )
         .then((res) => {
-          commit("SET_USERDETAILDATA", res.data);
+          console.log(res);
+          commit("SET_USERPROFILEDATA", res.data);
         })
         .catch((err) => console.log(err.response));
     },
 
-    insertFeed({ rootGetters }, feedData) {
+    setUserProfileData({ commit, rootGetters }, data) {
+      const config = rootGetters["accounts/config"];
+      const formData = new FormData();
+      formData.append("unick", data.unick);
+      formData.append("text", data.text);
+      formData.append("img", data.img);
+      axios
+        .post(
+          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          formData,
+          config
+        )
+        .then((res) => {
+          commit("accounts/SET_USERSIMPLEDATA", res.data.data, {
+            root: true,
+          });
+          alert("프로필이 수정되었습니다.");
+          router.go(-1);
+        })
+        .catch((err) => console.log(err));
+    },
+
+    insertFeed({ rootGetters }, formData) {
+      console.log(formData);
       const config = rootGetters["accounts/config"];
       const form = new FormData();
       const mediaData = feedData.dbFiles;

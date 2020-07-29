@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="4" v-for="feed in feeds" :key="feed.id">
-          <UserFeedItem />
+          <UserFeedItem :feed="feed" />
         </v-col>
       </v-row>
     </v-container>
@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      feeds: this.userDetailData.feed,
+      feeds: this.userDetailData.userFeeds.feed,
     };
   },
   props: {
