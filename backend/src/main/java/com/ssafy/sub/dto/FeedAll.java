@@ -27,7 +27,7 @@ public class FeedAll {
 	private List<DBFile> dbFiles;
 	
 	// 댓글
-//	private List<Comment> comment;
+	private List<Comment> comment;
 	
 	// 유저 정보
 	private UserSimple user;
@@ -40,5 +40,5 @@ public class FeedAll {
 	
 	// 로그인 유저가 내 피드인지 여부
 	private boolean mypage;
-	
+
 }

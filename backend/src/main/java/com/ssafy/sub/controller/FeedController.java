@@ -17,9 +17,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.sub.dto.DBFile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedAll;
+import com.ssafy.sub.dto.FeedHashtag;
+import com.ssafy.sub.dto.Hashtag;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserPage;
 import com.ssafy.sub.dto.UserSimple;
@@ -50,7 +54,7 @@ public class FeedController {
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
 	@GetMapping(value="/page")
 	public ResponseEntity feedHomePage() {
-		System.out.println("log - feedUserPage");
+		System.out.println("log - feedUserHomePage");
 		
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
@@ -106,9 +110,9 @@ public class FeedController {
 		String user_id = null;
 		try {
 			user_id = authentication.getName();
-//			System.out.println(user_id);
 		}catch (Exception e) {
-			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
+			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, 
+					ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
 		}
 		
 		// url로 들어온 유저의 정보
@@ -150,16 +154,24 @@ public class FeedController {
 		System.out.println("log - feedInsert");
 
 		User user = (User) authentication.getPrincipal();
-		Feed feed = feedAll.getFeed();
-		System.out.println(feed.toString());
-		feedService.feedInsert(feedAll.getFeed());
 		
 		// user는 token으로
+		Feed feed = feedAll.getFeed();
+		System.out.println(feed.toString());
+		feed.setUid(user.getId());
+		feedService.feedInsert(feed);
+		
 		// hashtag는 일단 빈칸
+		List<Hashtag> hashtagList = feedAll.getHashtag();
+//		feedService.feedHashtagListInsert(hashtagList);
+		
 		// dbfiles에 넣어야함
+		List<DBFile> dbFiles = feedAll.getDbFiles();
+		feed.setDbFiles(dbFiles);
+		
 		// comment 등록
-		// 
-		feedAll.getUser();
+		
+		//
 		
 		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
@@ -178,27 +190,65 @@ public class FeedController {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
 		}
 		
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
+		FeedAll feedAll = new FeedAll();
+		
+		// feed 정보
 		Feed feed = feedService.feedDetail(id);
+		feedAll.setFeed(feed);
+		
+		// user 정보
 		User user = userService.findById(feed.getUid());
-
+		UserSimple userSimple = userService.getSimpleUser(user.getUid());
+		feedAll.setUser(userSimple);
+		
+		// hashtag 정보
+		List<Hashtag> hashtag = feedService.feedHashtagList(id);
+		feedAll.setHashtag(hashtag);
+		
+		// 내 피드인지 정보
 		boolean mypage = true;
 		if(Integer.parseInt(user_id)!=feed.getUid()) {
 			mypage=false;
 		}
+		feedAll.setMypage(mypage);
 		
-		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, feed, user, mypage);
-		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
+		// 해당 로긴 유저의 좋아요 여부
+		boolean like=false;
+		feedAll.setLike(like);
+		
+		// 좋아요 수
+		int likeCount = 0;
+		feedAll.setLikeCount(likeCount);
+		
+		feedAllList.add(feedAll);
+		
+		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_FEED, feedAllList);
+		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
 
 	// 5. list 수정
 	@ApiOperation(value = "feed의 정보를 수정한다", response = Result.class)
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Result> feedUpdate(@PathVariable int id, @RequestBody Feed feed) {
+	public ResponseEntity<Result> feedUpdate(@PathVariable int id, @RequestBody FeedAll feedAll, Authentication authentication) {
 		System.out.println("log - feedUpdate");
+		
+		User user = (User) authentication.getPrincipal();
+		
+		// user는 token으로
+		Feed feed = feedAll.getFeed();
+		feedService.feedInsert(feed);
+		
+		// hashtag는 일단 빈칸
+		List<Hashtag> hashtagList = feedAll.getHashtag();
+//		feedService.feedHashtagListInsert(hashtagList);
 
 		Feed updateFeed = feedService.feedUpdate(id, feed);
+		FeedAll updateFeedAll = new FeedAll();
+		updateFeedAll.setFeed(updateFeed);
+		updateFeedAll.setUser(userService.getSimpleUser(user.getUid()));
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_FEED, updateFeed);
+		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_FEED, updateFeedAll);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 	
