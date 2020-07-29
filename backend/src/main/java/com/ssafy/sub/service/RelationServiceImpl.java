@@ -31,6 +31,9 @@ public class RelationServiceImpl implements RelationService {
 
 	@Override
 	public Relationship followInsert(int id, int rid) {
+		List<Relationship> relationship = relationQueryDsl.findRelation(id, rid);
+		if(relationship.size() != 0)
+			return null;
 		return relationRepository.save(new Relationship(new RelationshipKey(id, rid), 1));
 	}
 

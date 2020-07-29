@@ -43,4 +43,13 @@ public class RelationQueryDsl extends QuerydslRepositorySupport{
 				.execute();
 	}
 
+	public List<Relationship> findRelation(int id, int rid) {
+		QRelationship relationShip = QRelationship.relationship;
+
+		return from(relationShip)
+				.where(relationShip.relationShipkey.uid.eq(id)
+						.and(relationShip.relationShipkey.relationuid.eq(rid)))
+				.fetch();
+	}
+
 }
