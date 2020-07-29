@@ -17,9 +17,21 @@ export default {
   getters: {
     isLoggedIn: (state) => !!state.authToken,
     config: (state) => ({ headers: { "X-AUTH-TOKEN": state.authToken } }),
-    authUserImgData: (state) => state.userSimpleData.uprofile.data,
-    authUserImgType: (state) => state.userSimpleData.uprofile.type,
-    authUserImgName: (state) => state.userSimpleData.uprofile.name,
+    authUserImgData: (state) => {
+      if (state.userSimpleData.uprofile) {
+        state.userSimpleData.uprofile.data;
+      } else false;
+    },
+    authUserImgType: (state) => {
+      if (state.userSimpleData.uprofile) {
+        state.userSimpleData.uprofile.type;
+      } else false;
+    },
+    authUserImgName: (state) => {
+      if (state.userSimpleData.uprofile) {
+        state.userSimpleData.uprofile.name;
+      } else false;
+    },
     authUserProfileText: (state) => state.userSimpleData.uprofile.text,
     authUserUid: (state) => state.userSimpleData.uid,
     authUserUnick: (state) => state.userSimpleData.unick,
@@ -249,6 +261,7 @@ export default {
             getters.config
           )
           .then((res) => {
+            console.log("activated");
             commit("SET_USERSIMPLEDATA", res.data.data);
           })
           .catch((err) => console.log(err));

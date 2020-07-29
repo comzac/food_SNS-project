@@ -78,8 +78,8 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    insertFeed({ rootGetters }, formData) {
-      console.log(formData);
+    insertFeed({ rootGetters }, feedData) {
+      console.log(feedData);
       const config = rootGetters["accounts/config"];
       const form = new FormData();
       const mediaData = feedData.dbFiles;
@@ -93,20 +93,36 @@ export default {
         .then((res) => {
           console.log(res.data.data);
           form.append("fid", res.data.data);
-          config.headers["Content-Type"] = "multipart/form-data";
-          console.log(config);
-          axios
-            .post(
-              SERVER.BASE_URL +
-                SERVER.ROUTES.files.URL +
-                SERVER.ROUTES.files.upload,
-              form,
-              config
-            )
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err.response));
+          return axios.post(
+            SERVER.BASE_URL +
+              SERVER.ROUTES.files.URL +
+              SERVER.ROUTES.files.upload,
+            form,
+            config
+          );
         })
+        .then((res) => console.log("res:", res))
         .catch((err) => console.log(err.response));
+
+      // axios
+      //   .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
+      //   .then((res) => {
+      //     console.log(res.data.data);
+      //     form.append("fid", res.data.data);
+      //     // config.headers["Content-Type"] = "multipart/form-data";
+      //     console.log(config);
+      //     axios
+      //       .post(
+      //         SERVER.BASE_URL +
+      //           SERVER.ROUTES.files.URL +
+      //           SERVER.ROUTES.files.upload,
+      //         form,
+      //         config
+      //       )
+      //       .then((res) => console.log("res:", res))
+      //       .catch((err) => console.log(err.response));
+      //   })
+      //   .catch((err) => console.log(err.response));
     },
 
     getFeedDetail({ rootGetters, commit }, id) {

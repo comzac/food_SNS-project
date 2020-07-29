@@ -40,7 +40,7 @@
           <br />
         </v-spacer>
         <router-link
-          :to="{ name: 'UserDetail', params: { uid: 'asdf' } }"
+          :to="{ name: 'UserDetail', params: { uid: authUserUid } }"
           class="text-decoration-none"
         >
           <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
@@ -54,7 +54,7 @@
               />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">{{ authUserUnick}}</v-list-item-title>
+              <v-list-item-title class="white--text">{{ authUserUnick }}</v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{authUserUid}}</small>
               </v-list-item-subtitle>
