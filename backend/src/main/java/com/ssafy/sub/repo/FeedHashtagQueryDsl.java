@@ -49,4 +49,6 @@ public class FeedHashtagQueryDsl extends QuerydslRepositorySupport{
 						.and(feedHashtag.feedHashtagkey.hid.eq(hid)))
 				.fetch();
 	}
+	
+	
 }
