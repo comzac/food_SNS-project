@@ -61,13 +61,16 @@ export default {
       const mediaData = feedData.dbFiles;
       console.log(feedData.dbFiles);
       delete feedData.dbFiles;
-
+      console.log(config);
       form.append("files", mediaData);
+      console.log(feedData);
       axios
         .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
         .then((res) => {
           console.log(res.data.data);
           form.append("fid", res.data.data);
+          config.headers["Content-Type"] = "multipart/form-data";
+          console.log(config);
           axios
             .post(
               SERVER.BASE_URL +
