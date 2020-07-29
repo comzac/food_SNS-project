@@ -62,7 +62,7 @@ public class Feed {
 //	@Transient
 //    private List<Hashtag> hashtag = new ArrayList<>();
 	
-//	@Transient
-//    private List<DBFile> dbFiles = new ArrayList<>();
+	@Transient
+    private List<DBFile> dbFiles = new ArrayList<>();
 
 }

@@ -18,8 +18,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.sub.config.security.JwtTokenProvider;
 import com.ssafy.sub.dto.Token;
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.CommonResult;
 import com.ssafy.sub.model.response.ResponseMessage;
@@ -100,9 +99,23 @@ public class UserSecurityController {
         // JWT 생성
         String token = jwtTokenProvider.createToken(member, member.getRoles());
 		response.addHeader("token", token);
-		result.put("token", token);
 		
 		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, result), HttpStatus.CREATED);
+	}
+	
+	// 3개반 반환
+	@ApiOperation(value = "3가지 정보만 가져온다.", response = UserSimple.class)
+	@GetMapping("/simple")
+	public ResponseEntity getUserSimple(HttpServletRequest request) {
+		String username = null;
+		String token = jwtTokenProvider.resolveToken(request);
+		if(jwtTokenProvider.validateToken(token)) {
+			username = jwtTokenProvider.getUName(token);
+		}
+		UserSimple userSimple = userService.getSimpleUser(username);
+		
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_USER, userSimple),
+				HttpStatus.OK);
 	}
 
 	// 로그인
@@ -126,7 +139,6 @@ public class UserSecurityController {
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(member, member.getRoles());
 		response.addHeader("token", token);
-		result.put("token", token);
 		
 		ValueOperations<String, Object> vop = redisTemplate.opsForValue();
 		Token jsonToken=new Token();
@@ -155,10 +167,8 @@ public class UserSecurityController {
 			System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(username));
 			redisTemplate.delete(username);
 			System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(username));
-//			log.info("redis value : "+redisTemplate.opsForValue().get(Constant.REDIS_PREFIX + token));
 			
 			String accessToken = token;
-//			logger.info(" logout ing : " + accessToken);
 	        redisTemplate.opsForValue().set(accessToken, new Token(accessToken, null));
 	        redisTemplate.expire(accessToken, 10*6*1000, TimeUnit.MILLISECONDS);
 	        System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(token));
@@ -279,15 +289,14 @@ public class UserSecurityController {
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
-	@ApiOperation(value = "회원 단건 조회", notes = "회원번호(msrl)로 회원을 조회한다")
+	@ApiOperation(value = "회원 단건 조회", notes = "회원아이디로 회원을 조회한다")
 	@GetMapping(value = "/{uid}")
 	public ResponseEntity<Result> findUserById(@PathVariable String uid) {
-		User user = userService.findById(Integer.parseInt(uid));
+		User user = userService.findByUid(uid);
 		
 		// 결과데이터가 단일건인경우 getSingleResult를 이용해서 결과를 출력한다.
 		return new ResponseEntity<Result>(
 				new Result(StatusCode.OK, ResponseMessage.READ_USER, user), HttpStatus.OK);
-//     return responseService.getSingleResult(userRepository.findById(Integer.parseInt(id)).orElseThrow(CUserNotFoundException::new));
 	}
 
 	@ApiImplicitParams({
