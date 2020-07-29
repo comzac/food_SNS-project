@@ -37,7 +37,7 @@ public class CommentController {
 	// 1. 댓글 list 조회
 	@ApiOperation(value = "댓글 조회", response = Result.class)
 	@GetMapping(value="/{fid}")
-	public ResponseEntity<Result> commentList(@RequestParam int fid) {
+	public ResponseEntity<Result> commentList(@PathVariable int fid) {
 		System.out.println("log - commentList");
 		
 		List<Comment> commentList = new ArrayList<Comment>();
@@ -47,7 +47,7 @@ public class CommentController {
 
 		// 
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, commentList);
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_COMMENTS, commentList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 	
@@ -60,7 +60,7 @@ public class CommentController {
 		
 		Comment insertedComment = commentService.commentInsert(comment); 
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, insertedComment);
+		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 	
@@ -73,7 +73,7 @@ public class CommentController {
 		
 		Comment updatedComment = commentService.commentUpdate(comment);
 
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, updatedComment);
+		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_COMMENT, updatedComment);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 	
@@ -86,7 +86,7 @@ public class CommentController {
 		
 		Long ret = commentService.commentDelete(id);
 
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, ret);
+		Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_COMMENT, ret);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 }
