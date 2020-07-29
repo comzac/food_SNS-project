@@ -50,9 +50,27 @@ export default {
           config
         )
         .then((res) => {
+          console.log(res);
           commit("SET_USERDETAILDATA", res.data);
         })
         .catch((err) => console.log(err.response));
+    },
+
+    setUserDetailData({ rootGetters }, data) {
+      const config = rootGetters["accounts/config"];
+      config;
+      const formData = new FormData();
+      formData.append("unick", data.unick);
+      formData.append("text", data.text);
+      formData.append("img", data.img);
+      axios
+        .post(
+          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          formData,
+          config
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     },
 
     insertFeed({ rootGetters }, formData) {
