@@ -35,6 +35,16 @@ public class ResponseMessage {
     public static final String UPDATE_HASHTAG = "해시태그 수정 성공";
     public static final String FAIL_UPDATE_HASHTAG = "해시태그 수정 실패";
 
+    public static final String NOT_FOUND_FOLLOW = "팔로우 정보 조회 실패";
+    public static final String CREATE_FOLLOWER = "팔로워 생성 성공";
+    public static final String FAIL_CREATE_FOLLOWER = "팔로워 생성 실패";
+    public static final String FAIL_CREATE_FOLLOWER_SAME = "팔로워 생성 실패 - 본인 팔로우 불가능";
+    public static final String FAIL_CREATE_FOLLOWER_DUP = "팔로워 생성 실패 - 이미 팔로우 된 상태";
+    public static final String READ_FOLLOWER = "팔로워 조회 성공";
+    public static final String READ_FOLLOWING = "팔로잉 조회 성공";
+    public static final String DELETE_FOLLOWER = "팔로워 삭제 성공";
+    public static final String FAIL_DELETE_FOLLOWER = "팔로워 삭제 실패";
+    
     public static final String READ_ALL_COMMENTS = "모든 댓글 조회 성공";
     public static final String READ_COMMENT = "댓글 조회 성공";
     public static final String NOT_FOUND_COMMENT = "댓글이 존재하지 않습니다.";

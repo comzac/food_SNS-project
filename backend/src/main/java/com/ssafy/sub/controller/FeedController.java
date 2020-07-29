@@ -65,62 +65,62 @@ public class FeedController {
 	private FileStorageService fileStorageService;
 	
 	// 1. list 조회
-		@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
-		@GetMapping(value="/page")
-		public ResponseEntity feedHomePage(Authentication authentication) {
-			System.out.println("log - feedUserHomePage");
-			
-			String loginUserId = authentication.getName();
-			List<FeedAll> feedAllList = new ArrayList<FeedAll>();
-			List<Feed> feedList = new ArrayList<Feed>();
-			
-			feedList = feedService.feedHomePageList();
+	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
+	@GetMapping(value="/page")
+	public ResponseEntity feedHomePage(Authentication authentication) {
+		System.out.println("log - feedUserHomePage");
+		
+		String loginUserId = authentication.getName();
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
+		List<Feed> feedList = new ArrayList<Feed>();
+		
+		feedList = feedService.feedHomePageList();
 
-			User user; UserSimple userSimple; Feed feed; 
-			FeedAll feedAll; 
-			int fid;
-			for(int i=0; i<feedList.size(); i++) {
-				feedAll = new FeedAll();
-				
-				// feed 넣기
-				feed = feedList.get(i);
-				feedAll.setFeed(feed);
-				fid = feed.getId();
-				
-				// user이름 조회
-				user = userService.findById(feed.getUid());
-				userSimple = userService.getSimpleUser(user.getUid());	// user 탈퇴하면 어떻게 처리할건지
-				feedAll.setUser(userSimple);
-				
-				// comment
-				List<Comment> commentList = commentService.commentList(fid);
-				feedAll.setComment(commentList);
-				
-				// hashtag
-				List<Hashtag> hashtagList = feedService.feedHashtagList(fid);
-				feedAll.setHashtag(hashtagList);
-				
-				// like
-				boolean like = false;
-				feedAll.setLike(like);
-				
-				// likeCount
-				int likeCount = 0;
-				feedAll.setLikeCount(likeCount);
-				
-				// 내 피드인지 여부
-				boolean mypage=true;
-				if(feed.getUid()!=Integer.parseInt(loginUserId)) {
-					mypage=false;
-				}
-				feedAll.setMypage(mypage);
-				
-				feedAllList.add(feedAll);
-			}
+		User user; UserSimple userSimple; Feed feed; 
+		FeedAll feedAll; 
+		int fid;
+		for(int i=0; i<feedList.size(); i++) {
+			feedAll = new FeedAll();
 			
-			FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
-			return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
+			// feed 넣기
+			feed = feedList.get(i);
+			feedAll.setFeed(feed);
+			fid = feed.getId();
+			
+			// user이름 조회
+			user = userService.findById(feed.getUid());
+			userSimple = userService.getSimpleUser(user.getUid());	// user 탈퇴하면 어떻게 처리할건지
+			feedAll.setUser(userSimple);
+			
+			// comment
+			List<Comment> commentList = commentService.commentList(fid);
+			feedAll.setComment(commentList);
+			
+			// hashtag
+			List<Hashtag> hashtagList = feedService.feedHashtagList(fid);
+			feedAll.setHashtag(hashtagList);
+			
+			// like
+			boolean like = false;
+			feedAll.setLike(like);
+			
+			// likeCount
+			int likeCount = 0;
+			feedAll.setLikeCount(likeCount);
+			
+			// 내 피드인지 여부
+			boolean mypage=true;
+			if(feed.getUid()!=Integer.parseInt(loginUserId)) {
+				mypage=false;
+			}
+			feedAll.setMypage(mypage);
+			
+			feedAllList.add(feedAll);
 		}
+		
+		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
+		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
+	}
 	
 	// 7. list by follower 조회
 	@ApiImplicitParams({
@@ -187,26 +187,23 @@ public class FeedController {
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 	
-	
-	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
-	@PostMapping(value="/page")
-	public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
-		System.out.println("log - userPageUpdate");
-		
-		String id;
-		id = authentication.getName();
-		
-		DBProfile dbProfile = fileStorageService.storeProfile(userSimple, id);
-		User user = userService.updateNick(Integer.parseInt(id), userSimple.getUnick());
-		
-		UserSimple res = new UserSimple(id, user.getUnick(), dbProfile);
-		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
-		
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
-	}
-	
-	
-	
+	   @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
+	   @PostMapping(value="/page")
+	//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
+	   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text, @RequestParam("unick") String unick, Authentication authentication) throws FileStorageException {
+	      System.out.println("log - userPageUpdate");
+	      
+	      String id;
+	      id = authentication.getName();
+	      
+	      DBProfile dbProfile = fileStorageService.storeProfile(img, text, id);
+	      User user = userService.updateNick(Integer.parseInt(id), unick);
+	      
+	      UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
+	      Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
+	      
+	      return new ResponseEntity<Result>(result, HttpStatus.OK);
+	   }  
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
 //	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
@@ -232,40 +229,14 @@ public class FeedController {
 		System.out.println(feed.toString());
 		feed.setUid(user.getId());
 		Feed insertedFeed = feedService.feedInsert(feed);
+		int fid = insertedFeed.getId();
 		
 		// hashtag는 일단 빈칸
 		List<Hashtag> hashtagList = feedAll.getHashtag();
-//		feedService.feedHashtagListInsert(hashtagList);
+		feedService.feedHashtagListInsert(hashtagList);
 		
-		// dbfiles에 넣어야함
-		MultipartFile[] files = feedAll.getDbFiles();
-		
-		Arrays.asList(files).stream().map(file -> {
-			try {
-				return uploadFile(file, feed.getId());
-			} catch (FileStorageException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}).collect(Collectors.toList());
-		
-		// comment 등록
-		
-		//
-		
-		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, null);
+		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, fid);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
-	}
-	
-	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fid") int fid)
-			throws FileStorageException {
-		DBFile dbFile = fileStorageService.storeFile(file, fid);
-
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
-				.path(Integer.toString(dbFile.getId())).toUriString();
-
-		return new UploadFileResponse(dbFile.getName(), fileDownloadUri, file.getContentType(), file.getSize());
 	}
 	
 	// 4. list 상세
@@ -312,6 +283,10 @@ public class FeedController {
 		int likeCount = 0;
 		feedAll.setLikeCount(likeCount);
 		
+		// Comment 정보
+		List<Comment> comment = commentService.commentList(id);
+		feedAll.setComment(comment);
+		
 		feedAllList.add(feedAll);
 		
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_FEED, feedAllList);
@@ -332,7 +307,7 @@ public class FeedController {
 		
 		// hashtag는 일단 빈칸
 		List<Hashtag> hashtagList = feedAll.getHashtag();
-//		feedService.feedHashtagListInsert(hashtagList);
+		feedService.feedHashtagListInsert(hashtagList);
 
 		Feed updateFeed = feedService.feedUpdate(id, feed);
 		FeedAll updateFeedAll = new FeedAll();

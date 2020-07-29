@@ -24,9 +24,10 @@ public class FeedAll {
 	
 	// 해시태그
 	private List<Hashtag> hashtag;
+//	private String[] hashtag;
 	
-	// 미디어(사진들)
-	private MultipartFile[] dbFiles;
+//	// 미디어(사진들)
+//	private MultipartFile[] dbFiles;
 	
 	// 댓글
 	private List<Comment> comment;
