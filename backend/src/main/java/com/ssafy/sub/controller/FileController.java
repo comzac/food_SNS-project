@@ -43,23 +43,23 @@ public class FileController {
 	@Autowired
 	private FileStorageService fileStorageService;
 
-	// 프로필
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
-	@PostMapping("/upload/profile")
-	public UploadFileResponse uploadProfile(@RequestParam("file") MultipartFile file) throws FileStorageException {
-
-		String id;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		id = authentication.getName();
-		System.out.println("id : " + id);
-		DBProfile dbProfile = fileStorageService.storeProfile(file, id);
-
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
-				.path(Integer.toString(dbProfile.getId())).toUriString();
-
-		return new UploadFileResponse(dbProfile.getName(), fileDownloadUri, file.getContentType(), file.getSize());
-	}
+//	// 프로필
+//	@ApiImplicitParams({
+//			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
+//	@PostMapping("/upload/profile")
+//	public UploadFileResponse uploadProfile(@RequestParam("file") MultipartFile file) throws FileStorageException {
+//
+//		String id;
+//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		id = authentication.getName();
+//		System.out.println("id : " + id);
+//		DBProfile dbProfile = fileStorageService.storeProfile(file, id);
+//
+//		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
+//				.path(Integer.toString(dbProfile.getId())).toUriString();
+//
+//		return new UploadFileResponse(dbProfile.getName(), fileDownloadUri, file.getContentType(), file.getSize());
+//	}
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ssafy.sub.dto.Comment;
 import com.ssafy.sub.dto.DBFile;
+import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedAll;
 import com.ssafy.sub.dto.Hashtag;
@@ -39,6 +40,7 @@ import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.model.response.UploadFileResponse;
 import com.ssafy.sub.model.response.UserFeedResult;
 import com.ssafy.sub.model.response.UserPageResult;
+import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.FileStorageService;
@@ -184,6 +186,27 @@ public class FeedController {
 		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, userPage, mypage);
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
+	
+	
+	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
+	@PostMapping(value="/page")
+	public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
+		System.out.println("log - userPageUpdate");
+		
+		String id;
+		id = authentication.getName();
+		
+		DBProfile dbProfile = fileStorageService.storeProfile(userSimple, id);
+		User user = userService.updateNick(Integer.parseInt(id), userSimple.getUnick());
+		
+		UserSimple res = new UserSimple(id, user.getUnick(), dbProfile);
+		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
+		
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
+	}
+	
+	
+	
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
 //	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
