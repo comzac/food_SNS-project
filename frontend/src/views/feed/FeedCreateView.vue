@@ -143,6 +143,7 @@ export default {
   },
   data() {
     return {
+      feedData: {},
       previews: [],
       hashtag: "",
       imageData: "",
@@ -163,7 +164,7 @@ export default {
       this.fileData = [];
       console.log(file);
       if (file.length > 3) {
-        console.log(file.length);
+        // console.log(file.length);
         alert("파일이 3개보다 많이 선택되었습니다.");
         return false;
       }
@@ -172,7 +173,7 @@ export default {
           alert("파일 사이즈가 20mb 보다 큽니다.");
           return false;
         } else {
-          console.log(file[i]);
+          // console.log(file[i]);
           this.fileData.push(file[i]);
         }
       }
@@ -184,8 +185,8 @@ export default {
         };
         reader.readAsDataURL(this.fileData[i]);
       }
-      console.log(this.previews);
-      console.log(this.fileData);
+      // console.log(this.previews);
+      // console.log(this.fileData);
       // if (file.size > 20 * 1024 * 1024) {
       //   alert("파일 사이즈가 20mb 보다 큽니다.");
       //   return false;
@@ -220,18 +221,27 @@ export default {
     },
 
     insertFeedByFormData() {
-      const form = new FormData();
+      // const form = new FormData();
 
-      form.append("feed", this.feed);
-      this.feedhashtag.forEach((tag) => {
-        if (tag !== "") {
-          form.append("hashtag", tag);
-        }
+      // form.append("feed", this.feed);
+      // this.feedhashtag.forEach((tag) => {
+      //   if (tag !== "") {
+      //     form.append("hashtag", tag);
+      //   }
+      // });
+      // this.fileData.forEach((file) => {
+      //   form.append("file", file);
+      // });
+      this.feedData.feed = this.feed;
+      let hashtagData = [];
+      this.feedhashtag.forEach((hashtag) => {
+        hashtagData.push({
+          content: hashtag,
+        });
       });
-      this.fileData.forEach((file) => {
-        form.append("file", file);
-      });
-      this.insertFeed(form);
+      this.feedData.hashtag = hashtagData;
+      this.feedData.dbFiles = this.fileData;
+      this.insertFeed(this.feedData);
     },
 
     updateFeedByFormData() {

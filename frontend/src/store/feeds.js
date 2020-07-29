@@ -55,16 +55,31 @@ export default {
         .catch((err) => console.log(err.response));
     },
 
-    insertFeed({ rootGetters }, formData) {
-      console.log(formData);
+    insertFeed({ rootGetters }, feedData) {
       const config = rootGetters["accounts/config"];
-      config.headers["Content-Type"] = "multipart/form-data";
-      config.headers["Accept"] = "application/json";
-      console.log(formData.getAll("hashtag"));
+      const form = new FormData();
+      const mediaData = feedData.dbFiles;
+      console.log(feedData.dbFiles);
+      delete feedData.dbFiles;
+
+      form.append("files", mediaData);
       axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, formData, config)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
+        .then((res) => {
+          console.log(res.data.data);
+          form.append("fid", res.data.data);
+          axios
+            .post(
+              SERVER.BASE_URL +
+                SERVER.ROUTES.files.URL +
+                SERVER.ROUTES.files.upload,
+              form,
+              config
+            )
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err.response));
+        })
+        .catch((err) => console.log(err.response));
     },
 
     getFeedDetail({ rootGetters, commit }, id) {

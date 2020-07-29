@@ -19,5 +19,9 @@ export default {
       page: "page/",
       search: "search",
     },
+    files: {
+      URL: "files/",
+      upload: "upload/multipleFiles",
+    },
   },
 };
