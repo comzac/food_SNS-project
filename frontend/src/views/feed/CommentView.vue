@@ -31,20 +31,26 @@
           </v-row>
           <div v-for="comment in comments" :key="comment.id">
             <v-list-item class="ma-0 pa-0">
-              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+              <router-link
+                :to="{ name: 'UserDetail', params: { uid: comment.uid} }"
+                class="text-decoration-none"
+              >
                 <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
                   <img src="@/assets/profile_default.png" />
                 </v-list-item-avatar>
               </router-link>
-              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
-                <v-list-item-content class="text-left">
+              <v-list-item-content class="text-left">
+                <router-link
+                  :to="{ name: 'UserDetail', params: { uid: comment.uid} }"
+                  class="text-decoration-none"
+                >
                   <v-list-item-title class="black--text">{{ comment.unick }}</v-list-item-title>
-                  <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
-                  <v-list-item-subtitle
-                    class="gray--text"
-                  >{{ computeYMD(comment.regdate) }} {{ comment.editdate?'(수정됨)':'' }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </router-link>
+                </router-link>
+                <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
+                <v-list-item-subtitle
+                  class="gray--text"
+                >{{ computeYMD(comment.regdate) }} {{ comment.editdate?'(수정됨)':'' }}</v-list-item-subtitle>
+              </v-list-item-content>
               <v-spacer></v-spacer>
               <v-btn icon>
                 <v-icon color="#ff6666">mdi-heart</v-icon>
@@ -58,7 +64,7 @@
                 </template>
 
                 <v-list class="text-center">
-                  <v-list-item @click="() => {}">
+                  <v-list-item @click="showEdit(comment.id)">
                     <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
                   </v-list-item>
                   <v-list-item @click="() => {}">
@@ -73,6 +79,13 @@
                 </v-list>
               </v-menu>
             </v-list-item>
+            <EditComment
+              class="update"
+              :id="comment.id"
+              style="display: none;"
+              :comment="comment"
+              @editComment="editComment()"
+            />
           </div>
         </v-col>
       </v-row>
@@ -81,9 +94,11 @@
 </template>
 
 <script>
+import EditComment from "@/components/feed/comment/EditComment";
+
 export default {
   name: "CommentView",
-  components: {},
+  components: { EditComment },
   data() {
     return {
       fid: this.$route.params.fid,
@@ -103,6 +118,7 @@ export default {
         id: this.page,
         content: commentData,
         unick: "댓글 작성자",
+        uid: "fish8686",
         regdate: String(new Date()),
         editdate: "",
       };
@@ -144,10 +160,22 @@ export default {
         id: 1,
         content: "첫번째 댓글 테스트",
         unick: "TEST Kim",
+        uid: "fish8863",
         regdate: "2020-07-26T15:00:00.000+00:00",
         editdate: "",
       };
       this.comments.unshift(comment2);
+    },
+    showEdit(comment_id) {
+      const update = document.getElementsByClassName("update");
+      update.forEach((item) => (item.style = "display: none;"));
+      document.getElementById(`${comment_id}`).style = "display: show;";
+    },
+    editComment() {
+      const update = document.getElementsByClassName("update");
+      update.forEach((item) => (item.style = "display: none;"));
+
+      // this.fetchComment(this.fid);
     },
   },
   created() {

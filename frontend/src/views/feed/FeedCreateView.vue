@@ -62,7 +62,7 @@
           color="#ff6666"
           append-icon="mdi-plus"
           @click:append="createHashtag(hashtag)"
-          @keyup.enter.space="createHashtag(hashtag)"
+          @keyup.enter.space.,="createHashtag(hashtag)"
           error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
           autocapitalize="off"
           autocorrect="off"
@@ -185,8 +185,10 @@ export default {
     },
 
     createHashtag(hashtag) {
-      hashtag = hashtag.replace(/#/gi, "").replace(/ /gi, "");
-      console.log(this.feedhashtag);
+      hashtag = hashtag
+        .replace(/#/gi, "")
+        .replace(/ /gi, "")
+        .replace(/,/gi, "");
       if (this.feedhashtag.includes(hashtag) || hashtag == "") {
         this.hashtag = "";
       } else {
