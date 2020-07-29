@@ -291,10 +291,9 @@ public class UserSecurityController {
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 단건 조회", notes = "회원아이디로 회원을 조회한다")
 	@GetMapping(value = "/{uid}")
-	public ResponseEntity<Result> findUserById(@PathVariable String uid) {
+	public ResponseEntity findUserById(@PathVariable String uid) {
 		User user = userService.findByUid(uid);
 		
-		// 결과데이터가 단일건인경우 getSingleResult를 이용해서 결과를 출력한다.
 		return new ResponseEntity<Result>(
 				new Result(StatusCode.OK, ResponseMessage.READ_USER, user), HttpStatus.OK);
 	}
@@ -303,21 +302,26 @@ public class UserSecurityController {
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
 	@PutMapping(value = "/{uid}")
-	public SingleResult<User> modify(@ApiParam(value = "회원아이디", required = true) @RequestParam String uid,
-			@ApiParam(value = "회원닉네임", required = true) @RequestParam String unick) {
-		User user = User.builder().uid(uid).unick(unick).build();
-		return responseService.getSingleResult(userRepository.save(user));
+	public ResponseEntity modify(@PathVariable String uid, User user) {
+		userService.userUpdate(user);
+		return new ResponseEntity<Result>(
+				new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, user), HttpStatus.OK);
 	}
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
-	@ApiOperation(value = "회원 삭제", notes = "userId로 회원정보를 삭제한다")
+	@ApiOperation(value = "회원 탈퇴", notes = "유저 아이디로 회원정보를 삭제한다")
 	@DeleteMapping(value = "/{uid}")
-	public CommonResult delete(@ApiParam(value = "회원아이디", required = true) @RequestParam String uid) {
-		Long ref = userRepository.deleteByUid(uid);
-		System.out.println(ref);
-		// 성공 결과 정보만 필요한경우 getSuccessResult()를 이용하여 결과를 출력한다.
-		return responseService.getSuccessResult();
+	public ResponseEntity deleteUser(@PathVariable String uid) {
+		// 결과데이터가 여러건인경우 getListResult를 이용해서 결과를 출력한다.
+		int ref = userService.userDelete(uid);
+		if(ref==0) {
+			return new ResponseEntity<Result>(new Result(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER, null), 
+					HttpStatus.NOT_FOUND);
+		}else {
+			return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.DELETE_USER, null), 
+					HttpStatus.OK);
+		}
 	}
 
 }

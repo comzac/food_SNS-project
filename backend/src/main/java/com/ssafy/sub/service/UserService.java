@@ -7,6 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.RestException;
@@ -68,8 +69,9 @@ public class UserService {
 		User user = userRepository.findByUid(uid).
 				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
 		
-		if(dbProfileRepository.findByUid(String.valueOf(user.getId())).isPresent()) {
-			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+		Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(user.getId()));
+		if(dbProOptional.isPresent()) {
+			user.setDBProfile(dbProOptional.get());
 		}
 		return user;
 	}
@@ -77,8 +79,11 @@ public class UserService {
 	public User findById(int id) {
 		try {
 			User user = userRepository.findById(id);
-//			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
-//			user.setProfile(profileRepository.findByUid(id));
+			
+			Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(user.getId()));
+			if(dbProOptional.isPresent()) {
+				user.setDBProfile(dbProOptional.get());
+			}
 			
 			return user;
 		}catch (Exception e) {
@@ -125,6 +130,21 @@ public class UserService {
 		User user = userRepository.findById(id);
 
 		return user;
+	}
+	
+	public int userDelete(String uid) {
+		Optional<User> user = userRepository.findByUid(uid);
+		if(user.isPresent()) {
+			userRepository.delete(user.get());
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	
+	public int userUpdate(User user) {
+		userRepository.save(user);
+		return 1;
 	}
 	
 }
