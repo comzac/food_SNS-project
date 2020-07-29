@@ -34,10 +34,13 @@ public class Comment {
 	private int pid; // parent id
 	
 	@Column
-	private String uid;
+	private int uid;
 	
 	@Column
 	private int depth;
+	
+	@Column
+	private String title;
 	
 	@Column
 	private String content;
