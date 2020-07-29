@@ -1,5 +1,7 @@
 package com.ssafy.sub.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,16 +22,32 @@ import lombok.ToString;
 @Builder
 @Entity
 @ToString
-public class Hashtag {
-
+public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "content")
+	@Column
+	private int fid; // feed id
+	
+	@Column
+	private int pid; // parent id
+	
+	@Column
+	private int uid;
+	
+	@Column
+	private int depth;
+	
+	@Column
+	private String title;
+	
+	@Column
 	private String content;
 	
-//	@OneToMany(mappedBy = "hashtag") 
-//	@Transient
-//	private List<FeedHashtag> feedHashtag = new ArrayList<>();
+	@Column
+	private Date regdate;	
+	
+	@Column
+	private Date editdate;
 }

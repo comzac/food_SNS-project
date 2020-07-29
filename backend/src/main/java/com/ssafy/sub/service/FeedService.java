@@ -35,4 +35,10 @@ public interface FeedService {
 	public Hashtag hashtagUpdate(int hid, String content);
 	
 	public Hashtag hashtagDetail(int hid);
+	
+	public int getFeedCount(int uid);
+	
+	public List<Hashtag> feedHashtagList(int fid);
+	
+	public int feedHashtagListInsert(List<Hashtag> hashtagList);
 }

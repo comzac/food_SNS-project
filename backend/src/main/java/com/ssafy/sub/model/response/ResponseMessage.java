@@ -8,6 +8,7 @@ public class ResponseMessage {
     public static final String LOGOUT_SUCCESS = "로그아웃 성공";
     public static final String LOGOUT_FAIL = "로그아웃 실패";
     
+    public static final String READ_ALL_USERS = "모든 유저 조회 성공";
     public static final String READ_USER = "회원 정보 조회 성공";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String ALREADY_USER = "이미 존재하는 Email입니다.";

@@ -1,11 +1,15 @@
 package com.ssafy.sub.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.StatusCode;
@@ -39,22 +43,47 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
+	// userSimple만들고 반환
+	public UserSimple getSimpleUser(String uid) {
+		System.out.println("userSimple "+ uid);
+		User user = userRepository.findByUid(uid).
+				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
+		
+		UserSimple userSimple = new UserSimple();
+		userSimple.setUid(user.getUid());
+		userSimple.setUnick(user.getUnick());
+
+//		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+		if(dbProfileRepository.findByUid(String.valueOf(user.getId())).isPresent()) {
+//			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+			userSimple.setUprofile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+		}
+		
+		return userSimple;
+	}
+	
 	// custom repository 호출
 	
 	// uid -> Optional<user> findByUid()
 	public User findByUid(String uid){
 		User user = userRepository.findByUid(uid).
 				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
-//		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get().toString());
-//		user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
+		
+		Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(user.getId()));
+		if(dbProOptional.isPresent()) {
+			user.setDBProfile(dbProOptional.get());
+		}
 		return user;
 	}
 	
 	public User findById(int id) {
 		try {
 			User user = userRepository.findById(id);
-//			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
-//			user.setProfile(profileRepository.findByUid(id));
+			
+			Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(user.getId()));
+			if(dbProOptional.isPresent()) {
+				user.setDBProfile(dbProOptional.get());
+			}
 			
 			return user;
 		}catch (Exception e) {
@@ -93,6 +122,29 @@ public class UserService {
 		javaMailSender.send(message);
 		
 		return true;
+	}
+
+	public User updateNick(int id, String unick) {
+		
+		int ret = userRepository.updateUnick(id, unick);
+		User user = userRepository.findById(id);
+
+		return user;
+	}
+	
+	public int userDelete(String uid) {
+		Optional<User> user = userRepository.findByUid(uid);
+		if(user.isPresent()) {
+			userRepository.delete(user.get());
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+	
+	public int userUpdate(User user) {
+		userRepository.save(user);
+		return 1;
 	}
 	
 }

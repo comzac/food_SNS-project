@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.sub.dto.DBFile;
 import com.ssafy.sub.dto.DBProfile;
+import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.FileStorageException;
 import com.ssafy.sub.exception.MyFileNotFoundException;
 import com.ssafy.sub.repo.DBFileRepository;
@@ -27,15 +28,16 @@ public class FileStorageService {
     private DBProfileRepository dbProfileRepository;
  
     @Transactional
-    public DBProfile storeProfile(MultipartFile file, String uid) throws FileStorageException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public DBProfile storeProfile(UserSimple userSimple, String uid) throws FileStorageException {
+        //String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
-            if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
+//            if(fileName.contains("..")) {
+//                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+//            }
 
-            DBProfile dbProfile = DBProfile.builder().uid(uid).name(fileName).type(file.getContentType()).data(file.getBytes()).build();
+//          DBProfile dbProfile = DBProfile.builder().uid(uid).name(fileName).type(file.getContentType()).data(file.getBytes()).build();
+            DBProfile dbProfile = userSimple.getUprofile();
             
     		Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
     		if(!updateProfile.isPresent()) {
@@ -45,12 +47,15 @@ public class FileStorageService {
     			updateProfile.get().setName(dbProfile.getName());
     			updateProfile.get().setType(dbProfile.getType());
     			updateProfile.get().setData(dbProfile.getData());
+    			updateProfile.get().setText(dbProfile.getText());
     			return updateProfile.get();
     		}
             
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
+        } catch (Exception e) {
+				// TODO: handle exception
+		}
+		return null;
+		
     }
     
     

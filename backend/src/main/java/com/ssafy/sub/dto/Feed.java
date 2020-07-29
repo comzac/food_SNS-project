@@ -59,8 +59,8 @@ public class Feed {
 //	private Collection<DBFile> dbFiles;
 	
 //	@OneToMany(mappedBy="feed")
-	@Transient
-    private List<Hashtag> hashtag = new ArrayList<>();
+//	@Transient
+//    private List<Hashtag> hashtag = new ArrayList<>();
 	
 	@Transient
     private List<DBFile> dbFiles = new ArrayList<>();

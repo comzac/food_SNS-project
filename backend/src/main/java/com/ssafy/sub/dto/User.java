@@ -76,8 +76,8 @@ public class User implements UserDetails {
 	
 	@Transient
 	private DBProfile DBProfile;
-	@Transient
-	private Profile profile;
+//	@Transient
+//	private Profile profile;
 		
 	@ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

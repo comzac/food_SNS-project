@@ -17,6 +17,7 @@ import com.ssafy.sub.dto.Hashtag;
 import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.repo.DBFileRepository;
 import com.ssafy.sub.repo.FeedHashtagRepository;
 import com.ssafy.sub.repo.FeedQueryDsl;
 import com.ssafy.sub.repo.FeedRepository;
@@ -30,6 +31,8 @@ public class FeedServiceImpl implements FeedService {
 	HashtagRepository hashtagRepository;
 	@Autowired
 	FeedHashtagRepository feedHashtagRepository;
+	@Autowired
+	DBFileRepository dbFileRepository;
 	@Autowired
 	FeedQueryDsl feedQueryDsl;
 
@@ -48,13 +51,6 @@ public class FeedServiceImpl implements FeedService {
 			fid = feeds.get(i).getId();
 			System.out.println(fid);
 			feedHashtagList = feedHashtagRepository.findAllByFeedId(fid);
-//			for(FeedHashtag fh: feedHashtagList) {
-//				System.out.println("Hashtag id: "+fh.getId());
-//				System.out.println("next: "+fh.getHashtagId());
-//				System.out.println(hashtagRepository.findById(fh.getHashtagId()).get().toString());
-//				hashtagList.add(hashtagRepository.findById(fh.getHashtagId()).get());
-//			}
-			feeds.get(i).setHashtag(hashtagList);
 		}
 		
 		return feeds;
@@ -75,12 +71,19 @@ public class FeedServiceImpl implements FeedService {
 
 	@Override
 	public Feed feedDetail(int id) {
-		return feedRepository.findById(id)
-					.orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_FEED, HttpStatus.NOT_FOUND));
+		Feed feed = feedRepository.findById(id)
+		.orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_FEED, HttpStatus.NOT_FOUND));
+		
+		if(dbFileRepository.findAllByFid(id).isPresent()) {
+			feed.setDbFiles(dbFileRepository.findAllByFid(id).get());
+		}
+
+		return feed;
 	}
 
 	@Override
 	public Feed feedInsert(Feed feed) {
+		feed.setRegdate(new Date());
 		return feedRepository.save(feed);
 	}
 
@@ -104,7 +107,6 @@ public class FeedServiceImpl implements FeedService {
 		return feedRepository.deleteById(id);
 	}
 
-	
 	@Override
 	public List<Hashtag> findAllHashtag() {
 		return hashtagRepository.findAll();
@@ -141,5 +143,49 @@ public class FeedServiceImpl implements FeedService {
 				.orElseThrow(() -> new RestException(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_HASHTAG));
 	}
 	
-	
+	@Override
+	public List<Hashtag> feedHashtagList(int fid) {
+		List<FeedHashtag> feedHashtagList = feedHashtagRepository.findAllByFeedId(fid);
+		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
+		
+		Hashtag hashtag;
+		for(FeedHashtag fh: feedHashtagList) {
+			hashtag = hashtagRepository.findById(fh.getHashtagId()).get();
+			hashtagList.add(hashtag);
+		}
+		
+		return hashtagList;
+	}
+
+	@Override
+	public int getFeedCount(int uid) {
+		// feed 수
+		int feedCount = 0;
+		feedCount = feedRepository.findByUid(uid).size();
+		return feedCount;
+	}
+
+	@Override
+	public int feedHashtagListInsert(List<Hashtag> hashtagList) {
+		int fid = (int) feedRepository.count();
+		String content;
+		int hashtagId;
+		FeedHashtag feedHashtag = new FeedHashtag();
+		for(Hashtag h: hashtagList) {
+			content = h.getContent();
+			
+			if(hashtagRepository.findByContent(content)!=null) {
+				hashtagId = hashtagRepository.findByContent(content).getId();
+			}else {
+				hashtagRepository.save(content);
+				hashtagId = (int) hashtagRepository.count();	// 나중에 다른방법 생각해보기
+			}
+			
+			feedHashtag.setFeedId(fid);
+			feedHashtag.setHashtagId(hashtagId);
+			feedHashtagRepository.save(feedHashtag);
+		}
+		
+		return 0;
+	}
 }
