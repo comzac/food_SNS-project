@@ -47,6 +47,7 @@
           <v-file-input
             multiple
             v-if="!isUpdatePage"
+            v-model="fileData"
             prepend-icon
             accept=".png, .jpeg, .gif, .jpg, .mp4"
             outlined
@@ -54,7 +55,7 @@
             label="사진 또는 동영상 선택"
             @change="previewImage"
             color="#ff6666"
-            :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg .mp4 파일만 업로드 됩니다.)'"
+            error-messages=".png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
           ></v-file-input>
           <v-spacer></v-spacer>
           <v-textarea
@@ -151,6 +152,11 @@ export default {
       this.previews = [];
       this.fileData = [];
       console.log(file);
+      if (file.length > 3) {
+        console.log(file.length);
+        alert("파일이 3개보다 많이 선택되었습니다.");
+        return false;
+      }
       for (let i = 0; i < file.length; i++) {
         if (file[i].size > 20 * 1024 * 1024) {
           alert("파일 사이즈가 20mb 보다 큽니다.");
