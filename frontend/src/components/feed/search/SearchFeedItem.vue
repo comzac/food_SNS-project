@@ -1,5 +1,7 @@
 <template>
-  <v-skeleton-loader class="mx-auto" max-width="300" max-height="300" type="image"></v-skeleton-loader>
+  <v-responsive class="mx-auto" aspect-ratio="1" width="300">
+    <v-skeleton-loader type="image"></v-skeleton-loader>
+  </v-responsive>
 </template>
 
 <script>
