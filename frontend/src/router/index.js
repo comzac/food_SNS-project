@@ -7,11 +7,17 @@ import PasswordChoiceView from "@/views/user/PasswordChoiceView";
 import PasswordChoiceEmailView from "@/views/user/PasswordChoiceEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
 import UserEditView from "@/views/user/UserEditView";
+import UserProfileEditView from "@/views/user/UserProfileEditView";
 
 import Home from "@/views/Home";
 
+import SearchingView from "@/views/SearchingView";
+import SearchedView from "@/views/SearchedView";
+
 // import FeedItem2 from "../views/FeedItem2";
+import FeedView from "@/views/feed/FeedView";
 import FeedCreateView from "@/views/feed/FeedCreateView";
+import CommentView from "@/views/feed/CommentView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -25,44 +31,73 @@ const routes = [
     path: "/login",
     name: "Login",
     component: LoginView,
-    meta: { title: "Login" },
+    meta: { title: "Login · HoneyCombo" },
   },
   {
     path: "/signup",
     name: "Signup",
     component: SignupView,
-    meta: { title: "Signup" },
+    meta: { title: "Signup · HoneyCombo" },
   },
   { path: "*", name: "NotFound", component: NotFoundComponent },
   {
     path: "/user/password_choice",
     name: "PasswordChoice",
     component: PasswordChoiceView,
-    meta: { title: "비밀번호 찾기" },
+    meta: { title: "비밀번호 찾기 · HoneyCombo" },
   },
   {
     path: "/user/password_choice_email",
     name: "PasswordChoiceEmail",
     component: PasswordChoiceEmailView,
-    meta: { title: "이메일로 비밀번호 찾기" },
+    meta: { title: "이메일로 비밀번호 찾기 · HoneyCombo" },
   },
   {
-    path: "/userdetail", // 백에서 데이터 받아오면 이거로 변경 path: '/:username',
+    path: "/userdetail/:uid",
     name: "UserDetail",
     component: UserDetailView,
-    meta: { title: "usernickname · HoneyCombo" }, // 이거도 나중에 유저마다 이름 다르게 변경해야함 (컴포넌트 내에서 변경가능)
-  },
-  {
-    path: "/feed/create",
-    name: "FeedCreateView",
-    component: FeedCreateView,
   },
   {
     path: "/user/edit",
     name: "UserEdit",
     component: UserEditView,
-    meta: { title: "회원정보 수정" },
+    meta: { title: "회원정보 수정 · HoneyCombo" },
   },
+  {
+    path: "/userprofile/edit/:uid",
+    name: "UserProfileEdit",
+    component: UserProfileEditView,
+    meta: { title: "프로필 수정 · HoneyCombo" },
+  },
+
+  // feed
+  {
+    path: "/feed/:fid",
+    name: "FeedView",
+    component: FeedView,
+  },
+  {
+    path: "/feed/create/:fid?",
+    name: "FeedCreateView",
+    component: FeedCreateView,
+  },
+  {
+    path: "/feed/comment/:fid/",
+    name: "CommentView",
+    component: CommentView,
+  },
+
+  {
+    path: "/search",
+    name: "SearchingView",
+    component: SearchingView,
+  },
+  {
+    path: "/search/:keyword",
+    name: "SearchedView",
+    component: SearchedView,
+  },
+
   // {
   //   path: "/feed/:fid",
   //   name: "FeedItem2",

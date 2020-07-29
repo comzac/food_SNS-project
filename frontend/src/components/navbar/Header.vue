@@ -39,7 +39,11 @@
         <v-spacer>
           <br />
         </v-spacer>
-        <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
+        <router-link
+          :to="{ name: 'UserDetail', params: { uid: 'asdf' } }"
+          class="text-decoration-none"
+        >
+          <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
           <v-list-item two-line>
             <v-list-item-avatar>
               <img src="@/assets/profile_default.png" />
@@ -92,7 +96,12 @@ export default {
         icon: "mdi-account",
         title: "Account",
       },
-      { id: "3", link: { name: "" }, icon: "mdi-magnify", title: "Search" },
+      {
+        id: "3",
+        link: { name: "SearchingView" },
+        icon: "mdi-magnify",
+        title: "Search",
+      },
       {
         id: "4",
         link: { name: "" },

@@ -5,33 +5,47 @@
         <v-hover v-slot:default="{ hover }">
           <v-card
             :class="`elevation-${hover ? 24 : 6}`"
-            class="transition-swing ma-auto"
+            class="transition-swing mx-auto"
             max-width="614"
-            outlined
           >
             <v-list-item>
-              <router-link
-                :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
-                class="text-decoration-none"
-              >
-                <!-- 추후에 params.uid은 피드의 uid으로 바꿔야함. -->
+              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
                 <v-list-item-avatar color="#ff6666">
                   <img src="@/assets/profile_default.png" width="40" />
                 </v-list-item-avatar>
               </router-link>
-              <router-link
-                :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
-                class="text-decoration-none"
-              >
+              <router-link :to="{ name: 'UserDetail' }" class="text-decoration-none">
                 <v-list-item-content>
                   <v-list-item-title class="text-left red--text text--lighten-2">{{ user.unick }}</v-list-item-title>
                   <v-list-item-subtitle class="text-left red--text text--lighten-2">{{ user.uid }}</v-list-item-subtitle>
                 </v-list-item-content>
               </router-link>
               <v-spacer></v-spacer>
+              <v-menu left bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-list class="text-center">
+                  <v-list-item @click="() => {}">
+                    <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="() => {}">
+                    <v-list-item-title class="red--text text-lighten-2">게시글 삭제</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="() => {}">
+                    <v-list-item-title class="red--text text-lighten-2">게시글 신고</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="() => {}">
+                    <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-list-item>
             <v-img
-              class="white--text text-right"
+              class="white--text"
               height="300px"
               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
             >
@@ -64,10 +78,7 @@
                   <small>{{ ymd2 }}</small>
                 </v-row>
               </p>
-              <p
-                :class="overflow"
-                @click="$router.push({ name: 'FeedView', params: { fid: feed.id } })"
-              >{{ feed.content }}</p>
+              <p class="text-left">{{ feed.content }}</p>
               <div class="text-left">
                 <p>#{{ feedhashtag.fid }}</p>
               </div>
@@ -85,14 +96,9 @@
 import Comment from "@/components/Comment";
 
 export default {
-  name: "FeedItem",
+  name: "FeedView",
   components: {
     Comment,
-  },
-  props: {
-    feed: Object,
-    feedhashtag: Object,
-    feedlike: Object,
   },
   computed: {
     ymd2() {
@@ -113,33 +119,57 @@ export default {
   },
   data() {
     return {
+      feed: "",
+      feedhashtag: "",
+      feedlike: "",
+      user: "",
       overflow: "text-left text-overflow",
       hashtag: {},
-      ymd:
-        parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(this.feed.regdate).getTime() / 1000),
-      user: {
+
+      ymd: "",
+    };
+  },
+  methods: {
+    fetchFeed() {
+      this.feed = {
+        id: 1,
+        uid: 1, //?
+        title: "엄마가 섬그늘에",
+        content:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
+        regdate: "2020-07-26T15:00:00.000+00:00",
+        editdate: null,
+      };
+      this.feedhashtag = {
+        fid: 1,
+        hid: 1,
+      };
+      this.feedlike = {
+        uid: 1,
+        fid: 1,
+      };
+      this.user = {
         // 받아오는 것만 남긴다
         id: this.feed.uid,
-        uid: "fish87",
+        uid: "catcatcat",
         upw: "",
-        unick: "Whoever Kim",
+        unick: "YesYouCan",
         uemail: "",
         uregdate: "",
         ubirth: "",
         usex: "",
         roles: "",
-      },
-    };
+      };
+      this.ymd =
+        parseInt(new Date().getTime() / 1000) -
+        parseInt(new Date(this.feed.regdate).getTime() / 1000);
+    },
+  },
+  created() {
+    this.fetchFeed();
   },
 };
 </script>
 
 <style scoped>
-p.text-overflow {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 222px;
-}
 </style>

@@ -6,17 +6,23 @@ import SERVER from "@/api/api";
 export default {
   namespaced: true,
   state: {
-    feeds: [],
-    userFeeds: [],
+    feeds: null,
+    userDetailData: null,
+    selectedFeed: null,
   },
-  getters: {},
+  getters: {
+    feed: (state) => state.selectedFeed,
+  },
   mutations: {
     SET_FEEDS(state, feeds) {
       state.feeds = feeds;
     },
-    SET_USERFEEDS(state, userFeeds) {
-      state.userFeeds = userFeeds
-    }
+    SET_USERDETAILDATA(state, userDetailData) {
+      state.userDetailData = userDetailData;
+    },
+    SET_SELECTEDFEED(state, feed) {
+      state.selectedFeed = feed;
+    },
   },
   actions: {
     fetchFeeds({ commit, rootGetters }) {
@@ -24,7 +30,6 @@ export default {
       axios
         .get(
           SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
-          null,
           config
         )
         .then((res) => {
@@ -34,41 +39,53 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    getUserFeed({ commit, rootGetters }, userId) {
-      const config = rootGetters["accounts/cofnig"];
+    getUserDetailData({ commit, rootGetters }, uid) {
+      const config = rootGetters["accounts/config"];
       axios
         .get(
-          SERVER.BASE_URL + SERVER.ROUTES.feed.URL + SERVER.ROUTES.feeds.page + userId,
-          null,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.page +
+            uid,
           config
         )
-        .then(res => {
-          console.log(res)
-          commit("SET_USERFEEDS", res.data)
+        .then((res) => {
+          commit("SET_USERDETAILDATA", res.data);
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => console.log(err.response));
     },
 
-    insertFeed({ rootGetters }, feedData) {
+    insertFeed({ rootGetters }, formData) {
+      console.log(formData);
       const config = rootGetters["accounts/config"];
+      config.headers["Content-Type"] = "multipart/form-data";
+      config.headers["Accept"] = "application/json";
+      console.log(formData.getAll("hashtag"));
       axios
-        .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
+        .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, formData, config)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     },
 
-    getFeedDetail({ rootGetters }, id) {
+    getFeedDetail({ rootGetters, commit }, id) {
       const config = rootGetters["accounts/config"];
       axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, null, config)
-        .then((res) => console.log(res))
+        .get(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
+        .then((res) => {
+          console.log(res);
+          commit("SET_SELECTEDFEED", res.data);
+        })
         .catch((err) => console.log(err));
     },
 
-    updateFeed({ rootGetters }, id) {
+    updateFeed({ rootGetters }, formData) {
       const config = rootGetters["accounts/config"];
+      config.headers["Content-Type"] = "multipart/form-data";
+      config.headers["Accept"] = "application/json";
+      const id = formData.get("id");
+      console.log(id);
       axios
-        .put(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, null, config)
+        .put(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, formData, config)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     },
@@ -76,7 +93,7 @@ export default {
     deleteFeed({ rootGetters }, id) {
       const config = rootGetters["accounts/config"];
       axios
-        .delete(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, null, config)
+        .delete(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     },

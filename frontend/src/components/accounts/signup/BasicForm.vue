@@ -1,74 +1,72 @@
 <template>
-  <v-container>
-    <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12" sm="8" md="6" lg="4">
-        <v-text-field
-          label="아이디"
-          name="signup"
-          prepend-icon="mdi-account"
-          type="text"
-          v-model="signupData.uid"
-          color="#ff6666"
-          append-outer-icon="mdi-check"
-          @click:append-outer="idCheck2(signupData.uid)"
-          :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
-          @input="idcheck = false"
-          autocapitalize="off"
-          autocorrect="off"
-        ></v-text-field>
+  <v-card class="mx-auto" flat max-width="350">
+    <v-text-field
+      label="아이디"
+      name="signup"
+      prepend-icon="mdi-account"
+      type="text"
+      v-model="signupData.uid"
+      color="#ff6666"
+      append-outer-icon="mdi-check"
+      @click:append-outer="idCheck2(signupData.uid)"
+      :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
+      @input="idcheck = false"
+      autocapitalize="off"
+      autocorrect="off"
+    ></v-text-field>
 
-        <v-text-field
-          label="별명"
-          name="nickname"
-          prepend-icon="mdi-account-box"
-          type="text"
-          v-model="signupData.unick"
-          color="#ff6666"
-          append-outer-icon="mdi-check"
-          @click:append-outer="nickCheck2(signupData.unick)"
-          :error-messages="nickcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
-          @input="nickcheck = false"
-        ></v-text-field>
+    <v-text-field
+      label="별명"
+      name="nickname"
+      prepend-icon="mdi-account-box"
+      type="text"
+      v-model="signupData.unick"
+      color="#ff6666"
+      append-outer-icon="mdi-check"
+      @click:append-outer="nickCheck2(signupData.unick)"
+      :error-messages="nickcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
+      @input="nickcheck = false"
+    ></v-text-field>
 
-        <v-text-field
-          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append="show1 = !show1"
-          :type="show1 ? 'text' : 'password'"
-          label="비밀번호"
-          name="password"
-          prepend-icon="mdi-lock-outline"
-          v-model="signupData.upw"
-          color="#ff6666"
-          :error-messages="pwdCheck(signupData.upw)?'':'비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'"
-        ></v-text-field>
+    <v-text-field
+      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+      @click:append="show1 = !show1"
+      :type="show1 ? 'text' : 'password'"
+      label="비밀번호"
+      name="password"
+      prepend-icon="mdi-lock-outline"
+      v-model="signupData.upw"
+      color="#ff6666"
+      :error-messages="pwdCheck(signupData.upw)?'':'비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'"
+    ></v-text-field>
 
-        <v-text-field
-          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append="show2 = !show2"
-          :type="show2 ? 'text' : 'password'"
-          label="비밀번호 확인"
-          name="password confirm"
-          prepend-icon="mdi-lock-outline"
-          v-model="signupData.upw2"
-          color="#ff6666"
-          :error-messages="pwdCheck2(signupData.upw, signupData.upw2)?'':'비밀번호와 동일하게 입력해주세요'"
-        ></v-text-field>
+    <v-text-field
+      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+      @click:append="show2 = !show2"
+      :type="show2 ? 'text' : 'password'"
+      label="비밀번호 확인"
+      name="password confirm"
+      prepend-icon="mdi-lock-outline"
+      v-model="signupData.upw2"
+      color="#ff6666"
+      :error-messages="pwdCheck2(signupData.upw, signupData.upw2)?'':'비밀번호와 동일하게 입력해주세요'"
+    ></v-text-field>
 
-        <v-text-field
-          label="생년월일"
-          name="dob"
-          prepend-icon="mdi-cake-variant"
-          type="date"
-          v-model="signupData.ubirth"
-          color="#ff6666"
-          :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
-        ></v-text-field>
+    <v-text-field
+      label="생년월일"
+      name="dob"
+      prepend-icon="mdi-cake-variant"
+      type="date"
+      v-model="signupData.ubirth"
+      color="#ff6666"
+      :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
+    ></v-text-field>
 
-        <v-radio-group v-model="signupData.usex" row>
-          <v-btn icon color="#ff6666">
-            <v-icon>mdi-gender-male-female</v-icon>
-          </v-btn>
-          <!-- <v-text-field
+    <v-radio-group v-model="signupData.usex" row>
+      <v-btn icon color="#ff6666">
+        <v-icon>mdi-gender-male-female</v-icon>
+      </v-btn>
+      <!-- <v-text-field
             prepend-icon="mdi-gender-male-female"
             flat
             dense
@@ -76,32 +74,30 @@
             color="#ff6666"
             :error-messages="signupData.usex?'':'성별을 선택해주세요'"
             :value="signupData.usex==1?'남성':signupData.usex==2?'여성':''"
-          ></v-text-field>-->
-          <v-spacer></v-spacer>
-          <v-radio color="#ff6666" label="남성" value="1"></v-radio>
-          <v-btn icon :color="signupData.usex==1?'#ff6666':''">
-            <v-icon>mdi-gender-male</v-icon>
-          </v-btn>
-          <v-radio color="#ff6666" label="여성" value="2"></v-radio>
-          <v-btn icon :color="signupData.usex==2?'#ff6666':''">
-            <v-icon>mdi-gender-female</v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-radio-group>
-        <!-- 영문, 숫자 혼용 확인 필요 -->
-        <div>
-          <v-btn color="#ff6666" class="white--text" @click="$router.push({ name: 'Login' })">뒤로가기</v-btn>
-          <v-divider class="mr-5" vertical></v-divider>
-          <v-btn
-            :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
-            @click="toEmailVerification()"
-            color="#ff6666"
-            class="white--text"
-          >다음으로</v-btn>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+      ></v-text-field>-->
+      <v-spacer></v-spacer>
+      <v-radio color="#ff6666" label="남성" value="1"></v-radio>
+      <v-btn icon :color="signupData.usex==1?'#ff6666':''">
+        <v-icon>mdi-gender-male</v-icon>
+      </v-btn>
+      <v-radio color="#ff6666" label="여성" value="2"></v-radio>
+      <v-btn icon :color="signupData.usex==2?'#ff6666':''">
+        <v-icon>mdi-gender-female</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+    </v-radio-group>
+    <!-- 영문, 숫자 혼용 확인 필요 -->
+    <div>
+      <v-btn color="#ff6666" class="white--text" @click="$router.push({ name: 'Login' })">뒤로가기</v-btn>
+      <v-divider class="mr-5" vertical></v-divider>
+      <v-btn
+        :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
+        @click="toEmailVerification()"
+        color="#ff6666"
+        class="white--text"
+      >다음으로</v-btn>
+    </div>
+  </v-card>
 </template>
 
 <script>
