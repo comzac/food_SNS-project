@@ -1,5 +1,7 @@
 package com.ssafy.sub.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -115,6 +117,14 @@ public class UserService {
 		javaMailSender.send(message);
 		
 		return true;
+	}
+
+	public User updateNick(int id, String unick) {
+		
+		int ret = userRepository.updateUnick(id, unick);
+		User user = userRepository.findById(id);
+
+		return user;
 	}
 	
 }
