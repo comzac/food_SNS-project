@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedHashtag;
+import com.ssafy.sub.dto.FeedHashtagKey;
 import com.ssafy.sub.dto.Hashtag;
 import com.ssafy.sub.exception.RestException;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.repo.DBFileRepository;
+import com.ssafy.sub.repo.FeedHashtagQueryDsl;
 import com.ssafy.sub.repo.FeedHashtagRepository;
 import com.ssafy.sub.repo.FeedQueryDsl;
 import com.ssafy.sub.repo.FeedRepository;
@@ -32,6 +34,8 @@ public class FeedServiceImpl implements FeedService {
 	@Autowired
 	FeedHashtagRepository feedHashtagRepository;
 	@Autowired
+	FeedHashtagQueryDsl feedHashtagQueryDsl;
+	@Autowired
 	DBFileRepository dbFileRepository;
 	@Autowired
 	FeedQueryDsl feedQueryDsl;
@@ -42,17 +46,23 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public List<Feed> feedUserPageList(int uid) {
-		List<Feed> feeds = feedRepository.findByUid(uid);
-		int fid;
+	public List<Hashtag> findFeedHashtagList(int fid) {
 		List<FeedHashtag> feedHashtagList = new ArrayList<FeedHashtag>();
 		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
-		for(int i=0; i<feeds.size(); i++) {
-			fid = feeds.get(i).getId();
-			System.out.println(fid);
-			feedHashtagList = feedHashtagRepository.findAllByFeedId(fid);
+		feedHashtagList = feedHashtagQueryDsl.findAllByFid(fid);
+		
+		int hid;
+		for(FeedHashtag fht : feedHashtagList) {
+			hid = fht.getFeedHashtagkey().getHid();
+			hashtagList.add(hashtagRepository.findById(hid).get());
 		}
 		
+		return hashtagList;
+	}
+	
+	@Override
+	public List<Feed> feedUserPageList(int uid) {
+		List<Feed> feeds = feedRepository.findByUid(uid);
 		return feeds;
 	}
 
@@ -63,7 +73,7 @@ public class FeedServiceImpl implements FeedService {
 		for (Feed feed : test) {
 			System.out.println(feed.toString());
 		}
-		
+		 
 		if(test.size() == 0)
 			System.out.println("null z?");
 		return test;
@@ -122,7 +132,9 @@ public class FeedServiceImpl implements FeedService {
 
 	@Override
 	public Hashtag hashtagInsert(String content) {
-		Hashtag hashtag = hashtagRepository.save(content);
+		Hashtag h = new Hashtag();
+		h.setContent(content);
+		Hashtag hashtag = hashtagRepository.save(h);
 		if(hashtag==null)
 			throw new RestException(StatusCode.BAD_REQUEST, ResponseMessage.FAIL_CREATE_HASHTAG);
 		return hashtag;
@@ -145,12 +157,16 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public List<Hashtag> feedHashtagList(int fid) {
-		List<FeedHashtag> feedHashtagList = feedHashtagRepository.findAllByFeedId(fid);
+		List<FeedHashtag> feedHashtagList = new ArrayList<FeedHashtag>();
 		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
+		
+		if(feedHashtagQueryDsl.findAllByFid(fid)!=null) {
+			feedHashtagList = feedHashtagQueryDsl.findAllByFid(fid);
+		}
 		
 		Hashtag hashtag;
 		for(FeedHashtag fh: feedHashtagList) {
-			hashtag = hashtagRepository.findById(fh.getHashtagId()).get();
+			hashtag = hashtagRepository.findById(fh.getFeedHashtagkey().getFid()).get();
 			hashtagList.add(hashtag);
 		}
 		
@@ -168,21 +184,26 @@ public class FeedServiceImpl implements FeedService {
 	@Override
 	public int feedHashtagListInsert(List<Hashtag> hashtagList) {
 		int fid = (int) feedRepository.count();
+		System.out.println(fid);
 		String content;
-		int hashtagId;
+		int hid;
 		FeedHashtag feedHashtag = new FeedHashtag();
+		Hashtag hashtag;
+		System.out.println(hashtagList.toString());
 		for(Hashtag h: hashtagList) {
 			content = h.getContent();
+			System.out.println();
 			
 			if(hashtagRepository.findByContent(content)!=null) {
-				hashtagId = hashtagRepository.findByContent(content).getId();
+				hid = hashtagRepository.findByContent(content).getId();
 			}else {
-				hashtagRepository.save(content);
-				hashtagId = (int) hashtagRepository.count();	// 나중에 다른방법 생각해보기
+				Hashtag ht = new Hashtag();
+				ht.setContent(content);
+				hashtag = hashtagRepository.save(ht);
+				hid = hashtag.getId();
 			}
 			
-			feedHashtag.setFeedId(fid);
-			feedHashtag.setHashtagId(hashtagId);
+			feedHashtag.setFeedHashtagkey(new FeedHashtagKey(fid, hid));
 			feedHashtagRepository.save(feedHashtag);
 		}
 		
