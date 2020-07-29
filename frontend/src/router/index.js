@@ -77,7 +77,7 @@ const routes = [
     component: FeedView,
   },
   {
-    path: "/feed/create",
+    path: "/feed/create/:fid?",
     name: "FeedCreateView",
     component: FeedCreateView,
   },

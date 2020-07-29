@@ -1,65 +1,104 @@
 <template>
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12">
-        <v-card flat max-width="614" class="mx-auto">
-          <v-text-field
-            label="제목"
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-text-field
+          label="제목"
+          outlined
+          solo
+          name="title"
+          type="text"
+          v-model="feed.title"
+          color="#ff6666"
+          :error-messages="feed.title?'':'제목을 입력해주세요'"
+          autocapitalize="off"
+          autocorrect="off"
+        ></v-text-field>
+        <video width="100%" controls :src="video" type="video/mp4" autoplay></video>
+        <v-file-input
+          v-if="!isUpdatePage"
+          prepend-icon
+          accept=".mp4"
+          outlined
+          solo
+          label="비디오 선택"
+          @change="previewVideo"
+          color="#ff6666"
+          :error-messages="video?'':'눌러서 비디오을 선택하세요 (.mp4 파일만 업로드 됩니다.)'"
+        ></v-file-input>
+        <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
+        <!-- 사진 입력 -->
+        <v-file-input
+          v-if="!isUpdatePage"
+          prepend-icon
+          accept=".png, .jpeg, .gif, .jpg"
+          outlined
+          solo
+          label="사진 선택"
+          @change="previewImage"
+          color="#ff6666"
+          :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg 파일만 업로드 됩니다.)'"
+        ></v-file-input>
+        <v-spacer></v-spacer>
+        <v-textarea
+          color="#ff6666"
+          v-model="feed.content"
+          auto-grow
+          label="내용"
+          outlined
+          solo
+          :error-messages="feed.content?'':'내용을 입력하세요'"
+          single-line
+        ></v-textarea>
+        <v-spacer>
+          <br />
+        </v-spacer>
+        <!-- 수정 필요 -->
+        <v-text-field
+          label="태그"
+          outlined
+          solo
+          name="태그"
+          type="text"
+          v-model="hashtag"
+          color="#ff6666"
+          append-icon="mdi-plus"
+          @click:append="createHashtag(hashtag)"
+          @keyup.enter.space.,="createHashtag(hashtag)"
+          error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
+          autocapitalize="off"
+          autocorrect="off"
+        ></v-text-field>
+        <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+          <v-btn
             outlined
             solo
             name="title"
             type="text"
             v-model="feed.title"
             color="#ff6666"
-            :error-messages="feed.title?'':'제목을 입력해주세요'"
-            autocapitalize="off"
-            autocorrect="off"
-          ></v-text-field>
-          <video width="100%" controls :src="video" type="video/mp4" autoplay></video>
-          <v-file-input
-            prepend-icon
-            accept=".mp4"
-            outlined
-            solo
-            label="비디오 선택"
-            @change="previewVideo"
+            small
+            @click="tag.splice(feedhashtag.indexOf(tag), 1)"
+          ># {{ tag }}</v-btn>
+        </div>
+        <v-spacer>
+          <br />
+        </v-spacer>
+        <div>
+          <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+          <v-divider class="mr-5" vertical></v-divider>
+          <!-- 클릭하면 피드 상세 페이지로 -->
+          <v-btn
+            v-if="isUpdatePage"
+            :disabled="!feed.title || !feed.content || !fileData"
+            @click="updateFeedByFormData()"
             color="#ff6666"
-            :error-messages="video?'':'눌러서 비디오을 선택하세요 (.mp4 파일만 업로드 됩니다.)'"
-          ></v-file-input>
-          <v-img :src="imageData" lazy-src="@/assets/img-placeholder.png" aspect-ratio="1"></v-img>
-          <!-- 사진 입력 -->
-          <v-file-input
-            prepend-icon
-            accept=".png, .jpeg, .gif, .jpg"
-            outlined
-            solo
-            label="사진 선택"
-            @change="previewImage"
-            color="#ff6666"
-            :error-messages="imageData?'':'눌러서 사진을 선택하세요 (.png, jpeg, gif, jpg 파일만 업로드 됩니다.)'"
-          ></v-file-input>
-          <v-spacer></v-spacer>
-          <v-textarea
-            color="#ff6666"
-            v-model="feed.content"
-            auto-grow
-            label="내용"
-            outlined
-            solo
-            :error-messages="feed.content?'':'내용을 입력하세요'"
-            single-line
-          ></v-textarea>
-          <v-spacer>
-            <br />
-          </v-spacer>
-          <!-- 수정 필요 -->
-          <v-text-field
-            label="태그"
-            outlined
-            solo
-            name="태그"
-            type="text"
-            v-model="hashtag"
+            class="white--text"
+          >작성 완료</v-btn>
+          <v-btn
+            v-else
+            :disabled="!feed.title || !feed.content || !fileData"
+            @click="insertFeedByFormData()"
             color="#ff6666"
             append-icon="mdi-plus"
             @click:append="createHashtag(hashtag)"
@@ -98,11 +137,17 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "FeedCreateView",
   components: {},
+  computed: {
+    ...mapState("feeds", ["selectedFeed"]),
+    isUpdatePage() {
+      return !!this.$route.params.fid;
+    },
+  },
   data() {
     return {
       hashtag: "",
@@ -117,26 +162,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions("feeds", ["insertFeed"]),
-    // previewImage(event) {
-    //   // Reference to the DOM input element
-    //   console.log(event.target);
-    //   var input = event.target;
-    //   // Ensure that you have a file before attempting to read it
-    //   if (input.files && input.files[0]) {
-    //     // create a new FileReader to read this image and convert to base64 format
-    //     var reader = new FileReader();
-    //     // Define a callback function to run, when FileReader finishes its job
-    //     reader.onload = (event) => {
-    //       // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-    //       // Read image as base64 and set to imageData
-    //       this.imageData = event.target.result;
-    //       console.log(event.target);
-    //     };
-    //     // Start the reader job - read file as a data url (base64 format)
-    //     reader.readAsDataURL(input.files[0]);
-    //   }
-    // },
+    ...mapActions("feeds", ["insertFeed", "updateFeed", "getFeedDetail"]),
+
     previewImage(file) {
       console.log(file);
       if (file.size > 20 * 1024 * 1024) {
@@ -186,11 +213,28 @@ export default {
       this.insertFeed(form);
     },
 
+    updateFeedByFormData() {
+      const form = new FormData();
+
+      form.append("feed", this.feed);
+      this.feedhashtag.forEach((tag) => {
+        if (tag !== "") {
+          form.append("hashtag", tag);
+        }
+      });
+      this.fileData.forEach((file) => {
+        form.append("file", file);
+      });
+      form.append("id", this.$route.params.fid);
+      this.updateFeed(form);
+    },
+
     createHashtag(hashtag) {
       hashtag = hashtag
         .replace(/#/gi, "")
         .replace(/ /gi, "")
         .replace(/,/gi, "");
+      console.log(hashtag);
       if (this.feedhashtag.includes(hashtag) || hashtag == "") {
         this.hashtag = "";
       } else {
@@ -199,6 +243,19 @@ export default {
       }
       console.log(this.feedhashtag);
     },
+
+    initData() {
+      this.feed.title = this.selectedFeed.title;
+      this.feed.content = this.selectedFeed.content;
+      this.fileData = this.selectedFeed.dbFiles;
+      this.feedhashtag = this.selectedFeed.hashtag;
+    },
+  },
+
+  created() {
+    if (this.$route.params.fid) {
+      this.getFeedDetail(this.$route.params.fid).then(this.initData());
+    }
   },
 };
 </script>
