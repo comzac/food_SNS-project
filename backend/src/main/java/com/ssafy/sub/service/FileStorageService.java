@@ -28,34 +28,32 @@ public class FileStorageService {
     private DBProfileRepository dbProfileRepository;
  
     @Transactional
-    public DBProfile storeProfile(UserSimple userSimple, String uid) throws FileStorageException {
-        //String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    public DBProfile storeProfile(MultipartFile file, String text, String uid) throws FileStorageException {
+       String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        try {
-//            if(fileName.contains("..")) {
-//                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-//            }
+       try {
+          if (fileName.contains("..")) {
+             throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+          }
 
-//          DBProfile dbProfile = DBProfile.builder().uid(uid).name(fileName).type(file.getContentType()).data(file.getBytes()).build();
-            DBProfile dbProfile = userSimple.getUprofile();
-            
-    		Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
-    		if(!updateProfile.isPresent()) {
-    			return dbProfileRepository.save(dbProfile);
-    		}else {
-    			updateProfile.get().setUid(uid);
-    			updateProfile.get().setName(dbProfile.getName());
-    			updateProfile.get().setType(dbProfile.getType());
-    			updateProfile.get().setData(dbProfile.getData());
-    			updateProfile.get().setText(dbProfile.getText());
-    			return updateProfile.get();
-    		}
-            
-        } catch (Exception e) {
-				// TODO: handle exception
-		}
-		return null;
-		
+          DBProfile dbProfile = DBProfile.builder().uid(uid).name(fileName).type(file.getContentType())
+                .data(file.getBytes()).text(text).build();
+
+          Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
+          if (!updateProfile.isPresent()) {
+             return dbProfileRepository.save(dbProfile);
+          } else {
+             updateProfile.get().setUid(uid);
+             updateProfile.get().setName(dbProfile.getName());
+             updateProfile.get().setType(dbProfile.getType());
+             updateProfile.get().setData(dbProfile.getData());
+             updateProfile.get().setText(dbProfile.getText());
+             return updateProfile.get();
+          }
+
+       } catch (IOException ex) {
+             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+         }
     }
     
     

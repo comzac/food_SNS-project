@@ -187,24 +187,24 @@ public class FeedController {
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 	
-	
-	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
-	@PostMapping(value="/page")
-	public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
-		System.out.println("log - userPageUpdate");
-		
-		String id;
-		id = authentication.getName();
-		
-		DBProfile dbProfile = fileStorageService.storeProfile(userSimple, id);
-		User user = userService.updateNick(Integer.parseInt(id), userSimple.getUnick());
-		
-		UserSimple res = new UserSimple(id, user.getUnick(), dbProfile);
-		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
-		
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
-	}
-	
+	   @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
+	   @PostMapping(value="/page")
+	//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
+	   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text, @RequestParam("unick") String unick, Authentication authentication) throws FileStorageException {
+	      System.out.println("log - userPageUpdate");
+	      
+	      String id;
+	      id = authentication.getName();
+	      
+	      DBProfile dbProfile = fileStorageService.storeProfile(img, text, id);
+	      User user = userService.updateNick(Integer.parseInt(id), unick);
+	      
+	      UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
+	      Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
+	      
+	      return new ResponseEntity<Result>(result, HttpStatus.OK);
+	   }
+	   
 	
 	
 
