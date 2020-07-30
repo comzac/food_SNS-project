@@ -129,11 +129,12 @@ export default {
 
     getFeedDetail({ rootGetters, commit }, id) {
       const config = rootGetters["accounts/config"];
-      axios
+      return axios
         .get(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
         .then((res) => {
           console.log(res);
-          commit("SET_SELECTEDFEED", res.data);
+          commit("SET_SELECTEDFEED", res.data.feedAll[0]);
+          return res.data.feedAll[0];
         })
         .catch((err) => console.log(err));
     },
@@ -154,7 +155,10 @@ export default {
       const config = rootGetters["accounts/config"];
       axios
         .delete(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "Home" });
+        })
         .catch((err) => console.log(err));
     },
   },
