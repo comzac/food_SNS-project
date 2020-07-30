@@ -67,15 +67,16 @@ public class FileStorageService {
     @Transactional
     public DBProfile updateProfile(String text, String uid, boolean hasImage) throws FileStorageException {
     	DBProfile dbProfile;
-    	
+    	Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
     	if(!hasImage) {
     		dbProfile = DBProfile.builder().uid(uid).name("").type("")
     				.data("".getBytes()).text(text).build();
     	}else {
     		dbProfile = DBProfile.builder().uid(uid).text(text).build();
+    		updateProfile.get().setText(text);
+    		return dbProfileRepository.save(updateProfile.get());
     	}
     	
-    	Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
     	if (!updateProfile.isPresent()) {
     		return dbProfileRepository.save(dbProfile);
     	} else {
