@@ -50,12 +50,10 @@
                 :feed="selectedFeed.feed"
                 :hashtag="selectedFeed.hashtag"
                 :flow="false"
-                :like="selectedFeed.like"
-                :likeCount="selectedFeed.likeCount"
-                @likeUnlike="feedLU()"
               />
               <!-- Comment module ?? -->
-              <Comment :fid="selectedFeed.feed.id" />
+              <Comment :fid="selectedFeed.feed.id"
+              :comments="selectedFeed.comment/>
             </v-card-text>
           </v-card>
         </v-hover>
