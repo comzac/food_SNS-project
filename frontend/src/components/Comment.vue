@@ -2,7 +2,7 @@
   <div>
     <!-- 댓글 하나 -->
     <router-link
-      :to="{ name: 'CommentView', params: { fid: fid }}"
+      :to="{ name: 'CommentView', params: { fid: fid } }"
       class="text-decoration-none"
       style="color: #ff6666;"
     >
@@ -12,6 +12,7 @@
     </router-link>
     <v-row v-if="comments.length !== 0" class="ma-0 align-baseline">
       <p>
+        <!-- unick 안넘어오는데? -->
         <strong>{{ comments[0].unick }}</strong>
       </p>
       <v-btn x-small icon disabled></v-btn>
@@ -50,5 +51,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
