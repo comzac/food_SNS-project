@@ -1,12 +1,7 @@
 <template>
   <div>
-    <div class="home" v-for="datum in feed_data" :key="datum.feed.id">
-      <FeedItem
-        :feed="datum.feed"
-        :feedhashtag="datum.feedhashtag"
-        :feedlike="datum.feedlike"
-        style="max-width: 614;"
-      />
+    <div class="home" v-for="(feed, i) in feeds" :key="i">
+      <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
     <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-btn
@@ -28,11 +23,15 @@
 <script>
 // @ is an alias to /src
 import FeedItem from "@/components/FeedItem";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Home",
   components: {
     FeedItem,
+  },
+  computed: {
+    ...mapState("feeds", ["feeds"]),
   },
   data() {
     return {
@@ -62,6 +61,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("feeds", ["fetchFeeds"]),
     infiniteScroll() {
       if (
         window.innerHeight + window.scrollY >=
@@ -87,6 +87,7 @@ export default {
   },
   created() {
     window.addEventListener("scroll", this.infiniteScroll);
+    this.fetchFeeds();
   },
   destroyed() {
     window.removeEventListener("scroll", this.infiniteScroll);
