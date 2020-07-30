@@ -68,7 +68,7 @@ public class FileStorageService {
     public DBProfile updateProfile(String text, String uid, boolean hasImage) throws FileStorageException {
     	DBProfile dbProfile;
     	
-    	if(hasImage) {
+    	if(!hasImage) {
     		dbProfile = DBProfile.builder().uid(uid).name("").type("")
     				.data("".getBytes()).text(text).build();
     	}else {

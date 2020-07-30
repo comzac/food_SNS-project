@@ -43,7 +43,8 @@ public class FeedServiceImpl implements FeedService {
 
 	@Override
 	public List<Feed> feedHomePageList() {
-		return feedRepository.findAll();
+		//return feedRepository.findAll();
+		return feedQueryDsl.findFeedList();
 	}
 	
 	@Override
