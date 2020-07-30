@@ -83,7 +83,7 @@ public class FeedController {
 			feedAll = new FeedAll();
 			
 			// feed 넣기
-			feed = feedList.get(i);
+			feed = feedService.feedDetail(feedList.get(i).getId());
 			feedAll.setFeed(feed);
 			fid = feed.getId();
 			
