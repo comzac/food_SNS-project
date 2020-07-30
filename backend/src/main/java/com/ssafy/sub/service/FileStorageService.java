@@ -56,7 +56,35 @@ public class FileStorageService {
          }
     }
     
+    public boolean hasProfile(String uid) {
+    	DBProfile dbProfile = dbProfileRepository.findByUid(uid).get();
+    	if(dbProfile.getName()!=null)
+    		return true;
+    	else
+    		return false;
+    }
     
+    @Transactional
+    public DBProfile updateProfile(String text, String uid) throws FileStorageException {
+    	DBProfile dbProfile = DBProfile.builder().uid(uid).name("").type("")
+    			.data("".getBytes()).text(text).build();
+    	
+    	Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
+    	if (!updateProfile.isPresent()) {
+    		return dbProfileRepository.save(dbProfile);
+    	} else {
+    		if(updateProfile.get().getName().length()>0) {
+    			dbProfile = DBProfile.builder().uid(uid).name("").type("")
+    	    			.data("".getBytes()).text(text).build();
+    			updateProfile.get().setName(dbProfile.getName());
+    			updateProfile.get().setType(dbProfile.getType());
+    			updateProfile.get().setData(dbProfile.getData());
+    		}
+    		updateProfile.get().setText(dbProfile.getText());
+    		updateProfile.get().setUid(uid);
+    		return updateProfile.get();
+    	}
+    }
     
     public DBFile storeFile(MultipartFile file, int fid) throws FileStorageException {
         // Normalize file name
