@@ -11,7 +11,7 @@
           >
             <v-list-item>
               <router-link
-                :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
+                :to="{ name: 'UserDetail', params: { uid: feed.user.uid } }"
                 class="text-decoration-none"
               >
                 <!-- 추후에 params.uid은 피드의 uid으로 바꿔야함. -->
@@ -20,20 +20,28 @@
                 </v-list-item-avatar>
               </router-link>
               <router-link
-                :to="{ name: 'UserDetail', params: { uid: 'fortest' } }"
+                :to="{ name: 'UserDetail', params: { uid: feed.user.uid } }"
                 class="text-decoration-none"
               >
                 <v-list-item-content>
-                  <v-list-item-title class="text-left red--text text--lighten-2">{{ user.unick }}</v-list-item-title>
-                  <v-list-item-subtitle class="text-left red--text text--lighten-2">{{ user.uid }}</v-list-item-subtitle>
+                  <v-list-item-title
+                    class="text-left red--text text--lighten-2"
+                    >{{ feed.user.unick }}</v-list-item-title
+                  >
+                  <v-list-item-subtitle
+                    class="text-left red--text text--lighten-2"
+                    >{{ feed.user.uid }}</v-list-item-subtitle
+                  >
                 </v-list-item-content>
               </router-link>
               <v-spacer></v-spacer>
             </v-list-item>
-            <v-img
+            <!-- <v-img
               class="white--text text-right"
               height="300px"
-              src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+              :src="
+                `data:${feed.feed.dbFiles[0].type};base64,${feed.feed.dbFiles[0].data}`
+              "
             >
               <v-spacer>
                 <br />
@@ -48,31 +56,38 @@
                 <br />
               </v-spacer>
               <span>Like_</span>
-              <span>2387</span>
-              <v-btn icon color="grey">
+              <span>{{ feed.likeCount }}</span>
+              <v-btn icon color="grey" v-if="!feed.like">
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
-              <v-btn icon color="#ff6666">
+              <v-btn icon color="#ff6666" v-else>
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
-            </v-img>
+            </v-img> -->
             <v-card-text>
               <p class="text-left">
                 <v-row class="space-around mx-0">
-                  <strong>{{ feed.title }}</strong>
+                  <strong>{{ feed.feed.title }}</strong>
                   <v-spacer></v-spacer>
                   <small>{{ ymd2 }}</small>
                 </v-row>
               </p>
               <p
                 :class="overflow"
-                @click="$router.push({ name: 'FeedView', params: { fid: feed.id } })"
-              >{{ feed.content }}</p>
+                @click="
+                  $router.push({
+                    name: 'FeedView',
+                    params: { fid: feed.feed.id },
+                  })
+                "
+              >
+                {{ feed.feed.content }}
+              </p>
               <div class="text-left">
-                <p>#{{ feedhashtag.fid }}</p>
+                <!-- <p>#{{ feedhashtag.fid }}</p> -->
               </div>
               <!-- Comment module ?? -->
-              <Comment :fid="feed.id" />
+              <Comment :fid="feed.feed.id" />
             </v-card-text>
           </v-card>
         </v-hover>
@@ -91,8 +106,6 @@ export default {
   },
   props: {
     feed: Object,
-    feedhashtag: Object,
-    feedlike: Object,
   },
   computed: {
     ymd2() {
@@ -114,22 +127,22 @@ export default {
   data() {
     return {
       overflow: "text-left text-overflow",
-      hashtag: {},
+      // hashtag: {},
       ymd:
         parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(this.feed.regdate).getTime() / 1000),
-      user: {
-        // 받아오는 것만 남긴다
-        id: this.feed.uid,
-        uid: "fish87",
-        upw: "",
-        unick: "Whoever Kim",
-        uemail: "",
-        uregdate: "",
-        ubirth: "",
-        usex: "",
-        roles: "",
-      },
+        parseInt(new Date(this.feed.feed.regdate).getTime() / 1000),
+      // user: {
+      //   // 받아오는 것만 남긴다
+      //   id: this.feed.uid,
+      //   uid: "fish87",
+      //   upw: "",
+      //   unick: "Whoever Kim",
+      //   uemail: "",
+      //   uregdate: "",
+      //   ubirth: "",
+      //   usex: "",
+      //   roles: "",
+      // },
     };
   },
 };

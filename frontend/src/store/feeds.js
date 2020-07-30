@@ -34,7 +34,7 @@ export default {
         )
         .then((res) => {
           console.log(res);
-          commit("SET_FEEDS", res.data);
+          commit("SET_FEEDS", res.data.feedAll);
         })
         .catch((err) => console.log(err));
     },
