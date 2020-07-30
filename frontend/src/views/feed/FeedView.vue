@@ -10,145 +10,7 @@
           >
             <!-- 작성자 -->
             <Writer :user="selectedFeed.user" :item="false" />
-            <v-list-item>
-              <router-link
-                :to="{
-                  name: 'UserDetail',
-                  params: { uid: selectedFeed.user.uid },
-                }"
-                class="text-decoration-none"
-              >
-                <v-list-item-avatar color="#ff6666">
-                  <img src="@/assets/profile_default.png" width="40" />
-                </v-list-item-avatar>
-              </router-link>
-              <router-link
-                :to="{
-                  name: 'UserDetail',
-                  params: { uid: selectedFeed.user.uid },
-                }"
-                class="text-decoration-none"
-              >
-                <v-list-item-content>
-                  <v-list-item-title
-                    class="text-left red--text text--lighten-2"
-                    >{{ selectedFeed.user.unick }}</v-list-item-title
-                  >
-                  <v-list-item-subtitle
-                    class="text-left red--text text--lighten-2"
-                    >{{ selectedFeed.user.uid }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-              </router-link>
-              <v-spacer></v-spacer>
-              <v-menu left bottom>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
-                </template>
-
-                <v-list class="text-center">
-                  <v-list-item @click="moveToUpdateFeed">
-                    <v-list-item-title class="blue--text text-lighten-2"
-                      >게시글 수정</v-list-item-title
-                    >
-                  </v-list-item>
-                  <v-list-item @click="deleteFeedNow">
-                    <v-list-item-title class="red--text text-lighten-2"
-                      >게시글 삭제</v-list-item-title
-                    >
-                  </v-list-item>
-                  <v-list-item @click="() => {}">
-                    <v-list-item-title class="red--text text-lighten-2"
-                      >게시글 신고</v-list-item-title
-                    >
-                  </v-list-item>
-                  <v-list-item @click="() => {}">
-                    <v-list-item-title class="blue--text text-lighten-2"
-                      >취소</v-list-item-title
-                    >
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-list-item>
-            <!-- 이미지 여러개 보이게 하는거 + data 제대로 안들어감 -->
-            <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-            <!-- <div
-              v-for="(file, i) in selectedFeed.feed.dbFiles"
-              :key="i"
-              id="files"
-            >
-              <v-responsive
-                v-if="file.type === 'video/mp4'"
-                v-show="i == i2"
-                aspect-ratio="1"
-                class="align-center"
-              >
-                <video
-                  :id="i"
-                  :src="
-                    `data:${selectedFeed.feed.dbFiles[0].type};base64,${selectedFeed.feed.dbFiles[0].data}`
-                  "
-                  controls
-                  type="video/mp4"
-                  width="100%"
-                  class="my-auto"
-                ></video>
-              </v-responsive>
-              <v-img
-                v-if="file.type !== 'video/mp4'"
-                v-show="i == i2"
-                :id="i"
-                :src="
-                  `data:${selectedFeed.feed.dbFiles[0].type};base64,${selectedFeed.feed.dbFiles[0].data}`
-                "
-                width="100%"
-                aspect-ratio="1"
-              ></v-img>
-            </div> -->
-            <!-- 슬라이더 -->
-            <!-- <v-slider
-              prepend-icon="mdi-chevron-double-left"
-              @click:prepend="i2 > 1 ? (i2 -= 1) : (i2 = 0)"
-              append-icon="mdi-chevron-double-right"
-              @click:append="
-                i2 < selectedFeed.feed.dbFiles.length - 1
-                  ? (i2 += 1)
-                  : (i2 = selectedFeed.feed.dbFiles.length - 1)
-              "
-              v-if="selectedFeed.feed.dbFiles.length > 0"
-              v-model="i2"
-              :max="selectedFeed.feed.dbFiles.length - 1"
-              step="1"
-              thumb-color="#ff6666"
-              thumb-labels="always"
-              thumb-size="40"
-              id="slider"
-            >
-              <template v-slot:thumb-label>{{ i2 + 1 }}</template>
-            </v-slider>
-            <v-spacer>
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-            </v-spacer>
-            <span>Like_</span>
-            <span>{{ selectedFeed.likeCount }}</span>
-            <v-btn icon color="grey" v-if="!selectedFeed.like">
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon color="#ff6666" v-else>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn> -->
-            <v-img
+            <!-- <v-img
               class="white--text"
               height="300px"
               :src="
@@ -176,29 +38,12 @@
               <v-btn icon color="#ff6666" v-else>
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
-            </v-img>
+            </v-img>-->
             <!-- 미디어 -->
-            <Media :dbFiles="selectedFeed.dbFiles" />
+            <Media :dbFiles="selectedFeed.feed.dbFiles" />
             <v-card-text>
               <!-- 본문 -->
-              <Main
-                :feed="selectedFeed.feed"
-                :hashtag="selectedFeed.hashtag"
-                :flow="false"
-              />
-              <p class="text-left">
-                <v-row class="space-around mx-0">
-                  <strong>{{ selectedFeed.feed.title }}</strong>
-                  <v-spacer></v-spacer>
-                  <small>{{ ymd2 }}</small>
-                </v-row>
-              </p>
-              <p class="text-left">{{ selectedFeed.feed.content }}</p>
-              <div class="text-left">
-                <span v-for="tag in selectedFeed.hashtag" :key="tag.id">
-                  # {{ tag.content }}
-                </span>
-              </div>
+              <Main :feed="selectedFeed.feed" :hashtag="selectedFeed.hashtag" :flow="false" />
               <!-- Comment module ?? -->
               <Comment :fid="selectedFeed.feed.id" />
             </v-card-text>
@@ -215,6 +60,7 @@ import { mapActions, mapState } from "vuex";
 
 import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
+import Media from "@/components/feed/item/Media";
 
 export default {
   name: "FeedView",
@@ -222,6 +68,7 @@ export default {
     Comment,
     Writer,
     Main,
+    Media,
   },
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
@@ -243,62 +90,11 @@ export default {
   },
   data() {
     return {
-      feed: "",
-      feedlike: "",
-      user: "",
-      overflow: "text-left text-overflow",
-      hashtag: [],
-
       ymd: "",
     };
   },
   methods: {
-    ...mapActions("feeds", ["getFeedDetail", "deleteFeed"]),
-    // fetchFeed() {
-    //   this.feed = {
-    //     id: 1,
-    //     uid: 1, //?
-    //     title: "엄마가 섬그늘에",
-    //     content:
-    //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
-    //     regdate: "2020-07-26T15:00:00.000+00:00",
-    //     editdate: null,
-    //   };
-    //   this.feedhashtag = {
-    //     fid: 1,
-    //     hid: 1,
-    //   };
-    //   this.feedlike = {
-    //     uid: 1,
-    //     fid: 1,
-    //   };
-    //   this.user = {
-    //     // 받아오는 것만 남긴다
-    //     id: this.feed.uid,
-    //     uid: "catcatcat",
-    //     upw: "",
-    //     unick: "YesYouCan",
-    //     uemail: "",
-    //     uregdate: "",
-    //     ubirth: "",
-    //     usex: "",
-    //     roles: "",
-    //   };
-    //   this.ymd =
-    //     parseInt(new Date().getTime() / 1000) -
-    //     parseInt(new Date(this.selectedFeedfeed.regdate).getTime() / 1000);
-    // },
-
-    moveToUpdateFeed() {
-      this.$router.push({
-        name: "FeedCreateView",
-        params: { fid: this.selectedFeed.feed.id },
-      });
-    },
-
-    deleteFeedNow() {
-      this.deleteFeed(this.$route.params.fid);
-    },
+    ...mapActions("feeds", ["getFeedDetail"]),
   },
   created() {
     this.getFeedDetail(this.$route.params.fid).then((data) => {
