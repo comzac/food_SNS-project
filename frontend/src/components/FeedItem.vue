@@ -36,7 +36,7 @@
               </router-link>
               <v-spacer></v-spacer>
             </v-list-item>
-            <v-img
+            <!-- <v-img
               class="white--text text-right"
               height="300px"
               :src="
@@ -63,7 +63,7 @@
               <v-btn icon color="#ff6666" v-else>
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
-            </v-img>
+            </v-img> -->
             <v-card-text>
               <p class="text-left">
                 <v-row class="space-around mx-0">
