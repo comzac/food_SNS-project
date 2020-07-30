@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Writer",
   props: {
@@ -65,6 +67,7 @@ export default {
     item: Boolean,
   },
   methods: {
+    ...mapActions("feeds", ["deleteFeed"]),
     moveToUpdateFeed() {
       this.$router.push({
         name: "FeedCreateView",

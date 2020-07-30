@@ -39,7 +39,7 @@
       @click:prepend="i2 > 1 ? (i2 -= 1) : (i2 = 0)"
       append-icon="mdi-chevron-double-right"
       @click:append="
-        i2 < dbFiles.length - 1 ? (i2 += 1) : (i2 = dbFiles.length - 1)
+        i2 < dbFiles.length - 1 ? (i2 += 1) : (i2 = dbfiles.length - 1)
       "
       v-if="dbFiles.length > 0"
       v-model="i2"
