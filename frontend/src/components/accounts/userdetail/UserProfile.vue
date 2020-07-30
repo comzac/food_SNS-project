@@ -71,7 +71,7 @@ export default {
       if (this.userDetailData.userFeeds.user.uprofile) {
         return this.userDetailData.userFeeds.user.uprofile.text;
       } else {
-        return false;
+        return "";
       }
     },
     numPosts() {

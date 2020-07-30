@@ -19,20 +19,32 @@ export default {
     config: (state) => ({ headers: { "X-AUTH-TOKEN": state.authToken } }),
     authUserImgData: (state) => {
       if (state.userSimpleData.uprofile) {
-        state.userSimpleData.uprofile.data;
-      } else false;
+        if (state.userSimpleData.uprofile.data) {
+          return state.userSimpleData.uprofile.data;
+        } else return false;
+      } else return false;
     },
     authUserImgType: (state) => {
       if (state.userSimpleData.uprofile) {
-        state.userSimpleData.uprofile.type;
-      } else false;
+        if (state.userSimpleData.uprofile.type) {
+          return state.userSimpleData.uprofile.type;
+        } else return false;
+      } else return false;
     },
     authUserImgName: (state) => {
       if (state.userSimpleData.uprofile) {
-        state.userSimpleData.uprofile.name;
-      } else false;
+        if (state.userSimpleData.uprofile.name) {
+          return state.userSimpleData.uprofile.name;
+        } else return false;
+      } else return false;
     },
-    authUserProfileText: (state) => state.userSimpleData.uprofile.text,
+    authUserProfileText: (state) => {
+      if (state.userSimpleData.uprofile) {
+        if (state.userSimpleData.uprofile.text) {
+          return state.userSimpleData.uprofile.text;
+        } else return "";
+      } else return "";
+    },
     authUserUid: (state) => state.userSimpleData.uid,
     authUserUnick: (state) => state.userSimpleData.unick,
   },
@@ -252,7 +264,10 @@ export default {
         .catch((err) => console.log(err.response));
     },
     getUserSimpleData({ state, commit, getters }) {
-      if (Object.keys(state.userSimpleData).length === 0) {
+      if (
+        Object.keys(state.userSimpleData).length === 0 &&
+        getters.isLoggedIn
+      ) {
         axios
           .get(
             SERVER.BASE_URL +
@@ -261,7 +276,6 @@ export default {
             getters.config
           )
           .then((res) => {
-            console.log("activated");
             commit("SET_USERSIMPLEDATA", res.data.data);
           })
           .catch((err) => console.log(err));
