@@ -70,10 +70,11 @@
                 </v-list>
               </v-menu>
             </v-list-item>
+            <!-- 이미지 여러개 보이게 하는거 + data 제대로 안들어감 -->
             <v-img
               class="white--text"
               height="300px"
-              src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+              :src="selectedFeed.feed.dbFiles[0].data"
             >
               <v-spacer>
                 <br />
@@ -106,7 +107,12 @@
               </p>
               <p class="text-left">{{ selectedFeed.feed.content }}</p>
               <div class="text-left">
-                <p>#{{ feedhashtag.fid }}</p>
+                <span
+                  v-for="feedhashtag in selectedFeed.hashtag"
+                  :key="feedhashtag.id"
+                >
+                  #{{ feedhashtag.content }}
+                </span>
               </div>
               <!-- Comment module ?? -->
               <Comment :fid="selectedFeed.feed.id" />
@@ -148,7 +154,7 @@ export default {
   data() {
     return {
       feed: "",
-      feedhashtag: "",
+      // feedhashtag: "",
       feedlike: "",
       user: "",
       overflow: "text-left text-overflow",
