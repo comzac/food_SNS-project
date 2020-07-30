@@ -4,10 +4,10 @@
     <v-container>
       <v-row>
         <v-col cols="4">
-          <v-avatar size="70" :color="authUserImgData ? 'white' : 'grey'">
-            <v-icon large v-if="!authUserImgData && !imageData" dark>mdi-account</v-icon>
+          <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
+            <v-icon large v-show="!data.hasImage && !imageData" dark>mdi-account</v-icon>
             <v-img
-              v-if="authUserImgData && !imageData"
+              v-if="data.hasImage && !imageData"
               :src="`data:${authUserImgType};base64,${authUserImgData}`"
               :alt="authUserImgName"
             />
@@ -20,7 +20,7 @@
           </v-btn>
         </v-col>
         <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
-          <v-btn fab dark color="#ff6666">
+          <v-btn fab dark color="#ff6666" @click="removeProfileImg">
             <v-icon large dark>mdi-cached</v-icon>
           </v-btn>
         </v-col>
@@ -42,7 +42,7 @@
           ></v-file-input>
         </v-col>
         <v-col cols="2">
-          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="inputPhase = !inputPhase">
+          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="resetSelectImg">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -76,7 +76,13 @@
       @input="nickcheck = false"
     ></v-text-field>
     <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
-    <v-btn color="#ff6666" width="40%" class="white--text mx-3 mt-7" @click="proceed">진행</v-btn>
+    <v-btn
+      color="#ff6666"
+      width="40%"
+      class="white--text mx-3 mt-7"
+      @click="proceed"
+      :disabled="!dataChanged"
+    >진행</v-btn>
   </v-col>
 </template>
 
@@ -95,6 +101,7 @@ export default {
         unick: "",
         text: "",
         img: null,
+        hasImage: false,
       },
       inputPhase: false,
     };
@@ -111,6 +118,18 @@ export default {
       if (this.authUserUnick === this.data.unick || this.nickcheck) {
         return "";
       } else return "오른쪽의 체크를 눌러 중복확인해주세요";
+    },
+    dataChanged() {
+      if (
+        !this.data.img &&
+        this.data.text === this.authUserProfileText &&
+        this.data.unick === this.authUserUnick
+      ) {
+        if (!this.data.hasImage && this.authUserImgData) {
+          return true;
+        }
+        return false;
+      } else return true;
     },
   },
   methods: {
@@ -146,16 +165,36 @@ export default {
     setInitData() {
       (this.data.unick = this.authUserUnick),
         (this.data.text = this.authUserProfileText);
+      if (this.authUserImgData) {
+        this.data.hasImage = true;
+      }
     },
     proceed() {
       if (this.nickcheck) {
-        this.setUserProfileData(this.data);
+        if (this.data.img) {
+          this.data.hasImage = true;
+        }
+        if (!this.dataChanged) {
+          alert("변경사항이 없습니다.");
+          this.$router.go(-1);
+        } else {
+          this.setUserProfileData(this.data);
+        }
       } else alert("닉네임 중복체크를 해주세요.");
     },
-    // removeProfileImg() {
-    //   const remove = confirm('프로필 사진을 삭제하시겠습니까?')
-    //   if (remove)
-    // }
+    resetSelectImg() {
+      this.inputPhase = !this.inputPhase;
+      this.data.img = null;
+      this.imageData = "";
+    },
+    removeProfileImg() {
+      if (this.data.hasImage) {
+        const remove = confirm("프로필 사진을 삭제하시겠습니까?");
+        if (remove) {
+          this.data.hasImage = false;
+        }
+      }
+    },
   },
   created() {
     this.setInitData();

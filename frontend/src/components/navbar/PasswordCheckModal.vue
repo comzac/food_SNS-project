@@ -24,6 +24,7 @@
                 hint="계속하려면 비밀번호를 다시 입력하세요"
                 persistent-hint
                 required
+                autofocus
                 @keypress.enter="passwordCheck"
               ></v-text-field>
             </v-col>
