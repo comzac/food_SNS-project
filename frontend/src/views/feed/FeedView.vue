@@ -40,22 +40,17 @@
               </v-btn>
             </v-img>-->
             <!-- 미디어 -->
-            <Media
-              :dbFiles="selectedFeed.feed.dbFiles"
-              @likeUnlike="feedLU()"
-            />
+            <Media :dbFiles="selectedFeed.feed.dbFiles" @likeUnlike="feedLU()" />
             <v-card-text>
               <!-- 본문 -->
               <Main
+                v-if="selectedFeed"
                 :feed="selectedFeed.feed"
                 :hashtag="selectedFeed.hashtag"
                 :flow="false"
               />
               <!-- Comment module ?? -->
-              <Comment
-                :fid="selectedFeed.feed.id"
-                :comments="selectedFeed.comment"
-              />
+              <Comment :fid="selectedFeed.feed.id" :comments="selectedFeed.comment" />
             </v-card-text>
           </v-card>
         </v-hover>

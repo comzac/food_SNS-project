@@ -57,15 +57,17 @@ export default {
     imgData() {
       if (this.userDetailData.userFeeds.user.uprofile) {
         return this.userDetailData.userFeeds.user.uprofile.data;
-      } else {
-        return false;
-      }
+      } else return false;
     },
     imgType() {
-      return this.userDetailData.userFeeds.user.uprofile.type;
+      if (this.userDetailData.userFeeds.user.uprofile) {
+        return this.userDetailData.userFeeds.user.uprofile.type;
+      } else return false;
     },
     imgName() {
-      return this.userDetailData.userFeeds.user.uprofile.name;
+      if (this.userDetailData.userFeeds.user.uprofile) {
+        return this.userDetailData.userFeeds.user.uprofile.name;
+      } else return false;
     },
     profileText() {
       if (this.userDetailData.userFeeds.user.uprofile) {

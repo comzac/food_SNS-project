@@ -1,6 +1,7 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Comment;
@@ -51,18 +51,21 @@ public class CommentController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 	
-	// 2. 댓글 등록
-	@ApiOperation(value = "댓글 등록", response = Result.class)
-	@PostMapping(value="/")
-//	public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
-	public ResponseEntity<Result> commentInsert(@RequestBody Comment comment) {
-		System.out.println("log - commentInsert");
-		
-		Comment insertedComment = commentService.commentInsert(comment); 
-		
-		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
-		return new ResponseEntity<Result>(result, HttpStatus.OK);
-	}
+	   // 2. 댓글 등록
+	   @ApiOperation(value = "댓글 등록", response = Result.class)
+	   @PostMapping(value="/")
+	//   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
+	   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
+	      System.out.println("log - commentInsert");
+	      
+	      String uid = authentication.getName();
+	      comment.setUid(Integer.parseInt(uid));
+	      comment.setRegdate(new Date());
+	      Comment insertedComment = commentService.commentInsert(comment); 
+	      
+	      Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
+	      return new ResponseEntity<Result>(result, HttpStatus.OK);
+	   }
 	
 	// 3. 댓글 수정
 	@ApiOperation(value = "댓글 수정", response = Result.class)

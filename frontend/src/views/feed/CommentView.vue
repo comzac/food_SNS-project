@@ -5,19 +5,23 @@
         <v-col cols="12">
           <v-card flat class="text-left mx-auto" max-width="614">
             <p>
-              <strong>{{ selectedFeed.feed.title }}</strong>
+              <!-- <strong>{{ selectedFeed.feed.title }}</strong> -->
             </p>
-            <p>{{ selectedFeed.feed.content }}</p>
+            <!-- <p>{{ selectedFeed.feed.content }}</p> -->
           </v-card>
           <v-spacer>
             <br />
           </v-spacer>
           <v-card flat class="mx-auto" max-width="614">
             <v-row class="ma-0">
-              <v-avatar width="56" height="56">
-                <!-- <v-icon>mdi-account</v-icon> -->
-                <img src="@/assets/profile_default.png" />
-              </v-avatar>
+              <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
+                <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
+                <v-img
+                  v-if="authUserImgData"
+                  :src="`data:${authUserImgType};base64,${authUserImgData}`"
+                  :alt="authUserImgName"
+                />
+              </v-list-item-avatar>
               <v-text-field
                 rounded
                 outlined
@@ -36,12 +40,7 @@
                   :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                   class="text-decoration-none"
                 >
-                  <v-list-item-avatar
-                    color="#ff6666"
-                    width="56"
-                    height="56"
-                    class="ma-0 mr-1"
-                  >
+                  <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
                     <img src="@/assets/profile_default.png" />
                   </v-list-item-avatar>
                 </router-link>
@@ -50,19 +49,23 @@
                     :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                     class="text-decoration-none"
                   >
-                    <v-list-item-title class="black--text">{{
+                    <v-list-item-title class="black--text">
+                      {{
                       comment.unick
-                    }}</v-list-item-title>
+                      }}
+                    </v-list-item-title>
                   </router-link>
-                  <v-list-item-subtitle class="black--text">{{
-                    comment.content
-                  }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="gray--text"
-                    >{{ computeYMD(comment.regdate) }}
+                  <v-list-item-subtitle class="black--text">
                     {{
-                      comment.editdate ? "(수정됨)" : ""
-                    }}</v-list-item-subtitle
-                  >
+                    comment.content
+                    }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="gray--text">
+                    {{ computeYMD(comment.regdate) }}
+                    {{
+                    comment.editdate ? "(수정됨)" : ""
+                    }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-spacer></v-spacer>
                 <v-btn icon>
@@ -78,24 +81,16 @@
 
                   <v-list class="text-center">
                     <v-list-item @click="showEdit(comment.id)">
-                      <v-list-item-title class="blue--text text-lighten-2"
-                        >댓글 수정</v-list-item-title
-                      >
+                      <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="red--text text-lighten-2"
-                        >댓글 삭제</v-list-item-title
-                      >
+                      <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="red--text text-lighten-2"
-                        >댓글 신고</v-list-item-title
-                      >
+                      <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="blue--text text-lighten-2"
-                        >취소</v-list-item-title
-                      >
+                      <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -131,7 +126,7 @@
 
 <script>
 import EditComment from "@/components/feed/comment/EditComment";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 export default {
   name: "CommentView",
@@ -148,11 +143,17 @@ export default {
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
     ...mapState("comments", ["comments"]),
+    ...mapGetters("accounts", [
+      "authUserImgData",
+      "authUserImgType",
+      "authUserImgName",
+    ]),
   },
   methods: {
     ...mapActions("feeds", ["getFeedDetail"]),
     ...mapActions("comments", ["fetchComments", "insertComment"]),
     createComment(commentData) {
+      commentData.fid = this.fid;
       this.insertComment(commentData)
         .then(this.fetchComments(this.fid))
         .catch((err) => console.log(err.response));
@@ -161,7 +162,7 @@ export default {
       var ymd =
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(regdate).getTime() / 1000);
-      var ymd2 = function(ymd) {
+      var ymd2 = function (ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
         } else if (ymd < 3600) {

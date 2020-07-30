@@ -10,7 +10,7 @@
         <strong>댓글 {{ comments.length }}개 모두 보기</strong>
       </p>
     </router-link>
-    <v-row class="ma-0 align-baseline">
+    <v-row v-if="comments.length !== 0" class="ma-0 align-baseline">
       <p>
         <strong>{{ comments[0].unick }}</strong>
       </p>
@@ -31,24 +31,11 @@ export default {
   components: {},
   props: {
     fid: Number,
+    comments: Array,
   },
   data() {
     return {
       like: false,
-      comments: [
-        {
-          id: 0,
-          content: "asdfasdfasdf",
-          unick: "Whoever Kim",
-          regdate: "2020-07-26T15:00:00.000+00:00",
-        },
-        {
-          id: 1,
-          content: "Lorem Lorem",
-          unick: "TEST Kim",
-          regdate: "2020-07-26T15:00:00.000+00:00",
-        },
-      ],
     };
   },
   methods: {

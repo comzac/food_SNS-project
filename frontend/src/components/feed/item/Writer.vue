@@ -7,8 +7,9 @@
       }"
       class="text-decoration-none"
     >
-      <v-list-item-avatar color="#ff6666">
-        <img src="@/assets/profile_default.png" width="40" />
+      <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
+        <img v-if="imgData" :src="`data:${imgType};base64,${imgData}`" :alt="imgName" width="40" />
+        <v-icon v-if="!imgData" dark>mdi-account</v-icon>
       </v-list-item-avatar>
     </router-link>
     <router-link
@@ -65,6 +66,23 @@ export default {
   props: {
     user: Object,
     item: Boolean,
+  },
+  computed: {
+    imgData() {
+      if (this.user.uprofile) {
+        return this.user.uprofile.data;
+      } else return false;
+    },
+    imgType() {
+      if (this.user.uprofile) {
+        return this.user.uprofile.type;
+      } else return false;
+    },
+    imgName() {
+      if (this.user.uprofile) {
+        return this.user.uprofile.name;
+      } else return false;
+    },
   },
   methods: {
     ...mapActions("feeds", ["deleteFeed"]),

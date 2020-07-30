@@ -27,5 +27,9 @@ export default {
       URL: "files/",
       upload: "upload/multipleFiles",
     },
+    likes: {
+      feed: "likes/feed/",
+      comment: "likes/comment/",
+    },
   },
 };

@@ -44,6 +44,7 @@ import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.FileStorageService;
+import com.ssafy.sub.service.LikeService;
 import com.ssafy.sub.service.UserService;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -63,6 +64,8 @@ public class FeedController {
 	private CommentService commentService;
 	@Autowired
 	private FileStorageService fileStorageService;
+	@Autowired
+	private LikeService likeService;
 	
 	// 1. list 조회
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
@@ -70,6 +73,7 @@ public class FeedController {
 	public ResponseEntity feedHomePage(Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
 		
+		int uid = Integer.parseInt(authentication.getName());
 		String loginUserId = authentication.getName();
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
@@ -101,11 +105,11 @@ public class FeedController {
 			feedAll.setHashtag(hashtagList);
 			
 			// like
-			boolean like = false;
+			boolean like = likeService.isFeedLiked(fid, uid);
 			feedAll.setLike(like);
 			
 			// likeCount
-			int likeCount = 0;
+			int likeCount = likeService.feedLikeUserList(fid).size();
 			feedAll.setLikeCount(likeCount);
 			
 			// 내 피드인지 여부
@@ -290,12 +294,12 @@ public class FeedController {
 		}
 		feedAll.setMypage(mypage);
 		
-		// 해당 로긴 유저의 좋아요 여부
-		boolean like=false;
+		// like
+		boolean like = likeService.isFeedLiked(id, Integer.parseInt(user_id));
 		feedAll.setLike(like);
 		
-		// 좋아요 수
-		int likeCount = 0;
+		// likeCount
+		int likeCount = likeService.feedLikeUserList(id).size();
 		feedAll.setLikeCount(likeCount);
 		
 		// Comment 정보

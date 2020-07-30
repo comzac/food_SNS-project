@@ -1,9 +1,13 @@
 <template>
   <v-row class="ma-0">
-    <v-avatar width="56" height="56">
-      <!-- <v-icon>mdi-account</v-icon> -->
-      <img src="@/assets/profile_default.png" />
-    </v-avatar>
+    <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
+      <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
+      <v-img
+        v-if="authUserImgData"
+        :src="`data:${authUserImgType};base64,${authUserImgData}`"
+        :alt="authUserImgName"
+      />
+    </v-list-item-avatar>
     <v-text-field
       rounded
       outlined
@@ -19,6 +23,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "EditComment",
   props: {
@@ -29,6 +34,13 @@ export default {
     return {
       editData: this.comment.content,
     };
+  },
+  computed: {
+    ...mapGetters("accounts", [
+      "authUserImgData",
+      "authUserImgType",
+      "authUserImgName",
+    ]),
   },
   methods: {
     editComment(editData) {
