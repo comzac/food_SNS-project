@@ -56,4 +56,13 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 				.fetch();
 	}
 	
+	public List<Feed> findFeedList() {
+		QFeed feed = QFeed.feed;
+		System.out.println("all feed list");
+		return from(feed)
+				.orderBy(feed.editdate.desc())
+				.orderBy(feed.regdate.desc())
+				.fetch();
+	}
+	
 }
