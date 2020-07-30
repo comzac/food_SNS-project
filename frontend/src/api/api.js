@@ -20,13 +20,12 @@ export default {
       page: "page/",
       search: "search",
     },
+    comments: {
+      URL: "comments/",
+    },
     files: {
       URL: "files/",
       upload: "upload/multipleFiles",
-    },
-    likes: {
-      feed: "likes/feed/",
-      comment: "likes/comment/",
     },
   },
 };
