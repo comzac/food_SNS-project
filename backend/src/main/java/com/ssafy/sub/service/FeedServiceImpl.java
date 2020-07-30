@@ -54,7 +54,8 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public List<Feed> feedUserPageList(int uid) {
-		List<Feed> feeds = feedRepository.findByUid(uid);
+		List<Feed> feeds;	// = feedRepository.findByUid(uid);
+		feeds = feedQueryDsl.findFeedListByUid(uid);
 		return feeds;
 	}
 
@@ -98,9 +99,7 @@ public class FeedServiceImpl implements FeedService {
 		updateFeed.get().setTitle(feed.getTitle());
 		updateFeed.get().setContent(feed.getContent());
 		updateFeed.get().setEditdate(now);
-		
-		feed.setRegdate(updateFeed.get().getRegdate());
-		feed.setEditdate(now);
+
 		return updateFeed.get();
 	}
 
