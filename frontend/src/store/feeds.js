@@ -27,6 +27,7 @@ export default {
   actions: {
     fetchFeeds({ commit, rootGetters }) {
       const config = rootGetters["accounts/config"];
+      console.log(config);
       axios
         .get(
           SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
@@ -34,7 +35,7 @@ export default {
         )
         .then((res) => {
           console.log(res);
-          commit("SET_FEEDS", res.data);
+          commit("SET_FEEDS", res.data.feedAll);
         })
         .catch((err) => console.log(err));
     },
@@ -86,12 +87,16 @@ export default {
       console.log(feedData.dbFiles);
       delete feedData.dbFiles;
       console.log(config);
-      form.append("files", mediaData);
+      mediaData.forEach((file) => {
+        form.append("files", file);
+      });
+      // let id;
       console.log(feedData);
       axios
         .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
         .then((res) => {
           console.log(res.data.data);
+          // id = res.data.data;
           form.append("fid", res.data.data);
           return axios.post(
             SERVER.BASE_URL +
@@ -101,50 +106,35 @@ export default {
             config
           );
         })
-        .then((res) => console.log("res:", res))
+        .then((res) => {
+          console.log("res:", res);
+          router.push({ name: "Home" });
+        })
         .catch((err) => console.log(err.response));
-
-      // axios
-      //   .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
-      //   .then((res) => {
-      //     console.log(res.data.data);
-      //     form.append("fid", res.data.data);
-      //     // config.headers["Content-Type"] = "multipart/form-data";
-      //     console.log(config);
-      //     axios
-      //       .post(
-      //         SERVER.BASE_URL +
-      //           SERVER.ROUTES.files.URL +
-      //           SERVER.ROUTES.files.upload,
-      //         form,
-      //         config
-      //       )
-      //       .then((res) => console.log("res:", res))
-      //       .catch((err) => console.log(err.response));
-      //   })
-      //   .catch((err) => console.log(err.response));
     },
 
     getFeedDetail({ rootGetters, commit }, id) {
       const config = rootGetters["accounts/config"];
-      axios
+      return axios
         .get(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
         .then((res) => {
           console.log(res);
-          commit("SET_SELECTEDFEED", res.data);
+          commit("SET_SELECTEDFEED", res.data.feedAll[0]);
+          return res.data.feedAll[0];
         })
         .catch((err) => console.log(err));
     },
 
-    updateFeed({ rootGetters }, formData) {
+    updateFeed({ rootGetters }, feedData) {
       const config = rootGetters["accounts/config"];
-      config.headers["Content-Type"] = "multipart/form-data";
-      config.headers["Accept"] = "application/json";
-      const id = formData.get("id");
-      console.log(id);
+      const id = feedData.id;
+      delete feedData.id;
       axios
-        .put(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, formData, config)
-        .then((res) => console.log(res))
+        .put(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, feedData, config)
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "FeedView", params: { fid: id } });
+        })
         .catch((err) => console.log(err));
     },
 
@@ -152,7 +142,10 @@ export default {
       const config = rootGetters["accounts/config"];
       axios
         .delete(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
-        .then((res) => console.log(res))
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "Home" });
+        })
         .catch((err) => console.log(err));
     },
   },

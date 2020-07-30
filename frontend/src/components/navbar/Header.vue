@@ -56,7 +56,7 @@
             <v-list-item-content>
               <v-list-item-title class="white--text">{{ authUserUnick }}</v-list-item-title>
               <v-list-item-subtitle class="white--text">
-                <small>{{authUserUid}}</small>
+                <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>

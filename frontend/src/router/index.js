@@ -120,7 +120,6 @@ router.beforeEach((to, from, next) => {
   }
 
   const publicPages = [
-    "Home",
     "Signup",
     "Login",
     "NotFound",

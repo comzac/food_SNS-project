@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header />
+    <Header v-if="isLoggedIn" />
     <v-main>
       <transition name="view">
         <router-view />
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import Header from "@/components/navbar/Header";
 import Signup from "@/components/navbar/Signup";
 
@@ -21,9 +21,9 @@ export default {
     Header,
     Signup,
   },
-  data: () => ({
-    //
-  }),
+  computed: {
+    ...mapGetters("accounts", ["isLoggedIn"]),
+  },
   methods: {
     ...mapActions("accounts", ["getUserSimpleData"]),
   },

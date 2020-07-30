@@ -3,7 +3,7 @@
     <div class="home" v-for="datum in feed_data" :key="datum.feed.id">
       <FeedItem
         :feed="datum.feed"
-        :feedhashtag="datum.feedhashtag"
+        :hashtag="datum.hashtag"
         :feedlike="datum.feedlike"
         style="max-width: 614;"
       />
@@ -28,11 +28,15 @@
 <script>
 // @ is an alias to /src
 import FeedItem from "@/components/FeedItem";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Home",
   components: {
     FeedItem,
+  },
+  computed: {
+    ...mapState("feeds", ["feeds"]),
   },
   data() {
     return {
@@ -48,11 +52,12 @@ export default {
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
             regdate: "2020-07-26T15:00:00.000+00:00",
             editdate: null,
+            dbFiles: [],
           },
-          feedhashtag: {
-            fid: 1,
-            hid: 1,
-          },
+          hashtag: [
+            { id: 1, content: "치킨" },
+            { id: 2, content: "치킨무" },
+          ],
           feedlike: {
             uid: 1,
             fid: 1,
@@ -62,6 +67,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("feeds", ["fetchFeeds"]),
     infiniteScroll() {
       if (
         window.innerHeight + window.scrollY >=
@@ -87,6 +93,7 @@ export default {
   },
   created() {
     window.addEventListener("scroll", this.infiniteScroll);
+    this.fetchFeeds();
   },
   destroyed() {
     window.removeEventListener("scroll", this.infiniteScroll);
