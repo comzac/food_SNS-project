@@ -52,8 +52,10 @@
                 :flow="false"
               />
               <!-- Comment module ?? -->
-              <Comment :fid="selectedFeed.feed.id"
-              :comments="selectedFeed.comment/>
+              <Comment
+                :fid="selectedFeed.feed.id"
+                :comments="selectedFeed.comment"
+              />
             </v-card-text>
           </v-card>
         </v-hover>
