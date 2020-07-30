@@ -1,22 +1,36 @@
 <template>
   <div>
     <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-    <div v-for="(preview, i) in previews" :key="i" id="previews">
+    <div v-for="(file, i) in dbFiles" :key="i" id="files">
       <v-responsive
-        v-if="preview.includes('data:video/mp4', 0)"
+        v-if="file.type === 'video/mp4'"
         v-show="i == i2"
         aspect-ratio="1"
         class="align-center"
       >
-        <video :id="i" :src="preview" controls type="video/mp4" class="my-auto"></video>
+        <video
+          :id="i"
+          :src="
+                `data:${file.type};base64,${file.data}`
+              "
+          controls
+          type="video/mp4"
+          class="my-auto"
+        ></video>
       </v-responsive>
       <v-responsive
-        v-if="!preview.includes('data:video/mp4', 0)"
+        v-if="file.type !== 'video/mp4'"
         v-show="i == i2"
         aspect-ratio="1"
         class="align-center"
       >
-        <v-img :id="i" :src="preview" width="100%"></v-img>
+        <v-img
+          :id="i"
+          :src="
+                `data:${file.type};base64,${file.data}`
+              "
+          width="100%"
+        ></v-img>
       </v-responsive>
     </div>
     <!-- 슬라이더 -->
@@ -25,11 +39,11 @@
       @click:prepend="i2 > 1 ? (i2 -= 1) : (i2 = 0)"
       append-icon="mdi-chevron-double-right"
       @click:append="
-        i2 < previews.length - 1 ? (i2 += 1) : (i2 = previews.length - 1)
+        i2 < dbFiles.length - 1 ? (i2 += 1) : (i2 = dbFiles.length - 1)
       "
-      v-if="previews.length > 0"
+      v-if="dbFiles.length > 0"
       v-model="i2"
-      :max="previews.length - 1"
+      :max="dbFiles.length - 1"
       step="1"
       thumb-color="#ff6666"
       thumb-labels="always"
