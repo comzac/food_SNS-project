@@ -48,16 +48,7 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public List<Hashtag> findFeedHashtagList(int fid) {
-		List<FeedHashtag> feedHashtagList = new ArrayList<FeedHashtag>();
-		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
-		feedHashtagList = feedHashtagQueryDsl.findAllByFid(fid);
-		
-		int hid;
-		for(FeedHashtag fht : feedHashtagList) {
-			hid = fht.getFeedHashtagkey().getHid();
-			hashtagList.add(hashtagRepository.findById(hid).get());
-		}
-		
+		List<Hashtag> hashtagList = feedHashtagQueryDsl.findHashtagById(fid);
 		return hashtagList;
 	}
 	
