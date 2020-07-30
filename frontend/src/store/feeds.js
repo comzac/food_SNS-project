@@ -150,5 +150,28 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    feedLikeUnlike({ rootGetters }, likeData) {
+      const config = rootGetters["accounts/config"];
+      console.log("fid", likeData.fid, "like", likeData.like);
+      if (likeData.like) {
+        axios
+          .delete(
+            SERVER.BASE_URL + SERVER.ROUTES.likes.feed + likeData.fid,
+            config
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      } else {
+        axios
+          .post(
+            SERVER.BASE_URL + SERVER.ROUTES.likes.feed + likeData.fid,
+            null,
+            config
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      }
+    },
   },
 };

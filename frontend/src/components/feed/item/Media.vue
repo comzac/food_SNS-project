@@ -1,7 +1,12 @@
 <template>
   <div>
     <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-    <div v-for="(file, i) in dbFiles" :key="i" id="files">
+    <div
+      v-for="(file, i) in dbFiles"
+      :key="i"
+      id="files"
+      @dblclick="$emit('likeUnlike')"
+    >
       <v-responsive
         v-if="file.type === 'video/mp4'"
         v-show="i == i2"
@@ -10,9 +15,7 @@
       >
         <video
           :id="i"
-          :src="
-                `data:${file.type};base64,${file.data}`
-              "
+          :src="`data:${file.type};base64,${file.data}`"
           controls
           type="video/mp4"
           class="my-auto"
@@ -26,9 +29,7 @@
       >
         <v-img
           :id="i"
-          :src="
-                `data:${file.type};base64,${file.data}`
-              "
+          :src="`data:${file.type};base64,${file.data}`"
           width="100%"
         ></v-img>
       </v-responsive>
@@ -79,7 +80,7 @@ export default {
         };
         reader.readAsDataURL(this.dbFiles[i]);
       }
-      setTimeout(function () {
+      setTimeout(function() {
         document.getElementById("slider").click();
       }, 500);
     },

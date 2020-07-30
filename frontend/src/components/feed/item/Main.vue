@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-row class="mx-0">
+      <span>Likes {{ likeCount }}</span>
+      <v-btn color="#ff6666" icon x-small @click="$emit('likeUnlike')">
+        <v-icon v-if="like">mdi-heart</v-icon>
+        <v-icon v-if="!like">mdi-heart-outline</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn color="#ff6666" icon x-small
+        ><v-icon>mdi-share-variant</v-icon></v-btn
+      >
+    </v-row>
     <p class="text-left">
       <v-row class="space-around mx-0">
         <strong>{{ feed.title }}</strong>
@@ -11,7 +22,18 @@
       {{ feed.content }}
     </p>
     <div class="text-left">
-      <span v-for="tag in hashtag" :key="tag.id"> # {{ tag.content }} </span>
+      <span
+        v-for="tag in hashtag"
+        :key="tag.id"
+        @click="
+          $router.push({
+            name: 'SearchedView',
+            params: { keyword: tag.content },
+          })
+        "
+      >
+        # {{ tag.content }}
+      </span>
     </div>
   </div>
 </template>
@@ -23,6 +45,8 @@ export default {
     feed: Object,
     hashtag: Array,
     flow: Boolean,
+    like: Boolean,
+    likeCount: Number,
   },
   data() {
     return {

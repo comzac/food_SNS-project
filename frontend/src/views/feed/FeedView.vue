@@ -40,10 +40,20 @@
               </v-btn>
             </v-img>-->
             <!-- 미디어 -->
-            <Media :dbFiles="selectedFeed.feed.dbFiles" />
+            <Media
+              :dbFiles="selectedFeed.feed.dbFiles"
+              @likeUnlike="feedLU()"
+            />
             <v-card-text>
               <!-- 본문 -->
-              <Main :feed="selectedFeed.feed" :hashtag="selectedFeed.hashtag" :flow="false" />
+              <Main
+                :feed="selectedFeed.feed"
+                :hashtag="selectedFeed.hashtag"
+                :flow="false"
+                :like="selectedFeed.like"
+                :likeCount="selectedFeed.likeCount"
+                @likeUnlike="feedLU()"
+              />
               <!-- Comment module ?? -->
               <Comment :fid="selectedFeed.feed.id" />
             </v-card-text>
@@ -95,6 +105,23 @@ export default {
   },
   methods: {
     ...mapActions("feeds", ["getFeedDetail"]),
+    ...mapActions("feeds", ["feedLikeUnlike"]),
+    feedLU() {
+      console.log("likeunlike");
+      const likeData = {
+        fid: this.$route.params.fid,
+        like: this.selectedFeed.like,
+      };
+      console.log(likeData);
+      this.feedLikeUnlike(likeData).then(() => {
+        if (this.selectedFeed.like) {
+          this.selectedFeed.likeCount -= 1;
+        } else {
+          this.selectedFeed.likeCount += 1;
+        }
+        this.selectedFeed.like = !this.selectedFeed.like;
+      });
+    },
   },
   created() {
     this.getFeedDetail(this.$route.params.fid).then((data) => {
