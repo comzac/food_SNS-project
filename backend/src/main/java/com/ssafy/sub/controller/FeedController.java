@@ -190,25 +190,28 @@ public class FeedController {
    @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
    @PostMapping(value="/page")
 //   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
-   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text,
+   public ResponseEntity userPageUpdate(@RequestParam(value="img", required=false) MultipartFile img, @RequestParam("text") String text,
 		   @RequestParam("unick") String unick, @RequestParam("hasImage") boolean hasImage, Authentication authentication) throws FileStorageException {
       System.out.println("log - userPageUpdate");
       
       String id;
       id = authentication.getName();
       
-//      hasImage:true => 바꿔주기
-//    	hasImage:false =>
-//    		  1. db에 파일이 있으면: 삭제
-//    		  2. db에 파일이 없으면: 냅두기
+//      hasImage: true
+//      1. img가 들어오면 바꿔주기
+//      2. img가 들어오지 않으면 냅두기
+//      hasImage:false
+//      1. db에 파일이 있으면: 삭제
+//      2. db에 파일이 없으면: 냅두기
       
       User user = userService.updateNick(Integer.parseInt(id), unick);
 
       DBProfile dbProfile;
       if(hasImage) {
-    	  dbProfile = fileStorageService.storeProfile(img, text, id);
+    	  if(img!=null) dbProfile = fileStorageService.storeProfile(img, text, id);
+    	  else 			dbProfile = fileStorageService.updateProfile(text, id, hasImage);
       }else {
-    	  dbProfile = fileStorageService.updateProfile(text, id);
+    	  dbProfile = fileStorageService.updateProfile(text, id, hasImage);
       }
       
       UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
