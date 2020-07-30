@@ -1,6 +1,6 @@
 export default {
   BASE_URL: "http://localhost:8080/",
-  // BASE_URL: "http://192.168.0.3:8080/",
+  // BASE_URL: "http://172.30.1.33:8080/",
   ROUTES: {
     accounts: {
       URL: "users/",

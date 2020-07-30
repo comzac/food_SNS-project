@@ -10,37 +10,10 @@
           >
             <!-- 작성자 -->
             <Writer :user="selectedFeed.user" :item="false" />
-            <!-- <v-img
-              class="white--text"
-              height="300px"
-              :src="
-                `data:${selectedFeed.feed.dbFiles[0].type};base64,${selectedFeed.feed.dbFiles[0].data}`
-              "
-              :alt="selectedFeed.feed.dbFiles[0].name"
-            >
-              <v-spacer>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-              </v-spacer>
-              <span>Like_</span>
-              <span>{{ selectedFeed.likeCount }}</span>
-              <v-btn icon color="grey" v-if="!selectedFeed.like">
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon color="#ff6666" v-else>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-            </v-img>-->
-            <!-- 미디어 -->
-            <Media :dbFiles="selectedFeed.feed.dbFiles" @likeUnlike="feedLU()" />
+            <Media
+              :dbFiles="selectedFeed.feed.dbFiles"
+              @likeUnlike="feedLU()"
+            />
             <v-card-text>
               <!-- 본문 -->
               <Main
@@ -48,9 +21,15 @@
                 :feed="selectedFeed.feed"
                 :hashtag="selectedFeed.hashtag"
                 :flow="false"
+                :like="selectedFeed.like"
+                :likeCount="selectedFeed.likeCount"
+                @likeUnlike="feedLU()"
               />
               <!-- Comment module ?? -->
-              <Comment :fid="selectedFeed.feed.id" :comments="selectedFeed.comment" />
+              <Comment
+                :fid="selectedFeed.feed.id"
+                :comments="selectedFeed.comment"
+              />
             </v-card-text>
           </v-card>
         </v-hover>
