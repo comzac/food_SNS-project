@@ -12,10 +12,17 @@
             <!-- 작성자 -->
             <Writer :user="feed.user" :item="true" />
             <!-- 미디어 -->
-            <Media :dbFiles="feed.feed.dbFiles" />
+            <Media :dbFiles="feed.feed.dbFiles" @likeUnlike="feedLU()" />
             <v-card-text>
               <!-- 본문 -->
-              <Main :feed="feed.feed" :hashtag="feed.hashtag" :flow="true" />
+              <Main
+                :feed="feed.feed"
+                :hashtag="feed.hashtag"
+                :flow="true"
+                :like="feed.like"
+                :likeCount="feed.likeCount"
+                @likeUnlike="feedLU()"
+              />
               <!-- 댓글 -->
               <Comment :fid="feed.id" />
             </v-card-text>
@@ -27,6 +34,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 import Comment from "@/components/Comment";
 import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
@@ -44,20 +53,23 @@ export default {
     feed: Object,
   },
   data() {
-    return {
-      user: {
-        // 받아오는 것만 남긴다
-        id: this.feed.uid,
-        uid: "fish87",
-        upw: "",
-        unick: "Whoever Kim",
-        uemail: "",
-        uregdate: "",
-        ubirth: "",
-        usex: "",
-        roles: "",
-      },
-    };
+    return {};
+  },
+  methods: {
+    ...mapActions("feeds", ["feedLikeUnlike"]),
+    feedLU() {
+      console.log("likeunlike");
+      const likeData = { fid: this.feed.feed.id, like: this.feed.like };
+      console.log(likeData);
+      this.feedLikeUnlike(likeData).then(() => {
+        if (this.feed.like) {
+          this.feed.likeCount -= 1;
+        } else {
+          this.feed.likeCount += 1;
+        }
+        this.feed.like = !this.feed.like;
+      });
+    },
   },
 };
 </script>
