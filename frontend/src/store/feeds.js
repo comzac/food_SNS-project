@@ -63,6 +63,8 @@ export default {
       formData.append("unick", data.unick);
       formData.append("text", data.text);
       formData.append("img", data.img);
+      formData.append("hasImage", data.hasImage);
+      console.log(data.hasImage);
       axios
         .post(
           SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
