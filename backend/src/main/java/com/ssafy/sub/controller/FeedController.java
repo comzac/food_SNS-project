@@ -83,7 +83,7 @@ public class FeedController {
 			feedAll = new FeedAll();
 			
 			// feed 넣기
-			feed = feedList.get(i);
+			feed = feedService.feedDetail(feedList.get(i).getId());
 			feedAll.setFeed(feed);
 			fid = feed.getId();
 			
@@ -97,7 +97,7 @@ public class FeedController {
 			feedAll.setComment(commentList);
 			
 			// hashtag
-			List<Hashtag> hashtagList = feedService.feedHashtagList(fid);
+			List<Hashtag> hashtagList = feedService.findFeedHashtagList(fid);
 			feedAll.setHashtag(hashtagList);
 			
 			// like
@@ -187,23 +187,35 @@ public class FeedController {
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 	
-	   @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
-	   @PostMapping(value="/page")
-	//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
-	   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text, @RequestParam("unick") String unick, Authentication authentication) throws FileStorageException {
-	      System.out.println("log - userPageUpdate");
-	      
-	      String id;
-	      id = authentication.getName();
-	      
-	      DBProfile dbProfile = fileStorageService.storeProfile(img, text, id);
-	      User user = userService.updateNick(Integer.parseInt(id), unick);
-	      
-	      UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
-	      Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
-	      
-	      return new ResponseEntity<Result>(result, HttpStatus.OK);
-	   }  
+   @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
+   @PostMapping(value="/page")
+//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
+   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text,
+		   @RequestParam("unick") String unick, @RequestParam("hasImage") boolean hasImage, Authentication authentication) throws FileStorageException {
+      System.out.println("log - userPageUpdate");
+      
+      String id;
+      id = authentication.getName();
+      
+//      hasImage:true => 바꿔주기
+//    	hasImage:false =>
+//    		  1. db에 파일이 있으면: 삭제
+//    		  2. db에 파일이 없으면: 냅두기
+      
+      User user = userService.updateNick(Integer.parseInt(id), unick);
+
+      DBProfile dbProfile;
+      if(hasImage) {
+    	  dbProfile = fileStorageService.storeProfile(img, text, id);
+      }else {
+    	  dbProfile = fileStorageService.updateProfile(text, id);
+      }
+      
+      UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
+      Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
+      
+      return new ResponseEntity<Result>(result, HttpStatus.OK);
+   }  
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
 //	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
@@ -231,7 +243,7 @@ public class FeedController {
 		Feed insertedFeed = feedService.feedInsert(feed);
 		int fid = insertedFeed.getId();
 		
-		// hashtag는 일단 빈칸
+		// hashtag
 		List<Hashtag> hashtagList = feedAll.getHashtag();
 		feedService.feedHashtagListInsert(hashtagList);
 		
@@ -265,7 +277,7 @@ public class FeedController {
 		feedAll.setUser(userSimple);
 		
 		// hashtag 정보
-		List<Hashtag> hashtag = feedService.feedHashtagList(id);
+		List<Hashtag> hashtag = feedService.findFeedHashtagList(id);
 		feedAll.setHashtag(hashtag);
 		
 		// 내 피드인지 정보
@@ -303,16 +315,16 @@ public class FeedController {
 		
 		// user는 token으로
 		Feed feed = feedAll.getFeed();
-		feedService.feedInsert(feed);
+		Feed updateFeed = feedService.feedUpdate(id, feed);
 		
 		// hashtag는 일단 빈칸
 		List<Hashtag> hashtagList = feedAll.getHashtag();
-		feedService.feedHashtagListInsert(hashtagList);
+		feedService.feedHashtagListUpdate(feed.getId(), hashtagList);
 
-		Feed updateFeed = feedService.feedUpdate(id, feed);
 		FeedAll updateFeedAll = new FeedAll();
 		updateFeedAll.setFeed(updateFeed);
 		updateFeedAll.setUser(userService.getSimpleUser(user.getUid()));
+		updateFeedAll.setHashtag(hashtagList);
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_FEED, updateFeedAll);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
@@ -330,5 +342,4 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	
 }

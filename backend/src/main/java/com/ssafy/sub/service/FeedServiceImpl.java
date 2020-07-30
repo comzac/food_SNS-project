@@ -24,6 +24,7 @@ import com.ssafy.sub.repo.FeedHashtagRepository;
 import com.ssafy.sub.repo.FeedQueryDsl;
 import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.repo.HashtagRepository;
+
 @Service
 public class FeedServiceImpl implements FeedService {
 
@@ -47,22 +48,14 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public List<Hashtag> findFeedHashtagList(int fid) {
-		List<FeedHashtag> feedHashtagList = new ArrayList<FeedHashtag>();
-		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
-		feedHashtagList = feedHashtagQueryDsl.findAllByFid(fid);
-		
-		int hid;
-		for(FeedHashtag fht : feedHashtagList) {
-			hid = fht.getFeedHashtagkey().getHid();
-			hashtagList.add(hashtagRepository.findById(hid).get());
-		}
-		
+		List<Hashtag> hashtagList = feedHashtagQueryDsl.findHashtagById(fid);
 		return hashtagList;
 	}
 	
 	@Override
 	public List<Feed> feedUserPageList(int uid) {
-		List<Feed> feeds = feedRepository.findByUid(uid);
+		List<Feed> feeds;	// = feedRepository.findByUid(uid);
+		feeds = feedQueryDsl.findFeedListByUid(uid);
 		return feeds;
 	}
 
@@ -106,9 +99,7 @@ public class FeedServiceImpl implements FeedService {
 		updateFeed.get().setTitle(feed.getTitle());
 		updateFeed.get().setContent(feed.getContent());
 		updateFeed.get().setEditdate(now);
-		
-		feed.setRegdate(updateFeed.get().getRegdate());
-		feed.setEditdate(now);
+
 		return updateFeed.get();
 	}
 
@@ -208,5 +199,34 @@ public class FeedServiceImpl implements FeedService {
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public List<Hashtag> feedHashtagListUpdate(int fid, List<Hashtag> hashtagList) {
+		String content;
+		int hid;
+		FeedHashtag feedHashtag = new FeedHashtag();
+		Hashtag hashtag;
+		System.out.println(hashtagList.toString());
+		
+		feedHashtagQueryDsl.feedHashtagDeleteByFid(fid);
+		for(Hashtag h: hashtagList) {
+			content = h.getContent();
+			System.out.println();
+			
+			if(hashtagRepository.findByContent(content)!=null) {
+				hid = hashtagRepository.findByContent(content).getId();
+			}else {
+				Hashtag ht = new Hashtag();
+				ht.setContent(content);
+				hashtag = hashtagRepository.save(ht);
+				hid = hashtag.getId();
+			}
+			
+			feedHashtag.setFeedHashtagkey(new FeedHashtagKey(fid, hid));
+			feedHashtagRepository.save(feedHashtag);
+		}
+		
+		return hashtagList;
 	}
 }

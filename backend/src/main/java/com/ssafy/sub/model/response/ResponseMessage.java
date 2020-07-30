@@ -28,6 +28,10 @@ public class ResponseMessage {
     public static final String FAIL_UPDATE_FEED = "피드 업데이트 실패";
     public static final String DELETE_FEED = "피드 삭제 성공";
     public static final String FAIL_DELETE_FEED = "피드 업데이트 실패";
+    public static final String LIKE_FEED = "피드 좋아요";
+    public static final String UNLIKE_FEED = "피드 좋아요 해제";
+    public static final String FAIL_LIKE_FEED = "피드 좋아요 실패";
+    public static final String FAIL_UNLIKE_FEED = "피드 좋아요 해제 실패";
     
     public static final String NOT_FOUND_HASHTAG = "해시태그 조회 실패";
     public static final String CREATE_HASHTAG = "해시태그 생성 성공";
@@ -56,7 +60,7 @@ public class ResponseMessage {
     public static final String FAIL_DELETE_COMMENT = "댓글 삭제 실패";
     public static final String LIKE_COMMENT = "댓글 좋아요";
     public static final String UNLIKE_COMMENT = "댓글 좋아요 해제";
-    public static final String FAIL_COMMENT = "댓글 좋아요 실패";
+    public static final String FAIL_LIKE_COMMENT = "댓글 좋아요 실패";
     public static final String FAIL_UNLIKE_COMMENT = "댓글 좋아요 해제 실패";
 
     public static final String AUTHORIZED = "인증 성공";
