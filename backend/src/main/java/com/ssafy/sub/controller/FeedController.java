@@ -97,7 +97,7 @@ public class FeedController {
 			feedAll.setComment(commentList);
 			
 			// hashtag
-			List<Hashtag> hashtagList = feedService.feedHashtagList(fid);
+			List<Hashtag> hashtagList = feedService.findFeedHashtagList(fid);
 			feedAll.setHashtag(hashtagList);
 			
 			// like
@@ -231,7 +231,7 @@ public class FeedController {
 		Feed insertedFeed = feedService.feedInsert(feed);
 		int fid = insertedFeed.getId();
 		
-		// hashtag는 일단 빈칸
+		// hashtag
 		List<Hashtag> hashtagList = feedAll.getHashtag();
 		feedService.feedHashtagListInsert(hashtagList);
 		
@@ -265,7 +265,7 @@ public class FeedController {
 		feedAll.setUser(userSimple);
 		
 		// hashtag 정보
-		List<Hashtag> hashtag = feedService.feedHashtagList(id);
+		List<Hashtag> hashtag = feedService.findFeedHashtagList(id);
 		feedAll.setHashtag(hashtag);
 		
 		// 내 피드인지 정보
