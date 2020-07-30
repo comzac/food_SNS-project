@@ -1,9 +1,7 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ssafy.sub.dto.Comment;
-import com.ssafy.sub.dto.DBFile;
 import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedAll;
@@ -37,14 +33,13 @@ import com.ssafy.sub.model.response.FeedAllResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
-import com.ssafy.sub.model.response.UploadFileResponse;
 import com.ssafy.sub.model.response.UserFeedResult;
 import com.ssafy.sub.model.response.UserPageResult;
-import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.FileStorageService;
 import com.ssafy.sub.service.LikeService;
+import com.ssafy.sub.service.RelationService;
 import com.ssafy.sub.service.UserService;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -66,6 +61,8 @@ public class FeedController {
 	private FileStorageService fileStorageService;
 	@Autowired
 	private LikeService likeService;
+	@Autowired
+	private RelationService relationService;
 	
 	// 1. list 조회
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
@@ -173,12 +170,13 @@ public class FeedController {
 		User user = userService.findByUid(uid);
 		List<Feed> feedList = feedService.feedUserPageList(user.getId());
 		int feedCount = feedService.getFeedCount(user.getId());
-		
+		int followerCount = relationService.relationFollowerList(user.getId()).size();
+		int followingCount = relationService.relationFollowingList(user.getId()).size();
 		
 		userPage.setUser(userSimple);
 		userPage.setFeed(feedList);
-//		userPage.setFollowerCount(followerCount);
-//		userPage.setFollowingCount(followingCount);
+		userPage.setFollowerCount(followerCount);
+		userPage.setFollowingCount(followingCount);
 		userPage.setFeedCount(feedCount);
 		
 		// 로그인한 유저인지 확인

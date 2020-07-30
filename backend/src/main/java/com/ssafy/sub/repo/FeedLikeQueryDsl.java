@@ -58,7 +58,7 @@ public class FeedLikeQueryDsl extends QuerydslRepositorySupport {
 	public List<Feed> findAllByFeedLike(int uid){	// 해당 유저가 좋아요한 피드
 		QFeed feed = QFeed.feed;
 		QFeedLike feedLike = QFeedLike.feedLike;
-		System.out.println("find feed who liked "+uid);
+//		System.out.println("find feed who liked "+uid);
 		return from(feed)
 				.leftJoin(feedLike)
 				.on(feed.id.eq(feedLike.feedLikekey.fid))
@@ -70,7 +70,7 @@ public class FeedLikeQueryDsl extends QuerydslRepositorySupport {
 	public List<User> findAllByUserLike(int fid) {
 		QUser user = QUser.user;
 		QFeedLike feedLike = QFeedLike.feedLike;
-		System.out.println("find users who like "+fid);
+//		System.out.println("find users who like "+fid);
 		return from(user)
 				.leftJoin(feedLike)
 				.on(user.id.eq(feedLike.feedLikekey.uid))
