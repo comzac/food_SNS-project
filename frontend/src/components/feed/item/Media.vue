@@ -85,10 +85,6 @@ export default {
       }, 500);
     },
   },
-  created() {
-    console.log("updated");
-    // this.getMedia(this.dbFiles);
-  },
 };
 </script>
 
