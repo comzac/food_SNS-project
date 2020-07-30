@@ -1,7 +1,12 @@
 <template>
   <div>
-    <div class="home" v-for="(feed, i) in feeds" :key="i">
-      <FeedItem :feed="feed" style="max-width: 614;" />
+    <div class="home" v-for="datum in feed_data" :key="datum.feed.id">
+      <FeedItem
+        :feed="datum.feed"
+        :hashtag="datum.hashtag"
+        :feedlike="datum.feedlike"
+        style="max-width: 614;"
+      />
     </div>
     <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-btn
@@ -47,11 +52,12 @@ export default {
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
             regdate: "2020-07-26T15:00:00.000+00:00",
             editdate: null,
+            dbFiles: [],
           },
-          feedhashtag: {
-            fid: 1,
-            hid: 1,
-          },
+          hashtag: [
+            { id: 1, content: "치킨" },
+            { id: 2, content: "치킨무" },
+          ],
           feedlike: {
             uid: 1,
             fid: 1,
