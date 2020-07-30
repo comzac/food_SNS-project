@@ -242,17 +242,6 @@ export default {
       // }
     },
     insertFeedByFormData() {
-      // const form = new FormData();
-
-      // form.append("feed", this.feed);
-      // this.feedhashtag.forEach((tag) => {
-      //   if (tag !== "") {
-      //     form.append("hashtag", tag);
-      //   }
-      // });
-      // this.fileData.forEach((file) => {
-      //   form.append("file", file);
-      // });
       this.feedData.feed = this.feed;
       let hashtagData = [];
       this.feedhashtag.forEach((hashtag) => {
@@ -266,19 +255,28 @@ export default {
     },
 
     updateFeedByFormData() {
-      const form = new FormData();
+      // const form = new FormData();
 
-      form.append("feed", this.feed);
-      this.feedhashtag.forEach((tag) => {
-        if (tag !== "") {
-          form.append("hashtag", tag);
-        }
+      // form.append("feed", this.feed);
+      // this.feedhashtag.forEach((tag) => {
+      //   if (tag !== "") {
+      //     form.append("hashtag", tag);
+      //   }
+      // });
+      // this.fileData.forEach((file) => {
+      //   form.append("file", file);
+      // });
+      // form.append("id", this.$route.params.fid);
+      this.feedData.feed = this.feed;
+      let hashtagData = [];
+      this.feedhashtag.forEach((hashtag) => {
+        hashtagData.push({
+          content: hashtag,
+        });
       });
-      this.fileData.forEach((file) => {
-        form.append("file", file);
-      });
-      form.append("id", this.$route.params.fid);
-      this.updateFeed(form);
+      this.feedData.hashtag = hashtagData;
+      this.feedData.id = this.$route.params.fid;
+      this.updateFeed(this.feedData);
     },
 
     createHashtag(hashtag) {
@@ -301,7 +299,12 @@ export default {
       this.feed.title = this.selectedFeed.feed.title;
       this.feed.content = this.selectedFeed.feed.content;
       // this.fileData = this.selectedFeed.dbFiles;
-      this.feedhashtag = this.selectedFeed.hashtag;
+      // this.feedhashtag = this.selectedFeed.hashtag;
+      this.selectedFeed.hashtag.forEach((tag) => {
+        console.log("aa");
+        console.log(tag);
+        this.feedhashtag.push(tag.content);
+      });
     },
   },
 
