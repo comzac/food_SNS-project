@@ -12,6 +12,7 @@
             v-model="feed.title"
             color="#ff6666"
             :error-messages="feed.title?'':'제목을 입력해주세요'"
+            autofocus
             autocapitalize="off"
             autocorrect="off"
           ></v-text-field>
@@ -47,6 +48,7 @@
             thumb-color="#ff6666"
             thumb-labels="always"
             thumb-size="40"
+            id="slider"
           >
             <template v-slot:thumb-label>{{ i2 + 1 }}</template>
           </v-slider>
@@ -106,7 +108,7 @@
               v-model="feed.title"
               color="#ff6666"
               small
-              @click="tag.splice(feedhashtag.indexOf(tag), 1)"
+              @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
             ># {{ tag }}</v-btn>
           </div>
           <v-spacer>
@@ -170,6 +172,7 @@ export default {
     previewImage(file) {
       this.previews = [];
       this.fileData = [];
+      this.i2 = 0;
       console.log(file);
       if (file.length > 3) {
         console.log(file.length);
@@ -195,6 +198,9 @@ export default {
       }
       console.log(this.previews);
       console.log(this.fileData);
+      setTimeout(function () {
+        document.getElementById("slider").click();
+      }, 500);
       // if (file.size > 20 * 1024 * 1024) {
       //   alert("파일 사이즈가 20mb 보다 큽니다.");
       //   return false;
@@ -247,7 +253,8 @@ export default {
       hashtag = hashtag
         .replace(/#/gi, "")
         .replace(/ /gi, "")
-        .replace(/,/gi, "");
+        .replace(/,/gi, "")
+        .toUpperCase();
       console.log(hashtag);
       if (this.feedhashtag.includes(hashtag) || hashtag == "") {
         this.hashtag = "";
