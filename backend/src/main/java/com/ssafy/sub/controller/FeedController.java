@@ -187,23 +187,35 @@ public class FeedController {
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 	
-	   @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
-	   @PostMapping(value="/page")
-	//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
-	   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text, @RequestParam("unick") String unick, Authentication authentication) throws FileStorageException {
-	      System.out.println("log - userPageUpdate");
-	      
-	      String id;
-	      id = authentication.getName();
-	      
-	      DBProfile dbProfile = fileStorageService.storeProfile(img, text, id);
-	      User user = userService.updateNick(Integer.parseInt(id), unick);
-	      
-	      UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
-	      Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
-	      
-	      return new ResponseEntity<Result>(result, HttpStatus.OK);
-	   }  
+   @ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
+   @PostMapping(value="/page")
+//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
+   public ResponseEntity userPageUpdate(@RequestParam("img") MultipartFile img, @RequestParam("text") String text,
+		   @RequestParam("unick") String unick, @RequestParam("hasImage") boolean hasImage, Authentication authentication) throws FileStorageException {
+      System.out.println("log - userPageUpdate");
+      
+      String id;
+      id = authentication.getName();
+      
+//      hasImage:true => 바꿔주기
+//    	hasImage:false =>
+//    		  1. db에 파일이 있으면: 삭제
+//    		  2. db에 파일이 없으면: 냅두기
+      
+      User user = userService.updateNick(Integer.parseInt(id), unick);
+
+      DBProfile dbProfile;
+      if(hasImage) {
+    	  dbProfile = fileStorageService.storeProfile(img, text, id);
+      }else {
+    	  dbProfile = fileStorageService.updateProfile(text, id);
+      }
+      
+      UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
+      Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
+      
+      return new ResponseEntity<Result>(result, HttpStatus.OK);
+   }  
 
 	// 2. list 검색 ( 기준이 애매해서 일단 비워둠 )
 //	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
