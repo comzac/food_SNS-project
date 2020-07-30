@@ -177,6 +177,8 @@
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
             </v-img>
+            <!-- 미디어 -->
+            <Media :dbFiles="selectedFeed.dbFiles" />
             <v-card-text>
               <!-- 본문 -->
               <Main

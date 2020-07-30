@@ -41,7 +41,7 @@
             </v-img>
 
             <!-- 미디어 -->
-
+            <Media :dbFiles="feed.dbFiles" />
             <v-card-text>
               <!-- 본문 -->
               <Main :feed="feed" :hashtag="hashtag" :flow="true" />

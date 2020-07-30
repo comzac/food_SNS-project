@@ -48,6 +48,7 @@ export default {
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
             regdate: "2020-07-26T15:00:00.000+00:00",
             editdate: null,
+            dbFiles: [],
           },
           hashtag: [
             { id: 1, content: "치킨" },
