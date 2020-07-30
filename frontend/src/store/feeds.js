@@ -63,6 +63,8 @@ export default {
       formData.append("unick", data.unick);
       formData.append("text", data.text);
       formData.append("img", data.img);
+      formData.append("hasImage", data.hasImage);
+      console.log(data.hasImage);
       axios
         .post(
           SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
@@ -147,6 +149,29 @@ export default {
           router.push({ name: "Home" });
         })
         .catch((err) => console.log(err));
+    },
+
+    feedLikeUnlike({ rootGetters }, likeData) {
+      const config = rootGetters["accounts/config"];
+      console.log("fid", likeData.fid, "like", likeData.like);
+      if (likeData.like) {
+        axios
+          .delete(
+            SERVER.BASE_URL + SERVER.ROUTES.likes.feed + likeData.fid,
+            config
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      } else {
+        axios
+          .post(
+            SERVER.BASE_URL + SERVER.ROUTES.likes.feed + likeData.fid,
+            null,
+            config
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      }
     },
   },
 };

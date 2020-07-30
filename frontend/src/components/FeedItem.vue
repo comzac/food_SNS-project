@@ -10,45 +10,21 @@
             outlined
           >
             <!-- 작성자 -->
-            <Writer :user="user" :item="true" />
-
-            <!-- 지울 것 ?? -->
-            <v-img
-              class="white--text text-right"
-              height="300px"
-              :src="
-                `data:${feed.feed.dbFiles[0].type};base64,${feed.feed.dbFiles[0].data}`
-              "
-            >
-              <v-spacer>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-              </v-spacer>
-              <span>Like_</span>
-              <span>{{ feed.likeCount }}</span>
-              <v-btn icon color="grey" v-if="!feed.like">
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon color="#ff6666" v-else>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-            </v-img>
-
+            <Writer :user="feed.user" :item="true" />
             <!-- 미디어 -->
-            <Media :dbFiles="feed.dbFiles" />
+            <Media :dbFiles="feed.feed.dbFiles" @likeUnlike="feedLU()" />
             <v-card-text>
               <!-- 본문 -->
-              <Main :feed="feed" :hashtag="hashtag" :flow="true" />
+              <Main
+                :feed="feed.feed"
+                :hashtag="feed.hashtag"
+                :flow="true"
+                :like="feed.like"
+                :likeCount="feed.likeCount"
+                @likeUnlike="feedLU()"
+              />
               <!-- 댓글 -->
-              <Comment :fid="feed.id" />
+              <Comment :fid="feed.id" :comments="feed.comment" />
             </v-card-text>
           </v-card>
         </v-hover>
@@ -58,9 +34,12 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 import Comment from "@/components/Comment";
 import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
+import Media from "@/components/feed/item/Media";
 
 export default {
   name: "FeedItem",
@@ -68,27 +47,29 @@ export default {
     Comment,
     Writer,
     Main,
+    Media,
   },
   props: {
     feed: Object,
-    hashtag: Array,
-    feedlike: Object,
   },
   data() {
-    return {
-      user: {
-        // 받아오는 것만 남긴다
-        id: this.feed.uid,
-        uid: "fish87",
-        upw: "",
-        unick: "Whoever Kim",
-        uemail: "",
-        uregdate: "",
-        ubirth: "",
-        usex: "",
-        roles: "",
-      },
-    };
+    return {};
+  },
+  methods: {
+    ...mapActions("feeds", ["feedLikeUnlike"]),
+    feedLU() {
+      console.log("likeunlike");
+      const likeData = { fid: this.feed.feed.id, like: this.feed.like };
+      console.log(likeData);
+      this.feedLikeUnlike(likeData).then(() => {
+        if (this.feed.like) {
+          this.feed.likeCount -= 1;
+        } else {
+          this.feed.likeCount += 1;
+        }
+        this.feed.like = !this.feed.like;
+      });
+    },
   },
 };
 </script>

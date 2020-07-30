@@ -19,12 +19,16 @@
       class="text-decoration-none"
     >
       <v-list-item-content>
-        <v-list-item-title class="text-left red--text text--lighten-2">{{
+        <v-list-item-title class="text-left red--text text--lighten-2">
+          {{
           user.unick
-        }}</v-list-item-title>
-        <v-list-item-subtitle class="text-left red--text text--lighten-2">{{
+          }}
+        </v-list-item-title>
+        <v-list-item-subtitle class="text-left red--text text--lighten-2">
+          {{
           user.uid
-        }}</v-list-item-subtitle>
+          }}
+        </v-list-item-subtitle>
       </v-list-item-content>
     </router-link>
     <v-spacer></v-spacer>
@@ -37,24 +41,16 @@
 
       <v-list class="text-center">
         <v-list-item @click="moveToUpdateFeed">
-          <v-list-item-title class="blue--text text-lighten-2"
-            >게시글 수정</v-list-item-title
-          >
+          <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
         </v-list-item>
         <v-list-item @click="deleteFeedNow">
-          <v-list-item-title class="red--text text-lighten-2"
-            >게시글 삭제</v-list-item-title
-          >
+          <v-list-item-title class="red--text text-lighten-2">게시글 삭제</v-list-item-title>
         </v-list-item>
         <v-list-item @click="() => {}">
-          <v-list-item-title class="red--text text-lighten-2"
-            >게시글 신고</v-list-item-title
-          >
+          <v-list-item-title class="red--text text-lighten-2">게시글 신고</v-list-item-title>
         </v-list-item>
         <v-list-item @click="() => {}">
-          <v-list-item-title class="blue--text text-lighten-2"
-            >취소</v-list-item-title
-          >
+          <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -62,11 +58,26 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Writer",
   props: {
     user: Object,
     item: Boolean,
+  },
+  methods: {
+    ...mapActions("feeds", ["deleteFeed"]),
+    moveToUpdateFeed() {
+      this.$router.push({
+        name: "FeedCreateView",
+        params: { fid: this.$route.params.fid },
+      });
+    },
+
+    deleteFeedNow() {
+      this.deleteFeed(this.$route.params.fid);
+    },
   },
 };
 </script>

@@ -32,5 +32,8 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
+.theme--light.v-sheet--outlined {
+  border: none;
+}
 </style>

@@ -20,6 +20,9 @@ export default {
       page: "page/",
       search: "search",
     },
+    comments: {
+      URL: "comments/",
+    },
     files: {
       URL: "files/",
       upload: "upload/multipleFiles",

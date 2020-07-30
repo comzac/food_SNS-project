@@ -1,12 +1,7 @@
 <template>
   <div>
-    <div class="home" v-for="datum in feed_data" :key="datum.feed.id">
-      <FeedItem
-        :feed="datum.feed"
-        :hashtag="datum.hashtag"
-        :feedlike="datum.feedlike"
-        style="max-width: 614;"
-      />
+    <div class="home" v-for="(feed, i) in feeds.reverse()" :key="i">
+      <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
     <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-btn
