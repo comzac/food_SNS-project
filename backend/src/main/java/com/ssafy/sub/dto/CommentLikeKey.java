@@ -15,10 +15,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class FeedLikeKey implements Serializable {
+public class CommentLikeKey implements Serializable {
 	
-	@Column(name = "fid")
-	private int fid;
+	@Column(name = "cid")
+	private int cid;
 	
 	@Column(name = "uid")
 	private int uid;

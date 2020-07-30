@@ -17,9 +17,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @ToString
-public class FeedLike {
-	
+public class CommentLike {
 	@EmbeddedId
-    protected FeedLikeKey feedLikekey;
-	
+    protected CommentLikeKey commentLikeKey;
 }
