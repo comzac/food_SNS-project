@@ -24,6 +24,7 @@ import com.ssafy.sub.repo.FeedHashtagRepository;
 import com.ssafy.sub.repo.FeedQueryDsl;
 import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.repo.HashtagRepository;
+
 @Service
 public class FeedServiceImpl implements FeedService {
 
@@ -208,5 +209,34 @@ public class FeedServiceImpl implements FeedService {
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public List<Hashtag> feedHashtagListUpdate(int fid, List<Hashtag> hashtagList) {
+		String content;
+		int hid;
+		FeedHashtag feedHashtag = new FeedHashtag();
+		Hashtag hashtag;
+		System.out.println(hashtagList.toString());
+		
+		feedHashtagQueryDsl.feedHashtagDeleteByFid(fid);
+		for(Hashtag h: hashtagList) {
+			content = h.getContent();
+			System.out.println();
+			
+			if(hashtagRepository.findByContent(content)!=null) {
+				hid = hashtagRepository.findByContent(content).getId();
+			}else {
+				Hashtag ht = new Hashtag();
+				ht.setContent(content);
+				hashtag = hashtagRepository.save(ht);
+				hid = hashtag.getId();
+			}
+			
+			feedHashtag.setFeedHashtagkey(new FeedHashtagKey(fid, hid));
+			feedHashtagRepository.save(feedHashtag);
+		}
+		
+		return hashtagList;
 	}
 }

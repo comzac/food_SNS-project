@@ -50,5 +50,11 @@ public class FeedHashtagQueryDsl extends QuerydslRepositorySupport{
 				.fetch();
 	}
 	
-	
+	@Transactional
+	public long feedHashtagDeleteByFid(int fid) {
+		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
+		return delete(feedHashtag)
+				.where(feedHashtag.feedHashtagkey.fid.eq(fid))
+				.execute();
+	}
 }

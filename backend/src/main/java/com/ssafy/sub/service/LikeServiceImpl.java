@@ -3,6 +3,7 @@ package com.ssafy.sub.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ssafy.sub.dto.Comment;
 import com.ssafy.sub.dto.CommentLike;
@@ -10,11 +11,13 @@ import com.ssafy.sub.dto.CommentLikeKey;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedLike;
 import com.ssafy.sub.dto.FeedLikeKey;
+import com.ssafy.sub.dto.User;
 import com.ssafy.sub.repo.CommentLikeQueryDsl;
 import com.ssafy.sub.repo.CommentLikeRepository;
 import com.ssafy.sub.repo.FeedLikeQueryDsl;
 import com.ssafy.sub.repo.FeedLikeRepository;
 
+@Service
 public class LikeServiceImpl implements LikeService {
 
 	@Autowired
@@ -28,12 +31,12 @@ public class LikeServiceImpl implements LikeService {
 	
 	@Override
 	public List<Feed> feedLikeFeedList(int uid) {
-		return null;
+		return feedLikeQueryDsl.findAllByFeedLike(uid);
 	}
 
 	@Override
-	public List<Feed> feedLikeUserList(int fid) {
-		return null;
+	public List<User> feedLikeUserList(int fid) {
+		return feedLikeQueryDsl.findAllByUserLike(fid);
 	}
 
 	@Override
@@ -52,10 +55,17 @@ public class LikeServiceImpl implements LikeService {
 	public int feedLikeDelete(int fid, int uid) {
 		return (int) feedLikeQueryDsl.feedLikeDelete(fid, uid);
 	}
+	
 
 	@Override
-	public List<Comment> commentLikeUserList(int cid) {
-		return null;
+	public List<Comment> commentLikeCommentList(int uid) {
+		return commentLikeQueryDsl.findAllByCommentLike(uid);
+	}
+
+
+	@Override
+	public List<User> commentLikeUserList(int cid) {
+		return commentLikeQueryDsl.findAllByUserLike(cid);
 	}
 
 	@Override

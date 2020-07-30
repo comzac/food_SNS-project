@@ -303,16 +303,16 @@ public class FeedController {
 		
 		// user는 token으로
 		Feed feed = feedAll.getFeed();
-		feedService.feedInsert(feed);
+		Feed updateFeed = feedService.feedUpdate(id, feed);
 		
 		// hashtag는 일단 빈칸
 		List<Hashtag> hashtagList = feedAll.getHashtag();
-		feedService.feedHashtagListInsert(hashtagList);
+		feedService.feedHashtagListUpdate(feed.getId(), hashtagList);
 
-		Feed updateFeed = feedService.feedUpdate(id, feed);
 		FeedAll updateFeedAll = new FeedAll();
 		updateFeedAll.setFeed(updateFeed);
 		updateFeedAll.setUser(userService.getSimpleUser(user.getUid()));
+		updateFeedAll.setHashtag(hashtagList);
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_FEED, updateFeedAll);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
@@ -330,5 +330,4 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	
 }

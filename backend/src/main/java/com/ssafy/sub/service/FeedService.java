@@ -42,6 +42,8 @@ public interface FeedService {
 	
 	public int feedHashtagListInsert(List<Hashtag> hashtagList);
 	
+	public List<Hashtag> feedHashtagListUpdate(int fid, List<Hashtag> hashtagList);
+	
 	public List<Hashtag> findFeedHashtagList(int fid);
 
 }
