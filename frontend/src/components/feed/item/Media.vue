@@ -1,9 +1,7 @@
 <template> </template>
 
 <script>
-export default {
-  name: "Media",
-};
+export default {};
 </script>
 
 <style></style>
