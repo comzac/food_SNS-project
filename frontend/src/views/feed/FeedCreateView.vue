@@ -11,23 +11,31 @@
             type="text"
             v-model="feed.title"
             color="#ff6666"
-            :error-messages="feed.title?'':'제목을 입력해주세요'"
+            :error-messages="feed.title ? '' : '제목을 입력해주세요'"
+            autofocus
             autocapitalize="off"
             autocorrect="off"
           ></v-text-field>
           <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-          <div v-for="(preview,i) in previews" :key="i" id="previews">
+          <div v-for="(preview, i) in previews" :key="i" id="previews">
             <v-responsive
               v-if="preview.includes('data:video/mp4', 0)"
-              v-show="i==i2"
+              v-show="i == i2"
               aspect-ratio="1"
               class="align-center"
             >
-              <video :id="i" :src="preview" controls type="video/mp4" width="100%" class="my-auto"></video>
+              <video
+                :id="i"
+                :src="preview"
+                controls
+                type="video/mp4"
+                width="100%"
+                class="my-auto"
+              ></video>
             </v-responsive>
             <v-img
               v-if="!preview.includes('data:video/mp4', 0)"
-              v-show="i==i2"
+              v-show="i == i2"
               :id="i"
               :src="preview"
               width="100%"
@@ -37,16 +45,19 @@
           <!-- 슬라이더 -->
           <v-slider
             prepend-icon="mdi-chevron-double-left"
-            @click:prepend="i2>1?i2-=1:i2=0"
+            @click:prepend="i2 > 1 ? (i2 -= 1) : (i2 = 0)"
             append-icon="mdi-chevron-double-right"
-            @click:append="i2<previews.length-1?i2+=1:i2=previews.length-1"
-            v-if="previews.length>0"
+            @click:append="
+              i2 < previews.length - 1 ? (i2 += 1) : (i2 = previews.length - 1)
+            "
+            v-if="previews.length > 0"
             v-model="i2"
-            :max="previews.length-1"
+            :max="previews.length - 1"
             step="1"
             thumb-color="#ff6666"
             thumb-labels="always"
             thumb-size="40"
+            id="slider"
           >
             <template v-slot:thumb-label>{{ i2 + 1 }}</template>
           </v-slider>
@@ -73,7 +84,7 @@
             label="내용"
             outlined
             solo
-            :error-messages="feed.content?'':'내용을 입력하세요'"
+            :error-messages="feed.content ? '' : '내용을 입력하세요'"
             single-line
           ></v-textarea>
           <v-spacer>
@@ -97,7 +108,11 @@
             autocapitalize="off"
             autocorrect="off"
           ></v-text-field>
-          <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+          <div
+            v-for="tag in feedhashtag"
+            :key="tag"
+            style="display: inline-block;"
+          >
             <v-btn
               outlined
               solo
@@ -106,14 +121,21 @@
               v-model="feed.title"
               color="#ff6666"
               small
-              @click="tag.splice(feedhashtag.indexOf(tag), 1)"
-            ># {{ tag }}</v-btn>
+              @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
+              ># {{ tag }}</v-btn
+            >
           </div>
           <v-spacer>
             <br />
           </v-spacer>
           <div>
-            <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+            <v-btn
+              @click="$router.go(-1)"
+              class="white--text"
+              color="#666666"
+              width="99"
+              >취소</v-btn
+            >
             <v-divider class="mr-5" vertical></v-divider>
             <!-- 클릭하면 피드 상세 페이지로 -->
             <v-btn
@@ -122,14 +144,16 @@
               @click="updateFeedByFormData()"
               color="#ff6666"
               class="white--text"
-            >작성 완료</v-btn>
+              >작성 완료</v-btn
+            >
             <v-btn
               v-else
               :disabled="!feed.title || !feed.content || !fileData"
               @click="insertFeedByFormData()"
               color="#ff6666"
               class="white--text"
-            >작성 완료</v-btn>
+              >작성 완료</v-btn
+            >
           </div>
         </v-card>
       </v-col>
@@ -171,6 +195,7 @@ export default {
     previewImage(file) {
       this.previews = [];
       this.fileData = [];
+      this.i2 = 0;
       console.log(file);
       if (file.length > 3) {
         // console.log(file.length);
@@ -194,8 +219,11 @@ export default {
         };
         reader.readAsDataURL(this.fileData[i]);
       }
-      // console.log(this.previews);
-      // console.log(this.fileData);
+      console.log(this.previews);
+      console.log(this.fileData);
+      setTimeout(function() {
+        document.getElementById("slider").click();
+      }, 500);
       // if (file.size > 20 * 1024 * 1024) {
       //   alert("파일 사이즈가 20mb 보다 큽니다.");
       //   return false;
@@ -257,7 +285,8 @@ export default {
       hashtag = hashtag
         .replace(/#/gi, "")
         .replace(/ /gi, "")
-        .replace(/,/gi, "");
+        .replace(/,/gi, "")
+        .toUpperCase();
       console.log(hashtag);
       if (this.feedhashtag.includes(hashtag) || hashtag == "") {
         this.hashtag = "";
@@ -284,5 +313,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
