@@ -3,7 +3,7 @@
     <div class="home" v-for="datum in feed_data" :key="datum.feed.id">
       <FeedItem
         :feed="datum.feed"
-        :feedhashtag="datum.feedhashtag"
+        :hashtag="datum.hashtag"
         :feedlike="datum.feedlike"
         style="max-width: 614;"
       />
@@ -49,10 +49,10 @@ export default {
             regdate: "2020-07-26T15:00:00.000+00:00",
             editdate: null,
           },
-          feedhashtag: {
-            fid: 1,
-            hid: 1,
-          },
+          hashtag: [
+            { id: 1, content: "치킨" },
+            { id: 2, content: "치킨무" },
+          ],
           feedlike: {
             uid: 1,
             fid: 1,

@@ -8,6 +8,8 @@
             class="transition-swing mx-auto"
             max-width="614"
           >
+            <!-- 작성자 -->
+            <Writer :user="selectedFeed.user" :item="false" />
             <v-list-item>
               <router-link
                 :to="{
@@ -176,6 +178,12 @@
               </v-btn>
             </v-img>
             <v-card-text>
+              <!-- 본문 -->
+              <Main
+                :feed="selectedFeed.feed"
+                :hashtag="selectedFeed.hashtag"
+                :flow="false"
+              />
               <p class="text-left">
                 <v-row class="space-around mx-0">
                   <strong>{{ selectedFeed.feed.title }}</strong>
@@ -185,11 +193,8 @@
               </p>
               <p class="text-left">{{ selectedFeed.feed.content }}</p>
               <div class="text-left">
-                <span
-                  v-for="feedhashtag in selectedFeed.hashtag"
-                  :key="feedhashtag.id"
-                >
-                  #{{ feedhashtag.content }}
+                <span v-for="tag in selectedFeed.hashtag" :key="tag.id">
+                  # {{ tag.content }}
                 </span>
               </div>
               <!-- Comment module ?? -->
@@ -206,10 +211,15 @@
 import Comment from "@/components/Comment";
 import { mapActions, mapState } from "vuex";
 
+import Writer from "@/components/feed/item/Writer";
+import Main from "@/components/feed/item/Main";
+
 export default {
   name: "FeedView",
   components: {
     Comment,
+    Writer,
+    Main,
   },
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
@@ -232,11 +242,10 @@ export default {
   data() {
     return {
       feed: "",
-      // feedhashtag: "",
       feedlike: "",
       user: "",
       overflow: "text-left text-overflow",
-      hashtag: {},
+      hashtag: [],
 
       ymd: "",
     };
