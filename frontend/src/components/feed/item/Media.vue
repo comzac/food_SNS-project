@@ -8,13 +8,7 @@
         aspect-ratio="1"
         class="align-center"
       >
-        <video
-          :id="i"
-          :src="preview"
-          controls
-          type="video/mp4"
-          class="my-auto"
-        ></video>
+        <video :id="i" :src="preview" controls type="video/mp4" class="my-auto"></video>
       </v-responsive>
       <v-responsive
         v-if="!preview.includes('data:video/mp4', 0)"
@@ -62,20 +56,23 @@ export default {
   },
   methods: {
     getMedia(dbFiles) {
+      console.log(dbFiles);
       for (let i = 0; i < dbFiles.length; i++) {
         let reader = new FileReader();
         reader.onload = () => {
+          console.log(reader.result);
           this.previews.push(reader.result);
         };
         reader.readAsDataURL(this.dbFiles[i]);
       }
-      setTimeout(function() {
+      setTimeout(function () {
         document.getElementById("slider").click();
       }, 500);
     },
   },
-  mounted() {
-    this.getMedia(this.dbFiles);
+  created() {
+    console.log("updated");
+    // this.getMedia(this.dbFiles);
   },
 };
 </script>
