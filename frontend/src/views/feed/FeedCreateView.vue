@@ -298,9 +298,9 @@ export default {
     },
 
     initData() {
-      this.feed.title = this.selectedFeed.title;
-      this.feed.content = this.selectedFeed.content;
-      this.fileData = this.selectedFeed.dbFiles;
+      this.feed.title = this.selectedFeed.feed.title;
+      this.feed.content = this.selectedFeed.feed.content;
+      // this.fileData = this.selectedFeed.dbFiles;
       this.feedhashtag = this.selectedFeed.hashtag;
     },
   },
