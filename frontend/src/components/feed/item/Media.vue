@@ -4,7 +4,6 @@
     <v-window v-model="i2" @dblclick.native="$emit('likeUnlike')" continuous>
       <v-window-item v-for="(file, i) in dbFiles" :key="i">
         <video
-          :id="i"
           v-if="file.type === 'video/mp4'"
           :src="`data:${file.type};base64,${file.data}`"
           controls
@@ -13,7 +12,6 @@
           width="100%"
         ></video>
         <v-img
-          :id="i"
           v-if="file.type !== 'video/mp4'"
           :src="`data:${file.type};base64,${file.data}`"
           width="100%"
@@ -26,11 +24,7 @@
         <v-icon>mdi-chevron-double-left</v-icon>
       </v-btn>
       <v-item-group v-model="i2" class="text-center" mandatory>
-        <v-item
-          v-for="n in dbFiles.length"
-          :key="n"
-          v-slot:default="{ active, toggle }"
-        >
+        <v-item v-for="n in dbFiles.length" :key="n" v-slot:default="{ active, toggle }">
           <v-btn :input-value="active" icon @click="toggle" color="#ff6666">
             <v-icon>mdi-record</v-icon>
           </v-btn>

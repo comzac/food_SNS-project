@@ -173,5 +173,29 @@ export default {
           .catch((err) => console.error(err));
       }
     },
+
+    searchKeyword({ rootGetters }, keyword) {
+      console.log(keyword);
+      const config = rootGetters["accounts/config"];
+      console.log(
+        SERVER.BASE_URL +
+          SERVER.ROUTES.feeds.URL +
+          SERVER.ROUTES.feeds.search +
+          `/${keyword}`
+      );
+      return axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.search +
+            `/${keyword}`,
+          config
+        )
+        .then((res) => {
+          console.log("keyword : ", res);
+          return res;
+        })
+        .catch((err) => console.error("error : ", err));
+    },
   },
 };
