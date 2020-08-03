@@ -93,6 +93,11 @@ public class FeedController {
 			userSimple = userService.getSimpleUser(user.getUid());	// user 탈퇴하면 어떻게 처리할건지
 			feedAll.setUser(userSimple);
 			
+			// commentCount
+			Long commentCount = 0L;
+			commentCount = commentService.commentCount(fid);
+			feedAll.setCommentCount(commentCount);
+			
 			// comment
 			int limit = 2;	// 2개만 불러오기
 			List<Comment> commentList = commentService.commentListLimit(fid, limit);

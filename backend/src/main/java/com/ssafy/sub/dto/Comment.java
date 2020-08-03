@@ -43,9 +43,6 @@ public class Comment {
 	private int depth;
 	
 	@Column
-	private String title;
-	
-	@Column
 	private String content;
 	
 	@Column

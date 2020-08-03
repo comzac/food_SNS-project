@@ -75,11 +75,13 @@ public class CommentController {
 	
 	// 3. 댓글 수정
 	@ApiOperation(value = "댓글 수정", response = Result.class)
-	@PutMapping(value="/")
-	public ResponseEntity<Result> commentUpdate(@RequestBody Comment comment) {
+	@PutMapping(value="/{id}")
+	public ResponseEntity<Result> commentUpdate(@PathVariable int id, @RequestBody Comment comment) {
 //		public ResponseEntity<Result> commentUpdate(@RequestBody Comment comment, Authentication authentication) {
 		System.out.println("log - commentUpdate");
 		
+		comment.setId(id);
+		System.out.println(comment.toString());
 		Comment updatedComment = commentService.commentUpdate(comment);
 
 		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_COMMENT, updatedComment);
