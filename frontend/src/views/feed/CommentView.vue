@@ -209,7 +209,9 @@ export default {
     editComment() {
       const update = document.getElementsByClassName("update");
       update.forEach((item) => (item.style = "display: none;"));
-
+      this.fetchComments(this.fid).then(() => {
+        this.comments = this.$store.state.comments;
+      });
       // this.fetchComment(this.fid);
     },
   },
