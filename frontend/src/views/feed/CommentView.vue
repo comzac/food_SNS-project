@@ -41,10 +41,18 @@
                   :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                   class="text-decoration-none"
                 >
-                  <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
-                    <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-                    <img src="@/assets/profile_default.png" />
+                  <!-- <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1"> -->
+                  <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
+                  <v-list-item-avatar class="ma-auto" :color="authUserImgData ? 'white' : 'grey'">
+                    <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
+                    <v-img
+                      v-if="authUserImgData"
+                      :src="`data:${authUserImgType};base64,${authUserImgData}`"
+                      :alt="authUserImgName"
+                    />
                   </v-list-item-avatar>
+                  <!-- <img src="@/assets/profile_default.png" /> -->
+                  <!-- </v-list-item-avatar> -->
                 </router-link>
                 <v-list-item-content class="text-left">
                   <router-link
@@ -72,6 +80,7 @@
                   </template>
 
                   <v-list class="text-center">
+                    <!-- user 비교 필요 -->
                     <v-list-item @click="showEdit(comment.id)">
                       <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
                     </v-list-item>
