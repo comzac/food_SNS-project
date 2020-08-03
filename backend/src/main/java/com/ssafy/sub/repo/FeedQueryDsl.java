@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.QueryFactory;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.QDBFile;
 import com.ssafy.sub.dto.QFeed;
@@ -36,10 +37,16 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 		QFeed feed = QFeed.feed;
 		QDBFile dbFile = QDBFile.dBFile;
 		System.out.println("feed List");
+//		return from(feed)
+//				.leftJoin(dbFile)
+//				.on(feed.id.eq(dbFile.id))
+//				.where(feed.uid.eq(uid))
+//				.orderBy(feed.regdate.desc())
+//				.distinct()
+//				.fetch();
 		return from(feed)
-				.leftJoin(dbFile)
-				.on(feed.id.eq(dbFile.id))
 				.where(feed.uid.eq(uid))
+				.orderBy(feed.regdate.desc())
 				.distinct()
 				.fetch();
 	}

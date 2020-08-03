@@ -169,6 +169,9 @@ public class FeedController {
 		// url로 들어온 유저의 정보
 		User user = userService.findByUid(uid);
 		List<Feed> feedList = feedService.feedUserPageList(user.getId());
+		for(Feed f: feedList) {
+			f.setDbFiles(feedService.feedDetail(f.getId()).getDbFiles());
+		}
 		int feedCount = feedService.getFeedCount(user.getId());
 		int followerCount = relationService.relationFollowerList(user.getId()).size();
 		int followingCount = relationService.relationFollowingList(user.getId()).size();
