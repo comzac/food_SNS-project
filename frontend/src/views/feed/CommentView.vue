@@ -41,18 +41,21 @@
                   :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                   class="text-decoration-none"
                 >
-                  <!-- <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1"> -->
-                  <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-                  <v-list-item-avatar class="ma-auto" :color="authUserImgData ? 'white' : 'grey'">
-                    <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
+                  <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
+                    <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
+                    <!-- <v-list-item-avatar
+                    class="ma-auto"
+                    :color="comment.user.uprofile.data ? 'white' : 'grey'"
+                  >
+                    <v-icon v-if="!comment.user.uprofile.data" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="authUserImgData"
-                      :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                      :alt="authUserImgName"
+                      v-if="comment.user.uprofile.dataa"
+                      :src="`data:${comment.user.uprofile.type};base64,${comment.user.uprofile.data}`"
+                      :alt="comment.user.uprofile.data"
                     />
+                    </v-list-item-avatar>-->
+                    <img src="@/assets/profile_default.png" />
                   </v-list-item-avatar>
-                  <!-- <img src="@/assets/profile_default.png" /> -->
-                  <!-- </v-list-item-avatar> -->
                 </router-link>
                 <v-list-item-content class="text-left">
                   <router-link
