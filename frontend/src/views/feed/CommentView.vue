@@ -14,10 +14,7 @@
           </v-spacer>
           <v-card flat class="mx-auto" max-width="614">
             <v-row class="ma-0">
-              <v-list-item-avatar
-                class="ma-auto"
-                :color="authUserImgData ? 'white' : 'grey'"
-              >
+              <v-list-item-avatar class="ma-auto" :color="authUserImgData ? 'white' : 'grey'">
                 <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
                 <v-img
                   v-if="authUserImgData"
@@ -38,18 +35,13 @@
                 hide-details
               ></v-text-field>
             </v-row>
-            <div v-for="comment in comments" :key="comment.id">
+            <div v-for="comment in comments.comments" :key="comment.id">
               <v-list-item class="ma-0 pa-0">
                 <router-link
                   :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                   class="text-decoration-none"
                 >
-                  <v-list-item-avatar
-                    color="#ff6666"
-                    width="56"
-                    height="56"
-                    class="ma-0 mr-1"
-                  >
+                  <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
                     <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
                     <img src="@/assets/profile_default.png" />
                   </v-list-item-avatar>
@@ -59,13 +51,9 @@
                     :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                     class="text-decoration-none"
                   >
-                    <v-list-item-title class="black--text">
-                      {{ comment.unick }}
-                    </v-list-item-title>
+                    <v-list-item-title class="black--text">{{ comment.unick }}</v-list-item-title>
                   </router-link>
-                  <v-list-item-subtitle class="black--text">
-                    {{ comment.content }}
-                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="gray--text">
                     {{ computeYMD(comment.regdate) }}
                     {{ comment.editdate ? "(수정됨)" : "" }}
@@ -85,24 +73,16 @@
 
                   <v-list class="text-center">
                     <v-list-item @click="showEdit(comment.id)">
-                      <v-list-item-title class="blue--text text-lighten-2"
-                        >댓글 수정</v-list-item-title
-                      >
+                      <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="red--text text-lighten-2"
-                        >댓글 삭제</v-list-item-title
-                      >
+                      <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="red--text text-lighten-2"
-                        >댓글 신고</v-list-item-title
-                      >
+                      <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="blue--text text-lighten-2"
-                        >취소</v-list-item-title
-                      >
+                      <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -150,11 +130,12 @@ export default {
         title: "",
         content: "",
       },
+      comments: "",
     };
   },
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
-    ...mapState("comments", ["comments"]),
+    // ...mapState("comments", ["comments"]),
     ...mapGetters("accounts", [
       "authUserImgData",
       "authUserImgType",
@@ -168,13 +149,16 @@ export default {
       commentData.fid = this.fid;
       this.insertComment(commentData)
         .then(this.fetchComments(this.fid))
+        .then(() => {
+          this.comments = this.$store.state.comments;
+        })
         .catch((err) => console.log(err.response));
     },
     computeYMD(regdate) {
       var ymd =
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(regdate).getTime() / 1000);
-      var ymd2 = function(ymd) {
+      var ymd2 = function (ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
         } else if (ymd < 3600) {
@@ -205,7 +189,9 @@ export default {
   },
   created() {
     this.getFeedDetail(this.fid);
-    this.fetchComments(this.fid);
+    this.fetchComments(this.fid).then(() => {
+      this.comments = this.$store.state.comments;
+    });
   },
 };
 </script>

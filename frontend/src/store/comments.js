@@ -14,13 +14,14 @@ export default {
     },
   },
   actions: {
-    fetchComments({ rootGetters }, fid) {
+    fetchComments({ rootGetters, commit }, fid) {
       const config = rootGetters["accounts/config"];
 
       axios
         .get(SERVER.BASE_URL + SERVER.ROUTES.comments.URL + fid, config)
         .then((res) => {
           console.log(res);
+          commit("SET_COMMENTLIST", res.data.data);
         })
         .catch((err) => console.log(err.response));
     },
