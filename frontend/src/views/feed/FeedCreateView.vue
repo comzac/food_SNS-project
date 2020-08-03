@@ -17,14 +17,10 @@
             autocorrect="off"
           ></v-text-field>
           <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-          <div v-for="(preview, i) in previews" :key="i" id="previews">
-            <v-responsive
-              v-if="preview.includes('data:video/mp4', 0)"
-              v-show="i == i2"
-              aspect-ratio="1"
-              class="align-center"
-            >
+          <v-window v-model="i2" continuous>
+            <v-window-item v-for="(preview, i) in previews" :key="i">
               <video
+                v-if="preview.includes('data:video/mp4', 0)"
                 :id="i"
                 :src="preview"
                 controls
@@ -32,35 +28,38 @@
                 width="100%"
                 class="my-auto"
               ></video>
-            </v-responsive>
-            <v-img
-              v-if="!preview.includes('data:video/mp4', 0)"
-              v-show="i == i2"
-              :id="i"
-              :src="preview"
-              width="100%"
-              aspect-ratio="1"
-            ></v-img>
-          </div>
-          <!-- 슬라이더 -->
-          <v-slider
-            prepend-icon="mdi-chevron-double-left"
-            @click:prepend="i2 > 1 ? (i2 -= 1) : (i2 = 0)"
-            append-icon="mdi-chevron-double-right"
-            @click:append="
-              i2 < previews.length - 1 ? (i2 += 1) : (i2 = previews.length - 1)
-            "
-            v-if="previews.length > 0"
-            v-model="i2"
-            :max="previews.length - 1"
-            step="1"
-            thumb-color="#ff6666"
-            thumb-labels="always"
-            thumb-size="40"
-            id="slider"
-          >
-            <template v-slot:thumb-label>{{ i2 + 1 }}</template>
-          </v-slider>
+              <v-img
+                v-if="!preview.includes('data:video/mp4', 0)"
+                :src="preview"
+                width="100%"
+              ></v-img>
+            </v-window-item>
+          </v-window>
+
+          <v-card-actions class="justify-space-between">
+            <v-btn text @click="prev" color="#ff6666">
+              <v-icon>mdi-chevron-double-left</v-icon>
+            </v-btn>
+            <v-item-group v-model="i2" class="text-center" mandatory>
+              <v-item
+                v-for="n in previews.length"
+                :key="n"
+                v-slot:default="{ active, toggle }"
+              >
+                <v-btn
+                  :input-value="active"
+                  icon
+                  @click="toggle"
+                  color="#ff6666"
+                >
+                  <v-icon>mdi-record</v-icon>
+                </v-btn>
+              </v-item>
+            </v-item-group>
+            <v-btn text @click="next" color="#ff6666">
+              <v-icon>mdi-chevron-double-right</v-icon>
+            </v-btn>
+          </v-card-actions>
 
           <!-- 사진 비디오 입력 -->
           <v-file-input
@@ -104,7 +103,7 @@
             append-icon="mdi-plus"
             @click:append="createHashtag(hashtag)"
             @keyup.enter.space.,="createHashtag(hashtag)"
-            error-messages="스페이스바 혹은 엔터를 사용하여 태그를 구분할 수 있습니다"
+            error-messages="스페이스바 혹은 엔터, 콤마를 사용하여 태그를 구분할 수 있습니다"
             autocapitalize="off"
             autocorrect="off"
           ></v-text-field>
@@ -191,7 +190,12 @@ export default {
   },
   methods: {
     ...mapActions("feeds", ["insertFeed", "updateFeed", "getFeedDetail"]),
-
+    next() {
+      this.i2 = this.i2 + 1 === this.previews.length ? 0 : this.i2 + 1;
+    },
+    prev() {
+      this.i2 = this.i2 - 1 < 0 ? this.previews.length - 1 : this.i2 - 1;
+    },
     previewImage(file) {
       this.previews = [];
       this.fileData = [];
@@ -221,9 +225,6 @@ export default {
       }
       console.log(this.previews);
       console.log(this.fileData);
-      setTimeout(function() {
-        document.getElementById("slider").click();
-      }, 500);
       // if (file.size > 20 * 1024 * 1024) {
       //   alert("파일 사이즈가 20mb 보다 큽니다.");
       //   return false;

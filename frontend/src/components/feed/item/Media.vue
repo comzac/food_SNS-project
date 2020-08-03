@@ -1,58 +1,45 @@
 <template>
   <div>
     <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-    <div
-      v-for="(file, i) in dbFiles"
-      :key="i"
-      id="files"
-      @dblclick="$emit('likeUnlike')"
-    >
-      <v-responsive
-        v-if="file.type === 'video/mp4'"
-        v-show="i == i2"
-        aspect-ratio="1"
-        class="align-center"
-      >
+    <v-window v-model="i2" @dblclick.native="$emit('likeUnlike')" continuous>
+      <v-window-item v-for="(file, i) in dbFiles" :key="i">
         <video
           :id="i"
+          v-if="file.type === 'video/mp4'"
           :src="`data:${file.type};base64,${file.data}`"
           controls
           type="video/mp4"
           class="my-auto"
+          width="100%"
         ></video>
-      </v-responsive>
-      <v-responsive
-        v-if="file.type !== 'video/mp4'"
-        v-show="i == i2"
-        aspect-ratio="1"
-        class="align-center"
-      >
         <v-img
           :id="i"
+          v-if="file.type !== 'video/mp4'"
           :src="`data:${file.type};base64,${file.data}`"
           width="100%"
         ></v-img>
-      </v-responsive>
-    </div>
-    <!-- 슬라이더 -->
-    <v-slider
-      prepend-icon="mdi-chevron-double-left"
-      @click:prepend="i2 > 1 ? (i2 -= 1) : (i2 = 0)"
-      append-icon="mdi-chevron-double-right"
-      @click:append="
-        i2 < dbFiles.length - 1 ? (i2 += 1) : (i2 = dbfiles.length - 1)
-      "
-      v-if="dbFiles.length > 0"
-      v-model="i2"
-      :max="dbFiles.length - 1"
-      step="1"
-      thumb-color="#ff6666"
-      thumb-labels="always"
-      thumb-size="40"
-      id="slider"
-    >
-      <template v-slot:thumb-label>{{ i2 + 1 }}</template>
-    </v-slider>
+      </v-window-item>
+    </v-window>
+
+    <v-card-actions class="justify-space-between">
+      <v-btn text @click="prev" color="#ff6666">
+        <v-icon>mdi-chevron-double-left</v-icon>
+      </v-btn>
+      <v-item-group v-model="i2" class="text-center" mandatory>
+        <v-item
+          v-for="n in dbFiles.length"
+          :key="n"
+          v-slot:default="{ active, toggle }"
+        >
+          <v-btn :input-value="active" icon @click="toggle" color="#ff6666">
+            <v-icon>mdi-record</v-icon>
+          </v-btn>
+        </v-item>
+      </v-item-group>
+      <v-btn text @click="next" color="#ff6666">
+        <v-icon>mdi-chevron-double-right</v-icon>
+      </v-btn>
+    </v-card-actions>
   </div>
 </template>
 
@@ -80,9 +67,12 @@ export default {
         };
         reader.readAsDataURL(this.dbFiles[i]);
       }
-      setTimeout(function() {
-        document.getElementById("slider").click();
-      }, 500);
+    },
+    next() {
+      this.i2 = this.i2 + 1 === this.dbFiles.length ? 0 : this.i2 + 1;
+    },
+    prev() {
+      this.i2 = this.i2 - 1 < 0 ? this.dbFiles.length - 1 : this.i2 - 1;
     },
   },
 };
