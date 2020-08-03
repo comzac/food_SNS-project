@@ -23,6 +23,15 @@
         <v-icon v-if="!like" color="#ff6666">mdi-heart</v-icon>
       </v-btn>
     </v-row>-->
+    <router-link
+      :to="{ name: 'CommentView', params: { fid: fid } }"
+      class="text-decoration-none"
+      style="color: #ff6666;"
+    >
+      <p class="text-left ma-0">
+        <strong>댓글 {{ comments.length }}개 모두 보기</strong>
+      </p>
+    </router-link>
     <v-list-item class="ma-0 pa-0">
       <router-link
         :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
