@@ -27,11 +27,8 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public List<Comment> commentList(int fid) {
-		return commentRepository.findAllByFid(fid);
+		return commentQueryDsl.findAllByFidByRegdateDesc(fid);
 	}
-
-	
-	
 	
 	@Override
 	public Comment commentInsert(Comment comment) {
@@ -58,6 +55,11 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public Long commentDelete(int id) {
 		return commentRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Comment> commentListLimit(int fid, int limit) {
+		return commentQueryDsl.findLimitByFid(fid, limit);
 	}
 	
 }

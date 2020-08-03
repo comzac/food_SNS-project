@@ -94,7 +94,12 @@ public class FeedController {
 			feedAll.setUser(userSimple);
 			
 			// comment
-			List<Comment> commentList = commentService.commentList(fid);
+			int limit = 2;	// 2개만 불러오기
+			List<Comment> commentList = commentService.commentListLimit(fid, limit);
+			for(Comment c: commentList) {
+				String c_uid = userService.findById(c.getUid()).getUid();
+				c.setUser(userService.getSimpleUser(c_uid));
+			}
 			feedAll.setComment(commentList);
 			
 			// hashtag
@@ -304,8 +309,13 @@ public class FeedController {
 		feedAll.setLikeCount(likeCount);
 		
 		// Comment 정보
-		List<Comment> comment = commentService.commentList(id);
-		feedAll.setComment(comment);
+		int limit = 2;	// 2개만 불러오기
+		List<Comment> commentList = commentService.commentListLimit(id, limit);
+		for(Comment c: commentList) {
+			String c_uid = userService.findById(c.getUid()).getUid();
+			c.setUser(userService.getSimpleUser(c_uid));
+		}
+		feedAll.setComment(commentList);
 		
 		feedAllList.add(feedAll);
 		
