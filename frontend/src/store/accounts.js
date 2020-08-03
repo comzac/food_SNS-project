@@ -8,7 +8,11 @@ export default {
   namespaced: true,
   state: {
     authToken: cookies.get("auth-token"),
+    page: cookies.get("page") ? cookies.get("page") : 1,
+    confirmCode2: "",
     userSimpleData: {},
+    signupData: {},
+    // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
     // idChecked: false,
@@ -56,6 +60,16 @@ export default {
     SET_USERSIMPLEDATA(state, userSimpleData) {
       state.userSimpleData = userSimpleData;
     },
+    SET_PAGE(state, page) {
+      state.page = page;
+      cookies.set("page", page);
+    },
+    SET_CODE(state, code) {
+      state.confirmCode2 = code;
+    },
+    SET_SIGNUPDATA(state, signupData) {
+      state.signupData = signupData;
+    },
     // SET_IDCHECK(state, check) {
     //   state.idChecked = check;
     // },
@@ -70,6 +84,13 @@ export default {
     // },
   },
   actions: {
+    setPage({ commit }, page) {
+      commit("SET_PAGE", page);
+    },
+    // state signupData 변경
+    setSignupData2({ commit }, signupData) {
+      commit("SET_SIGNUPDATA", signupData);
+    },
     postAuthData({ commit }, info) {
       axios
         .post(SERVER.BASE_URL + info.route, info.data, {
@@ -202,7 +223,7 @@ export default {
         .catch((err) => console.log(err));
     },
 
-    getConfirmCode(context, email) {
+    getConfirmCode({ commit }, email) {
       return axios
         .post(
           SERVER.BASE_URL +
@@ -217,6 +238,7 @@ export default {
             alert("이메일을 확인해주세요.");
             return "";
           } else {
+            commit("SET_CODE", confirmCode.data);
             return confirmCode;
           }
         })
@@ -277,6 +299,28 @@ export default {
           )
           .then((res) => {
             commit("SET_USERSIMPLEDATA", res.data.data);
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+    deleteUser({ getters, commit, state }) {
+      const doubleCheck = confirm(
+        "정말 탈퇴하시겠습니까?\n이 작업은 취소 할 수 없습니다."
+      );
+
+      if (doubleCheck) {
+        const uid = state.userSimpleData.uid;
+        axios
+          .delete(
+            SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + uid,
+            getters.config
+          )
+          .then(() => {
+            commit("SET_TOKEN", null);
+            commit("SET_USERSIMPLEDATA", {});
+            cookies.remove("auth-token");
+            router.replace({ name: "Login" });
+            alert("회원 탈퇴가 완료되었습니다.");
           })
           .catch((err) => console.log(err));
       }

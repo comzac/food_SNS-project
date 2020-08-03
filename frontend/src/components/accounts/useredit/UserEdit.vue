@@ -21,7 +21,7 @@
           <!-- 추후에 공개 계정인지 비공개 계정인지에 따라 조정되도록 변경 필요 -->
         </v-col>
         <v-col cols="12" class="mt-10">
-          <v-btn large color="#D50000" width="100%" dark>회원 탈퇴</v-btn>
+          <v-btn large color="#D50000" width="100%" dark @click="deleteUser">회원 탈퇴</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -29,7 +29,13 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+
+export default {
+  methods: {
+    ...mapActions("accounts", ["deleteUser"]),
+  },
+};
 </script>
 
 <style scoped>
