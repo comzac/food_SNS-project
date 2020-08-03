@@ -41,20 +41,17 @@
                   :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                   class="text-decoration-none"
                 >
-                  <v-list-item-avatar color="#ff6666" width="56" height="56" class="ma-0 mr-1">
-                    <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-                    <!-- <v-list-item-avatar
+                  <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
+                  <v-list-item-avatar
                     class="ma-auto"
-                    :color="comment.user.uprofile.data ? 'white' : 'grey'"
+                    :color="comment.user.uprofile ? 'white' : 'grey'"
                   >
-                    <v-icon v-if="!comment.user.uprofile.data" dark>mdi-account</v-icon>
+                    <v-icon v-if="!comment.user.uprofile" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="comment.user.uprofile.dataa"
+                      v-if="comment.user.uprofile"
                       :src="`data:${comment.user.uprofile.type};base64,${comment.user.uprofile.data}`"
                       :alt="comment.user.uprofile.data"
                     />
-                    </v-list-item-avatar>-->
-                    <img src="@/assets/profile_default.png" />
                   </v-list-item-avatar>
                 </router-link>
                 <v-list-item-content class="text-left">
@@ -62,7 +59,7 @@
                     :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
                     class="text-decoration-none"
                   >
-                    <v-list-item-title class="black--text">{{ comment.unick }}</v-list-item-title>
+                    <v-list-item-title class="black--text">{{ comment.user.unick }}</v-list-item-title>
                   </router-link>
                   <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
                   <v-list-item-subtitle class="gray--text">
@@ -212,7 +209,9 @@ export default {
     editComment() {
       const update = document.getElementsByClassName("update");
       update.forEach((item) => (item.style = "display: none;"));
-
+      this.fetchComments(this.fid).then(() => {
+        this.comments = this.$store.state.comments;
+      });
       // this.fetchComment(this.fid);
     },
   },

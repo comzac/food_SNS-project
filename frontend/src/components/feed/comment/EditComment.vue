@@ -13,28 +13,24 @@
       outlined
       label="댓글수정"
       type="text"
-      v-model="editData"
+      v-model="comment.content"
       color="#ff6666"
       append-icon="mdi-send"
-      @click:append="editComment(editData)"
-      @keyup.enter="editComment(editData)"
+      @click:append="editComment()"
+      @keyup.enter="editComment()"
     ></v-text-field>
   </v-row>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "EditComment",
   props: {
     comment: Object,
   },
   components: {},
-  data() {
-    return {
-      editData: this.comment.content,
-    };
-  },
+
   computed: {
     ...mapGetters("accounts", [
       "authUserImgData",
@@ -43,12 +39,16 @@ export default {
     ]),
   },
   methods: {
-    editComment(editData) {
-      this.comment.content = editData;
+    ...mapActions("comments", ["updateComment"]),
+    editComment() {
       this.comment.editdate = new Date();
       // axios 로  this.comment 전송??
       // emit 해서 comments data 다시 받아오게
-      this.$emit("editComment");
+      this.updateComment(this.comment)
+        .then(() => {
+          this.$emit("editComment");
+        })
+        .catch((err) => console.log(err.response));
     },
   },
 };
