@@ -3,7 +3,7 @@
     <v-card max-width="614" class="mx-auto" flat>
       <v-container>
         <v-row class="mx-0 align-center">
-          <h1 class="red--text text--lighten-2"># {{ keyword }}</h1>
+          <h1 class="red--text text--lighten-2">{{ keyword }}</h1>
           <v-spacer></v-spacer>
           <h3>게시물 4,010,650</h3>
           <v-spacer></v-spacer>
