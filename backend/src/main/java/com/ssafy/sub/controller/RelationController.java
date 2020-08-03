@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.sub.dto.DBFile;
+import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.Relationship;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.model.response.FollowResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.repo.DBProfileRepository;
+import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.repo.RelationRepository;
 import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.RelationService;
@@ -38,7 +42,9 @@ public class RelationController {
 
 	@Autowired
 	RelationRepository relationRepository;
-
+	
+    @Autowired
+    private DBProfileRepository dbProfileRepository;
 	@Autowired
 	UserRepository userRepository;
 
@@ -65,12 +71,15 @@ public class RelationController {
 			}
 		}
 
+		System.out.println("??");
 		List<FollowResult> followList = new ArrayList<FollowResult>();
 		for (Relationship relationship : FollowerList) {
 			String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
 			String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
+			System.out.println(userId);
+			DBProfile dbProfile = dbProfileRepository.findByUid(Integer.toString(relationship.getRelationShipkey().getUid())).get();
 			
-			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing());
+			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing(), dbProfile);
 			followList.add(followResult);
 		}
 
@@ -105,8 +114,9 @@ public class RelationController {
 		for (Relationship relationship : FollowingList) {
 			String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
 			String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
+			DBProfile dbProfile = dbProfileRepository.findByUid(Integer.toString(relationship.getRelationShipkey().getRelationuid())).get();
 			
-			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing());
+			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing(), dbProfile);
 			followList.add(followResult);
 		}
 		
