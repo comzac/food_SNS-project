@@ -37,7 +37,7 @@ export default {
           console.log(res);
           commit("SET_FEEDS", res.data.feedAll);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.response));
     },
 
     getUserPageData({ commit, rootGetters }, uid) {
