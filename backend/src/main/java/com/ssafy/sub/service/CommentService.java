@@ -10,6 +10,8 @@ import com.ssafy.sub.dto.Comment;
 public interface CommentService {
 
 	List<Comment> commentList(int fid);
+	
+	List<Comment> commentListLimit(int fid, int limit);
 
 	Comment commentUpdate(Comment comment);
 
