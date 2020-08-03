@@ -1,6 +1,15 @@
 <template>
-  <!-- <v-img src="https://picsum.photos/350/165?random" :aspect-ratio="1" contain class="grey darken-4"></v-img> -->
-  <v-img @click="moveToFeed" :aspect-ratio="1" contain class="grey darken-4"></v-img>
+  <div>
+    <v-img v-if="!imgData" @click="moveToFeed" :aspect-ratio="1" contain class="grey darken-4" />
+    <v-img
+      v-if="imgData"
+      :aspect-ratio="1"
+      contain
+      class="grey lighten-2"
+      :src="`data:${imgType};base64,${imgData}`"
+      :alt="imgName"
+    />
+  </div>
 </template>
 
 <script>
@@ -11,6 +20,21 @@ export default {
   computed: {
     fid() {
       return this.feed.id;
+    },
+    imgData() {
+      if (this.feed.dbFiles) {
+        return this.feed.dbFiles[0].data;
+      } else return false;
+    },
+    imgType() {
+      if (this.feed.dbFiles) {
+        return this.feed.dbFiles[0].type;
+      } else return false;
+    },
+    imgName() {
+      if (this.feed.dbFiles) {
+        return this.feed.dbFiles[0].name;
+      } else return false;
     },
   },
   methods: {
