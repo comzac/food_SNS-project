@@ -2,11 +2,13 @@ package com.ssafy.sub.repo;
 
 import java.util.List;
 
-
+import org.apache.ibatis.jdbc.SelectBuilder;
+import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.JPAExpressions;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.QDBFile;
 import com.ssafy.sub.dto.QFeed;
@@ -80,12 +82,14 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
 		QHashtag hashtag = QHashtag.hashtag;
 		
-		BooleanBuilder builder = new BooleanBuilder();
-		 
-		if(state == "HASHTAG") {
-			//builder.and(feedHashtag.feedHashtagkey.hid.in(hashtag.content.like(keyword)));
-		}
-		return null;
+		return from(feed)
+				.leftJoin(feedHashtag)
+				.on(feed.id.eq(feedHashtag.feedHashtagkey.fid))
+				.where(feedHashtag.feedHashtagkey.hid
+						.in(JPAExpressions.select(hashtag.id).
+								from(hashtag)
+								.where(hashtag.content.like(keyword))))
+				.fetch();
 	}
 
 

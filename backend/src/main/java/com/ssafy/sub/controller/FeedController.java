@@ -233,20 +233,21 @@ public class FeedController {
 
 	// 2. list 검색 ( )
 	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
-	@GetMapping(value = "/feeds/search/{keyword}")
+	@GetMapping(value = "/search/{keyword}")
 	public ResponseEntity<Result> feedListSearch(@PathVariable String keyword) {
 		System.out.println("log - feedListSearch");
+		System.out.println("keyword");
 		String state;
-		if (keyword.charAt(0) == '#') {
-			state = "HASHTAG";
-		} else {
-			state = "USERID";
-		}
-
+//		if (keyword.charAt(0) == '#') {
+//			state = "HASHTAG";
+//		} else {
+//			state = "USERID";
+//		}
+		state = "HASHTAG";
 		List<Feed> FeedList = null;
 		FeedList = feedService.search(keyword, state);
 
-		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, FeedList);
+		Result result = new Result(StatusCode.CREATED, "검색", FeedList);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 
