@@ -84,7 +84,7 @@
                     <v-list-item @click="showEdit(comment.id)">
                       <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="() => {}">
+                    <v-list-item @click="deleteCommentAndFetch(comment.id)">
                       <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
@@ -153,11 +153,28 @@ export default {
   },
   methods: {
     ...mapActions("feeds", ["getFeedDetail"]),
-    ...mapActions("comments", ["fetchComments", "insertComment"]),
+    ...mapActions("comments", [
+      "fetchComments",
+      "insertComment",
+      "deleteComment",
+    ]),
     createComment(commentData) {
       commentData.fid = this.fid;
       this.insertComment(commentData)
-        .then(this.fetchComments(this.fid))
+        .then(() => {
+          this.fetchComments(this.fid);
+        })
+        .then(() => {
+          this.comments = this.$store.state.comments;
+          this.commentData.content = "";
+        })
+        .catch((err) => console.log(err.response));
+    },
+    deleteCommentAndFetch(id) {
+      this.deleteComment(id)
+        .then(() => {
+          this.fetchComments(this.fid);
+        })
         .then(() => {
           this.comments = this.$store.state.comments;
         })

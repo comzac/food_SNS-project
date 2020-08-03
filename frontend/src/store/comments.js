@@ -36,5 +36,19 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    deleteComment({ rootGetters }, commentId) {
+      const config = rootGetters["accousnt/config"];
+
+      return axios
+        .delete(
+          SERVER.BASE_URL + SERVER.ROUTES.comments.URL + commentId,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err.response));
+    },
   },
 };
