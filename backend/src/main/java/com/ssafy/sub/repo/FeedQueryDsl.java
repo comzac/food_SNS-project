@@ -2,13 +2,16 @@ package com.ssafy.sub.repo;
 
 import java.util.List;
 
+
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.QueryFactory;
+import com.querydsl.core.BooleanBuilder;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.QDBFile;
 import com.ssafy.sub.dto.QFeed;
+import com.ssafy.sub.dto.QFeedHashtag;
+import com.ssafy.sub.dto.QHashtag;
 import com.ssafy.sub.dto.QRelationship;
 
 
@@ -71,5 +74,20 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 				.orderBy(feed.regdate.desc())
 				.fetch();
 	}
+
+	public List<Feed> search(String keyword, String state) {
+		QFeed feed = QFeed.feed;
+		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
+		QHashtag hashtag = QHashtag.hashtag;
+		
+		BooleanBuilder builder = new BooleanBuilder();
+		 
+		if(state == "HASHTAG") {
+			//builder.and(feedHashtag.feedHashtagkey.hid.in(hashtag.content.like(keyword)));
+		}
+		return null;
+	}
+
+
 	
 }

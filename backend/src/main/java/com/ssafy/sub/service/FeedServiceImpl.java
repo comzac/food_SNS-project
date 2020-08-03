@@ -229,4 +229,16 @@ public class FeedServiceImpl implements FeedService {
 		
 		return hashtagList;
 	}
+
+	@Override
+	public List<Feed> search(String keyword, String state) {
+		return feedQueryDsl.search(keyword, state);
+	}
+
+
+	
+	
+	
+	
+	
 }

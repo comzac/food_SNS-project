@@ -23,3 +23,4 @@ public class FeedLikeKey implements Serializable {
 	@Column(name = "uid")
 	private int uid;
 }
+ 

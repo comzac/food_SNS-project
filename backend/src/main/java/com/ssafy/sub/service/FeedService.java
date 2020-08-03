@@ -46,4 +46,7 @@ public interface FeedService {
 	
 	public List<Hashtag> findFeedHashtagList(int fid);
 
+	public List<Feed> search(String keyword, String state);
+
+
 }
