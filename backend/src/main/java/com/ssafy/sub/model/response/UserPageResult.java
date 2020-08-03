@@ -14,4 +14,6 @@ public class UserPageResult {
     private String message;	// 메세지
     private Object userFeeds;// UserPage
     private boolean mypage;	// mypage 설정
+    private boolean isfollow;
+    private boolean isblock;
 }

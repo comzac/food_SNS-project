@@ -64,5 +64,14 @@ public class RelationQueryDsl extends QuerydslRepositorySupport{
 						.and(relationShip.state.eq(0)))
 				.fetchOne();
 	}
+	
+	// 그냥 상태 가져오기
+	public Relationship findRelationshipFB(int id, int rid) {
+		QRelationship relationShip = QRelationship.relationship;
+		return from(relationShip)
+				.where(relationShip.relationShipkey.uid.eq(id)
+						.and(relationShip.relationShipkey.relationuid.eq(rid)))
+				.fetchOne();
+	}
 
 }

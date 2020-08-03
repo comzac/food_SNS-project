@@ -17,4 +17,5 @@ public interface RelationService {
 
 	boolean checkRelations(int rid, int uid);
 
+	Relationship followCheck(int uid, int rid);
 }
