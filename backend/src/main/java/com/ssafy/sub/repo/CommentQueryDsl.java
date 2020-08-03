@@ -1,5 +1,7 @@
 package com.ssafy.sub.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -26,4 +28,20 @@ public class CommentQueryDsl extends QuerydslRepositorySupport{
 						.and(comment.depth.eq(comm.getDepth()))).execute();
 	}
 	
+	public List<Comment> findAllByFidByRegdateDesc(int fid) {
+		QComment comment = QComment.comment;
+		return from(comment)
+				.where(comment.fid.eq(fid))
+				.orderBy(comment.regdate.desc())
+				.fetch();
+	}
+	
+	public List<Comment> findLimitByFid(int fid, int limit) {
+		QComment comment = QComment.comment;
+		return from(comment)
+				.where(comment.fid.eq(fid))
+				.orderBy(comment.regdate.desc())
+				.limit(limit)
+				.fetch();
+	}
 }

@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Comment;
+import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.service.CommentService;
+import com.ssafy.sub.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -33,6 +35,8 @@ public class CommentController {
 
 	@Autowired
 	private CommentService commentService;
+	@Autowired
+	private UserService userService;
 	 
 	// 1. 댓글 list 조회
 	@ApiOperation(value = "댓글 조회", response = Result.class)
@@ -41,11 +45,13 @@ public class CommentController {
 		System.out.println("log - commentList");
 		
 		List<Comment> commentList = new ArrayList<Comment>();
-		
-		
 		commentList = commentService.commentList(fid);
-
-		// 
+		// userSimple
+		UserSimple user; String uid;
+		for(Comment c: commentList) {
+			uid = userService.findById(c.getUid()).getUid();
+			c.setUser(userService.getSimpleUser(uid));
+		}
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_COMMENTS, commentList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);

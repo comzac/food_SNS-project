@@ -55,8 +55,7 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public List<Feed> feedUserPageList(int uid) {
-		List<Feed> feeds;	// = feedRepository.findByUid(uid);
-		feeds = feedQueryDsl.findFeedListByUid(uid);
+		List<Feed> feeds = feedQueryDsl.findFeedListByUid(uid);
 		return feeds;
 	}
 

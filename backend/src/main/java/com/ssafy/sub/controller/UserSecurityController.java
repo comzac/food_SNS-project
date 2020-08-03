@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.config.security.JwtTokenProvider;
@@ -35,10 +35,8 @@ import com.ssafy.sub.dto.Token;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.RestException;
-import com.ssafy.sub.model.response.CommonResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
-import com.ssafy.sub.model.response.SingleResult;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.repo.UserRepository;
 import com.ssafy.sub.service.ResponseService;
@@ -47,7 +45,6 @@ import com.ssafy.sub.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -302,7 +299,17 @@ public class UserSecurityController {
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "회원 수정", notes = "회원정보를 수정한다")
 	@PutMapping(value = "/{uid}")
-	public ResponseEntity modify(@PathVariable String uid, User user) {
+	public ResponseEntity modify(@PathVariable String uid, @RequestBody HashMap<String, String> userUpdate, Authentication authentication) {
+		// user정보
+		User user = (User) authentication.getPrincipal();
+		if(!user.getUid().equals(uid)) {
+			// 토큰 정보와 일치하는지 확인
+			return new ResponseEntity<Result>(
+					new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null), HttpStatus.FORBIDDEN);
+		}
+		
+		user.setUemail(userUpdate.get("uemail"));
+		System.out.println(userUpdate.toString());
 		userService.userUpdate(user);
 		return new ResponseEntity<Result>(
 				new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, user), HttpStatus.OK);
