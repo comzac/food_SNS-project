@@ -281,5 +281,27 @@ export default {
           .catch((err) => console.log(err));
       }
     },
+    deleteUser({ getters, commit, state }) {
+      const doubleCheck = confirm(
+        "정말 탈퇴하시겠습니까?\n이 작업은 취소 할 수 없습니다."
+      );
+
+      if (doubleCheck) {
+        const uid = state.userSimpleData.uid;
+        axios
+          .delete(
+            SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + uid,
+            getters.config
+          )
+          .then(() => {
+            commit("SET_TOKEN", null);
+            commit("SET_USERSIMPLEDATA", {});
+            cookies.remove("auth-token");
+            router.replace({ name: "Login" });
+            alert("회원 탈퇴가 완료되었습니다.");
+          })
+          .catch((err) => console.log(err));
+      }
+    },
   },
 };
