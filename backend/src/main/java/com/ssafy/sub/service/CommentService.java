@@ -19,4 +19,5 @@ public interface CommentService {
 
 	Long commentDelete(int id);
 
+	Long commentCount(int fid);
 }

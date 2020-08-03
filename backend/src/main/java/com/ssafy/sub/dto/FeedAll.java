@@ -32,6 +32,9 @@ public class FeedAll {
 	// 댓글
 	private List<Comment> comment;
 	
+	// 댓글 수
+	private Long commentCount;
+	
 	// 유저 정보
 	private UserSimple user;
 	

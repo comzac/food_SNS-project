@@ -20,4 +20,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	@Transactional
 	Long deleteById(int id);
 	
+	Long countByFid(int fid);
 }
