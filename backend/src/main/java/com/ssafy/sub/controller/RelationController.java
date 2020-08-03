@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Relationship;
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.model.response.FollowResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
@@ -51,7 +52,7 @@ public class RelationController {
 
 		List<Relationship> FollowerList = new ArrayList<Relationship>();
 		
-		Optional<User> addUser = userRepository.findByUid(uid); // 피드 주인 id
+		Optional<User> addUser = userRepository.findByUid(uid); // 피드 주인 id 
 		int rid = addUser.get().getId(); // uid가 comzac이라면 8이 나옴
 		
 		FollowerList = relationService.relationFollowerList(rid);
@@ -64,7 +65,16 @@ public class RelationController {
 			}
 		}
 
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWER, FollowerList);
+		List<FollowResult> followList = new ArrayList<FollowResult>();
+		for (Relationship relationship : FollowerList) {
+			String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
+			String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
+			
+			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing());
+			followList.add(followResult);
+		}
+
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWER, followList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
@@ -91,7 +101,16 @@ public class RelationController {
 			}
 		}
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWING, FollowingList);
+		List<FollowResult> followList = new ArrayList<FollowResult>();
+		for (Relationship relationship : FollowingList) {
+			String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
+			String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
+			
+			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing());
+			followList.add(followResult);
+		}
+		
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_FOLLOWING, followList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
@@ -117,7 +136,13 @@ public class RelationController {
 			Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FOLLOWER, null);
 			return new ResponseEntity<Result>(result, HttpStatus.OK);
 		}
-		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, relationship);
+		
+		String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
+		String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
+		
+		FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing());
+	
+		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, followResult);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 

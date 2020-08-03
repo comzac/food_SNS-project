@@ -20,7 +20,8 @@ public class RelationQueryDsl extends QuerydslRepositorySupport{
 	public List<Relationship> findAllByRelationuid(int id){
 		QRelationship relationShip = QRelationship.relationship;
 		return from(relationShip)
-				.where(relationShip.relationShipkey.relationuid.eq(id))
+				.where(relationShip.relationShipkey.relationuid.eq(id)
+						.and(relationShip.state.eq(0)))
 				.distinct()
 				.fetch();
 	}
@@ -28,7 +29,8 @@ public class RelationQueryDsl extends QuerydslRepositorySupport{
 	public List<Relationship> findAllByUid(int id){
 		QRelationship relationShip = QRelationship.relationship;
 		return from(relationShip)
-				.where(relationShip.relationShipkey.uid.eq(id))
+				.where(relationShip.relationShipkey.uid.eq(id)
+						.and(relationShip.state.eq(0)))
 				.distinct()
 				.fetch();
 	}
@@ -48,7 +50,8 @@ public class RelationQueryDsl extends QuerydslRepositorySupport{
 
 		return from(relationShip)
 				.where(relationShip.relationShipkey.uid.eq(id)
-						.and(relationShip.relationShipkey.relationuid.eq(rid)))
+						.and(relationShip.relationShipkey.relationuid.eq(rid))
+						.and(relationShip.state.eq(0)))
 				.fetchOne();
 	}
 
@@ -57,7 +60,8 @@ public class RelationQueryDsl extends QuerydslRepositorySupport{
 
 		return from(relationShip)
 				.where(relationShip.relationShipkey.uid.eq(uid)
-						.and(relationShip.relationShipkey.relationuid.eq(rid)))
+						.and(relationShip.relationShipkey.relationuid.eq(rid))
+						.and(relationShip.state.eq(0)))
 				.fetchOne();
 	}
 
