@@ -27,11 +27,8 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Override
 	public List<Comment> commentList(int fid) {
-		return commentRepository.findAllByFid(fid);
+		return commentQueryDsl.findAllByFidByRegdateDesc(fid);
 	}
-
-	
-	
 	
 	@Override
 	public Comment commentInsert(Comment comment) {
@@ -47,9 +44,10 @@ public class CommentServiceImpl implements CommentService{
 		if(!updateComment.isPresent()) 
 			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMENT, HttpStatus.NOT_FOUND);
 		
-		updateComment.get().setTitle(comment.getTitle());
 		updateComment.get().setContent(comment.getContent());
+		updateComment.get().setDepth(comment.getDepth());
 		updateComment.get().setEditdate(now);
+		commentRepository.save(updateComment.get());
 		
 		return updateComment.get();
 	}
@@ -58,6 +56,16 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public Long commentDelete(int id) {
 		return commentRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Comment> commentListLimit(int fid, int limit) {
+		return commentQueryDsl.findLimitByFid(fid, limit);
+	}
+
+	@Override
+	public Long commentCount(int fid) {
+		return commentRepository.countByFid(fid);
 	}
 	
 }

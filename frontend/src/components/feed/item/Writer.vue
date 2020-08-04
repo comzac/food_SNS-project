@@ -41,10 +41,10 @@
       </template>
 
       <v-list class="text-center">
-        <v-list-item @click="moveToUpdateFeed">
+        <v-list-item v-if="user.uid === authUserUid" @click="moveToUpdateFeed">
           <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="deleteFeedNow">
+        <v-list-item v-if="user.uid === authUserUid" @click="deleteFeedNow">
           <v-list-item-title class="red--text text-lighten-2">게시글 삭제</v-list-item-title>
         </v-list-item>
         <v-list-item @click="() => {}">
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Writer",
@@ -68,6 +68,7 @@ export default {
     item: Boolean,
   },
   computed: {
+    ...mapState("accounts", ["authUserUid"]),
     imgData() {
       if (this.user.uprofile) {
         return this.user.uprofile.data;

@@ -24,7 +24,7 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 	public List<Feed> findAllByFollower(int id){
 		QFeed feed = QFeed.feed;
 		QRelationship relationShip = QRelationship.relationship;
-		System.out.println(id + "DSL");
+//		System.out.println(id + "DSL");
 		return from(feed)
 				.leftJoin(relationShip)
 				.on(feed.uid.eq(relationShip.relationShipkey.relationuid))
@@ -56,7 +56,7 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 	public List<Feed> findFeedListByFid(int fid) {
 		QFeed feed = QFeed.feed;
 		QDBFile dbFile = QDBFile.dBFile;
-		System.out.println("feed List");
+//		System.out.println("feed List");
 		return from(feed)
 				.leftJoin(dbFile)
 				.on(feed.id.eq(dbFile.id))
@@ -67,7 +67,7 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 	
 	public List<Feed> findFeedList() {
 		QFeed feed = QFeed.feed;
-		System.out.println("all feed list");
+//		System.out.println("all feed list");
 		return from(feed)
 				.orderBy(feed.editdate.desc())
 				.orderBy(feed.regdate.desc())

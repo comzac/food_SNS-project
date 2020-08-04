@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "SignupEmailVerification",
   created() {
@@ -73,8 +75,10 @@ export default {
     verify() {
       // axios 보내고
       // 인증 완료 되서 넘어 오면
+
       const num = Number(this.confirm);
-      if (num === this.confirmCode.data) {
+      // num === this.confirmCode.data ||
+      if (num === this.confirmCode2) {
         this.$emit("finishSignup");
       } else {
         alert("인증번호를 확인해주세요.");
@@ -91,8 +95,12 @@ export default {
       component: this,
     };
   },
+  computed: {
+    ...mapState("accounts", ["confirmCode"]),
+    ...mapState("accounts", ["confirmCode2"]),
+  },
   props: {
-    confirmCode: Object,
+    // confirmCode: Object,
   },
 };
 </script>

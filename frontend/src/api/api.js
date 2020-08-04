@@ -31,5 +31,8 @@ export default {
       feed: "likes/feed/",
       comment: "likes/comment/",
     },
+    relations: {
+      URL: "relations/",
+    },
   },
 };

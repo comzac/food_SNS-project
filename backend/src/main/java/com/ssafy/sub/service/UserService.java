@@ -46,7 +46,7 @@ public class UserService {
 
 	// userSimple만들고 반환
 	public UserSimple getSimpleUser(String uid) {
-		System.out.println("userSimple "+ uid);
+//		System.out.println("userSimple "+ uid);
 		User user = userRepository.findByUid(uid).
 				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
 		
@@ -54,9 +54,7 @@ public class UserService {
 		userSimple.setUid(user.getUid());
 		userSimple.setUnick(user.getUnick());
 
-//		System.out.println(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
 		if(dbProfileRepository.findByUid(String.valueOf(user.getId())).isPresent()) {
-//			user.setDBProfile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
 			userSimple.setUprofile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
 		}
 		
@@ -64,7 +62,6 @@ public class UserService {
 	}
 	
 	// custom repository 호출
-	
 	// uid -> Optional<user> findByUid()
 	public User findByUid(String uid){
 		User user = userRepository.findByUid(uid).

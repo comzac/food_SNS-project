@@ -43,4 +43,7 @@ public interface LikeService {
 	// 코멘트 싫어요 누르기
 	int commentLikeDelete(int cid, int uid);
 	
+	// 코멘트의 좋아요 개수
+	Long countCommentLike(int cid);
+	
 }

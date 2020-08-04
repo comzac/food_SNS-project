@@ -89,7 +89,11 @@
     </v-radio-group>
     <!-- 영문, 숫자 혼용 확인 필요 -->
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$router.push({ name: 'Login' })">뒤로가기</v-btn>
+      <v-btn
+        color="#ff6666"
+        class="white--text"
+        @click="$router.push({ name: 'Login' }), setSignupData2({})"
+      >뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
@@ -106,6 +110,14 @@ import { mapActions } from "vuex";
 
 export default {
   name: "BasicForm",
+  props: {
+    signupData2: Object,
+  },
+  mounted() {
+    if (this.signupData2 != {}) {
+      this.signupData = this.signupData2;
+    }
+  },
   data() {
     return {
       signupData: {
@@ -124,7 +136,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("accounts", ["idCheck", "nickCheck"]),
+    ...mapActions("accounts", ["idCheck", "nickCheck", "setSignupData2"]),
     toEmailVerification() {
       for (const [key, value] of Object.entries(this.signupData)) {
         if (key === "uemail") continue;

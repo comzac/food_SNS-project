@@ -52,5 +52,6 @@ public interface FeedService {
 
 	public List<Hashtag> findHashtagByKeyword(String keyword);
 
+	public List<Feed> feedPagenation(Long pageNum, Long fid, int limit);
 
 }

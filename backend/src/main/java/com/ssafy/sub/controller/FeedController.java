@@ -25,6 +25,7 @@ import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedAll;
 import com.ssafy.sub.dto.Hashtag;
+import com.ssafy.sub.dto.Relationship;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserPage;
 import com.ssafy.sub.dto.UserSimple;
@@ -66,8 +67,8 @@ public class FeedController {
 
 	// 1. list 조회
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
-	@GetMapping(value = "/page")
-	public ResponseEntity feedHomePage(Authentication authentication) {
+	@GetMapping(value="/pagination/{lastFid}")
+	public ResponseEntity feedHomePage(@PathVariable int lastFid, Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
 
 		int uid = Integer.parseInt(authentication.getName());
@@ -75,7 +76,9 @@ public class FeedController {
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
 
-		feedList = feedService.feedHomePageList();
+		int feedLimit = 5;
+//		feedList = feedService.feedHomePageList();
+		feedList = feedService.feedPagenation(0L, lastFid*1L, feedLimit);
 
 		User user;
 		UserSimple userSimple;
@@ -95,8 +98,18 @@ public class FeedController {
 			userSimple = userService.getSimpleUser(user.getUid()); // user 탈퇴하면 어떻게 처리할건지
 			feedAll.setUser(userSimple);
 
+			// commentCount
+			Long commentCount = 0L;
+			commentCount = commentService.commentCount(fid);
+			feedAll.setCommentCount(commentCount);
+			
 			// comment
-			List<Comment> commentList = commentService.commentList(fid);
+			int limit = 2;	// 2개만 불러오기
+			List<Comment> commentList = commentService.commentListLimit(fid, limit);
+			for(Comment c: commentList) {
+				String c_uid = userService.findById(c.getUid()).getUid();
+				c.setUser(userService.getSimpleUser(c_uid));
+			}
 			feedAll.setComment(commentList);
 
 			// hashtag
@@ -190,8 +203,17 @@ public class FeedController {
 		if (Integer.parseInt(user_id) != user.getId()) {
 			mypage = false;
 		}
-
-		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, userPage, mypage);
+		
+		// 
+		boolean isFollow = false;
+		boolean isBlock = false;
+		Relationship followRS = relationService.followCheck(Integer.parseInt(user_id), user.getId());	// 로긴한 유저가 해당 피드유저 follow?
+		Relationship blockRS = relationService.followCheck(user.getId(), Integer.parseInt(user_id));	// 해당 피드유저가 로긴한 유저 block?
+		if(followRS!=null && followRS.getState()==0) isFollow=true;
+		if(blockRS!=null && blockRS.getState()==1) isBlock=true;
+		
+		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, 
+				userPage, mypage, isFollow, isBlock);
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 
@@ -399,10 +421,20 @@ public class FeedController {
 		int likeCount = likeService.feedLikeUserList(id).size();
 		feedAll.setLikeCount(likeCount);
 
+		// commentCount
+		Long commentCount = 0L;
+		commentCount = commentService.commentCount(id);
+		feedAll.setCommentCount(commentCount);
+		
 		// Comment 정보
-		List<Comment> comment = commentService.commentList(id);
-		feedAll.setComment(comment);
-
+		int limit = 2;	// 2개만 불러오기
+		List<Comment> commentList = commentService.commentListLimit(id, limit);
+		for(Comment c: commentList) {
+			String c_uid = userService.findById(c.getUid()).getUid();
+			c.setUser(userService.getSimpleUser(c_uid));
+		}
+		feedAll.setComment(commentList);
+		
 		feedAllList.add(feedAll);
 
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_FEED, feedAllList);

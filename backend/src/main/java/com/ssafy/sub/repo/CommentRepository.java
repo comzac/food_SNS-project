@@ -14,10 +14,11 @@ import com.ssafy.sub.dto.Comment;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 	List<Comment> findAllByFid(int fid);
-
+	
 	Optional<Comment> findById(int id);
 
 	@Transactional
 	Long deleteById(int id);
 	
+	Long countByFid(int fid);
 }
