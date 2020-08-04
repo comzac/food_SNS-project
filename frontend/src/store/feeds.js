@@ -216,20 +216,12 @@ export default {
           config
         )
         .then((res) => {
-          console.log("keyword : ", res);
           return res.data;
         })
         .catch((err) => console.error("error : ", err));
     },
     searchedKeyword({ rootGetters }, keyword) {
       const config = rootGetters["accounts/config"];
-      console.log(
-        SERVER.BASE_URL +
-          SERVER.ROUTES.feeds.URL +
-          SERVER.ROUTES.feeds.search +
-          "/" +
-          keyword
-      );
       return axios
         .get(
           SERVER.BASE_URL +
@@ -240,7 +232,6 @@ export default {
           config
         )
         .then((res) => {
-          console.log("keyword : ", res);
           return res.data;
         })
         .catch((err) => console.error("error : ", err));
