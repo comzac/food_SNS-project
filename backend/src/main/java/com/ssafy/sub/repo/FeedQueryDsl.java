@@ -99,7 +99,11 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 						.fetch();
 	}
 
+	public Long countFeedByUser(int user_id) {
+		QFeed feed = QFeed.feed;
+		return from(feed)
+				.where(feed.uid.eq(user_id))
+				.fetchCount();
+	}
 
-
-	
 }
