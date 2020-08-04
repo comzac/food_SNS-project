@@ -285,6 +285,7 @@ export default {
     },
 
     pwreset(context, userEmailData) {
+      console.log(userEmailData);
       axios
         .put(
           SERVER.BASE_URL +
@@ -293,7 +294,7 @@ export default {
           userEmailData
         )
         .then((res) => {
-          // console.log(res);
+          console.log("res : ", res);
           if (res.data === "success") {
             alert("비밀번호가 변경되었습니다.");
             router.push({ name: "Home" });
@@ -304,21 +305,16 @@ export default {
         .catch((err) => console.log(err.response));
     },
 
-    getUserId({ state, commit }) {
-      commit;
+    getUserId({ state }) {
       const data = new FormData();
       data.append("uemail", state.uemail);
       return axios.post(
-        SERVER.BASE_URL + SERVER.ROUTES.accounts.getUserId,
-        data,
+        SERVER.BASE_URL +
+          SERVER.ROUTES.accounts.URL +
+          SERVER.ROUTES.accounts.getUserId,
+        { uemail: state.uemail },
         null
       );
-      // .then((res) => {
-      //   commit("SET_FOUNDUID", res.data.data);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
     },
 
     getUserSimpleData({ state, commit, getters }) {
