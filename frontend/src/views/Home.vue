@@ -57,7 +57,7 @@ export default {
       }
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 30
+        document.body.offsetHeight - 10
       ) {
         // axios 로 받아와야 하는 부분
         // const feed_data2 = JSON.parse(
@@ -82,18 +82,25 @@ export default {
     },
   },
   created() {
-    window.addEventListener("scroll", this.infiniteScroll);
-    this.fetchFeeds(this.fid).then((newFeeds) => {
-      // console.log(newFeeds);
-      newFeeds.forEach((feed) => {
-        if (feed.feed.id < this.fid) {
-          this.fid = feed.feed.id;
-        }
-      });
-      this.setFeeds(newFeeds);
-    });
+    console.log("created");
+    this.clearFeeds();
+    this.fetchFeeds(this.fid)
+      .then((newFeeds) => {
+        // console.log(newFeeds);
+        newFeeds.forEach((feed) => {
+          if (feed.feed.id < this.fid) {
+            this.fid = feed.feed.id;
+          }
+        });
+        this.setFeeds(newFeeds);
+      })
+      .then(() => {
+        window.addEventListener("scroll", this.infiniteScroll);
+      })
+      .catch((err) => console.log(err.response));
   },
   destroyed() {
+    console.log("destroyed");
     window.removeEventListener("scroll", this.infiniteScroll);
   },
 };

@@ -40,7 +40,7 @@ export default {
           config
         )
         .then((res) => {
-          console.log(res.data.feedAll);
+          console.log(res);
           commit("SET_FEEDS", res.data.feedAll);
           return res.data.feedAll;
         })
