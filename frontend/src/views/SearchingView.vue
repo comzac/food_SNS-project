@@ -8,7 +8,7 @@
             append-icon="mdi-magnify"
             @input="delaySearch()"
             @click:append-outer="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
-            @keyup.enter="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
+            @keyup.enter="$router.push({ name: 'SearchedView', params: { keyword: keyword.replace(/^#/g,'').replace(/ /g, '') } })"
             label="검색어를 입력하세요"
             required
             autofocus
@@ -71,10 +71,17 @@ export default {
       console.log(this.keyword);
       const res = this.searchKeyword(this.keyword);
       console.log("search : ", res);
-      // if (keyword == "") {
-      //   this.search_items = [];
-      //   this.search_users = [];
-      // }
+      if (this.keyword == "") {
+        this.search_items = [];
+        this.search_users = [];
+      } else if (/^#/.test(this.keyword)) {
+        this.keyword = this.keyword.replace(/^#/g, "");
+        this.search_items = [];
+        this.search_users = [];
+      } else {
+        this.search_users = [];
+        this.search_items = [];
+      }
     },
   },
 };
