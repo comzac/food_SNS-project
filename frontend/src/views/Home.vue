@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="home" v-for="(feed, i) in feeds" :key="i">
+    <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
     <transition name="slide-fade">
@@ -40,32 +40,15 @@ export default {
       // feed 를 page 를 증가시키면서 하나씩 받아와야 할 듯
       scrollY: false,
       page: 1,
-      feed_data: [
-        {
-          feed: {
-            id: 1,
-            uid: 1, //?
-            title: "엄마가 섬그늘에",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum quod exercitationem sapiente rerum deleniti, ipsa nesciunt voluptatum aspernatur similique labore optio commodi inventore expedita ad praesentium vel officia totam?",
-            regdate: "2020-07-26T15:00:00.000+00:00",
-            editdate: null,
-            dbFiles: [],
-          },
-          hashtag: [
-            { id: 1, content: "치킨" },
-            { id: 2, content: "치킨무" },
-          ],
-          feedlike: {
-            uid: 1,
-            fid: 1,
-          },
-        },
-      ],
+      fid: 100000,
+      feed_data: [],
     };
   },
   methods: {
-    ...mapActions("feeds", ["fetchFeeds"]),
+    ...mapActions("feeds", ["fetchFeeds", "clearFeeds"]),
+    setFeeds(feeds) {
+      this.feed_data = this.feed_data.concat(feeds);
+    },
     infiniteScroll() {
       if (window.scrollY) {
         this.scrollY = true;
@@ -77,26 +60,38 @@ export default {
         document.body.offsetHeight - 30
       ) {
         // axios 로 받아와야 하는 부분
-        const feed_data2 = JSON.parse(
-          JSON.stringify(this.feed_data.slice(-1)[0])
-        );
-        feed_data2.feed.id += 1;
-        this.feed_data.push(feed_data2);
-        this.page += 1;
+        // const feed_data2 = JSON.parse(
+        //   JSON.stringify(this.feed_data.slice(-1)[0])
+        // );
+        // feed_data2.feed.id += 1;
+        // this.feed_data.push(feed_data2);
+        // this.page += 1;
+        this.fetchFeeds().then((newFeeds) => {
+          console.log("infinite scroll get");
+          newFeeds.forEach((feed) => {
+            if (feed.feed.id < this.fid) {
+              this.fid = feed.feed.id;
+            }
+          });
+          this.setFeeds(newFeeds);
+        });
       }
     },
     top() {
       scrollTo(0, 0);
     },
   },
-  mounted() {
-    this.infiniteScroll();
-    this.infiniteScroll();
-    this.infiniteScroll();
-  },
   created() {
     window.addEventListener("scroll", this.infiniteScroll);
-    this.fetchFeeds();
+    this.fetchFeeds().then((newFeeds) => {
+      // console.log(newFeeds);
+      newFeeds.forEach((feed) => {
+        if (feed.feed.id < this.fid) {
+          this.fid = feed.feed.id;
+        }
+      });
+      this.setFeeds(newFeeds);
+    });
   },
   destroyed() {
     window.removeEventListener("scroll", this.infiniteScroll);
@@ -109,7 +104,7 @@ export default {
   transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all 1s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {

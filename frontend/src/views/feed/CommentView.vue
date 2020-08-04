@@ -56,7 +56,7 @@
                 </router-link>
                 <v-list-item-content class="text-left">
                   <router-link
-                    :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
+                    :to="{ name: 'UserDetail', params: { uid: comment.user.uid } }"
                     class="text-decoration-none"
                   >
                     <v-list-item-title class="black--text">{{ comment.user.unick }}</v-list-item-title>
@@ -108,10 +108,12 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-hover v-slot:default="{ hover }" open-delay="200">
+    <transition name="slide-fade">
       <v-btn
-        :color="hover ? '#ef5656' : '#ff6666'"
-        :elevation="hover ? 24 : 2"
+        v-if="scroll"
+        class="mb-14"
+        color="#ff6666"
+        elevation="24"
         fixed
         small
         bottom
@@ -121,7 +123,7 @@
       >
         <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
       </v-btn>
-    </v-hover>
+    </transition>
   </div>
 </template>
 
@@ -134,6 +136,7 @@ export default {
   components: { EditComment },
   data() {
     return {
+      scroll: false,
       fid: this.$route.params.fid,
       commentData: {
         title: "",
@@ -214,14 +217,40 @@ export default {
       });
       // this.fetchComment(this.fid);
     },
+    scrollY() {
+      if (window.scrollY) {
+        this.scroll = true;
+      } else {
+        this.scroll = false;
+      }
+    },
+    top() {
+      scrollTo(0, 0);
+    },
   },
   created() {
+    window.addEventListener("scroll", this.scrollY);
     this.getFeedDetail(this.fid);
     this.fetchComments(this.fid).then(() => {
       this.comments = this.$store.state.comments;
     });
   },
+  destroyed() {
+    window.removeEventListener("scroll", this.scrollY);
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

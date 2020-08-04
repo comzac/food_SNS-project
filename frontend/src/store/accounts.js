@@ -13,6 +13,7 @@ export default {
     userSimpleData: {},
     signupData: {},
     uemail: "",
+    userFollows: null,
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
@@ -73,6 +74,9 @@ export default {
     },
     SET_SIGNUPDATA(state, signupData) {
       state.signupData = signupData;
+    },
+    SET_USERFOLLOWS(state, followData) {
+      state.userFollows = followData;
     },
     // SET_IDCHECK(state, check) {
     //   state.idChecked = check;
@@ -334,6 +338,30 @@ export default {
           })
           .catch((err) => console.log(err));
       }
+    },
+    sendFollow({ getters }, uid) {
+      const data = new FormData();
+      data.append("uid", uid);
+      axios
+        .post(
+          SERVER.BASE_URL + SERVER.ROUTES.relations.URL,
+          data,
+          getters.config
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err.response));
+    },
+    getUserFollowList({ commit, getters }, option) {
+      const urlSuffix = `${option.mode}/${option.uid}`;
+      axios
+        .get(
+          SERVER.BASE_URL + SERVER.ROUTES.relations.URL + urlSuffix,
+          getters.config
+        )
+        .then((res) => {
+          commit("SET_USERFOLLOWS", res.data.data);
+        })
+        .catch((err) => console.log(err.response));
     },
   },
 };
