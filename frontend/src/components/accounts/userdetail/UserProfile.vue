@@ -52,7 +52,7 @@ export default {
       return this.userDetailData.mypage;
     },
     isFollow() {
-      return this.userDetailData.isFollow;
+      return this.userDetailData.isfollow;
     },
     unick() {
       return this.userDetailData.userFeeds.user.unick;
@@ -110,9 +110,12 @@ export default {
         );
         if (doubleCheck) {
           this.sendFollow(this.uid);
+          alert("팔로우가 취소되었습니다.");
+          this.$emit("followBtnClick");
         }
       } else {
         this.sendFollow(this.uid);
+        this.$emit("followBtnClick");
       }
     },
     moveToFollowings() {
