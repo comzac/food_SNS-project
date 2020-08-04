@@ -28,12 +28,15 @@ export default {
     },
   },
   actions: {
-    fetchFeeds({ commit, rootGetters }) {
+    fetchFeeds({ commit, rootGetters }, fid) {
       const config = rootGetters["accounts/config"];
       console.log(config);
       return axios
         .get(
-          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.pagination +
+            fid,
           config
         )
         .then((res) => {

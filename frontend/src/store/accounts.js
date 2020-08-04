@@ -13,6 +13,7 @@ export default {
     userSimpleData: {},
     signupData: {},
     uemail: "",
+    userFollows: null,
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,

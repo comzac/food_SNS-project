@@ -66,7 +66,7 @@ export default {
         // feed_data2.feed.id += 1;
         // this.feed_data.push(feed_data2);
         // this.page += 1;
-        this.fetchFeeds().then((newFeeds) => {
+        this.fetchFeeds(this.fid).then((newFeeds) => {
           console.log("infinite scroll get");
           newFeeds.forEach((feed) => {
             if (feed.feed.id < this.fid) {
@@ -83,7 +83,7 @@ export default {
   },
   created() {
     window.addEventListener("scroll", this.infiniteScroll);
-    this.fetchFeeds().then((newFeeds) => {
+    this.fetchFeeds(this.fid).then((newFeeds) => {
       // console.log(newFeeds);
       newFeeds.forEach((feed) => {
         if (feed.feed.id < this.fid) {
