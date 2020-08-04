@@ -52,5 +52,9 @@ public interface FeedService {
 
 	public List<Hashtag> findHashtagByKeyword(String keyword);
 
+	public Long countFeedByHashtag(int id);
+
+	public Long countFeedByUser(int user_id);
+
 
 }

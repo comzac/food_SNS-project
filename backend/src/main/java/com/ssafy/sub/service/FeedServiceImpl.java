@@ -248,6 +248,17 @@ public class FeedServiceImpl implements FeedService {
 		return hashtagQueryDsl.findHashtagByKeyword(keyword);
 	}
 
+	@Override
+	public Long countFeedByHashtag(int id) {
+		return hashtagQueryDsl.countFeedByHashtag(id);
+	}
+
+	@Override
+	public Long countFeedByUser(int user_id) {
+		return feedQueryDsl.countFeedByUser(user_id);
+
+	}
+
 
 	
 	
