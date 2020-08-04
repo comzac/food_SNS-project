@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="4" v-for="feed in feeds" :key="feed.id" class="ma-auto">
-          <SearchFeedItem :feed="feed" />
+          <SearchFeedItem :feed="feed.feed" />
         </v-col>
       </v-row>
     </v-container>
