@@ -8,6 +8,10 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -228,5 +232,15 @@ public class FeedServiceImpl implements FeedService {
 		}
 		
 		return hashtagList;
+	}
+	
+	@Override
+	public List<Feed> feedPagenation(Long pageNum, Long fid, int limit) {
+		List<Feed> feedList = new ArrayList<Feed>();
+		Pageable pageable = PageRequest.of(0, limit, Sort.by("id").descending());
+		Page<Feed> feedPageList = feedRepository.findByIdLessThan(fid.intValue(), pageable);
+		feedList = feedPageList.getContent();
+		
+		return feedList;
 	}
 }
