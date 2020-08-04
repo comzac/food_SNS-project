@@ -38,10 +38,6 @@
         </v-list-item-subtitle>
       </v-list-item-content>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon color="#ff6666">mdi-heart</v-icon>
-        <v-icon color="#ff6666">mdi-heart-outline</v-icon>
-      </v-btn>
     </v-list-item>
   </div>
 </template>
@@ -54,11 +50,6 @@ export default {
     fid: Number,
     comments: Array,
     commentCount: Number,
-  },
-  data() {
-    return {
-      like: false,
-    };
   },
   computed: {
     comment() {
