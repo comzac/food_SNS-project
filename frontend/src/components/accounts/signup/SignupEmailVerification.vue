@@ -18,6 +18,7 @@
       solo
       required
       color="#ff6666"
+      autocomplete="off"
     ></v-text-field>
     <v-spacer>
       <br />

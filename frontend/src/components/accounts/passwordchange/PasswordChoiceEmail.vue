@@ -15,6 +15,7 @@
       @click:append-outer="emailCheck2(email)"
       color="#ff6666"
       class="mt-10 mb-7"
+      autocomplete="off"
     ></v-text-field>
     <br />
     <br />

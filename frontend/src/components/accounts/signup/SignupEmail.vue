@@ -22,6 +22,7 @@
       append-outer-icon="mdi-check"
       @click:append-outer="emailCheck2(email)"
       color="#ff6666"
+      autocomplete="off"
     ></v-text-field>
     <v-spacer>
       <br />

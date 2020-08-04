@@ -15,12 +15,13 @@
             color="#ff6666"
             autocapitalize="off"
             autocorrect="off"
+            autocomplete="off"
             class="mb-0 pb-0"
           ></v-text-field>
           <div v-for="item in search_items" :key="item.name">
             <v-text-field
               @click="$router.push({ name: 'SearchedView', params: { keyword: item } })"
-              :value="`#${item} - 게시물 ${item.count}`"
+              :value="`#${item.key} - 게시물 ${item.value}`"
               color="#ff6666"
               readonly
             ></v-text-field>
@@ -28,7 +29,7 @@
           <div v-for="search_user in search_users" :key="search_user.uid">
             <v-text-field
               @click="$router.push({ name: 'UserDetail', params: { uid: search_user } })"
-              :value="` ${search_user} - 게시물 ${search_user.count}`"
+              :value="` ${search_user.key} - 게시물 ${search_user.value}`"
               color="#ff6666"
               readonly
             ></v-text-field>
@@ -48,6 +49,7 @@ export default {
   data() {
     return {
       keyword: "",
+      keyword2: "",
       timer: null,
       search_items: [],
       search_users: [],
@@ -72,7 +74,6 @@ export default {
       if (this.keyword != "") {
         this.searchKeyword(this.keyword).then((res) => {
           if (/^#/.test(this.keyword)) {
-            this.keyword = this.keyword.replace(/^#/g, "");
             this.search_items = res.data;
             this.search_users = [];
           } else {

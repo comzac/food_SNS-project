@@ -14,6 +14,7 @@
       autofocus
       autocapitalize="off"
       autocorrect="off"
+      autocomplete="off"
     ></v-text-field>
 
     <v-text-field
@@ -27,6 +28,7 @@
       @click:append-outer="nickCheck2(signupData.unick)"
       :error-messages="nickcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
       @input="nickcheck = false"
+      autocomplete="off"
     ></v-text-field>
 
     <v-text-field
@@ -39,6 +41,7 @@
       v-model="signupData.upw"
       color="#ff6666"
       :error-messages="pwdCheck(signupData.upw)?'':'비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'"
+      autocomplete="off"
     ></v-text-field>
 
     <v-text-field
@@ -51,6 +54,7 @@
       v-model="signupData.upw2"
       color="#ff6666"
       :error-messages="pwdCheck2(signupData.upw, signupData.upw2)?'':'비밀번호와 동일하게 입력해주세요'"
+      autocomplete="off"
     ></v-text-field>
 
     <v-text-field
@@ -61,6 +65,7 @@
       v-model="signupData.ubirth"
       color="#ff6666"
       :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
+      autocomplete="off"
     ></v-text-field>
 
     <v-radio-group v-model="signupData.usex" row>

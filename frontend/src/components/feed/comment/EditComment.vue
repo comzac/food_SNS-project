@@ -18,6 +18,7 @@
       append-icon="mdi-send"
       @click:append="editComment()"
       @keyup.enter="editComment()"
+      autocomplete="off"
     ></v-text-field>
   </v-row>
 </template>

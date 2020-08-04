@@ -6,25 +6,31 @@
     <v-text-field
       v-model="password"
       :error-messages="error.password"
+      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+      @click:append="show1 = !show1"
+      :type="show1 ? 'text' : 'password'"
       label="Password"
       outlined
       solo
       required
       color="#ff6666"
-      type="password"
       class="mt-10 mb-7"
+      autocomplete="off"
     ></v-text-field>
 
     <v-text-field
       v-model="passwordConfirm"
       :error-messages="error.passwordConfirm"
+      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+      @click:append="show2 = !show2"
+      :type="show2 ? 'text' : 'password'"
       label="Password Confirmation"
       outlined
       solo
       required
       color="#ff6666"
-      type="password"
       class="mt-10 mb-7"
+      autocomplete="off"
     ></v-text-field>
     <br />
     <br />
@@ -104,6 +110,8 @@ export default {
       },
       isSubmit: false,
       component: this,
+      show1: false,
+      show2: false,
     };
   },
 };

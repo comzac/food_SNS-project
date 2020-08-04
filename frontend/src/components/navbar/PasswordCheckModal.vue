@@ -26,6 +26,7 @@
                 required
                 autofocus
                 @keypress.enter="passwordCheck"
+                autocomplete="off"
               ></v-text-field>
             </v-col>
           </v-row>
