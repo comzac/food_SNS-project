@@ -89,7 +89,13 @@ export default {
   name: "LoginView",
   components: {},
   methods: {
-    ...mapActions("accounts", ["login", "setPage", "setEmail", "setCode"]),
+    ...mapActions("accounts", [
+      "login",
+      "setPage",
+      "setEmail",
+      "setCode",
+      "setUid",
+    ]),
     moveToSignup() {
       this.$router.push({ name: "Signup" });
     },
@@ -107,6 +113,7 @@ export default {
     this.setPage(1);
     this.setEmail("");
     this.setCode("");
+    this.setUid("");
   },
 };
 </script>

@@ -1,6 +1,7 @@
 <template>
   <v-card class="mx-auto" flat max-width="350">
     <h1 class="text-left ml-3" style="color:#ff6666;">이메일로 찾기</h1>
+    <h2 class="text-left ml-3" style="color:#ff6666;">- 아이디 입력</h2>
     <br />
     <br />
     <v-text-field
@@ -26,7 +27,7 @@
       <v-btn
         :disabled="!id.length || !idChecked"
         color="#ff6666"
-        @click="$emit('toEmailCheck')"
+        @click="$emit('toEmailCheck', id), setUid(id)"
         class="white--text"
       >다음으로</v-btn>
       <v-overlay :value="overlay">
@@ -52,7 +53,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("accounts", ["idCheck2"]),
+    ...mapActions("accounts", ["idCheck2", "setUid"]),
     idCheck3(id) {
       this.idCheck2(id).then((res) => {
         console.log("res", res);

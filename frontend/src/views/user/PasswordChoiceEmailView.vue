@@ -2,7 +2,7 @@
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <IdCheck v-if="page == '1'" @toEmailCheck="page='2', setPage(2)" />
+        <IdCheck v-if="page == '1'" @toEmailCheck="page='2', setId, setPage(2)" />
         <PasswordChoiceEmail
           v-if="page == '2'"
           @toEmailVerification="setConfirmCode"
@@ -42,6 +42,7 @@ export default {
       page: cookies.get("page") ? cookies.get("page") : 1,
       confirmCode: "",
       userEmailData: {
+        uid: this.$store.state.accounts.uid,
         uemail: this.$store.state.accounts.uemail,
         upw: "",
       },
@@ -66,6 +67,9 @@ export default {
       this.setPage(1);
       this.setEmail("");
       this.setCode("");
+    },
+    setId(id) {
+      this.uid = id;
     },
   },
 };
