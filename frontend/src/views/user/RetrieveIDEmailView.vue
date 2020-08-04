@@ -8,7 +8,7 @@
           @moveToConductPage="moveToConductPage"
           @pageDown="page='1', setPage(1)"
         />
-        <RetrieveIDPage v-if="uid" />
+        <RetrieveIDPage v-if="uid" :uid="uid" />
       </v-col>
     </v-row>
   </v-container>
@@ -36,7 +36,6 @@ export default {
       confirmCode: "",
       userEmailData: {
         uemail: this.$store.state.accounts.uemail,
-        upw: "",
       },
       uid: null,
     };
@@ -57,11 +56,10 @@ export default {
       const element = this;
       this.getUserId()
         .then((res) => {
-          console.log(res);
           element.uid = res.data.data;
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
         });
       this.setPage(1);
       this.setEmail("");
