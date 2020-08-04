@@ -76,10 +76,16 @@ public class RelationController {
 		for (Relationship relationship : FollowerList) {
 			String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
 			String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
+			String unick = userRepository.findByUid(userId).get().getUnick();
 			System.out.println(userId);
-			DBProfile dbProfile = dbProfileRepository.findByUid(Integer.toString(relationship.getRelationShipkey().getUid())).get();
-			
-			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing(), dbProfile);
+			Optional<DBProfile> dbProfile = dbProfileRepository.findByUid(Integer.toString(relationship.getRelationShipkey().getUid()));
+			FollowResult followResult;
+			if(dbProfile.isPresent()) {
+				followResult = new FollowResult(userId, rUserId, unick, relationship.getState(), relationship.getIsFollowing(), dbProfile.get());
+			}
+			else {
+				followResult = new FollowResult(userId, rUserId, unick, relationship.getState(), relationship.getIsFollowing(), null);				
+			}
 			followList.add(followResult);
 		}
 
@@ -114,9 +120,16 @@ public class RelationController {
 		for (Relationship relationship : FollowingList) {
 			String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
 			String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
-			DBProfile dbProfile = dbProfileRepository.findByUid(Integer.toString(relationship.getRelationShipkey().getRelationuid())).get();
-			
-			FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing(), dbProfile);
+			String unick = userRepository.findByUid(rUserId).get().getUnick();
+
+			Optional<DBProfile> dbProfile = dbProfileRepository.findByUid(Integer.toString(relationship.getRelationShipkey().getRelationuid()));
+			FollowResult followResult;
+			if(dbProfile.isPresent()) {
+				followResult = new FollowResult(userId, rUserId, unick, relationship.getState(), relationship.getIsFollowing(), dbProfile.get());
+			}
+			else {
+				followResult = new FollowResult(userId, rUserId, unick, relationship.getState(), relationship.getIsFollowing(), null);				
+			}
 			followList.add(followResult);
 		}
 		
@@ -151,8 +164,9 @@ public class RelationController {
 		
 		String userId = userRepository.findById(relationship.getRelationShipkey().getUid()).getUid();
 		String rUserId = userRepository.findById(relationship.getRelationShipkey().getRelationuid()).getUid();
-		
-		FollowResult followResult = new FollowResult(userId, rUserId, relationship.getState(), relationship.getIsFollowing());
+		String unick = userRepository.findByUid(rUserId).get().getUnick();
+
+		FollowResult followResult = new FollowResult(userId, rUserId, unick, relationship.getState(), relationship.getIsFollowing());
 	
 		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, followResult);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);

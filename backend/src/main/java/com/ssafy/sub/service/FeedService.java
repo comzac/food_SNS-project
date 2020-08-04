@@ -46,4 +46,6 @@ public interface FeedService {
 	
 	public List<Hashtag> findFeedHashtagList(int fid);
 
+	List<Feed> feedPagenation(Long pageNum, Long fid, int limit);
+
 }

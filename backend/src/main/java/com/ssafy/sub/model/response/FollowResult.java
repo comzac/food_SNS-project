@@ -14,19 +14,18 @@ import lombok.Setter;
 public class FollowResult {
 	private String uid;
 	private String relationuid;
+	private String unick;
 	private int state;
 	private int isFollowing;
 	private DBProfile dbProfile;
-	
-	public FollowResult(String uid, String relationuid, int state, int isFollowing) {
+
+	public FollowResult(String uid, String relationuid, String unick, int state, int isFollowing) {
 		super();
-		this.uid = uid; 
+		this.uid = uid;
 		this.relationuid = relationuid;
+		this.unick = unick;
 		this.state = state;
 		this.isFollowing = isFollowing;
 	}
-	
-	
+
 }
-
-
