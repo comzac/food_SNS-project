@@ -58,6 +58,7 @@ export default {
 }
 
 h2.follow-title {
-  margin-top: 13vh;
+  margin-top: 14vh;
+  margin-bottom: 2vh;
 }
 </style>

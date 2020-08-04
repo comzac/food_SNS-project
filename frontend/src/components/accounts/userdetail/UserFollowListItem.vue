@@ -8,9 +8,13 @@
       <v-list-item-content>
         <v-list-item-title>{{ unick }}</v-list-item-title>
         <v-list-item-subtitle>
-          <small>{{ authUserUid }}</small>
+          <small>user id</small>
         </v-list-item-subtitle>
       </v-list-item-content>
+      <v-list-item-action>
+        <v-chip v-if="!mypage && !isFollow" color="#2699fb" dark @click="follow(uid)">Follow</v-chip>
+        <v-chip v-if="!mypage && isFollow" color="#ff6666" outlined @click="follow(uid)">Unfollow</v-chip>
+      </v-list-item-action>
     </v-list-item>
     <v-divider></v-divider>
   </div>
