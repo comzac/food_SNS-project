@@ -119,10 +119,12 @@ public class RelationController {
 	@PostMapping(value = "/")
 	public ResponseEntity<Result> followInsertAndDelete(Authentication authentication, @RequestParam String uid) {
 		System.out.println("log - followInsertAndDelete");
+		System.out.println(uid);
 
 		Relationship relationship;
 		String id = authentication.getName();
 		Optional<User> addUser = userRepository.findByUid(uid);
+		System.out.println(addUser.isPresent());
 		int rid = addUser.get().getId();
 
 		if (Integer.parseInt(id) == rid) {

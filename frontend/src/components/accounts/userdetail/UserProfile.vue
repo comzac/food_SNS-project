@@ -12,27 +12,28 @@
       <v-btn v-if="mypage" color="grey" fab small dark @click="toProfileEdit">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-chip v-if="!mypage" @click="alert('동작')">follow</v-chip>
+      <v-chip v-if="!mypage && !isFollow" color="#2699fb" dark @click="follow(uid)">Follow</v-chip>
+      <v-chip v-if="!mypage && isFollow" color="#ff6666" outlined @click="follow(uid)">Unfollow</v-chip>
     </v-list-item>
 
     <v-card-text class="text-center">{{ profileText }}</v-card-text>
 
     <v-card-actions class="justify-center">
-      <v-btn text>
+      <v-btn text disabled class="non-active">
         <div class="d-flex flex-column">
           <span>{{numPosts}}</span>
           <span class="caption font-weight-light">POSTS</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
-      <v-btn text>
+      <v-btn text @click="moveToFollowings">
         <div class="d-flex flex-column">
           <span>{{numFollowings}}</span>
           <span class="caption font-weight-light">FOLLOWINGS</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
-      <v-btn text>
+      <v-btn text @click="moveToFollowers">
         <div class="d-flex flex-column">
           <span>{{numFollowers}}</span>
           <span class="caption font-weight-light">FOLLOWERS</span>
@@ -43,10 +44,15 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   computed: {
     mypage() {
       return this.userDetailData.mypage;
+    },
+    isFollow() {
+      return this.userDetailData.isFollow;
     },
     unick() {
       return this.userDetailData.userFeeds.user.unick;
@@ -90,11 +96,36 @@ export default {
     userDetailData: Object,
   },
   methods: {
+    ...mapActions("accounts", ["sendFollow"]),
     setDocumentTitle() {
       document.title = this.unick + " · HoneyCombo";
     },
     toProfileEdit() {
       this.$router.push({ name: "UserProfileEdit", params: { uid: this.uid } });
+    },
+    follow() {
+      if (this.isFollow) {
+        const doubleCheck = confirm(
+          `${this.unick}님의 팔로우를 취소하시겠습니까?`
+        );
+        if (doubleCheck) {
+          this.sendFollow(this.uid);
+        }
+      } else {
+        this.sendFollow(this.uid);
+      }
+    },
+    moveToFollowings() {
+      this.$router.push({
+        name: "Following",
+        params: { uid: this.$route.params.uid },
+      });
+    },
+    moveToFollowers() {
+      this.$router.push({
+        name: "Follower",
+        params: { uid: this.$route.params.uid },
+      });
     },
   },
   mounted() {
@@ -106,5 +137,9 @@ export default {
 <style scoped>
 .theme--light.v-sheet--outlined {
   border: none;
+}
+
+button.non-active.theme--light.v-btn.v-btn--disabled {
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 </style>
