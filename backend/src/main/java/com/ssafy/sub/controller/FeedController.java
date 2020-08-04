@@ -25,6 +25,7 @@ import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.FeedAll;
 import com.ssafy.sub.dto.Hashtag;
+import com.ssafy.sub.dto.Relationship;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.dto.UserPage;
 import com.ssafy.sub.dto.UserSimple;
@@ -198,7 +199,16 @@ public class FeedController {
 			mypage=false;
 		}
 		
-		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, userPage, mypage);
+		// 
+		boolean isFollow = false;
+		boolean isBlock = false;
+		Relationship followRS = relationService.followCheck(Integer.parseInt(user_id), user.getId());	// 로긴한 유저가 해당 피드유저 follow?
+		Relationship blockRS = relationService.followCheck(user.getId(), Integer.parseInt(user_id));	// 해당 피드유저가 로긴한 유저 block?
+		if(followRS!=null && followRS.getState()==0) isFollow=true;
+		if(blockRS!=null && blockRS.getState()==1) isBlock=true;
+		
+		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, 
+				userPage, mypage, isFollow, isBlock);
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 	
