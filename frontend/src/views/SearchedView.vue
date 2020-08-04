@@ -38,8 +38,9 @@ export default {
   methods: {
     ...mapActions("feeds", ["searchedKeyword"]),
     searchfeed(keyword) {
-      const res = this.searchedKeyword(keyword);
-      console.log(res);
+      this.searchedKeyword(keyword).then((res) => {
+        this.searched_items = res.feedAll;
+      });
       // SearchFeedList 에 데이터 props 로 넘겨야 하나?
       // 일단 데이터 + 데이터 갯수 넘겨줘야 함
     },

@@ -217,7 +217,7 @@ export default {
         )
         .then((res) => {
           console.log("keyword : ", res);
-          return res;
+          return res.data;
         })
         .catch((err) => console.error("error : ", err));
     },
@@ -241,7 +241,7 @@ export default {
         )
         .then((res) => {
           console.log("keyword : ", res);
-          return res;
+          return res.data;
         })
         .catch((err) => console.error("error : ", err));
     },
