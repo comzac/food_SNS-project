@@ -5,6 +5,7 @@ import LoginView from "@/views/LoginView";
 import SignupView from "@/views/SignupView";
 import PasswordChoiceView from "@/views/user/PasswordChoiceView";
 import PasswordChoiceEmailView from "@/views/user/PasswordChoiceEmailView";
+import RetireveIDEmailView from "@/views/user/RetrieveIDEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
 import UserFollowView from "@/views/user/UserFollowView";
 import UserEditView from "@/views/user/UserEditView";
@@ -52,6 +53,12 @@ const routes = [
     name: "PasswordChoiceEmail",
     component: PasswordChoiceEmailView,
     meta: { title: "이메일로 비밀번호 찾기 · HoneyCombo" },
+  },
+  {
+    path: "/user/retrieveid",
+    name: "RetrieveID",
+    component: RetireveIDEmailView,
+    meta: { title: "아이디 찾기 · HoneyCombo" },
   },
   {
     path: "/userdetail/:uid",
@@ -138,6 +145,7 @@ router.beforeEach((to, from, next) => {
     "NotFound",
     "PasswordChoice",
     "PasswordChoiceEmail",
+    "RetrieveID",
   ];
   const needNotAuthPages = ["Signup", "Login"];
 
