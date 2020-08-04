@@ -24,7 +24,11 @@
                 @likeUnlike="feedLU()"
               />
               <!-- 댓글 -->
-              <Comment :fid="feed.feed.id" :comments="feed.comment" />
+              <Comment
+                :fid="feed.feed.id"
+                :comments="feed.comment"
+                :commentCount="feed.commentCount"
+              />
             </v-card-text>
           </v-card>
         </v-hover>

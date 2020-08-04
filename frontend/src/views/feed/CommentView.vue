@@ -56,7 +56,7 @@
                 </router-link>
                 <v-list-item-content class="text-left">
                   <router-link
-                    :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
+                    :to="{ name: 'UserDetail', params: { uid: comment.user.uid } }"
                     class="text-decoration-none"
                   >
                     <v-list-item-title class="black--text">{{ comment.user.unick }}</v-list-item-title>
