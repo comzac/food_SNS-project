@@ -13,8 +13,10 @@ export default {
     userSimpleData: {},
     signupData: {},
     uemail: "",
+    uid: "",
     userFollows: null,
     foundUid: null,
+    isAuthorized: false,
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
@@ -60,6 +62,12 @@ export default {
       state.authToken = token;
       cookies.set("auth-token", token);
     },
+    SET_UID(state, uid) {
+      state.uid = uid;
+    },
+    SET_AUTHORIZE(state, value) {
+      state.isAuthorized = value;
+    },
     SET_USERSIMPLEDATA(state, userSimpleData) {
       state.userSimpleData = userSimpleData;
     },
@@ -96,6 +104,12 @@ export default {
     // },
   },
   actions: {
+    setAuthorized({ commit }, value) {
+      commit("SET_AUTHORIZE", value);
+    },
+    setUid({ commit }, uid) {
+      commit("SET_UID", uid);
+    },
     setEmail({ commit }, email) {
       commit("SET_UEMAIL", email);
     },

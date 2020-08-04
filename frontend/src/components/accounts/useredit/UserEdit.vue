@@ -5,7 +5,7 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-          <v-btn large color="#2699fb" width="100%" dark>비밀번호 변경</v-btn>
+          <v-btn @click="$emit('pwChange')" large color="#2699fb" width="100%" dark>비밀번호 변경</v-btn>
         </v-col>
         <v-col cols="12">
           <v-btn large color="#2699fb" width="100%" dark>이메일 변경</v-btn>
@@ -32,6 +32,10 @@
 import { mapActions } from "vuex";
 
 export default {
+  name: "UserEdit",
+  data() {
+    return {};
+  },
   methods: {
     ...mapActions("accounts", ["deleteUser"]),
   },
