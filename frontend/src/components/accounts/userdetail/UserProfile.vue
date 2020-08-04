@@ -26,17 +26,17 @@
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
-      <v-btn text @click="moveToFollowings">
-        <div class="d-flex flex-column">
-          <span>{{numFollowings}}</span>
-          <span class="caption font-weight-light">FOLLOWINGS</span>
-        </div>
-      </v-btn>
-      <v-divider vertical></v-divider>
       <v-btn text @click="moveToFollowers">
         <div class="d-flex flex-column">
           <span>{{numFollowers}}</span>
           <span class="caption font-weight-light">FOLLOWERS</span>
+        </div>
+      </v-btn>
+      <v-divider vertical></v-divider>
+      <v-btn text @click="moveToFollowings">
+        <div class="d-flex flex-column">
+          <span>{{numFollowings}}</span>
+          <span class="caption font-weight-light">FOLLOWINGS</span>
         </div>
       </v-btn>
     </v-card-actions>
@@ -47,12 +47,15 @@
 import { mapActions } from "vuex";
 
 export default {
+  data() {
+    return {
+      isFollow: this.userDetailData.isfollow,
+      numFollowers: this.userDetailData.userFeeds.followerCount,
+    };
+  },
   computed: {
     mypage() {
       return this.userDetailData.mypage;
-    },
-    isFollow() {
-      return this.userDetailData.isfollow;
     },
     unick() {
       return this.userDetailData.userFeeds.user.unick;
@@ -88,9 +91,6 @@ export default {
     numFollowings() {
       return this.userDetailData.userFeeds.followingCount;
     },
-    numFollowers() {
-      return this.userDetailData.userFeeds.followerCount;
-    },
   },
   props: {
     userDetailData: Object,
@@ -111,11 +111,13 @@ export default {
         if (doubleCheck) {
           this.sendFollow(this.uid);
           alert("팔로우가 취소되었습니다.");
-          this.$emit("followBtnClick");
+          this.isFollow = !this.isFollow;
+          this.numFollowers--;
         }
       } else {
         this.sendFollow(this.uid);
-        this.$emit("followBtnClick");
+        this.isFollow = !this.isFollow;
+        this.numFollowers++;
       }
     },
     moveToFollowings() {

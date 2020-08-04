@@ -42,7 +42,6 @@ export default {
         mode = "following";
       }
       const option = { uid: this.$route.params.uid, mode };
-      console.log(option);
       this.getUserFollowList(option);
     },
   },
