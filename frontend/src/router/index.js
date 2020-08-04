@@ -6,6 +6,7 @@ import SignupView from "@/views/SignupView";
 import PasswordChoiceView from "@/views/user/PasswordChoiceView";
 import PasswordChoiceEmailView from "@/views/user/PasswordChoiceEmailView";
 import UserDetailView from "@/views/user/UserDetailView";
+import UserFollowView from "@/views/user/UserFollowView";
 import UserEditView from "@/views/user/UserEditView";
 import UserProfileEditView from "@/views/user/UserProfileEditView";
 
@@ -56,6 +57,16 @@ const routes = [
     path: "/userdetail/:uid",
     name: "UserDetail",
     component: UserDetailView,
+  },
+  {
+    path: "/followings/:uid",
+    name: "Following",
+    component: UserFollowView,
+  },
+  {
+    path: "/followers/:uid",
+    name: "Follower",
+    component: UserFollowView,
   },
   {
     path: "/user/edit",

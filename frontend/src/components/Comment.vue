@@ -6,7 +6,7 @@
       style="color: #ff6666;"
     >
       <p class="text-left ma-0">
-        <strong>댓글 {{ comments.length }}개 모두 보기</strong>
+        <strong>댓글 {{ commentCount }}개 모두 보기</strong>
       </p>
     </router-link>
     <v-list-item v-if="comments.length !== 0" class="ma-0 pa-0">
@@ -26,7 +26,7 @@
       </router-link>
       <v-list-item-content class="text-left">
         <router-link
-          :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
+          :to="{ name: 'UserDetail', params: { uid: comment.user.uid } }"
           class="text-decoration-none"
         >
           <v-list-item-title class="black--text">{{ comment.user.unick }}</v-list-item-title>
@@ -53,6 +53,7 @@ export default {
   props: {
     fid: Number,
     comments: Array,
+    commentCount: Number,
   },
   data() {
     return {

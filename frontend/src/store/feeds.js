@@ -6,7 +6,7 @@ import SERVER from "@/api/api";
 export default {
   namespaced: true,
   state: {
-    feeds: null,
+    feeds: [],
     userProfileData: null,
     selectedFeed: null,
   },
@@ -15,7 +15,10 @@ export default {
   },
   mutations: {
     SET_FEEDS(state, feeds) {
-      state.feeds = feeds;
+      state.feeds = state.feeds.concat(feeds);
+    },
+    CLEAR_FEEDS(state) {
+      state.feeds = [];
     },
     SET_USERPROFILEDATA(state, userProfileData) {
       state.userProfileData = userProfileData;
@@ -28,16 +31,21 @@ export default {
     fetchFeeds({ commit, rootGetters }) {
       const config = rootGetters["accounts/config"];
       console.log(config);
-      axios
+      return axios
         .get(
           SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
           config
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res.data.feedAll);
           commit("SET_FEEDS", res.data.feedAll);
+          return res.data.feedAll;
         })
         .catch((err) => console.log(err.response));
+    },
+
+    clearFeeds({ commit }) {
+      commit("CLEAR_FEEDS");
     },
 
     getUserPageData({ commit, rootGetters }, uid) {
