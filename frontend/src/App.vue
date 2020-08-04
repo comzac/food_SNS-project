@@ -7,12 +7,19 @@
       </transition>
     </v-main>
     <Signup v-if="$route.name=='Login'" />
+    <Bottom
+      v-if="$route.name!='Login'
+      && $route.name!='Signup'
+      && $route.name!='PasswordChoice'
+      && $route.name!='PasswordChoiceEmail'"
+    />
   </v-app>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Header from "@/components/navbar/Header";
+import Bottom from "@/components/navbar/Bottom";
 import Signup from "@/components/navbar/Signup";
 
 export default {
@@ -20,6 +27,7 @@ export default {
   components: {
     Header,
     Signup,
+    Bottom,
   },
   computed: {
     ...mapGetters("accounts", ["isLoggedIn"]),

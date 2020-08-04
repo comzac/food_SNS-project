@@ -6,7 +6,7 @@ import SERVER from "@/api/api";
 export default {
   namespaced: true,
   state: {
-    feeds: null,
+    feeds: [],
     userProfileData: null,
     selectedFeed: null,
   },
@@ -15,7 +15,10 @@ export default {
   },
   mutations: {
     SET_FEEDS(state, feeds) {
-      state.feeds = feeds;
+      state.feeds = state.feeds.concat(feeds);
+    },
+    CLEAR_FEEDS(state) {
+      state.feeds = [];
     },
     SET_USERPROFILEDATA(state, userProfileData) {
       state.userProfileData = userProfileData;
@@ -25,19 +28,27 @@ export default {
     },
   },
   actions: {
-    fetchFeeds({ commit, rootGetters }) {
+    fetchFeeds({ commit, rootGetters }, fid) {
       const config = rootGetters["accounts/config"];
       console.log(config);
-      axios
+      return axios
         .get(
-          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.pagination +
+            fid,
           config
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res.data.feedAll);
           commit("SET_FEEDS", res.data.feedAll);
+          return res.data.feedAll;
         })
         .catch((err) => console.log(err.response));
+    },
+
+    clearFeeds({ commit }) {
+      commit("CLEAR_FEEDS");
     },
 
     getUserPageData({ commit, rootGetters }, uid) {
@@ -176,19 +187,32 @@ export default {
 
     searchKeyword({ rootGetters }, keyword) {
       console.log(keyword);
+      var state;
+      if (/^#/.test(keyword)) {
+        state = "HASHTAG";
+        keyword = keyword.replace(/^#/g, "");
+      } else {
+        state = "USERID";
+      }
       const config = rootGetters["accounts/config"];
       console.log(
         SERVER.BASE_URL +
           SERVER.ROUTES.feeds.URL +
           SERVER.ROUTES.feeds.search +
-          `/${keyword}`
+          "/" +
+          keyword +
+          "/" +
+          state
       );
       return axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
             SERVER.ROUTES.feeds.search +
-            `/${keyword}`,
+            "/" +
+            keyword +
+            "/" +
+            state,
           config
         )
         .then((res) => {

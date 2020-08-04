@@ -12,6 +12,8 @@ export default {
     confirmCode2: "",
     userSimpleData: {},
     signupData: {},
+    uemail: "",
+    userFollows: null,
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
@@ -60,6 +62,9 @@ export default {
     SET_USERSIMPLEDATA(state, userSimpleData) {
       state.userSimpleData = userSimpleData;
     },
+    SET_UEMAIL(state, email) {
+      state.uemail = email;
+    },
     SET_PAGE(state, page) {
       state.page = page;
       cookies.set("page", page);
@@ -69,6 +74,9 @@ export default {
     },
     SET_SIGNUPDATA(state, signupData) {
       state.signupData = signupData;
+    },
+    SET_USERFOLLOWS(state, followData) {
+      state.userFollows = followData;
     },
     // SET_IDCHECK(state, check) {
     //   state.idChecked = check;
@@ -84,8 +92,14 @@ export default {
     // },
   },
   actions: {
+    setEmail({ commit }, email) {
+      commit("SET_UEMAIL", email);
+    },
     setPage({ commit }, page) {
       commit("SET_PAGE", page);
+    },
+    setCode({ commit }, code) {
+      commit("SET_CODE", code);
     },
     // state signupData 변경
     setSignupData2({ commit }, signupData) {
@@ -324,6 +338,30 @@ export default {
           })
           .catch((err) => console.log(err));
       }
+    },
+    sendFollow({ getters }, uid) {
+      const data = new FormData();
+      data.append("uid", uid);
+      axios
+        .post(
+          SERVER.BASE_URL + SERVER.ROUTES.relations.URL,
+          data,
+          getters.config
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err.response));
+    },
+    getUserFollowList({ commit, getters }, option) {
+      const urlSuffix = `${option.mode}/${option.uid}`;
+      axios
+        .get(
+          SERVER.BASE_URL + SERVER.ROUTES.relations.URL + urlSuffix,
+          getters.config
+        )
+        .then((res) => {
+          commit("SET_USERFOLLOWS", res.data.data);
+        })
+        .catch((err) => console.log(err.response));
     },
   },
 };
