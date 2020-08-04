@@ -18,6 +18,7 @@ export default {
     feeds: {
       URL: "feeds/",
       page: "page/",
+      pagination: "pagination/",
       search: "search",
     },
     comments: {

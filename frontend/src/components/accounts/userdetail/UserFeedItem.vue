@@ -1,13 +1,14 @@
 <template>
   <div>
-    <v-img v-if="!imgData" @click="moveToFeed" :aspect-ratio="1" contain class="grey darken-4" />
+    <v-img v-if="!imgData" :aspect-ratio="1" contain class="grey darken-4" />
     <v-img
       v-if="imgData"
       :aspect-ratio="1"
       contain
-      class="grey lighten-2"
+      class="grey lighten-2 img-link"
       :src="`data:${imgType};base64,${imgData}`"
       :alt="imgName"
+      @click="moveToFeed"
     />
   </div>
 </template>
@@ -48,5 +49,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.img-link {
+  cursor: pointer;
+}
 </style>
