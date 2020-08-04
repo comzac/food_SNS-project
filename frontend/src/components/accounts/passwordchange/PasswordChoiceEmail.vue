@@ -1,6 +1,7 @@
 <template>
   <v-card class="mx-auto" flat max-width="350">
-    <h1 class="text-left ml-3" style="color:#ff6666;">이메일로 찾기</h1>
+    <h1 class="text-left ml-3" style="color:#ff6666;" v-if="isRetrieveIDPage">아이디 찾기</h1>
+    <h1 class="text-left ml-3" style="color:#ff6666;" v-if="!isRetrieveIDPage">이메일로 찾기</h1>
     <br />
     <br />
     <v-text-field
@@ -19,18 +20,23 @@
     <br />
     <br />
     <div>
-      <v-btn
-        color="#ff6666"
-        class="white--text"
-        @click="$router.push({ name: 'PasswordChoice' })"
-      >뒤로가기</v-btn>
+      <v-btn color="#ff6666" class="white--text" @click="$router.go(-1)">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
+        v-if="isRetrieveIDPage"
         :disabled="!emailChecked"
         @click="emailVerification(email)"
         color="#ff6666"
         class="white--text"
       >다음으로</v-btn>
+      <v-btn
+        v-if="!isRetrieveIDPage"
+        :disabled="!emailChecked"
+        @click="emailVerification(email)"
+        color="#ff6666"
+        class="white--text"
+      >다음으로</v-btn>
+
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
@@ -44,8 +50,23 @@ import * as EmailValidator from "email-validator";
 
 export default {
   name: "PasswordChoiceEmailView",
-  created() {
-    this.component = this;
+  data: () => {
+    return {
+      email: "",
+      error: {
+        email: false,
+      },
+      isSubmit: false,
+      component: this,
+      emailChecked: false,
+      overlay: false,
+    };
+  },
+  computed: {
+    isRetrieveIDPage() {
+      if (this.$route.name === "RetrieveID") return true;
+      else return false;
+    },
   },
   watch: {
     email: function () {
@@ -104,17 +125,8 @@ export default {
       });
     },
   },
-  data: () => {
-    return {
-      email: "",
-      error: {
-        email: false,
-      },
-      isSubmit: false,
-      component: this,
-      emailChecked: false,
-      overlay: false,
-    };
+  created() {
+    this.component = this;
   },
 };
 </script>

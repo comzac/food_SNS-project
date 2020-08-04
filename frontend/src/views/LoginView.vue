@@ -31,10 +31,16 @@
           ></v-text-field>
           <div class="text-right">
             <router-link
+              :to="{name: 'RetrieveID'}"
+              class="text-decoration-none mr-2"
+              style="color: #ff6666;"
+            >아이디 찾기</router-link>
+
+            <router-link
               to="/user/password_choice"
               class="text-decoration-none"
               style="color: #ff6666;"
-            >비밀번호를 잊으셨나요?</router-link>
+            >비밀번호 찾기</router-link>
           </div>
           <v-spacer>
             <br />
@@ -81,7 +87,7 @@ export default {
   name: "LoginView",
   components: {},
   methods: {
-    ...mapActions("accounts", ["login"]),
+    ...mapActions("accounts", ["login", "setPage", "setEmail", "setCode"]),
     moveToSignup() {
       this.$router.push({ name: "Signup" });
     },
@@ -94,6 +100,11 @@ export default {
       },
       show1: false,
     };
+  },
+  created() {
+    this.setPage(1);
+    this.setEmail("");
+    this.setCode("");
   },
 };
 </script>

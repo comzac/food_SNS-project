@@ -12,6 +12,7 @@
       required
       color="#ff6666"
       class="mt-10 mb-7"
+      @keypress.enter="verify"
     ></v-text-field>
     <br />
     <br />
@@ -56,7 +57,7 @@ export default {
       const num = Number(this.confirm);
       // console.log(num)
       if (num === this.confirmCode2) {
-        this.$emit("toPasswordChange");
+        this.$emit("moveToConductPage");
       } else {
         alert("인증번호를 확인해주세요.");
       }

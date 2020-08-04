@@ -2,13 +2,13 @@
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <PasswordChoiceEmail v-if="page == '1'" @toEmailVerification="setConfirmCode" />
+        <PasswordChoiceEmail v-if="page == '1' && !uid" @toEmailVerification="setConfirmCode" />
         <PasswordChoiceEmailVerification
-          v-if="page == '2'"
+          v-if="page == '2' && !uid"
           @moveToConductPage="moveToConductPage"
           @pageDown="page='1', setPage(1)"
         />
-        <PasswordChange v-if="page == '3'" @changePassword="doPasswordReset" />
+        <RetrieveIDPage v-if="uid" />
       </v-col>
     </v-row>
   </v-container>
@@ -17,18 +17,18 @@
 <script>
 import cookies from "vue-cookies";
 
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import PasswordChoiceEmail from "@/components/accounts/passwordchange/PasswordChoiceEmail";
 import PasswordChoiceEmailVerification from "@/components/accounts/passwordchange/PasswordChoiceEmailVerification";
-import PasswordChange from "@/components/accounts/passwordchange/PasswordChange";
+import RetrieveIDPage from "@/components/accounts/passwordchange/RetrieveIDPage";
 
 export default {
-  name: "PasswordChoiceEmailView",
+  name: "RetrieveIDEmailView",
   components: {
     PasswordChoiceEmail,
     PasswordChoiceEmailVerification,
-    PasswordChange,
+    RetrieveIDPage,
   },
   data() {
     return {
@@ -38,10 +38,14 @@ export default {
         uemail: this.$store.state.accounts.uemail,
         upw: "",
       },
+      uid: null,
     };
   },
+  computed: {
+    ...mapState("accounts", ["foundUid"]),
+  },
   methods: {
-    ...mapActions("accounts", ["pwreset", "setPage", "setEmail", "setCode"]),
+    ...mapActions("accounts", ["setPage", "setEmail", "setCode", "getUserId"]),
     setConfirmCode(userEmailData) {
       this.userEmailData.uemail = userEmailData.uemail;
       this.setEmail(userEmailData.uemail);
@@ -50,12 +54,15 @@ export default {
       this.setPage(2);
     },
     moveToConductPage() {
-      this.page = "3";
-      this.setPage(3);
-    },
-    doPasswordReset(password) {
-      this.userEmailData.upw = password;
-      this.pwreset(this.userEmailData);
+      const element = this;
+      this.getUserId()
+        .then((res) => {
+          console.log(res);
+          element.uid = res.data.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this.setPage(1);
       this.setEmail("");
       this.setCode("");

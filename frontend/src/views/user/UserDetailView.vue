@@ -1,10 +1,6 @@
 <template>
   <div>
-    <UserProfile
-      v-if="userProfileData"
-      :userDetailData="userProfileData"
-      @followBtnClick="getUserPageData($route.params.uid)"
-    />
+    <UserProfile v-if="userProfileData" :userDetailData="userProfileData" />
     <UserFeedList v-if="userProfileData" :userDetailData="userProfileData" />
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>

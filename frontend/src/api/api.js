@@ -12,6 +12,7 @@ export default {
       getConfirmCode: "e-valid",
       pwcheck: "pw-dup",
       pwreset: "pw-reset",
+      getUserId: "uid-find",
       logout: "logout",
       simple: "simple",
     },
