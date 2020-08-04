@@ -191,6 +191,30 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+    idCheck2({ commit }, uid) {
+      if (uid === "") {
+        alert("아이디를 입력하세요");
+        commit("SET_IDCHECK", false);
+        return false;
+      }
+      return axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.idCheck +
+            uid
+        )
+        .then((res) => {
+          if (res.data === "success") {
+            alert("가입되지 않은 아이디입니다.");
+            return true;
+          } else {
+            alert("가입된 아이디입니다.");
+            return false;
+          }
+        })
+        .catch((err) => console.log(err.response));
+    },
 
     nickCheck(context, unick) {
       if (unick === "") {
@@ -297,7 +321,7 @@ export default {
           console.log("res : ", res);
           if (res.data === "success") {
             alert("비밀번호가 변경되었습니다.");
-            router.push({ name: "Home" });
+            router.push({ name: "Login" });
           } else {
             alert("변경 실패");
           }
