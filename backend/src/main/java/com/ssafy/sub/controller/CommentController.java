@@ -2,6 +2,7 @@ package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Comment;
 import com.ssafy.sub.dto.UserSimple;
+import com.ssafy.sub.model.response.CommentResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.repo.CommentRepository;
 import com.ssafy.sub.service.CommentService;
+import com.ssafy.sub.service.LikeService;
 import com.ssafy.sub.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,41 +41,60 @@ public class CommentController {
 	private CommentService commentService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private LikeService likeService;
 	 
 	// 1. 댓글 list 조회
 	@ApiOperation(value = "댓글 조회", response = Result.class)
 	@GetMapping(value="/{fid}")
-	public ResponseEntity<Result> commentList(@PathVariable int fid) {
+	public ResponseEntity<Result> commentList(@PathVariable int fid, Authentication authentication) {
 		System.out.println("log - commentList");
+		int loginUserId = Integer.parseInt(authentication.getName());
 		
+		List<CommentResult> commentResultList = new ArrayList<CommentResult>();
 		List<Comment> commentList = new ArrayList<Comment>();
 		commentList = commentService.commentList(fid);
+		
 		// userSimple
 		UserSimple user; String uid;
+		CommentResult commentResult;
+		Long commentLikeCount; boolean isLike;
 		for(Comment c: commentList) {
+			commentResult = new CommentResult();
+			commentLikeCount=0L; isLike=false;
+			
 			uid = userService.findById(c.getUid()).getUid();
 			c.setUser(userService.getSimpleUser(uid));
+			commentResult.setComment(c);
+			
+			commentLikeCount = likeService.countCommentLike(c.getId());
+			commentResult.setLikeCount(commentLikeCount);
+			
+			isLike = likeService.isCommentLiked(c.getId(), loginUserId);
+			commentResult.setIslike(isLike);
+			
+			commentResultList.add(commentResult);
 		}
 		
-		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_COMMENTS, commentList);
+		Result result = new Result(StatusCode.OK, ResponseMessage.READ_ALL_COMMENTS, commentResultList);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 	
-	   // 2. 댓글 등록
-	   @ApiOperation(value = "댓글 등록", response = Result.class)
-	   @PostMapping(value="/")
-	//   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
-	   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
-	      System.out.println("log - commentInsert");
-	      
-	      String uid = authentication.getName();
-	      comment.setUid(Integer.parseInt(uid));
-	      comment.setRegdate(new Date());
-	      Comment insertedComment = commentService.commentInsert(comment); 
-	      
-	      Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
-	      return new ResponseEntity<Result>(result, HttpStatus.OK);
-	   }
+   // 2. 댓글 등록
+   @ApiOperation(value = "댓글 등록", response = Result.class)
+   @PostMapping(value="/")
+//   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
+   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
+      System.out.println("log - commentInsert");
+      
+      String uid = authentication.getName();
+      comment.setUid(Integer.parseInt(uid));
+      comment.setRegdate(new Date());
+      Comment insertedComment = commentService.commentInsert(comment); 
+      
+      Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
+      return new ResponseEntity<Result>(result, HttpStatus.OK);
+   }
 	
 	// 3. 댓글 수정
 	@ApiOperation(value = "댓글 수정", response = Result.class)
