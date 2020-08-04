@@ -21,7 +21,7 @@
     <br />
     <br />
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$router.go(-1)">뒤로가기</v-btn>
+      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         v-if="isRetrieveIDPage"
@@ -55,7 +55,7 @@ export default {
     return {
       email: "",
       error: {
-        email: false,
+        email: "",
       },
       isSubmit: false,
       component: this,
