@@ -176,19 +176,32 @@ export default {
 
     searchKeyword({ rootGetters }, keyword) {
       console.log(keyword);
+      var state;
+      if (/^#/.test(keyword)) {
+        state = "HASHTAG";
+        keyword = keyword.replace(/^#/g, "");
+      } else {
+        state = "USERID";
+      }
       const config = rootGetters["accounts/config"];
       console.log(
         SERVER.BASE_URL +
           SERVER.ROUTES.feeds.URL +
           SERVER.ROUTES.feeds.search +
-          `/${keyword}`
+          "/" +
+          keyword +
+          "/" +
+          state
       );
       return axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
             SERVER.ROUTES.feeds.search +
-            `/${keyword}`,
+            "/" +
+            keyword +
+            "/" +
+            state,
           config
         )
         .then((res) => {

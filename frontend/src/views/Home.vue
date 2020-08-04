@@ -3,20 +3,22 @@
     <div class="home" v-for="(feed, i) in feeds" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
-    <v-hover v-slot:default="{ hover }" open-delay="200">
+    <transition name="slide-fade">
       <v-btn
-        :color="hover ? '#ef5656' : '#ff6666'"
-        :elevation="hover ? 24 : 2"
+        v-show="scrollY"
+        color="#ff6666"
+        elevation="24"
         fixed
         small
         bottom
         right
         fab
         @click="top()"
+        class="mb-14"
       >
         <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
       </v-btn>
-    </v-hover>
+    </transition>
   </div>
 </template>
 
@@ -36,6 +38,7 @@ export default {
   data() {
     return {
       // feed 를 page 를 증가시키면서 하나씩 받아와야 할 듯
+      scrollY: false,
       page: 1,
       feed_data: [
         {
@@ -64,6 +67,11 @@ export default {
   methods: {
     ...mapActions("feeds", ["fetchFeeds"]),
     infiniteScroll() {
+      if (window.scrollY) {
+        this.scrollY = true;
+      } else {
+        this.scrollY = false;
+      }
       if (
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 30
@@ -95,3 +103,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 1s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

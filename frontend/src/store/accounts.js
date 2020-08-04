@@ -12,6 +12,7 @@ export default {
     confirmCode2: "",
     userSimpleData: {},
     signupData: {},
+    uemail: "",
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
@@ -60,6 +61,9 @@ export default {
     SET_USERSIMPLEDATA(state, userSimpleData) {
       state.userSimpleData = userSimpleData;
     },
+    SET_UEMAIL(state, email) {
+      state.uemail = email;
+    },
     SET_PAGE(state, page) {
       state.page = page;
       cookies.set("page", page);
@@ -84,8 +88,14 @@ export default {
     // },
   },
   actions: {
+    setEmail({ commit }, email) {
+      commit("SET_UEMAIL", email);
+    },
     setPage({ commit }, page) {
       commit("SET_PAGE", page);
+    },
+    setCode({ commit }, code) {
+      commit("SET_CODE", code);
     },
     // state signupData 변경
     setSignupData2({ commit }, signupData) {
