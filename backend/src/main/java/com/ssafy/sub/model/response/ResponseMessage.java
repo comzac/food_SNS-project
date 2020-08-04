@@ -9,6 +9,7 @@ public class ResponseMessage {
     public static final String LOGOUT_FAIL = "로그아웃 실패";
     
     public static final String READ_ALL_USERS = "모든 유저 조회 성공";
+    public static final String READ_SEARCHED_USERS = "검색 유저 조회 성공";
     public static final String READ_USER = "회원 정보 조회 성공";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String ALREADY_USER = "이미 존재하는 Email입니다.";
@@ -38,6 +39,7 @@ public class ResponseMessage {
     public static final String FAIL_CREATE_HASHTAG = "해시태그 생성 실패";
     public static final String UPDATE_HASHTAG = "해시태그 수정 성공";
     public static final String FAIL_UPDATE_HASHTAG = "해시태그 수정 실패";
+    public static final String READ_SEARCHED_HASHTAG = "검색 해시태그 조회 성공";
 
     public static final String NOT_FOUND_FOLLOW = "팔로우 정보 조회 실패";
     public static final String CREATE_FOLLOWER = "팔로워 생성 성공";

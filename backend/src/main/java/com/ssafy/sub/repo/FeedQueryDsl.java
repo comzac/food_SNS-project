@@ -2,12 +2,9 @@ package com.ssafy.sub.repo;
 
 import java.util.List;
 
-import org.apache.ibatis.jdbc.SelectBuilder;
-import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.QDBFile;
@@ -77,7 +74,7 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 				.fetch();
 	}
 
-	public List<Feed> search(String keyword, String state) {
+	public List<Feed> searchByHashtag(String keyword) {
 		QFeed feed = QFeed.feed;
 		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
 		QHashtag hashtag = QHashtag.hashtag;
@@ -91,6 +88,17 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 								.where(hashtag.content.like(keyword))))
 				.fetch();
 	}
+
+	public List<Feed> searchByUserID(int uid) {
+		QFeed feed = QFeed.feed;
+		
+		return from(feed)
+				.where(feed.uid.eq(uid))
+				.orderBy(feed.editdate.desc())
+				.orderBy(feed.regdate.desc())
+						.fetch();
+	}
+
 
 
 	

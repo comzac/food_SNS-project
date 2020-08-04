@@ -23,6 +23,7 @@ import com.ssafy.sub.repo.FeedHashtagQueryDsl;
 import com.ssafy.sub.repo.FeedHashtagRepository;
 import com.ssafy.sub.repo.FeedQueryDsl;
 import com.ssafy.sub.repo.FeedRepository;
+import com.ssafy.sub.repo.HashtagQueryDsl;
 import com.ssafy.sub.repo.HashtagRepository;
 
 @Service
@@ -32,6 +33,8 @@ public class FeedServiceImpl implements FeedService {
 	FeedRepository feedRepository;
 	@Autowired
 	HashtagRepository hashtagRepository;
+	@Autowired
+	HashtagQueryDsl hashtagQueryDsl;
 	@Autowired
 	FeedHashtagRepository feedHashtagRepository;
 	@Autowired
@@ -231,8 +234,18 @@ public class FeedServiceImpl implements FeedService {
 	}
 
 	@Override
-	public List<Feed> search(String keyword, String state) {
-		return feedQueryDsl.search(keyword, state);
+	public List<Feed> searchByHashtag(String keyword) {
+		return feedQueryDsl.searchByHashtag(keyword);
+	}
+
+	@Override
+	public List<Feed> searchByUserID(int uid) {
+		return feedQueryDsl.searchByUserID(uid);
+	}
+
+	@Override
+	public List<Hashtag> findHashtagByKeyword(String keyword) {
+		return hashtagQueryDsl.findHashtagByKeyword(keyword);
 	}
 
 

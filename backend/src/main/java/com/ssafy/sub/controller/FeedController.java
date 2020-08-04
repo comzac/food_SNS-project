@@ -233,26 +233,104 @@ public class FeedController {
 
 	// 2. list 검색 ( )
 	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
-	@GetMapping(value = "/search/{keyword}/{state}")
-	public ResponseEntity<Result> feedListSearch(@PathVariable String keyword, @PathVariable String state) {
+	@GetMapping(value = "/search/{keyword}")
+	public ResponseEntity<FeedAllResult> feedListSearch(Authentication authentication, @PathVariable String keyword) {
 		System.out.println("log - feedListSearch");
-		System.out.println("keyword");
+		System.out.println(keyword);
+		int uid = Integer.parseInt(authentication.getName());
+		String loginUserId = authentication.getName();
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>(); 
 
+		List<Feed> feedList = feedService.searchByHashtag(keyword);
+//		switch(state) {
+//		case "HASHTAG":
+//			feedList = feedService.searchByHashtag(keyword);			
+//			break;
+//		case "USERID":
+//			int findUid = userService.findByUid(keyword).getId();
+//			feedList = feedService.searchByUserID(findUid);			
+//			break;
+//		}
+
+		User user;
+		UserSimple userSimple;
+		Feed feed;
+		FeedAll feedAll;
+		int fid;
+		for (int i = 0; i < feedList.size(); i++) {
+			feedAll = new FeedAll();
+
+			// feed 넣기
+			feed = feedService.feedDetail(feedList.get(i).getId());
+			feedAll.setFeed(feed);
+			fid = feed.getId();
+
+			// user이름 조회
+			user = userService.findById(feed.getUid());
+			userSimple = userService.getSimpleUser(user.getUid()); // user 탈퇴하면 어떻게 처리할건지
+			feedAll.setUser(userSimple);
+
+			// comment
+			List<Comment> commentList = commentService.commentList(fid);
+			feedAll.setComment(commentList);
+
+			// hashtag
+			List<Hashtag> hashtagList = feedService.findFeedHashtagList(fid);
+			feedAll.setHashtag(hashtagList);
+
+			// like
+			boolean like = likeService.isFeedLiked(fid, uid);
+			feedAll.setLike(like);
+
+			// likeCount
+			int likeCount = likeService.feedLikeUserList(fid).size();
+			feedAll.setLikeCount(likeCount);
+
+			// 내 피드인지 여부
+			boolean mypage = true;
+			if (feed.getUid() != Integer.parseInt(loginUserId)) {
+				mypage = false;
+			}
+			feedAll.setMypage(mypage);
+
+			feedAllList.add(feedAll);
+		}
+		
+		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
+		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
+	}
+	
+	
+	// 2-1. list 검색 ( )
+	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
+	@GetMapping(value = "/search/temp/{keyword}/{state}")
+	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword, @PathVariable String state) {
+		System.out.println(keyword);
+		List<String> list =new ArrayList<String>();
+		Result result = null;
 		switch(state) {
 		case "HASHTAG":
-			
+			List<Hashtag> hashtagList = feedService.findHashtagByKeyword(keyword);
+			for (Hashtag hashtag : hashtagList) {
+				System.out.println(hashtag.getContent());
+				list.add(hashtag.getContent());
+			}
+			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_HASHTAG, list);
 			break;
 		case "USERID":
-			
+			List<User> userList = userService.findUserIdByKeyword(keyword);
+			for (User user : userList) {
+				System.out.println(user.getUid());
+				list.add(user.getUid());
+			}
+			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_USERS, list);
 			break;
 		}
-		List<Feed> FeedList = null;
-		FeedList = feedService.search(keyword, state);
-
-		Result result = new Result(StatusCode.CREATED, "검색", FeedList);
+		
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
-
+	
+	
 	// 3. list 추가
 	@ApiOperation(value = "feedList에 정보를 추가한다", response = Result.class)
 	@PostMapping
