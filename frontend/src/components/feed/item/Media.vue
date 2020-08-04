@@ -6,10 +6,12 @@
         <video
           v-if="file.type === 'video/mp4'"
           :src="`data:${file.type};base64,${file.data}`"
-          controls
           type="video/mp4"
           class="my-auto"
           width="100%"
+          autoplay
+          loop
+          muted
         ></video>
         <v-img
           v-if="file.type !== 'video/mp4'"

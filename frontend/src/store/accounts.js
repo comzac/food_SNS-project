@@ -14,6 +14,7 @@ export default {
     signupData: {},
     uemail: "",
     userFollows: null,
+    foundUid: null,
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
@@ -77,6 +78,9 @@ export default {
     },
     SET_USERFOLLOWS(state, followData) {
       state.userFollows = followData;
+    },
+    SET_FOUNDUID(state, uid) {
+      state.foundUid = uid;
     },
     // SET_IDCHECK(state, check) {
     //   state.idChecked = check;
@@ -299,6 +303,24 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    getUserId({ state, commit }) {
+      commit;
+      const data = new FormData();
+      data.append("uemail", state.uemail);
+      return axios.post(
+        SERVER.BASE_URL + SERVER.ROUTES.accounts.getUserId,
+        data,
+        null
+      );
+      // .then((res) => {
+      //   commit("SET_FOUNDUID", res.data.data);
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });
+    },
+
     getUserSimpleData({ state, commit, getters }) {
       if (
         Object.keys(state.userSimpleData).length === 0 &&

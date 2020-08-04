@@ -40,7 +40,7 @@ export default {
           config
         )
         .then((res) => {
-          // console.log(res.data.feedAll);
+          console.log(res);
           commit("SET_FEEDS", res.data.feedAll);
           return res.data.feedAll;
         })
@@ -184,14 +184,14 @@ export default {
           .catch((err) => console.error(err));
       }
     },
-
     searchKeyword({ rootGetters }, keyword) {
       console.log(keyword);
       var state;
       if (/^#/.test(keyword)) {
         state = "HASHTAG";
-        keyword = keyword.replace(/^#/g, "");
+        keyword = keyword.replace(/^#/g, "").replace(/ /g, "");
       } else {
+        keyword = keyword.replace(/ /g, "");
         state = "USERID";
       }
       const config = rootGetters["accounts/config"];
@@ -199,7 +199,7 @@ export default {
         SERVER.BASE_URL +
           SERVER.ROUTES.feeds.URL +
           SERVER.ROUTES.feeds.search +
-          "/" +
+          "/temp/" +
           keyword +
           "/" +
           state
@@ -209,7 +209,7 @@ export default {
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
             SERVER.ROUTES.feeds.search +
-            "/" +
+            "/temp/" +
             keyword +
             "/" +
             state,
@@ -217,7 +217,31 @@ export default {
         )
         .then((res) => {
           console.log("keyword : ", res);
-          return res;
+          return res.data;
+        })
+        .catch((err) => console.error("error : ", err));
+    },
+    searchedKeyword({ rootGetters }, keyword) {
+      const config = rootGetters["accounts/config"];
+      console.log(
+        SERVER.BASE_URL +
+          SERVER.ROUTES.feeds.URL +
+          SERVER.ROUTES.feeds.search +
+          "/" +
+          keyword
+      );
+      return axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.search +
+            "/" +
+            keyword,
+          config
+        )
+        .then((res) => {
+          console.log("keyword : ", res);
+          return res.data;
         })
         .catch((err) => console.error("error : ", err));
     },
