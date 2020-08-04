@@ -28,12 +28,15 @@ export default {
     },
   },
   actions: {
-    fetchFeeds({ commit, rootGetters }) {
+    fetchFeeds({ commit, rootGetters }, fid) {
       const config = rootGetters["accounts/config"];
       console.log(config);
       return axios
         .get(
-          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.pagination +
+            fid,
           config
         )
         .then((res) => {
@@ -184,19 +187,32 @@ export default {
 
     searchKeyword({ rootGetters }, keyword) {
       console.log(keyword);
+      var state;
+      if (/^#/.test(keyword)) {
+        state = "HASHTAG";
+        keyword = keyword.replace(/^#/g, "");
+      } else {
+        state = "USERID";
+      }
       const config = rootGetters["accounts/config"];
       console.log(
         SERVER.BASE_URL +
           SERVER.ROUTES.feeds.URL +
           SERVER.ROUTES.feeds.search +
-          `/${keyword}`
+          "/" +
+          keyword +
+          "/" +
+          state
       );
       return axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
             SERVER.ROUTES.feeds.search +
-            `/${keyword}`,
+            "/" +
+            keyword +
+            "/" +
+            state,
           config
         )
         .then((res) => {

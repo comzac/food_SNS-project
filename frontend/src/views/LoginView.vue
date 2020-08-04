@@ -18,6 +18,7 @@
             autocorrect="off"
           ></v-text-field>
           <v-text-field
+            append-outer-icon
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
             :type="show1 ? 'text' : 'password'"
