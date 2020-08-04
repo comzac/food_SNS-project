@@ -52,7 +52,7 @@ public class RelationServiceImpl implements RelationService {
 	
 	@Override
 	public Relationship followCheck(int uid, int rid) {
-		return relationQueryDsl.findRelationshipFB(rid, uid);
+		return relationQueryDsl.findRelationshipFB(uid, rid);
 	}
 
 //   @Override

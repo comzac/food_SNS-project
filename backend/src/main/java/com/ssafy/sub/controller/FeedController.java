@@ -67,8 +67,8 @@ public class FeedController {
 	
 	// 1. list 조회
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
-	@GetMapping(value="/page")
-	public ResponseEntity feedHomePage(Authentication authentication) {
+	@GetMapping(value="/pagination/{lastFid}")
+	public ResponseEntity feedHomePage(@PathVariable int lastFid, Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
 		
 		int uid = Integer.parseInt(authentication.getName());
@@ -76,7 +76,9 @@ public class FeedController {
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
 		
-		feedList = feedService.feedHomePageList();
+		int feedLimit = 5;
+//		feedList = feedService.feedHomePageList();
+		feedList = feedService.feedPagenation(0L, lastFid*1L, feedLimit);
 
 		User user; UserSimple userSimple; Feed feed; 
 		FeedAll feedAll; 
