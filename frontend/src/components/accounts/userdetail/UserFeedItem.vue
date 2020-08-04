@@ -8,7 +8,6 @@
       class="grey lighten-2 img-link"
       :src="`data:${imgType};base64,${imgData}`"
       :alt="imgName"
-      @click="moveToFeed"
     />
     <video
       v-if="imgType=='video/mp4'"
@@ -17,6 +16,9 @@
       :alt="imgName"
       width="100%"
       height="100%"
+      autoplay
+      loop
+      muted
     ></video>
   </div>
 </template>

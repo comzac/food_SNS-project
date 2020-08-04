@@ -33,6 +33,7 @@
                 @click:append="createComment(commentData)"
                 @keyup.enter="createComment(commentData)"
                 hide-details
+                autocomplete="off"
               ></v-text-field>
             </v-row>
             <div v-for="comment in comments.comments" :key="comment.id">

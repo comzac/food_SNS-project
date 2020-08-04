@@ -16,6 +16,9 @@
       :alt="imgName"
       width="100%"
       height="100%"
+      autoplay
+      loop
+      muted
     ></video>
   </div>
 </template>

@@ -16,6 +16,7 @@
             color="#ff6666"
             autocapitalize="off"
             autocorrect="off"
+            autocomplete="off"
           ></v-text-field>
           <v-text-field
             append-outer-icon
@@ -28,6 +29,7 @@
             label="비밀번호를 입력하세요."
             required
             color="#ff6666"
+            autocomplete="off"
           ></v-text-field>
           <div class="text-right">
             <router-link
