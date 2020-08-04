@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.core.QueryFactory;
+import com.querydsl.jpa.JPAExpressions;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.QDBFile;
 import com.ssafy.sub.dto.QFeed;
+import com.ssafy.sub.dto.QFeedHashtag;
+import com.ssafy.sub.dto.QHashtag;
 import com.ssafy.sub.dto.QRelationship;
 
 
@@ -71,5 +73,33 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 				.orderBy(feed.regdate.desc())
 				.fetch();
 	}
+
+	public List<Feed> searchByHashtag(String keyword) {
+		QFeed feed = QFeed.feed;
+		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
+		QHashtag hashtag = QHashtag.hashtag;
+		
+		return from(feed)
+				.leftJoin(feedHashtag)
+				.on(feed.id.eq(feedHashtag.feedHashtagkey.fid))
+				.where(feedHashtag.feedHashtagkey.hid
+						.in(JPAExpressions.select(hashtag.id).
+								from(hashtag)
+								.where(hashtag.content.like(keyword))))
+				.fetch();
+	}
+
+	public List<Feed> searchByUserID(int uid) {
+		QFeed feed = QFeed.feed;
+		
+		return from(feed)
+				.where(feed.uid.eq(uid))
+				.orderBy(feed.editdate.desc())
+				.orderBy(feed.regdate.desc())
+						.fetch();
+	}
+
+
+
 	
 }

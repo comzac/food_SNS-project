@@ -46,6 +46,12 @@ public interface FeedService {
 	
 	public List<Hashtag> findFeedHashtagList(int fid);
 
-	List<Feed> feedPagenation(Long pageNum, Long fid, int limit);
+	public List<Feed> searchByHashtag(String keyword);
+
+	public List<Feed> searchByUserID(int uid);
+
+	public List<Hashtag> findHashtagByKeyword(String keyword);
+
+	public List<Feed> feedPagenation(Long pageNum, Long fid, int limit);
 
 }

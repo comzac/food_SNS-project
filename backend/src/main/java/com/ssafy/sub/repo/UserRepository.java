@@ -1,5 +1,6 @@
 package com.ssafy.sub.repo;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -11,7 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import com.ssafy.sub.dto.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -21,6 +21,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUemail(String uemail);
 	Long deleteByUid(String uid);
 
+	@Query("Select u from User u where uid like CONCAT(:keyword,'%')")
+	List<User> findUserIdByKeyword(@Param("keyword") String keyword);
+	
 	@Transactional
     @Modifying
     @Query("UPDATE User u SET u.upw = :upw WHERE u.uemail = :uemail")

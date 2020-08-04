@@ -69,12 +69,28 @@ public class CommentLikeQueryDsl extends QuerydslRepositorySupport {
 	public List<User> findAllByUserLike(int cid) {
 		QUser user = QUser.user;
 		QCommentLike commentLike = QCommentLike.commentLike;
-		System.out.println("find feed who liked "+cid);
+//		System.out.println("find feed who liked "+cid);
 		return from(user)
 				.leftJoin(commentLike)
 				.on(user.id.eq(commentLike.commentLikeKey.uid))
 				.where(commentLike.commentLikeKey.cid.eq(cid))
 				.distinct()
 				.fetch();
+	}
+	
+	public Long countByCid(int cid) {
+		QCommentLike commentLike = QCommentLike.commentLike;
+		return from(commentLike)
+				.where(commentLike.commentLikeKey.cid.eq(cid))
+				.fetchCount();
+	}
+	
+	public CommentLike findByUidAndCid(int uid, int cid) {
+		QCommentLike commentLike = QCommentLike.commentLike;
+		return from(commentLike)
+				.where(commentLike.commentLikeKey.uid.eq(uid)
+						.and(commentLike.commentLikeKey.cid.eq(cid)))
+				.distinct()
+				.fetchOne();
 	}
 }

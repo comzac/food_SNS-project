@@ -1,5 +1,6 @@
 package com.ssafy.sub.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +143,10 @@ public class UserService {
 	public int userUpdate(User user) {
 		userRepository.save(user);
 		return 1;
+	}
+
+	public List<User> findUserIdByKeyword(String keyword) {
+		return userRepository.findUserIdByKeyword(keyword);
 	}
 	
 }

@@ -85,4 +85,9 @@ public class LikeServiceImpl implements LikeService {
 		return (int) commentLikeQueryDsl.commentLikeDelete(cid, uid);
 	}
 
+	@Override
+	public Long countCommentLike(int cid) {
+		return commentLikeQueryDsl.countByCid(cid);
+	}
+
 }
