@@ -1,6 +1,7 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -328,22 +329,31 @@ public class FeedController {
 	@GetMapping(value = "/search/temp/{keyword}/{state}")
 	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword, @PathVariable String state) {
 		System.out.println(keyword);
-		List<String> list =new ArrayList<String>();
+		List<HashMap<String, Long>> list =new ArrayList<HashMap<String,Long>>();
 		Result result = null;
 		switch(state) {
 		case "HASHTAG":
 			List<Hashtag> hashtagList = feedService.findHashtagByKeyword(keyword);
 			for (Hashtag hashtag : hashtagList) {
 				System.out.println(hashtag.getContent());
-				list.add(hashtag.getContent());
+				String hashContent = hashtag.getContent();
+				Long cnt = feedService.countFeedByHashtag(hashtag.getId());
+				HashMap<String, Long> map = new HashMap<String, Long>();
+				map.put(hashContent, cnt);
+				list.add(map);
 			}
 			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_HASHTAG, list);
 			break;
 		case "USERID":
 			List<User> userList = userService.findUserIdByKeyword(keyword);
 			for (User user : userList) {
-				System.out.println(user.getUid());
-				list.add(user.getUid());
+				int user_id = user.getId();
+				String user_uid = user.getUid();
+				System.out.println(user_id);
+				Long cnt = feedService.countFeedByUser(user_id);
+				HashMap<String, Long> map = new HashMap<String, Long>();
+				map.put(user_uid, cnt);
+				list.add(map);
 			}
 			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_USERS, list);
 			break;

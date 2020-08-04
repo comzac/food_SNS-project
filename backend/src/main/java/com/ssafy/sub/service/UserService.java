@@ -106,8 +106,8 @@ public class UserService {
 		return userRepository.findByUemail(uemail);
 	}
 
-	public int pwreset(String upw, String uemail) {
-		return userRepository.updateUpw(upw, uemail);
+	public int pwreset(String upw, String uid) {
+		return userRepository.updateUpw(upw, uid);
 	}
 	
 	
@@ -123,7 +123,6 @@ public class UserService {
 	}
 
 	public User updateNick(int id, String unick) {
-		
 		int ret = userRepository.updateUnick(id, unick);
 		User user = userRepository.findById(id);
 
@@ -147,6 +146,10 @@ public class UserService {
 
 	public List<User> findUserIdByKeyword(String keyword) {
 		return userRepository.findUserIdByKeyword(keyword);
+	}
+	
+	public User findByUemail(String uemail) {
+		return userRepository.findByUemail(uemail);
 	}
 	
 }

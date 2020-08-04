@@ -59,7 +59,6 @@ public class UserSecurityController {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserRepository userRepository;
-	private final ResponseService responseService;
 	private final UserService userService;
 	
 	@Autowired
@@ -261,17 +260,31 @@ public class UserSecurityController {
 		}
 	}
 
-	@ApiOperation(value = "유저 이메일을 가지고 비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
+	@ApiOperation(value = "유저 아이디를 이용해 비밀번호 변경. 성공 시 success, 실패시 fail을 반환한다.", response = String.class)
 	@PutMapping(value = "/pw-reset")
 	public ResponseEntity<String> pwreset(@RequestBody HashMap<String, String> userData) {
 		System.out.println("log - pwreset");
 
-		int ret = userService.pwreset(passwordEncoder.encode(userData.get("upw")), userData.get("uemail"));
+		int ret = userService.pwreset(passwordEncoder.encode(userData.get("upw")), userData.get("uid"));
 
 		if (ret == 0) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+	}
+	
+	@ApiOperation(value = "회원 아이디 찾기", notes = "유저 이메일로 아이디를 찾는다")
+	@PostMapping(value = "/uid-find")
+	public ResponseEntity deleteUser(@RequestBody HashMap<String, String> userData) {
+		System.out.println("log - uid find");
+
+		User user = userService.findByUemail(userData.get("uemail"));
+
+		if (user!=null) {
+			return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_USER, user.getUid()), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Result>(new Result(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER, null), HttpStatus.NOT_FOUND);
 		}
 	}
 
