@@ -20,11 +20,13 @@
         </v-list-item-content>
       </v-list-item>
     </v-row>
-    <v-divider :key="index"></v-divider>
+    <v-divider></v-divider>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Notification",
   props: {
@@ -37,7 +39,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions("notifications", ["readNotification"]),
     confirmNotification() {
+      this.readNotification(this.item.id);
       if (this.item.state === 1) {
         this.$router.push({
           name: "UserDetail",
@@ -47,9 +51,6 @@ export default {
         this.$router.push({ name: "FeedView", params: { fid: this.item.fid } });
       }
     },
-  },
-  craeted() {
-    console.log(this.item);
   },
 };
 </script>
