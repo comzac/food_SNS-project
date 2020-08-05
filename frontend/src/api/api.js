@@ -15,6 +15,7 @@ export default {
       getUserId: "uid-find",
       logout: "logout",
       simple: "simple",
+      googleLogin: "oauth2/authorization/google",
     },
     feeds: {
       URL: "feeds/",
