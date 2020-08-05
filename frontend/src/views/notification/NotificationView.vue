@@ -11,10 +11,10 @@
         </div>-->
         <div>
           <template v-for="item in nonReadNotification">
-            <Notification :color="C8F9FF" :key="item.id" :item="item" />
+            <NonReadNotification :key="item.id" :item="item" />
           </template>
           <template v-for="item in readNotification">
-            <Notification :color="FFFFFF" :key="item.id" :item="item" />
+            <Notification :key="item.id" :item="item" />
           </template>
         </div>
       </v-list>
@@ -24,6 +24,7 @@
 
 <script>
 import Notification from "@/components/notifications/Notification";
+import NonReadNotification from "@/components/notifications/NonReadNotification";
 
 import { mapActions } from "vuex";
 
@@ -31,6 +32,7 @@ export default {
   name: "NotificationView",
   components: {
     Notification,
+    NonReadNotification,
   },
   data() {
     return {
@@ -55,9 +57,9 @@ export default {
     ...mapActions("notifications", ["getNotifications"]),
   },
   created() {
-    console.log(this.$store);
+    // console.log(this.$store);
     this.getNotifications().then((res) => {
-      console.log(res);
+      // console.log(res);
       this.nonReadNotification = res.nonReadNotification;
       this.readNotification = res.readNotification;
     });

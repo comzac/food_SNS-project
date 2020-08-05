@@ -71,5 +71,19 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    readNotification({ rootGetters }, notifyId) {
+      const config = rootGetters["accounts/config"];
+
+      axios
+        .get(
+          SERVER.BASE_URL + SERVER.ROUTES.notifications.URL + notifyId,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err.response));
+    },
   },
 };
