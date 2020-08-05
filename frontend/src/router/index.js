@@ -21,6 +21,8 @@ import FeedView from "@/views/feed/FeedView";
 import FeedCreateView from "@/views/feed/FeedCreateView";
 import CommentView from "@/views/feed/CommentView";
 
+import Liquor from "@/views/LiquorView";
+
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
 
@@ -121,6 +123,11 @@ const routes = [
   //   name: "FeedItem2",
   //   component: FeedItem2,
   // },
+  {
+    path: "/liquor",
+    name: "Liquor",
+    component: Liquor,
+  },
 ];
 
 const router = new VueRouter({
