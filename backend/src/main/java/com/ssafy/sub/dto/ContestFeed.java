@@ -36,5 +36,7 @@ public class ContestFeed {
 	private String content;
 	
 	private Date regdate;
+	
+	private int likeCount;
 
 }
