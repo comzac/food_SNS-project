@@ -28,7 +28,10 @@ export default {
     },
   },
   mutations: {
-    SET_NOTIFICATION(state, notifications) {
+    SET_NONREADNOTIFICATION(state, notifications) {
+      state.notifications = notifications;
+    },
+    SET_READNOTIFICATION(state, notifications) {
       state.notifications = notifications;
     },
     SET_NOTIFICATIONCOUNT(state, count) {
@@ -53,7 +56,7 @@ export default {
     getNotifications({ rootGetters, commit }) {
       const config = rootGetters["accounts/config"];
 
-      axios
+      return axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.notifications.URL +
@@ -61,8 +64,10 @@ export default {
           config
         )
         .then((res) => {
-          console.log(res);
-          commit("SET_NOTIFICATION", res.data.data);
+          console.log(res.data.data);
+          commit("SET_NONREADNOTIFICATION", res.data.data.nonReadNotification);
+          commit("SET_READNOTIFICATION", res.data.data.readNotification);
+          return res.data.data;
         })
         .catch((err) => console.log(err.response));
     },

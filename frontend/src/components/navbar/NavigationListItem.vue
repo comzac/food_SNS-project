@@ -25,6 +25,7 @@ export default {
   },
   created() {
     const store = this.$store;
+    // console.log(store);
     if (this.listItem.title === "Notification") {
       setInterval(function () {
         store.dispatch("notifications/fetchNotifications");
