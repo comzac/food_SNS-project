@@ -4,7 +4,7 @@
       <!-- <v-subheader v-if="item.headers" :key="item.header">{{ item.headers }}</v-subheader> -->
 
       <v-list-item :key="item.title" ripple @click="confirmNotification">
-        <v-avatar class="mr-5" color="teal" size="40">
+        <v-avatar class="ml-3 mr-5" color="teal" size="40">
           <span class="white--text headline">SM</span>
         </v-avatar>
         <v-list-item-content>
