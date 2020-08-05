@@ -109,7 +109,7 @@ export default {
       },
       {
         id: "4",
-        link: { name: "" },
+        link: { name: "NotificationView" },
         icon: "mdi-bell",
         title: "Notification",
       },

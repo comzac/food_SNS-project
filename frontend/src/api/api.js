@@ -37,5 +37,9 @@ export default {
     relations: {
       URL: "relations/",
     },
+    notifications: {
+      URL: "notifications/",
+      getAll: "all/",
+    },
   },
 };

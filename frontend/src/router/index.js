@@ -22,6 +22,7 @@ import FeedCreateView from "@/views/feed/FeedCreateView";
 import CommentView from "@/views/feed/CommentView";
 
 import Liquor from "@/views/LiquorView";
+import NotificationView from "@/views/notification/NotificationView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -116,6 +117,11 @@ const routes = [
     path: "/search/:keyword",
     name: "SearchedView",
     component: SearchedView,
+  },
+  {
+    path: "/notifications",
+    name: "NotificationView",
+    component: NotificationView,
   },
 
   // {
