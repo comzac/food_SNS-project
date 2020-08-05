@@ -13,7 +13,11 @@
           @moveToConductPage="moveToConductPage"
           @pageDown="page='2', setPage(2)"
         />
-        <PasswordChange v-if="page == '4'" @changePassword="doPasswordReset" />
+        <PasswordChange
+          v-if="page == '4'"
+          @changePassword="doPasswordReset"
+          @pageDown="page='3', setPage(3)"
+        />
       </v-col>
     </v-row>
   </v-container>
