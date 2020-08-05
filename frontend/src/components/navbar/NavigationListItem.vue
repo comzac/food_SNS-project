@@ -10,10 +10,31 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "NavigationListItem",
   props: {
     listItem: Object,
+  },
+  data() {
+    return {
+      notifications: null,
+    };
+  },
+  methods: {
+    ...mapActions("notifications", ["fecthNotifications"]),
+    polling() {
+      setInterval(function () {
+        this.fetchNotifications();
+      }, 2000);
+    },
+  },
+  created() {
+    this.polling();
+  },
+  beforeDestroy() {
+    clearInterval(this.polling);
   },
 };
 </script>
