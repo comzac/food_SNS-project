@@ -1,23 +1,70 @@
-// import axios from "axios";
+import axios from "axios";
 
-// import SERVER from "@/api/api";
+import SERVER from "@/api/api";
 // import router from "@/router";
 
 export default {
+  namespaced: true,
   state: {
-    notifications: null,
+    nonReadNotification: null,
+    readNotification: null,
+    nonReadCount: 0,
+    readCount: 0,
   },
-  getters: {},
+  getters: {
+    notifyItems(state) {
+      return [
+        {
+          headers: "Non-Read",
+        },
+        { divider: true },
+        state.nonReadNotification,
+        {
+          headers: "Read",
+        },
+        { divider: true },
+        state.readNotification,
+      ];
+    },
+  },
   mutations: {
     SET_NOTIFICATION(state, notifications) {
       state.notifications = notifications;
     },
+    SET_NOTIFICATIONCOUNT(state, count) {
+      state.nonReadCount = count;
+    },
   },
   actions: {
-    fetchNotifications({ rootGetters }) {
+    fetchNotifications({ commit, rootGetters }) {
       const config = rootGetters["accounts/config"];
       //axios 요청
-      console.log(config);
+      //   console.log("fetchNotify");
+      //   console.log(config);
+      axios
+        .get(SERVER.BASE_URL + SERVER.ROUTES.notifications.URL, config)
+        .then((res) => {
+          console.log(res);
+          commit("SET_NOTIFICATIONCOUNT", res.data.data);
+        })
+        .catch((err) => console.log(err.response));
+    },
+
+    getNotifications({ rootGetters, commit }) {
+      const config = rootGetters["accounts/config"];
+
+      axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.notifications.URL +
+            SERVER.ROUTES.notifications.getAll,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          commit("SET_NOTIFICATION", res.data.data);
+        })
+        .catch((err) => console.log(err.response));
     },
   },
 };

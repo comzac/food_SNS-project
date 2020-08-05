@@ -5,36 +5,31 @@
         <v-icon>{{ listItem.icon }}</v-icon>
       </v-list-item-icon>
       <v-list-item-title>{{ listItem.title }}</v-list-item-title>
+      <div v-if="listItem.title === 'Notification'">
+        <v-list-item>{{ nonReadCount }}</v-list-item>
+      </div>
     </v-list-item>
   </router-link>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "NavigationListItem",
   props: {
     listItem: Object,
   },
-  data() {
-    return {
-      notifications: null,
-    };
-  },
-  methods: {
-    ...mapActions("notifications", ["fecthNotifications"]),
-    polling() {
-      setInterval(function () {
-        this.fetchNotifications();
-      }, 2000);
-    },
+  computed: {
+    ...mapState("notifications", ["nonReadCount"]),
   },
   created() {
-    this.polling();
-  },
-  beforeDestroy() {
-    clearInterval(this.polling);
+    const store = this.$store;
+    if (this.listItem.title === "Notification") {
+      setInterval(function () {
+        store.dispatch("notifications/fetchNotifications");
+      }, 30000);
+    }
   },
 };
 </script>
