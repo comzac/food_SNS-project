@@ -2,8 +2,12 @@
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <UserEdit v-if="isAuthorized && page=='1'" @pwChange="page='11', setPage(11)" />
-        <PasswordChange v-if="isAuthorized && page == '11'" @changePassword="doPasswordReset" />
+        <UserEdit v-if="isAuthorized && page=='1'" @pwChange="page='2', setPage(2)" />
+        <PasswordChange
+          v-if="isAuthorized && page == '2'"
+          @changePassword="doPasswordReset"
+          @pageDown="page='1', setPage(1)"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -40,6 +44,10 @@ export default {
     },
   },
   created() {
+    this.setAuthorized(false);
+    this.setPage(1);
+  },
+  beforeDestroy() {
     this.setAuthorized(false);
     this.setPage(1);
   },
