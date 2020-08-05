@@ -29,5 +29,8 @@ public interface ContestService {
 	public ContestFeedLike insertContestFeedLike(int uid, int fid);
 	
 	// 피드 좋아요 취소
-	public Long deleteContestFeedLike(int uid, int fid);
+	public void deleteContestFeedLike(int uid, int fid);
+
+	// 피드 좋아요 수 업데이트
+	public ContestFeed updateFeedLikeCount(int fid, int like);
 }
