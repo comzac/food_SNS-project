@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <v-row style="background-color: #FFFADF">
       <!-- <v-subheader v-if="item.headers" :key="item.header">{{ item.headers }}</v-subheader> -->
 
       <v-list-item :key="item.title" ripple @click="confirmNotification">
