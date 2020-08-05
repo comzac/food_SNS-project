@@ -63,11 +63,12 @@ export default {
     listItem: Object,
   },
   methods: {
-    ...mapActions("accounts", ["pwcheck"]),
+    ...mapActions("accounts", ["pwcheck", "setAuthorized"]),
     passwordCheck() {
       if (this.password.length >= 8) {
         this.pwcheck(this.password).then((checkResult) => {
           if (checkResult) {
+            this.setAuthorized(true);
             this.$router.push({ name: "UserEdit" });
           } else {
             alert("비밀번호가 일치하지 않습니다.");

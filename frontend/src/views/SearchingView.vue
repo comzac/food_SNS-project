@@ -7,7 +7,7 @@
             v-model="keyword"
             append-icon="mdi-magnify"
             @input="delaySearch()"
-            @click:append-outer="$router.push({ name: 'SearchedView', params: { keyword: keyword } })"
+            @click:append-outer="$router.push({ name: 'SearchedView', params: { keyword: keyword.replace(/^#/g,'').replace(/ /g, '') } })"
             @keyup.enter="$router.push({ name: 'SearchedView', params: { keyword: keyword.replace(/^#/g,'').replace(/ /g, '') } })"
             label="검색어를 입력하세요"
             required
@@ -20,16 +20,16 @@
           ></v-text-field>
           <div v-for="item in search_items" :key="item.name">
             <v-text-field
-              @click="$router.push({ name: 'SearchedView', params: { keyword: item } })"
-              :value="`#${item.key} - 게시물 ${item.value}`"
+              @click="$router.push({ name: 'SearchedView', params: { keyword: Object.keys(item)[0] } })"
+              :value="`# ${Object.keys(item)[0]} - 게시물 ${Object.values(item)[0]} 개`"
               color="#ff6666"
               readonly
             ></v-text-field>
           </div>
           <div v-for="search_user in search_users" :key="search_user.uid">
             <v-text-field
-              @click="$router.push({ name: 'UserDetail', params: { uid: search_user } })"
-              :value="` ${search_user.key} - 게시물 ${search_user.value}`"
+              @click="$router.push({ name: 'UserDetail', params: { uid: Object.keys(search_user)[0] } })"
+              :value="` ${Object.keys(search_user)[0]} - 게시물 ${Object.values(search_user)[0]} 개`"
               color="#ff6666"
               readonly
             ></v-text-field>
@@ -70,17 +70,21 @@ export default {
     ...mapActions("feeds", ["searchKeyword"]),
     // search 여기 만들든지 (검색어 전달하는 함수) mapActions 같은걸로 하든지
     search() {
-      console.log(this.keyword);
       if (this.keyword != "") {
-        this.searchKeyword(this.keyword).then((res) => {
-          if (/^#/.test(this.keyword)) {
-            this.search_items = res.data;
-            this.search_users = [];
-          } else {
-            this.search_users = res.data;
-            this.search_items = [];
-          }
-        });
+        this.searchKeyword(this.keyword)
+          .then((res) => {
+            if (/^#/.test(this.keyword)) {
+              console.log("res", res);
+              this.search_items = res.data;
+              this.search_users = [];
+            } else {
+              this.search_users = res.data;
+              this.search_items = [];
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } else {
         this.search_items = [];
         this.search_users = [];

@@ -1,48 +1,51 @@
 <template>
-  <v-card class="mx-auto" flat max-width="350">
-    <h1 class="text-left ml-3" style="color:#ff6666;">비밀번호 변경</h1>
-    <br />
-    <br />
-    <v-text-field
-      v-model="password"
-      :error-messages="error.password"
-      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-      @click:append="show1 = !show1"
-      :type="show1 ? 'text' : 'password'"
-      label="Password"
-      outlined
-      solo
-      required
-      color="#ff6666"
-      class="mt-10 mb-7"
-      autocomplete="off"
-    ></v-text-field>
+  <div>
+    <v-btn fab color="#ff6666" dark top left absolute class="mt-11" @click="$emit('pageDown')">
+      <v-icon>mdi-arrow-left-bold</v-icon>
+    </v-btn>
+    <v-card class="mx-auto" flat max-width="350">
+      <h1 class="text-left ml-3" style="color:#ff6666;">비밀번호 변경</h1>
 
-    <v-text-field
-      v-model="passwordConfirm"
-      :error-messages="error.passwordConfirm"
-      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-      @click:append="show2 = !show2"
-      :type="show2 ? 'text' : 'password'"
-      label="Password Confirmation"
-      outlined
-      solo
-      required
-      color="#ff6666"
-      class="mt-10 mb-7"
-      autocomplete="off"
-    ></v-text-field>
-    <br />
-    <br />
-    <v-btn
-      color="#ff6666"
-      class="white--text"
-      :disabled="!isSubmit || password!=passwordConfirm"
-      width="100%"
-      x-large
-      @click="changePassword"
-    >비밀번호 변경</v-btn>
-  </v-card>
+      <v-text-field
+        v-model="password"
+        :error-messages="error.password"
+        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="show1 = !show1"
+        :type="show1 ? 'text' : 'password'"
+        label="Password"
+        outlined
+        solo
+        required
+        color="#ff6666"
+        class="mt-10 mb-3"
+        autocomplete="off"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="passwordConfirm"
+        :error-messages="error.passwordConfirm"
+        :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="show2 = !show2"
+        :type="show2 ? 'text' : 'password'"
+        label="Password Confirmation"
+        outlined
+        solo
+        required
+        color="#ff6666"
+        class="mt-3 mb-7"
+        autocomplete="off"
+      ></v-text-field>
+
+      <v-btn
+        color="#ff6666"
+        class="white--text"
+        :disabled="!isSubmit || password!=passwordConfirm"
+        width="100%"
+        x-large
+        @click="changePassword"
+      >비밀번호 변경</v-btn>
+    </v-card>
+  </div>
 </template>
 
 <script>
