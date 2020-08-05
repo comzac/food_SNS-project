@@ -20,7 +20,7 @@
           ></v-text-field>
           <div v-for="item in search_items" :key="item.name">
             <v-text-field
-              @click="$router.push({ name: 'SearchedView', params: { keyword: item } })"
+              @click="$router.push({ name: 'SearchedView', params: { keyword: Object.keys(item)[0] } })"
               :value="`# ${Object.keys(item)[0]} - 게시물 ${Object.values(item)[0]} 개`"
               color="#ff6666"
               readonly
@@ -28,7 +28,7 @@
           </div>
           <div v-for="search_user in search_users" :key="search_user.uid">
             <v-text-field
-              @click="$router.push({ name: 'UserDetail', params: { uid: search_user } })"
+              @click="$router.push({ name: 'UserDetail', params: { uid: Object.keys(search_user)[0] } })"
               :value="` ${Object.keys(search_user)[0]} - 게시물 ${Object.values(search_user)[0]} 개`"
               color="#ff6666"
               readonly
