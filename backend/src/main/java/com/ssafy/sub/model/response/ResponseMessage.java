@@ -8,6 +8,10 @@ public class ResponseMessage {
     public static final String LOGOUT_SUCCESS = "로그아웃 성공";
     public static final String LOGOUT_FAIL = "로그아웃 실패";
     
+    public static final String READ_NOTIFICATION = "알림 조회 성공";
+    public static final String FAIL_READ_NOTIFICATION = "알림 조회 실패";
+    public static final String READ_ALL_NOTIFICATION = "모든 알림 조회 성공";
+    
     public static final String READ_ALL_USERS = "모든 유저 조회 성공";
     public static final String READ_SEARCHED_USERS = "검색 유저 조회 성공";
     public static final String READ_USER = "회원 정보 조회 성공";

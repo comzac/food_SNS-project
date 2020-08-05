@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.Comment;
+import com.ssafy.sub.dto.NotificationNonRead;
 import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.model.response.CommentResult;
 import com.ssafy.sub.model.response.ResponseMessage;
@@ -27,7 +28,9 @@ import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.repo.CommentRepository;
 import com.ssafy.sub.service.CommentService;
+import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.LikeService;
+import com.ssafy.sub.service.NotificationService;
 import com.ssafy.sub.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +46,10 @@ public class CommentController {
 	private UserService userService;
 	@Autowired
 	private LikeService likeService;
+	@Autowired
+	private NotificationService notificationService;
+	@Autowired
+	private FeedService feedService;
 	 
 	// 1. 댓글 list 조회
 	@ApiOperation(value = "댓글 조회", response = Result.class)
@@ -83,14 +90,18 @@ public class CommentController {
    // 2. 댓글 등록
    @ApiOperation(value = "댓글 등록", response = Result.class)
    @PostMapping(value="/")
-//   public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
    public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
       System.out.println("log - commentInsert");
       
-      String uid = authentication.getName();
-      comment.setUid(Integer.parseInt(uid));
+      int LoginUid = Integer.parseInt(authentication.getName());
+      comment.setUid(LoginUid);
       comment.setRegdate(new Date());
       Comment insertedComment = commentService.commentInsert(comment); 
+      
+      // 알림 설정: fid번호로 fid유저 확인 후 저장
+      int feedUid = feedService.feedDetail(comment.getFid()).getUid();
+      notificationService.notificationInsert(NotificationNonRead.builder().state(3)
+    		  .uid(feedUid).fid(comment.getFid()).cid(LoginUid).regdate(new Date()).build());
       
       Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
       return new ResponseEntity<Result>(result, HttpStatus.OK);
