@@ -151,5 +151,9 @@ public class UserService {
 	public User findByUemail(String uemail) {
 		return userRepository.findByUemail(uemail);
 	}
+
+	public User findByGoogleUid(String uid) {
+		return userRepository.findByUid(uid).orElse(null);
+	}
 	
 }
