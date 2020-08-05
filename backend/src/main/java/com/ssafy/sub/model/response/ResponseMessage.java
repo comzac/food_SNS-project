@@ -8,6 +8,10 @@ public class ResponseMessage {
     public static final String LOGOUT_SUCCESS = "로그아웃 성공";
     public static final String LOGOUT_FAIL = "로그아웃 실패";
     
+    public static final String READ_NOTIFICATION = "알림 조회 성공";
+    public static final String FAIL_READ_NOTIFICATION = "알림 조회 실패";
+    public static final String READ_ALL_NOTIFICATION = "모든 알림 조회 성공";
+    
     public static final String READ_ALL_USERS = "모든 유저 조회 성공";
     public static final String READ_SEARCHED_USERS = "검색 유저 조회 성공";
     public static final String READ_USER = "회원 정보 조회 성공";
@@ -33,6 +37,7 @@ public class ResponseMessage {
     public static final String UNLIKE_FEED = "피드 좋아요 해제";
     public static final String FAIL_LIKE_FEED = "피드 좋아요 실패";
     public static final String FAIL_UNLIKE_FEED = "피드 좋아요 해제 실패";
+    public static final String NOT_FOUND_FEED_LIKE = "피드 좋아요를 하지 않았습니다.";
     
     public static final String NOT_FOUND_HASHTAG = "해시태그 조회 실패";
     public static final String CREATE_HASHTAG = "해시태그 생성 성공";

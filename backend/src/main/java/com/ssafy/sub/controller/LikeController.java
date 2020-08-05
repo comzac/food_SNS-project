@@ -1,5 +1,7 @@
 package com.ssafy.sub.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.sub.dto.NotificationNonRead;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
+import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.LikeService;
+import com.ssafy.sub.service.NotificationService;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +32,10 @@ public class LikeController {
 
 	@Autowired
 	private LikeService likeService;
+	@Autowired
+	private NotificationService notificationService;
+	@Autowired
+	private FeedService feedService;
 
 	// 1. feed like
 	@ApiOperation(value = "피드 좋아요", response = Result.class)
@@ -34,6 +43,11 @@ public class LikeController {
 	public ResponseEntity feedLikeInsert(@PathVariable int fid, Authentication authentication) {
 		int uid = Integer.parseInt(authentication.getName());
 		likeService.feedLikeInsert(fid, uid);
+		
+		// 알림 설정
+		int notiUid = feedService.feedDetail(fid).getUid();
+		notificationService.notificationInsert(NotificationNonRead.builder().state(2)
+												.uid(notiUid).lid(uid).fid(fid).regdate(new Date()).build());
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.LIKE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);

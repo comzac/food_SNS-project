@@ -71,7 +71,6 @@ dependencies {
    testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
    // https://mvnrepository.com/artifact/redis.clients/jedis
    compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
-   
    // social
    
 	// 1. oauth
@@ -81,6 +80,7 @@ dependencies {
 	// 3. h2database
 	runtimeOnly 'com.h2database:h2'
 	// security, jpa, web, lombok 등 중복 // 
+
 }
 
 // querydsl 적용 

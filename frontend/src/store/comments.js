@@ -66,5 +66,32 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    commentLikeUnlike({ rootGetters }, commentLikeData) {
+      const config = rootGetters["accounts/config"];
+
+      if (commentLikeData.isLike) {
+        axios
+          .delete(
+            SERVER.BASE_URL + SERVER.ROUTES.likes.comment + commentLikeData.cid,
+            config
+          )
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err.response));
+      } else {
+        axios
+          .post(
+            SERVER.BASE_URL + SERVER.ROUTES.likes.comment + commentLikeData.cid,
+            null,
+            config
+          )
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err.response));
+      }
+    },
   },
 };

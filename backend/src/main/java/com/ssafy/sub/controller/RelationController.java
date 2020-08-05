@@ -1,6 +1,7 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.sub.dto.DBFile;
 import com.ssafy.sub.dto.DBProfile;
+import com.ssafy.sub.dto.NotificationNonRead;
 import com.ssafy.sub.dto.Relationship;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.model.response.FollowResult;
@@ -28,6 +30,7 @@ import com.ssafy.sub.repo.DBProfileRepository;
 import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.repo.RelationRepository;
 import com.ssafy.sub.repo.UserRepository;
+import com.ssafy.sub.service.NotificationService;
 import com.ssafy.sub.service.RelationService;
 
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +50,8 @@ public class RelationController {
     private DBProfileRepository dbProfileRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	NotificationService notificationService;
 
 	// 1. 팔로우 조회
 	@ApiOperation(value = "팔로우 조회", response = Result.class)
@@ -168,6 +173,10 @@ public class RelationController {
 
 		FollowResult followResult = new FollowResult(userId, rUserId, unick, relationship.getState(), relationship.getIsFollowing());
 	
+		// 알림 설정
+		notificationService.notificationInsert(NotificationNonRead.builder().state(1)
+												.uid(rid).rid(Integer.parseInt(id)).regdate(new Date()).build());
+		
 		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, followResult);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}

@@ -62,6 +62,7 @@
       solo
       single-line
       auto-grow
+      autocomplete="off"
     ></v-textarea>
     <v-text-field
       label="별명"
@@ -74,6 +75,7 @@
       @click:append-outer="nickCheck2(data.unick)"
       :error-messages="nickErrorMsg"
       @input="nickcheck = false"
+      autocomplete="off"
     ></v-text-field>
     <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
     <v-btn

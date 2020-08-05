@@ -1,9 +1,9 @@
 <template>
-  <v-card class="mx-auto" flat max-width="975">
+  <v-card class="mx-auto" flat max-width="975" outlined>
     <v-container>
       <v-row>
-        <v-col cols="4" v-for="item in items" :key="item">
-          <SearchFeedItem />
+        <v-col cols="4" v-for="feed in feeds" :key="feed.id" class="ma-auto">
+          <SearchFeedItem :feed="feed.feed" />
         </v-col>
       </v-row>
     </v-container>
@@ -12,53 +12,18 @@
 
 <script>
 import SearchFeedItem from "@/components/feed/search/SearchFeedItem";
+
 export default {
+  name: "SearchFeedList",
   components: {
     SearchFeedItem,
   },
-  data() {
-    return {
-      last_page: 24,
-      items: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-      ],
-    };
+  props: {
+    feeds: Array,
   },
   methods: {
     infiniteScroll() {
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 30
-      ) {
-        // axios 로 받아와야 하는 부분
-        for (var i = 0; i < 9; i++) {
-          this.last_page += 1;
-          this.items.push(this.last_page);
-        }
-      }
+      console.log("asdf");
     },
   },
   created() {
@@ -71,4 +36,7 @@ export default {
 </script>
 
 <style scoped>
+.theme--light.v-sheet--outlined {
+  border: none;
+}
 </style>
