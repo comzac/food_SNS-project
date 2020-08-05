@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MoveController {
 
-	@RequestMapping("/")
-	String index(HttpServletRequest request) {
-		return "login";
-	}
+//	@RequestMapping("/")
+//	String index(HttpServletRequest request) {
+//		return "login";
+//	}
 }
