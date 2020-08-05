@@ -70,9 +70,7 @@ dependencies {
    testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
    // https://mvnrepository.com/artifact/redis.clients/jedis
    compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
-   
-   
-   
+ 
 }
 
 // querydsl 적용 
