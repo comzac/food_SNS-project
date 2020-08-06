@@ -1,54 +1,27 @@
 <script>
-import { Bar } from "vue-chartjs";
-export default {
-  extends: Bar,
-  data: () => ({
-    chartdata: {
-      labels: ["남", "여"],
-      datasets: [
-        {
-          label: "좋아요",
-          backgroundColor: "#f87979",
-          borderWidth: 1,
-          pointBorderColor: "#249EBF",
-          data: [20, 30],
-        },
-      ],
-    },
-    // options: {
-    //   responsive: true,
-    //   maintainAspectRatio: false,
-    // },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-            },
-            gridLines: {
-              display: false,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            gridLines: {
-              display: false,
-            },
-          },
-        ],
-      },
-      legend: {
-        display: true,
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-    },
-  }),
+import { Pie } from "vue-chartjs";
 
+export default {
+  extends: Pie,
   mounted() {
-    this.renderChart(this.chartdata, this.options);
+    this.renderChart(
+      {
+        labels: ["10대", "20대", "30대", "40대", "50대 이상"],
+        datasets: [
+          {
+            backgroundColor: [
+              "#41B883",
+              "#E46651",
+              "#00D8FF",
+              "#DD1B16",
+              "#ff66ff",
+            ],
+            data: [40, 20, 60, 10, 10],
+          },
+        ],
+      },
+      { responsive: true, maintainAspectRatio: false }
+    );
   },
 };
 </script>

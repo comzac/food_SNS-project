@@ -26,8 +26,8 @@
               />
               <!-- Comment module ?? -->
             </v-card-text>
+            <SexChart />
             <AgeChart />
-            <PieChart />
           </v-card>
         </v-hover>
       </v-col>
@@ -42,7 +42,7 @@ import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
 import AgeChart from "@/components/charts/AgeChart";
-import PieChart from "@/components/charts/PieChart";
+import SexChart from "@/components/charts/SexChart";
 
 export default {
   name: "FeedView",
@@ -51,7 +51,7 @@ export default {
     Main,
     Media,
     AgeChart,
-    PieChart,
+    SexChart,
   },
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
