@@ -7,9 +7,9 @@
         <v-icon v-if="!like">mdi-heart-outline</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="#ff6666" icon x-small
-        ><v-icon>mdi-share-variant</v-icon></v-btn
-      >
+      <v-btn color="#ff6666" icon x-small>
+        <v-icon>mdi-share-variant</v-icon>
+      </v-btn>
     </v-row>
     <p class="text-left">
       <v-row class="space-around mx-0">
@@ -18,10 +18,8 @@
         <small>{{ ymd2 }}</small>
       </v-row>
     </p>
-    <p :class="overflow" @click="overflow2()">
-      {{ feed.content }}
-    </p>
-    <div class="text-left">
+    <p :class="overflow" @click="overflow2()">{{ feed.content }}</p>
+    <div class="text-left" v-if="hashtag">
       <span
         v-for="tag in hashtag"
         :key="tag.id"
@@ -31,9 +29,7 @@
             params: { keyword: tag.content },
           })
         "
-      >
-        # {{ tag.content }}
-      </span>
+      ># {{ tag.content }}</span>
     </div>
   </div>
 </template>
