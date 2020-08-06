@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-    <v-window v-model="i2" @dblclick.native="$emit('likeUnlike')" continuous>
+    <v-window v-model="i2" @dblclick.native="$emit('like-unlike')" continuous>
       <v-window-item v-for="(file, i) in dbFiles" :key="i">
         <video
           v-if="file.type === 'video/mp4'"
