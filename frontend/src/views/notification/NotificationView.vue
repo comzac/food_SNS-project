@@ -3,12 +3,12 @@
   <v-row justify="center">
     <v-col cols="12" sm="8" md="6">
       <v-list two-line>
-        <!-- <div
+        <div
           style="text-align:center;"
-          v-if="nonReadNotification === null || readNotification === null"
+          v-if="nonReadNotification.length === 0 || readNotification.length === 0"
         >
           <template>알림이 없습니다.</template>
-        </div>-->
+        </div>
         <div>
           <template v-for="item in nonReadNotification">
             <NonReadNotification :key="item.id" :item="item" />

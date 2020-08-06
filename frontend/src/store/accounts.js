@@ -124,7 +124,7 @@ export default {
       commit("SET_SIGNUPDATA", signupData);
     },
     postAuthData({ commit }, info) {
-      axios
+      return axios
         .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
             "content-type": "application/json",
@@ -146,7 +146,9 @@ export default {
         data: loginData,
         route: SERVER.ROUTES.accounts.URL + SERVER.ROUTES.accounts.login,
       };
-      dispatch("postAuthData", info);
+      dispatch("postAuthData", info).then(() => {
+        dispatch("getNotifyCount", null, { root: true });
+      });
     },
 
     signup({ dispatch }, signupData) {
@@ -157,7 +159,7 @@ export default {
       dispatch("postAuthData", info);
     },
 
-    logout({ commit, getters }) {
+    logout({ commit, getters, dispatch }) {
       console.log(getters.config);
       axios
         .get(
@@ -173,6 +175,7 @@ export default {
 
       commit("SET_TOKEN", null);
       commit("SET_USERSIMPLEDATA", {});
+      dispatch("clear", null, { root: true });
       cookies.remove("auth-token");
       router.replace({ name: "Login" });
     },
