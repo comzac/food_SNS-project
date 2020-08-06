@@ -77,7 +77,7 @@ public class NotificationController {
 		for(NotificationNonRead nr: notificationNonRead) {
 			switch(nr.getState()) {
 				case 1:	// follow
-					String followUid = userService.findById(nr.getFid()).getUid();
+					String followUid = userService.findById(nr.getRid()).getUid();
 					nonReadResponse.add(Notification.builder().id(nr.getId()).state(nr.getState())
 														.uid(userStrId).followid(followUid).build());
 					break;
@@ -99,7 +99,7 @@ public class NotificationController {
 		for(NotificationRead r: notificationRead) {
 			switch(r.getState()) {
 			case 1:	// follow
-				String followUid = userService.findById(r.getFid()).getUid();
+				String followUid = userService.findById(r.getRid()).getUid();
 				readResponse.add(Notification.builder().id(r.getId()).state(r.getState())
 													.uid(userStrId).followid(followUid).build());
 				break;

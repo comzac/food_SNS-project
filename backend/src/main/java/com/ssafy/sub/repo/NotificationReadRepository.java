@@ -16,4 +16,6 @@ public interface NotificationReadRepository extends JpaRepository<NotificationRe
 	List<NotificationRead> findByUidOrderByIdDesc(int uid);
 
 	NotificationNonRead save(NotificationNonRead notificationNonRead);
+
+	List<NotificationRead> findAllByUidOrderByIdDesc(int uid);
 }
