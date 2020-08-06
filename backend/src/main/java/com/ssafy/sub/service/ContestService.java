@@ -14,7 +14,7 @@ public interface ContestService {
 	public List<Contest> getContest();
 	
 	// 피드를 좋아요 순으로 반환
-	public List<ContestFeed> getContestFeedByIdOrderByLike(int cid);
+	public List<ContestFeed> findByCidOrderByLike(int cid);
 	
 	// 피드 생성
 	public ContestFeed insertContestFeed(ContestFeed cFeed);

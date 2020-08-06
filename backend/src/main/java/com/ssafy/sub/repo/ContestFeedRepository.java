@@ -20,4 +20,9 @@ public interface ContestFeedRepository extends JpaRepository<ContestFeed, Long> 
 
 	List<ContestFeed> findByCid(int cid);
 
+	List<ContestFeed> findByCidOrderByLikeCountDesc(int cid);
+
+	List<ContestFeed> findAllByCidOrderByLikeCountDesc(int cid);
+
+
 }
