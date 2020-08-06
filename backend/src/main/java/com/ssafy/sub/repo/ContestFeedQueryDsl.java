@@ -1,13 +1,8 @@
 package com.ssafy.sub.repo;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import com.querydsl.jpa.JPAExpressions;
 import com.ssafy.sub.dto.ContestFeed;
-import com.ssafy.sub.dto.QContestFeed;
-import com.ssafy.sub.dto.QContestFeedLike;
 
 public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 
