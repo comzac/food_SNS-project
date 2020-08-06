@@ -49,18 +49,18 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
     	case "kakao":
     		System.out.println(serviceName);
     		Map<String, Object> properties = (Map<String, Object>) socialInfo.get("properties");
-    		userInfo.put("uid", socialInfo.get("id"));
+    		Integer uid = (Integer) socialInfo.get("id");
+    		userInfo.put("uid", Integer.toString(uid.intValue()));
     		userInfo.put("uemail", "");
     		userInfo.put("unick", properties.get("nickname"));
-    		Integer upw = (Integer) socialInfo.get("id");
-    		userInfo.put("upw", Integer.toString(upw.intValue()));
-    		System.out.println(Integer.toString(upw.intValue()).getClass().getName());
+    		userInfo.put("upw", Integer.toString(uid.intValue()));
+    		System.out.println(Integer.toString(uid.intValue()).getClass().getName());
     		userInfo.put("profileImg", properties.get("profile_image"));
     		break;
     	case "google":
     		System.out.println(serviceName);
-			String uid = socialInfo.get("email").toString().split("@")[0];
-    		userInfo.put("uid", uid);
+			String id = socialInfo.get("email").toString().split("@")[0];
+    		userInfo.put("uid", id);
     		userInfo.put("uemail", socialInfo.get("email"));
     		userInfo.put("unick", socialInfo.get("name"));    		
     		userInfo.put("upw", socialInfo.get("sub"));

@@ -60,8 +60,8 @@ public class SocialController {
 			Map<String, Object> userInfo = (Map<String, Object>) request.getAttribute("userInfo");
 			
 			// 회원가입
-			String uid = Integer.toString((int) userInfo.get("uid"));
-			User member = userService.findByGoogleUid(Integer.toString((int) userInfo.get("uid")));
+			String uid = (String) userInfo.get("uid");
+			User member = userService.findByGoogleUid(uid);
 			
 			if(member == null) {
 				member = User.builder().uid(uid).uemail((String) userInfo.get("uemail")).unick((String) userInfo.get("unick"))
