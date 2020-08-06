@@ -34,7 +34,13 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="grey" class="white--text" width="40%" @click="dialog = false">취소</v-btn>
+        <v-btn
+          color="grey"
+          class="white--text"
+          width="40%"
+          @click="dialog = false"
+          >취소</v-btn
+        >
         <v-spacer></v-spacer>
         <v-btn
           :disabled="tooShortPassword"
@@ -42,7 +48,8 @@
           color="#ff6666"
           width="40%"
           class="white--text"
-        >진행</v-btn>
+          >진행</v-btn
+        >
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -50,6 +57,8 @@
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import { mapActions } from "vuex";
 export default {
   name: "PasswordCheckModal",
@@ -71,7 +80,12 @@ export default {
             this.setAuthorized(true);
             this.$router.push({ name: "UserEdit" });
           } else {
-            alert("비밀번호가 일치하지 않습니다.");
+            swal({
+              title: "비밀번호 불일치",
+              text: "비밀번호를 다시 한번 확인해주세요.",
+              icon: "error",
+              dangerMode: true,
+            });
           }
           this.password = "";
         });
@@ -93,5 +107,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

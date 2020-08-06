@@ -22,7 +22,7 @@
         <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
       </v-btn>
     </transition>
-    <Signup v-if="$route.name=='Login'" />
+    <Signup v-if="$route.name == 'Login'" />
     <Bottom v-if="isLoggedIn" />
   </v-app>
 </template>

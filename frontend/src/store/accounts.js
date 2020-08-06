@@ -4,6 +4,8 @@ import axios from "axios";
 import SERVER from "@/api/api";
 import router from "@/router";
 
+import swal from "sweetalert";
+
 export default {
   namespaced: true,
   state: {
@@ -136,7 +138,10 @@ export default {
           router.push({ name: "Home" });
         })
         .catch((err) => {
-          alert("로그인 정보를 확인해주세요.");
+          swal({
+            text: "로그인 정보를 확인해주세요.",
+            dangerMode: true,
+          });
           console.log(err);
         });
     },
@@ -182,7 +187,7 @@ export default {
 
     idCheck({ commit }, uid) {
       if (uid === "") {
-        alert("아이디를 입력하세요");
+        swal("아이디를 입력하세요.");
         commit("SET_IDCHECK", false);
         return false;
       }
@@ -196,12 +201,15 @@ export default {
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
-            alert("사용 가능한 아이디입니다.");
+            swal("사용 가능한 아이디입니다.");
             // commit("SET_IDCHECK", true);
             // commit("SET_SIGNUPID", uid);
             return true;
           } else {
-            alert("이미 사용 중인 아이디입니다.");
+            swal({
+              text: "이미 사용 중인 아이디입니다.",
+              dangerMode: true,
+            });
             // commit("SET_IDCHECK", false);
             return false;
           }
@@ -210,7 +218,7 @@ export default {
     },
     idCheck2({ commit }, uid) {
       if (uid === "") {
-        alert("아이디를 입력하세요");
+        swal("아이디를 입력하세요");
         commit("SET_IDCHECK", false);
         return false;
       }
@@ -223,10 +231,13 @@ export default {
         )
         .then((res) => {
           if (res.data === "success") {
-            alert("가입되지 않은 아이디입니다.");
+            swal({
+              text: "가입되지 않은 아이디입니다.",
+              dangerMode: true,
+            });
             return true;
           } else {
-            alert("가입된 아이디입니다.");
+            swal("가입된 아이디입니다.");
             return false;
           }
         })
@@ -235,7 +246,7 @@ export default {
 
     nickCheck(context, unick) {
       if (unick === "") {
-        alert("별명을 입력하세요");
+        swal("별명을 입력하세요");
         // commit("SET_IDCHECK", false);
         return false;
       }
@@ -249,12 +260,15 @@ export default {
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
-            alert("사용 가능한 별명입니다.");
+            swal("사용 가능한 별명입니다.");
             // commit("SET_NICKCHECK", true);
             // commit("SET_SIGNUPNICK", unick);
             return true;
           } else {
-            alert("이미 사용 중인 별명입니다.");
+            swal({
+              text: "이미 사용 중인 별명입니다.",
+              dangerMode: true,
+            });
             // commit("SET_NICKCHECK", false);
             return false;
           }
@@ -294,7 +308,7 @@ export default {
         )
         .then((confirmCode) => {
           if (confirmCode === "fail") {
-            alert("이메일을 확인해주세요.");
+            swal("이메일을 확인해주세요.");
             return "";
           } else {
             commit("SET_CODE", confirmCode.data);
@@ -337,10 +351,14 @@ export default {
         .then((res) => {
           console.log("res : ", res);
           if (res.data === "success") {
-            alert("비밀번호가 변경되었습니다.");
+            swal("비밀번호가 변경되었습니다.");
             router.push({ name: "Login" });
           } else {
-            alert("변경 실패");
+            swal({
+              text: "변경 실패",
+              icon: "error",
+              dangerMode: true,
+            });
           }
         })
         .catch((err) => console.log(err.response));
@@ -377,26 +395,52 @@ export default {
       }
     },
     deleteUser({ getters, commit, state }) {
-      const doubleCheck = confirm(
-        "정말 탈퇴하시겠습니까?\n이 작업은 취소 할 수 없습니다."
-      );
+      swal({
+        title: "탈퇴하시겠습니까?",
+        text: "이 작업은 취소 할 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          const uid = state.userSimpleData.uid;
+          axios
+            .delete(
+              SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + uid,
+              getters.config
+            )
+            .then(() => {
+              commit("SET_TOKEN", null);
+              commit("SET_USERSIMPLEDATA", {});
+              cookies.remove("auth-token");
+              router.replace({ name: "Login" });
+            })
+            .catch((err) => console.log(err));
+          swal("회원 탈퇴가 완료되었습니다.", {
+            icon: "success",
+          });
+        }
+      });
+      // const doubleCheck = confirm(
+      //   "정말 탈퇴하시겠습니까?\n이 작업은 취소 할 수 없습니다."
+      // );
 
-      if (doubleCheck) {
-        const uid = state.userSimpleData.uid;
-        axios
-          .delete(
-            SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + uid,
-            getters.config
-          )
-          .then(() => {
-            commit("SET_TOKEN", null);
-            commit("SET_USERSIMPLEDATA", {});
-            cookies.remove("auth-token");
-            router.replace({ name: "Login" });
-            alert("회원 탈퇴가 완료되었습니다.");
-          })
-          .catch((err) => console.log(err));
-      }
+      // if (doubleCheck) {
+      //   const uid = state.userSimpleData.uid;
+      //   axios
+      //     .delete(
+      //       SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + uid,
+      //       getters.config
+      //     )
+      //     .then(() => {
+      //       commit("SET_TOKEN", null);
+      //       commit("SET_USERSIMPLEDATA", {});
+      //       cookies.remove("auth-token");
+      //       router.replace({ name: "Login" });
+      //       alert("회원 탈퇴가 완료되었습니다.");
+      //     })
+      //     .catch((err) => console.log(err));
+      // }
     },
     sendFollow({ getters }, uid) {
       const data = new FormData();

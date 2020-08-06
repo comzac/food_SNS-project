@@ -9,7 +9,7 @@
       color="#ff6666"
       append-outer-icon="mdi-check"
       @click:append-outer="idCheck2(signupData.uid)"
-      :error-messages="idcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
+      :error-messages="idcheck ? '' : '오른쪽의 체크를 눌러 중복확인해주세요'"
       @input="idcheck = false"
       autofocus
       autocapitalize="off"
@@ -26,7 +26,7 @@
       color="#ff6666"
       append-outer-icon="mdi-check"
       @click:append-outer="nickCheck2(signupData.unick)"
-      :error-messages="nickcheck?'':'오른쪽의 체크를 눌러 중복확인해주세요'"
+      :error-messages="nickcheck ? '' : '오른쪽의 체크를 눌러 중복확인해주세요'"
       @input="nickcheck = false"
       autocomplete="off"
     ></v-text-field>
@@ -40,7 +40,11 @@
       prepend-icon="mdi-lock-outline"
       v-model="signupData.upw"
       color="#ff6666"
-      :error-messages="pwdCheck(signupData.upw)?'':'비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'"
+      :error-messages="
+        pwdCheck(signupData.upw)
+          ? ''
+          : '비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'
+      "
       autocomplete="off"
     ></v-text-field>
 
@@ -53,7 +57,11 @@
       prepend-icon="mdi-lock-outline"
       v-model="signupData.upw2"
       color="#ff6666"
-      :error-messages="pwdCheck2(signupData.upw, signupData.upw2)?'':'비밀번호와 동일하게 입력해주세요'"
+      :error-messages="
+        pwdCheck2(signupData.upw, signupData.upw2)
+          ? ''
+          : '비밀번호와 동일하게 입력해주세요'
+      "
       autocomplete="off"
     ></v-text-field>
 
@@ -64,7 +72,7 @@
       type="date"
       v-model="signupData.ubirth"
       color="#ff6666"
-      :error-messages="signupData.ubirth?'':'생년월일을 입력해주세요'"
+      :error-messages="signupData.ubirth ? '' : '생년월일을 입력해주세요'"
       autocomplete="off"
     ></v-text-field>
 
@@ -83,11 +91,11 @@
       ></v-text-field>-->
       <v-spacer></v-spacer>
       <v-radio color="#ff6666" label="남성" value="1"></v-radio>
-      <v-btn icon :color="signupData.usex==1?'#ff6666':''">
+      <v-btn icon :color="signupData.usex == 1 ? '#ff6666' : ''">
         <v-icon>mdi-gender-male</v-icon>
       </v-btn>
       <v-radio color="#ff6666" label="여성" value="2"></v-radio>
-      <v-btn icon :color="signupData.usex==2?'#ff6666':''">
+      <v-btn icon :color="signupData.usex == 2 ? '#ff6666' : ''">
         <v-icon>mdi-gender-female</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -98,19 +106,34 @@
         color="#ff6666"
         class="white--text"
         @click="$router.push({ name: 'Login' }), setSignupData2({})"
-      >뒤로가기</v-btn>
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
-        :disabled="!signupData.uid || !signupData.unick || !signupData.upw || !signupData.upw2 || !signupData.ubirth || !signupData.usex || !idcheck || !nickcheck || !pwdCheck(signupData.upw) || !pwdCheck2(signupData.upw, signupData.upw2)"
+        :disabled="
+          !signupData.uid ||
+            !signupData.unick ||
+            !signupData.upw ||
+            !signupData.upw2 ||
+            !signupData.ubirth ||
+            !signupData.usex ||
+            !idcheck ||
+            !nickcheck ||
+            !pwdCheck(signupData.upw) ||
+            !pwdCheck2(signupData.upw, signupData.upw2)
+        "
         @click="toEmailVerification()"
         color="#ff6666"
         class="white--text"
-      >다음으로</v-btn>
+        >다음으로</v-btn
+      >
     </div>
   </v-card>
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import { mapActions } from "vuex";
 
 export default {
@@ -148,7 +171,10 @@ export default {
         if (value === "") {
           const key2 = this.signupData2[key];
           // console.log(key2);
-          alert(`${key2} 확인해주세요`);
+          swal({
+            text: `${key2} 확인해주세요.`,
+            dangerMode: true,
+          });
           return;
         }
       }
@@ -192,5 +218,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

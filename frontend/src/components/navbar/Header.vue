@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
-      <router-link :to="{name: 'Home'}">
+      <router-link :to="{ name: 'Home' }">
         <v-img
           class="shrink mr-2"
           contain
@@ -15,12 +15,15 @@
       </router-link>
       <v-spacer></v-spacer>
 
-      <router-link class="text-decoration-none" :to="{name: 'Login'}">
+      <router-link class="text-decoration-none" :to="{ name: 'Login' }">
         <v-btn icon v-if="!isLoggedIn" class="mr-n3">
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link class="text-decoration-none" :to="{name: 'FeedCreateView'}">
+      <router-link
+        class="text-decoration-none"
+        :to="{ name: 'FeedCreateView' }"
+      >
         <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
@@ -54,7 +57,9 @@
               />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">{{ authUserUnick }}</v-list-item-title>
+              <v-list-item-title class="white--text">{{
+                authUserUnick
+              }}</v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
@@ -66,8 +71,14 @@
         </v-spacer>
         <v-list-item-group active-class="white--text" mandatory>
           <div v-for="listItem in listItemData" :key="listItem.id">
-            <NavigationListItem v-if="listItem.title !== 'Account'" :listItem="listItem" />
-            <PasswordCheckModal v-if="listItem.title === 'Account'" :listItem="listItem" />
+            <NavigationListItem
+              v-if="listItem.title !== 'Account'"
+              :listItem="listItem"
+            />
+            <PasswordCheckModal
+              v-if="listItem.title === 'Account'"
+              :listItem="listItem"
+            />
           </div>
         </v-list-item-group>
       </v-list>

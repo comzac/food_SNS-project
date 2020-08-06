@@ -1,7 +1,11 @@
 <template>
   <v-card class="mx-auto" flat max-width="350">
-    <h1 class="text-left ml-3" style="color:#ff6666;" v-if="isRetrieveIDPage">아이디 찾기</h1>
-    <h1 class="text-left ml-3" style="color:#ff6666;" v-if="!isRetrieveIDPage">이메일로 찾기</h1>
+    <h1 class="text-left ml-3" style="color:#ff6666;" v-if="isRetrieveIDPage">
+      아이디 찾기
+    </h1>
+    <h1 class="text-left ml-3" style="color:#ff6666;" v-if="!isRetrieveIDPage">
+      이메일로 찾기
+    </h1>
     <br />
     <br />
     <v-text-field
@@ -21,7 +25,9 @@
     <br />
     <br />
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')"
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         v-if="isRetrieveIDPage"
@@ -29,14 +35,16 @@
         @click="emailVerification(email)"
         color="#ff6666"
         class="white--text"
-      >다음으로</v-btn>
+        >다음으로</v-btn
+      >
       <v-btn
         v-if="!isRetrieveIDPage"
         :disabled="!emailChecked"
         @click="emailVerification(email)"
         color="#ff6666"
         class="white--text"
-      >다음으로</v-btn>
+        >다음으로</v-btn
+      >
 
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -46,6 +54,8 @@
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import { mapActions } from "vuex";
 import * as EmailValidator from "email-validator";
 
@@ -70,7 +80,7 @@ export default {
     },
   },
   watch: {
-    email: function () {
+    email: function() {
       this.checkForm();
     },
   },
@@ -98,24 +108,32 @@ export default {
         console.log(code.data);
         if (code.status === 200) {
           signupEmailComponent.overlay = !signupEmailComponent.overlay;
-          alert("인증번호가 발송되었습니다.");
+          swal("인증번호가 발송되었습니다.");
           this.$emit("toEmailVerification", {
             confirmCode: code.data,
             uemail: email,
           });
         } else {
           signupEmailComponent.overlay = !signupEmailComponent.overlay;
-          alert("인증번호 발송에 실패하였습니다.");
+          swal({
+            text: "인증번호 발송에 실패하였습니다.",
+            icon: "error",
+            dangerMode: true,
+          });
         }
       });
     },
     emailCheck2(email) {
       this.emailCheck(email).then((res) => {
         if (res === true) {
-          alert("가입된 이메일이 아닙니다.");
+          swal({
+            text: "가입된 이메일이 아닙니다.",
+            icon: "error",
+            dangerMode: true,
+          });
           this.emailChecked = false;
         } else {
-          alert("가입된 이메일입니다.");
+          swal("가입된 이메일입니다.");
           this.emailChecked = true;
         }
         if (this.emailChecked) {
@@ -132,5 +150,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

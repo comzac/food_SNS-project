@@ -1,8 +1,15 @@
 <template>
-  <div @click="$router.push({ name: 'FeedView', params: {fid: fid, uid: $route.params.uid}})">
+  <div
+    @click="
+      $router.push({
+        name: 'FeedView',
+        params: { fid: fid, uid: $route.params.uid },
+      })
+    "
+  >
     <v-img v-if="!imgData" :aspect-ratio="1" contain class="grey darken-4" />
     <v-img
-      v-if="imgType!='video/mp4'"
+      v-if="imgType != 'video/mp4'"
       :aspect-ratio="1"
       contain
       class="grey lighten-2 img-link"
@@ -10,7 +17,7 @@
       :alt="imgName"
     />
     <video
-      v-if="imgType=='video/mp4'"
+      v-if="imgType == 'video/mp4'"
       :aspect-ratio="1"
       :src="`data:${imgType};base64,${imgData}`"
       :alt="imgName"
