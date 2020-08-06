@@ -30,12 +30,12 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public List<NotificationNonRead> findNotificationNonReadByUid(int uid) {
-		return notificationNonReadRepository.findAllByUid(uid);
+		return notificationNonReadRepository.findAllByUidOrderByIdDesc(uid);
 	}
 
 	@Override
 	public List<NotificationRead> findNotificationReadByUid(int uid) {
-		return notificationReadRepository.findAllByUid(uid);
+		return notificationReadRepository.findAllByUidOrderByIdDesc(uid);
 	}
 	
 	@Override
