@@ -10,7 +10,10 @@
           >
             <!-- 작성자 -->
             <Writer :user="selectedFeed.user" :item="false" />
-            <Media :dbFiles="selectedFeed.feed.dbFiles" @likeUnlike="feedLU()" />
+            <Media
+              :dbFiles="selectedFeed.feed.dbFiles"
+              @likeUnlike="feedLU()"
+            />
             <v-card-text>
               <!-- 본문 -->
               <Main
@@ -23,6 +26,8 @@
               />
               <!-- Comment module ?? -->
             </v-card-text>
+            <AgeChart />
+            <PieChart />
           </v-card>
         </v-hover>
       </v-col>
@@ -36,6 +41,8 @@ import { mapActions, mapState } from "vuex";
 import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
+import AgeChart from "@/components/charts/AgeChart";
+import PieChart from "@/components/charts/PieChart";
 
 export default {
   name: "FeedView",
@@ -43,6 +50,8 @@ export default {
     Writer,
     Main,
     Media,
+    AgeChart,
+    PieChart,
   },
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
