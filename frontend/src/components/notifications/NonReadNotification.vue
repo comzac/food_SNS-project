@@ -33,9 +33,10 @@ export default {
     item: Object,
   },
   methods: {
-    ...mapActions("notifications", ["readNotification"]),
+    ...mapActions("notifications", ["readNotification", "reduceNotifyCount"]),
     confirmNotification() {
       this.readNotification(this.item.id);
+      this.reduceNotifyCount();
       if (this.item.state === 1) {
         this.$router.push({
           name: "UserDetail",

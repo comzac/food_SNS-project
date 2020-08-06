@@ -5,7 +5,7 @@
       <v-list two-line>
         <div
           style="text-align:center;"
-          v-if="nonReadNotification.length === 0 || readNotification.length === 0"
+          v-if="nonReadNotification.length === 0 && readNotification.length === 0"
         >
           <template>알림이 없습니다.</template>
         </div>
