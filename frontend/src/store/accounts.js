@@ -13,8 +13,10 @@ export default {
     userSimpleData: {},
     signupData: {},
     uemail: "",
+    uid: "",
     userFollows: null,
     foundUid: null,
+    isAuthorized: false,
     // confirmCode: cookies.get("confirm-code"),
     // signupId: null,
     // signupNick: null,
@@ -60,6 +62,12 @@ export default {
       state.authToken = token;
       cookies.set("auth-token", token);
     },
+    SET_UID(state, uid) {
+      state.uid = uid;
+    },
+    SET_AUTHORIZE(state, value) {
+      state.isAuthorized = value;
+    },
     SET_USERSIMPLEDATA(state, userSimpleData) {
       state.userSimpleData = userSimpleData;
     },
@@ -96,6 +104,12 @@ export default {
     // },
   },
   actions: {
+    setAuthorized({ commit }, value) {
+      commit("SET_AUTHORIZE", value);
+    },
+    setUid({ commit }, uid) {
+      commit("SET_UID", uid);
+    },
     setEmail({ commit }, email) {
       commit("SET_UEMAIL", email);
     },
@@ -186,6 +200,30 @@ export default {
           } else {
             alert("이미 사용 중인 아이디입니다.");
             // commit("SET_IDCHECK", false);
+            return false;
+          }
+        })
+        .catch((err) => console.log(err.response));
+    },
+    idCheck2({ commit }, uid) {
+      if (uid === "") {
+        alert("아이디를 입력하세요");
+        commit("SET_IDCHECK", false);
+        return false;
+      }
+      return axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.accounts.URL +
+            SERVER.ROUTES.accounts.idCheck +
+            uid
+        )
+        .then((res) => {
+          if (res.data === "success") {
+            alert("가입되지 않은 아이디입니다.");
+            return true;
+          } else {
+            alert("가입된 아이디입니다.");
             return false;
           }
         })
@@ -285,6 +323,7 @@ export default {
     },
 
     pwreset(context, userEmailData) {
+      console.log(userEmailData);
       axios
         .put(
           SERVER.BASE_URL +
@@ -293,10 +332,10 @@ export default {
           userEmailData
         )
         .then((res) => {
-          // console.log(res);
+          console.log("res : ", res);
           if (res.data === "success") {
             alert("비밀번호가 변경되었습니다.");
-            router.push({ name: "Home" });
+            router.push({ name: "Login" });
           } else {
             alert("변경 실패");
           }
@@ -304,21 +343,16 @@ export default {
         .catch((err) => console.log(err.response));
     },
 
-    getUserId({ state, commit }) {
-      commit;
+    getUserId({ state }) {
       const data = new FormData();
       data.append("uemail", state.uemail);
       return axios.post(
-        SERVER.BASE_URL + SERVER.ROUTES.accounts.getUserId,
-        data,
+        SERVER.BASE_URL +
+          SERVER.ROUTES.accounts.URL +
+          SERVER.ROUTES.accounts.getUserId,
+        { uemail: state.uemail },
         null
       );
-      // .then((res) => {
-      //   commit("SET_FOUNDUID", res.data.data);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
     },
 
     getUserSimpleData({ state, commit, getters }) {

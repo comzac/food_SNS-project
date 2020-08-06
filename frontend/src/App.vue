@@ -7,12 +7,7 @@
       </transition>
     </v-main>
     <Signup v-if="$route.name=='Login'" />
-    <Bottom
-      v-if="$route.name!='Login'
-      && $route.name!='Signup'
-      && $route.name!='PasswordChoice'
-      && $route.name!='PasswordChoiceEmail'"
-    />
+    <Bottom v-if="isLoggedIn" />
   </v-app>
 </template>
 

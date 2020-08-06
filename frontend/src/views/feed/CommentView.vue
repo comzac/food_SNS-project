@@ -34,7 +34,29 @@
                 @keyup.enter="createComment(commentData)"
                 hide-details
                 autocomplete="off"
-              ></v-text-field>
+                class="oldStyle"
+              >
+                <!-- 댓글 안에 프로필 사진 -->
+                <!-- <template v-slot:prepend-inner>
+                  <v-btn
+                    v-if="!authUserImgData"
+                    icon
+                    class="ma-0"
+                    :color="authUserImgData ? 'white' : 'grey'"
+                  >
+                    <v-icon dark>mdi-account</v-icon>
+                  </v-btn>
+                  <v-avatar>
+                    <v-img
+                      v-if="authUserImgData"
+                      :src="`data:${authUserImgType};base64,${authUserImgData}`"
+                      :alt="authUserImgName"
+                      max-width="30"
+                      max-height="30"
+                    />
+                  </v-avatar>
+                </template>-->
+              </v-text-field>
             </v-row>
             <div v-for="(comment,idx) in comments.comments" :key="comment.comment.id">
               <v-list-item class="ma-0 pa-0">
@@ -282,5 +304,12 @@ export default {
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
+}
+.oldStyle.v-text-field.v-input--dense
+  .v-input__prepend-inner
+  .v-input__icon
+  > .v-icon {
+  margin-top: 0 !important;
+  padding: 0 !important;
 }
 </style>

@@ -109,12 +109,19 @@ export default {
       },
       {
         id: "4",
-        link: { name: "" },
+        link: { name: "NotificationView" },
         icon: "mdi-bell",
         title: "Notification",
       },
       { id: "5", link: { name: "" }, icon: "mdi-email", title: "Messages" },
       { id: "6", link: { name: "" }, icon: "mdi-cog", title: "Settings" },
+      {
+        id: "7",
+        link: { name: "Liquor" },
+        // icon: "mdi-glass-mug-variant",
+        icon: "mdi-glass-cocktail",
+        title: "Liquor",
+      },
     ],
   }),
   computed: {
