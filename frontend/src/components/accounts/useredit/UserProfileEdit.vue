@@ -4,8 +4,13 @@
     <v-container>
       <v-row>
         <v-col cols="4">
-          <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
-            <v-icon large v-show="!data.hasImage && !imageData" dark>mdi-account</v-icon>
+          <v-avatar
+            size="70"
+            :color="data.hasImage || imageData ? 'white' : 'grey'"
+          >
+            <v-icon large v-show="!data.hasImage && !imageData" dark
+              >mdi-account</v-icon
+            >
             <v-img
               v-if="data.hasImage && !imageData"
               :src="`data:${authUserImgType};base64,${authUserImgData}`"
@@ -14,12 +19,26 @@
             <v-img v-if="imageData" :src="imageData" />
           </v-avatar>
         </v-col>
-        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
-          <v-btn class="ml-4" fab dark color="#ff6666" @click="inputPhase = !inputPhase">
+        <v-col
+          v-if="!inputPhase"
+          cols="4"
+          class="d-flex justify-center align-center"
+        >
+          <v-btn
+            class="ml-4"
+            fab
+            dark
+            color="#ff6666"
+            @click="inputPhase = !inputPhase"
+          >
             <v-icon large dark>mdi-image</v-icon>
           </v-btn>
         </v-col>
-        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
+        <v-col
+          v-if="!inputPhase"
+          cols="4"
+          class="d-flex justify-center align-center"
+        >
           <v-btn fab dark color="#ff6666" @click="removeProfileImg">
             <v-icon large dark>mdi-cached</v-icon>
           </v-btn>
@@ -42,7 +61,13 @@
           ></v-file-input>
         </v-col>
         <v-col cols="2">
-          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="resetSelectImg">
+          <v-btn
+            v-show="inputPhase"
+            fab
+            small
+            class="ml-n1 mt-5"
+            @click="resetSelectImg"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -77,18 +102,27 @@
       @input="nickcheck = false"
       autocomplete="off"
     ></v-text-field>
-    <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
+    <v-btn
+      color="grey"
+      class="white--text mx-3 mt-7"
+      width="40%"
+      @click="$router.go(-1)"
+      >취소</v-btn
+    >
     <v-btn
       color="#ff6666"
       width="40%"
       class="white--text mx-3 mt-7"
       @click="proceed"
       :disabled="!dataChanged"
-    >진행</v-btn>
+      >진행</v-btn
+    >
   </v-col>
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -147,8 +181,11 @@ export default {
     },
     previewImage(file) {
       if (file) {
-        if (file.size > 20 * 200 * 1024) {
-          alert("프로필 사진은 200MB를 넘을 수 없습니다.");
+        if (file.size > 200 * 1024) {
+          swal({
+            text: "프로필 사진은 200kb 를 넘을 수 없습니다.",
+            dangerMode: true,
+          });
           return false;
         } else {
           // Reference to the DOM input element
@@ -177,12 +214,12 @@ export default {
           this.data.hasImage = true;
         }
         if (!this.dataChanged) {
-          alert("변경사항이 없습니다.");
+          swal("변경사항이 없습니다.");
           this.$router.go(-1);
         } else {
           this.setUserProfileData(this.data);
         }
-      } else alert("닉네임 중복체크를 해주세요.");
+      } else swal({ text: "닉네임 중복체크를 해주세요.", dangerMode: true });
     },
     resetSelectImg() {
       this.inputPhase = !this.inputPhase;
@@ -191,10 +228,23 @@ export default {
     },
     removeProfileImg() {
       if (this.data.hasImage) {
-        const remove = confirm("프로필 사진을 삭제하시겠습니까?");
-        if (remove) {
-          this.data.hasImage = false;
-        }
+        swal({
+          text: "프로필 사진을 삭제하시겠습니까?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            this.data.hasImage = false;
+            swal("프로필 사진이 삭제되었습니다.", {
+              icon: "success",
+            });
+          }
+        });
+        // const remove = confirm("프로필 사진을 삭제하시겠습니까?");
+        // if (remove) {
+        //   this.data.hasImage = false;
+        // }
       }
     },
   },
@@ -204,5 +254,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

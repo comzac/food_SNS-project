@@ -1,6 +1,15 @@
 <template>
   <div>
-    <v-btn fab color="#ff6666" dark top left absolute class="mt-11" @click="$emit('pageDown')">
+    <v-btn
+      fab
+      color="#ff6666"
+      dark
+      top
+      left
+      absolute
+      class="mt-11"
+      @click="$emit('pageDown')"
+    >
       <v-icon>mdi-arrow-left-bold</v-icon>
     </v-btn>
     <v-card class="mx-auto" flat max-width="350">
@@ -39,11 +48,12 @@
       <v-btn
         color="#ff6666"
         class="white--text"
-        :disabled="!isSubmit || password!=passwordConfirm"
+        :disabled="!isSubmit || password != passwordConfirm"
         width="100%"
         x-large
         @click="changePassword"
-      >비밀번호 변경</v-btn>
+        >비밀번호 변경</v-btn
+      >
     </v-card>
   </div>
 </template>
@@ -120,5 +130,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

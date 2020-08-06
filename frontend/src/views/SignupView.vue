@@ -2,16 +2,20 @@
   <v-container class="signup" fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <BasicForm v-if="page == 1" @toEmailVerification="setSignupData" :signupData2="signupData" />
+        <BasicForm
+          v-if="page == 1"
+          @toEmailVerification="setSignupData"
+          :signupData2="signupData"
+        />
         <SignupEmail
           v-if="page == 2"
           @toEmailVerification="emailVerification"
-          @pageDown="page='1', setPage(1)"
+          @pageDown="(page = '1'), setPage(1)"
         />
         <SignupEmailVerification
           v-if="page == 3"
           @finishSignup="doSignup"
-          @pageDown="page='2', setPage(2)"
+          @pageDown="(page = '2'), setPage(2)"
         />
         <!-- 3번 째꺼  -->
         <!-- :confirmCode="confirmCode" -->
@@ -21,6 +25,8 @@
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import cookies from "vue-cookies";
 
 import BasicForm from "@/components/accounts/signup/BasicForm";
@@ -65,7 +71,11 @@ export default {
     doSignup() {
       console.log(this.signupData);
       this.signup(this.signupData);
-      alert("회원가입이 완료되었습니다.");
+      swal(
+        "회원가입이 완료되었습니다!",
+        `${this.signupData.unick} 님 환영합니다.`,
+        "success"
+      );
       this.setSignupData2({});
       this.setPage(1);
       this.$router.push({ name: "Home" });
@@ -78,5 +88,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

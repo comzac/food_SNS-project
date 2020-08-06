@@ -19,14 +19,24 @@
     <br />
 
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="pageDown">뒤로가기</v-btn>
+      <v-btn color="#ff6666" class="white--text" @click="pageDown"
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
-      <v-btn :disabled="!isSubmit" @click="verify" color="#ff6666" class="white--text">다음으로</v-btn>
+      <v-btn
+        :disabled="!isSubmit"
+        @click="verify"
+        color="#ff6666"
+        class="white--text"
+        >다음으로</v-btn
+      >
     </div>
   </v-card>
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import { mapState } from "vuex";
 
 export default {
@@ -35,7 +45,7 @@ export default {
     this.component = this;
   },
   watch: {
-    confirm: function () {
+    confirm: function() {
       this.checkForm();
     },
   },
@@ -60,7 +70,11 @@ export default {
       if (num === this.confirmCode2) {
         this.$emit("moveToConductPage");
       } else {
-        alert("인증번호를 확인해주세요.");
+        swal({
+          text: "인증번호를 확인해주세요.",
+          icon: "warning",
+          dangerMode: true,
+        });
       }
     },
     pageDown() {
@@ -92,5 +106,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

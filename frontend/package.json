@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "email-validator": "^2.0.4",
     "password-validator": "^5.0.3",
+    "sweetalert": "^2.1.2",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.2",
     "vue-router": "^3.2.0",

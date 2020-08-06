@@ -1,20 +1,26 @@
 <template>
   <div>
     <h2>회원님의 아이디는</h2>
-    <h1>{{uid}}</h1>
+    <h1>{{ uid }}</h1>
     <h2>입니다</h2>
     <br />
     <br />
     <br />
     <br />
     <br />
-    <v-btn color="#ff6666" class="white--text" @click="$router.push({name:'Login'})">로그인하기</v-btn>
-    <v-divider class="mr-5" vertical></v-divider>
     <v-btn
-      @click="$router.push({name: 'PasswordChoice'})"
       color="#ff6666"
       class="white--text"
-    >비밀번호찾기</v-btn>
+      @click="$router.push({ name: 'Login' })"
+      >로그인하기</v-btn
+    >
+    <v-divider class="mr-5" vertical></v-divider>
+    <v-btn
+      @click="$router.push({ name: 'PasswordChoice' })"
+      color="#ff6666"
+      class="white--text"
+      >비밀번호찾기</v-btn
+    >
   </div>
 </template>
 
@@ -34,5 +40,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
