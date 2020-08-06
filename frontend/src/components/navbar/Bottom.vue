@@ -18,9 +18,9 @@
       </v-btn>
     </router-link>
 
-    <router-link :to="{name:''}" class="text-decoration-none">
+    <router-link :to="{name:'Liquor'}" class="text-decoration-none">
       <v-btn height="56">
-        <v-icon color="#ffffff">mdi-book</v-icon>
+        <v-icon color="#ffffff">mdi-glass-cocktail</v-icon>
       </v-btn>
     </router-link>
 

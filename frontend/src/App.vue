@@ -6,6 +6,22 @@
         <router-view />
       </transition>
     </v-main>
+    <transition name="slide-fade">
+      <v-btn
+        v-show="scrollY"
+        color="#ff6666"
+        elevation="24"
+        fixed
+        small
+        bottom
+        right
+        fab
+        @click="top()"
+        class="mb-14"
+      >
+        <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
+      </v-btn>
+    </transition>
     <Signup v-if="$route.name=='Login'" />
     <Bottom v-if="isLoggedIn" />
   </v-app>
@@ -24,17 +40,36 @@ export default {
     Signup,
     Bottom,
   },
+  data() {
+    return {
+      scrollY: false,
+    };
+  },
   computed: {
     ...mapGetters("accounts", ["isLoggedIn"]),
   },
   methods: {
     ...mapActions("accounts", ["getUserSimpleData"]),
+    Scroll() {
+      if (window.scrollY) {
+        this.scrollY = true;
+      } else {
+        this.scrollY = false;
+      }
+    },
+    top() {
+      scrollTo(0, 0);
+    },
   },
   created() {
     this.getUserSimpleData();
+    window.addEventListener("scroll", this.Scroll);
   },
   beforeUpdate() {
     this.getUserSimpleData();
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.Scroll);
   },
 };
 </script>
@@ -59,6 +94,17 @@ h1 {
 }
 .view-enter,
 .view-leave-to {
+  opacity: 0;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
   opacity: 0;
 }
 </style>
