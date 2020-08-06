@@ -43,13 +43,17 @@ public class ContestController {
 				HttpStatus.CREATED);
 	}
 	
-	@ApiOperation(value = "모든 콘테스트의 정보를 반환한다", response = Result.class)
+	@ApiOperation(value = "최근 콘테스트의 정보를 반환한다", response = Result.class)
 	@GetMapping(value="/")
 	public ResponseEntity getContestLatest() {
+		System.out.println("latest contest list");
 		
+		List<ContestFeed> contestFeeds = contestService.findByCidOrderByLike(1);
+		System.out.println(contestFeeds.size());
+//		ContestFeed contestFeed = contestService.getContestFeed(2);
 		
-		return new ResponseEntity<Result>(new Result(StatusCode.CREATED, ResponseMessage.CREATED_USER, null), 
-				HttpStatus.CREATED);
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, contestFeeds), 
+				HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "cid에 해당하는 콘테스트의 모든 정보를 좋아요가 많은 순서대로 반환한다.", response = Result.class)

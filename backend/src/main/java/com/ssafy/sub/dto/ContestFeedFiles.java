@@ -4,14 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
@@ -19,7 +22,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @Entity
-@ToString
+//@ToString
 public class ContestFeedFiles {
 
 	@Id
@@ -34,5 +37,10 @@ public class ContestFeedFiles {
 
     @Lob
     private byte[] data;
+    
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="id", insertable = false, updatable = false)
+    private ContestFeed contestFeed;
 
 }

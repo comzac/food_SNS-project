@@ -36,8 +36,8 @@ public class ContestServiceImpl implements ContestService {
 	}
 
 	@Override
-	public List<ContestFeed> getContestFeedByIdOrderByLike(int cid) {
-		return contestFeedRepository.findByCid(cid);
+	public List<ContestFeed> findByCidOrderByLike(int cid) {
+		return contestFeedRepository.findByCidOrderByLikeCountDesc(cid);
 	}
 
 	@Override
