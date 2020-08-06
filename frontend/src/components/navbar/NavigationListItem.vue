@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "NavigationListItem",
@@ -22,15 +22,13 @@ export default {
   },
   computed: {
     ...mapState("notifications", ["nonReadCount"]),
+    ...mapGetters("accounts", ["isLoggedIn"]),
+  },
+  methods: {
+    ...mapActions("notifications", ["polling"]),
   },
   created() {
-    const store = this.$store;
-    // console.log(store);
-    if (this.listItem.title === "Notification") {
-      setInterval(function () {
-        store.dispatch("notifications/fetchNotifications");
-      }, 30000);
-    }
+    this.polling(this.listItem.title);
   },
 };
 </script>

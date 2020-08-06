@@ -10,23 +10,9 @@ export default {
     readNotification: null,
     nonReadCount: 0,
     readCount: 0,
+    poll: null,
   },
-  getters: {
-    notifyItems(state) {
-      return [
-        {
-          headers: "Non-Read",
-        },
-        { divider: true },
-        state.nonReadNotification,
-        {
-          headers: "Read",
-        },
-        { divider: true },
-        state.readNotification,
-      ];
-    },
-  },
+  getters: {},
   mutations: {
     SET_NONREADNOTIFICATION(state, notifications) {
       state.notifications = notifications;
@@ -37,25 +23,49 @@ export default {
     SET_NOTIFICATIONCOUNT(state, count) {
       state.nonReadCount = count;
     },
+    SET_POLL(state, poll) {
+      state.poll = poll;
+    },
   },
   actions: {
-    fetchNotifications({ commit, rootGetters }) {
-      const config = rootGetters["accounts/config"];
-      //axios 요청
-      //   console.log("fetchNotify");
-      //   console.log(config);
-      axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.notifications.URL, config)
-        .then((res) => {
-          console.log(res);
-          commit("SET_NOTIFICATIONCOUNT", res.data.data);
-        })
-        .catch((err) => console.log(err.response));
+    polling({ commit, rootGetters, dispatch }, title) {
+      const isLoggedIn = rootGetters["accounts/isLoggedIn"];
+      if (title === "Notification" && isLoggedIn) {
+        const poll = setInterval(function() {
+          dispatch("getNotifyCount", null, { root: true });
+        }, 60000);
+        commit("SET_POLL", poll);
+      }
+    },
+    getNotifyCount: {
+      root: true,
+      handler({ commit, rootGetters }) {
+        const config = rootGetters["accounts/config"];
+        //axios 요청
+        //   console.log("fetchNotify");
+        //   console.log(config);
+        axios
+          .get(SERVER.BASE_URL + SERVER.ROUTES.notifications.URL, config)
+          .then((res) => {
+            console.log(res);
+            commit("SET_NOTIFICATIONCOUNT", res.data.data);
+          })
+          .catch((err) => console.log(err.response));
+      },
+    },
+    clear: {
+      root: true,
+      handler({ state, commit }) {
+        console.log("clear");
+        clearInterval(state.poll);
+        commit("SET_POLL", null);
+        commit("SET_NOTIFICATIONCOUNT", 0);
+      },
     },
 
     getNotifications({ rootGetters, commit }) {
       const config = rootGetters["accounts/config"];
-
+      console.log(config);
       return axios
         .get(
           SERVER.BASE_URL +
