@@ -32,23 +32,26 @@ export default {
       const isLoggedIn = rootGetters["accounts/isLoggedIn"];
       if (title === "Notification" && isLoggedIn) {
         const poll = setInterval(function() {
-          dispatch("getNotifyCount");
-        }, 3000);
+          dispatch("getNotifyCount", null, { root: true });
+        }, 60000);
         commit("SET_POLL", poll);
       }
     },
-    getNotifyCount({ commit, rootGetters }) {
-      const config = rootGetters["accounts/config"];
-      //axios 요청
-      //   console.log("fetchNotify");
-      //   console.log(config);
-      axios
-        .get(SERVER.BASE_URL + SERVER.ROUTES.notifications.URL, config)
-        .then((res) => {
-          console.log(res);
-          commit("SET_NOTIFICATIONCOUNT", res.data.data);
-        })
-        .catch((err) => console.log(err.response));
+    getNotifyCount: {
+      root: true,
+      handler({ commit, rootGetters }) {
+        const config = rootGetters["accounts/config"];
+        //axios 요청
+        //   console.log("fetchNotify");
+        //   console.log(config);
+        axios
+          .get(SERVER.BASE_URL + SERVER.ROUTES.notifications.URL, config)
+          .then((res) => {
+            console.log(res);
+            commit("SET_NOTIFICATIONCOUNT", res.data.data);
+          })
+          .catch((err) => console.log(err.response));
+      },
     },
     clear: {
       root: true,
@@ -56,12 +59,13 @@ export default {
         console.log("clear");
         clearInterval(state.poll);
         commit("SET_POLL", null);
+        commit("SET_NOTIFICATIONCOUNT", 0);
       },
     },
 
     getNotifications({ rootGetters, commit }) {
       const config = rootGetters["accounts/config"];
-
+      console.log(config);
       return axios
         .get(
           SERVER.BASE_URL +
