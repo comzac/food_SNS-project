@@ -10,23 +10,9 @@ export default {
     readNotification: null,
     nonReadCount: 0,
     readCount: 0,
+    poll: null,
   },
-  getters: {
-    notifyItems(state) {
-      return [
-        {
-          headers: "Non-Read",
-        },
-        { divider: true },
-        state.nonReadNotification,
-        {
-          headers: "Read",
-        },
-        { divider: true },
-        state.readNotification,
-      ];
-    },
-  },
+  getters: {},
   mutations: {
     SET_NONREADNOTIFICATION(state, notifications) {
       state.notifications = notifications;
@@ -37,9 +23,21 @@ export default {
     SET_NOTIFICATIONCOUNT(state, count) {
       state.nonReadCount = count;
     },
+    SET_POLL(state, poll) {
+      state.poll = poll;
+    },
   },
   actions: {
-    fetchNotifications({ commit, rootGetters }) {
+    polling({ commit, rootGetters, dispatch }, title) {
+      const isLoggedIn = rootGetters["accounts/isLoggedIn"];
+      if (title === "Notification" && isLoggedIn) {
+        const poll = setInterval(function() {
+          dispatch("getNotifyCount");
+        }, 3000);
+        commit("SET_POLL", poll);
+      }
+    },
+    getNotifyCount({ commit, rootGetters }) {
       const config = rootGetters["accounts/config"];
       //axios 요청
       //   console.log("fetchNotify");
@@ -51,6 +49,14 @@ export default {
           commit("SET_NOTIFICATIONCOUNT", res.data.data);
         })
         .catch((err) => console.log(err.response));
+    },
+    clear: {
+      root: true,
+      handler({ state, commit }) {
+        console.log("clear");
+        clearInterval(state.poll);
+        commit("SET_POLL", null);
+      },
     },
 
     getNotifications({ rootGetters, commit }) {

@@ -157,7 +157,7 @@ export default {
       dispatch("postAuthData", info);
     },
 
-    logout({ commit, getters }) {
+    logout({ commit, getters, dispatch }) {
       console.log(getters.config);
       axios
         .get(
@@ -173,6 +173,7 @@ export default {
 
       commit("SET_TOKEN", null);
       commit("SET_USERSIMPLEDATA", {});
+      dispatch("clear", null, { root: true });
       cookies.remove("auth-token");
       router.replace({ name: "Login" });
     },
