@@ -11,7 +11,7 @@
     </router-link>
     <v-list-item v-if="comments.length !== 0" class="ma-0 pa-0">
       <router-link
-        :to="{ name: 'UserDetail', params: { uid: comment.uid } }"
+        :to="{ name: 'UserDetail', params: { uid: comment.user.uid } }"
         class="text-decoration-none"
       >
         <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->

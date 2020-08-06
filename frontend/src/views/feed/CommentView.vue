@@ -61,7 +61,7 @@
             <div v-for="(comment,idx) in comments.comments" :key="comment.comment.id">
               <v-list-item class="ma-0 pa-0">
                 <router-link
-                  :to="{ name: 'UserDetail', params: { uid: comment.comment.uid } }"
+                  :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
                   class="text-decoration-none"
                 >
                   <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->

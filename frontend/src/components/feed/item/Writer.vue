@@ -8,7 +8,7 @@
       class="text-decoration-none"
     >
       <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
-        <img v-if="imgData" :src="`data:${imgType};base64,${imgData}`" :alt="imgName" width="40" />
+        <v-img v-if="imgData" :src="`data:${imgType};base64,${imgData}`" :alt="imgName" width="40" />
         <v-icon v-if="!imgData" dark>mdi-account</v-icon>
       </v-list-item-avatar>
     </router-link>
