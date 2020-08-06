@@ -140,22 +140,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <transition name="slide-fade">
-      <v-btn
-        v-if="scroll"
-        class="mb-14"
-        color="#ff6666"
-        elevation="24"
-        fixed
-        small
-        bottom
-        right
-        fab
-        @click="top()"
-      >
-        <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
-      </v-btn>
-    </transition>
   </div>
 </template>
 
@@ -168,7 +152,6 @@ export default {
   components: { EditComment },
   data() {
     return {
-      scroll: false,
       fid: this.$route.params.fid,
       commentData: {
         title: "",
@@ -250,16 +233,6 @@ export default {
       });
       // this.fetchComment(this.fid);
     },
-    scrollY() {
-      if (window.scrollY) {
-        this.scroll = true;
-      } else {
-        this.scroll = false;
-      }
-    },
-    top() {
-      scrollTo(0, 0);
-    },
 
     commentLike(commentData) {
       // console.log(commentData.comment);
@@ -294,17 +267,6 @@ export default {
 </script>
 
 <style scoped>
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
 .oldStyle.v-text-field.v-input--dense
   .v-input__prepend-inner
   .v-input__icon

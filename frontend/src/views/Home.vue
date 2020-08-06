@@ -3,22 +3,6 @@
     <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
-    <transition name="slide-fade">
-      <v-btn
-        v-show="scrollY"
-        color="#ff6666"
-        elevation="24"
-        fixed
-        small
-        bottom
-        right
-        fab
-        @click="top()"
-        class="mb-14"
-      >
-        <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
-      </v-btn>
-    </transition>
   </div>
 </template>
 
@@ -38,7 +22,6 @@ export default {
   data() {
     return {
       // feed 를 page 를 증가시키면서 하나씩 받아와야 할 듯
-      scrollY: false,
       page: 1,
       fid: 100000,
       feed_data: [],
@@ -50,11 +33,6 @@ export default {
       this.feed_data = this.feed_data.concat(feeds);
     },
     infiniteScroll() {
-      if (window.scrollY) {
-        this.scrollY = true;
-      } else {
-        this.scrollY = false;
-      }
       if (
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 10
@@ -76,9 +54,6 @@ export default {
           this.setFeeds(newFeeds);
         });
       }
-    },
-    top() {
-      scrollTo(0, 0);
     },
   },
   created() {
@@ -107,15 +82,4 @@ export default {
 </script>
 
 <style scoped>
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
 </style>
