@@ -3,17 +3,33 @@
     <v-list-item>
       <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
         <v-icon v-if="!imgData" dark>mdi-account</v-icon>
-        <v-img v-if="imgData" :src="`data:${imgType};base64,${imgData}`" :alt="imgName" />
+        <v-img
+          v-if="imgData"
+          :src="`data:${imgType};base64,${imgData}`"
+          :alt="imgName"
+        />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="title">{{unick}}</v-list-item-title>
-        <v-list-item-subtitle>{{uid}}</v-list-item-subtitle>
+        <v-list-item-title class="title">{{ unick }}</v-list-item-title>
+        <v-list-item-subtitle>{{ uid }}</v-list-item-subtitle>
       </v-list-item-content>
       <v-btn v-if="mypage" color="grey" fab small dark @click="toProfileEdit">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-chip v-if="!mypage && !isFollow" color="#2699fb" dark @click="follow(uid)">Follow</v-chip>
-      <v-chip v-if="!mypage && isFollow" color="#ff6666" outlined @click="follow(uid)">Unfollow</v-chip>
+      <v-chip
+        v-if="!mypage && !isFollow"
+        color="#2699fb"
+        dark
+        @click="follow(uid)"
+        >Follow</v-chip
+      >
+      <v-chip
+        v-if="!mypage && isFollow"
+        color="#ff6666"
+        outlined
+        @click="follow(uid)"
+        >Unfollow</v-chip
+      >
     </v-list-item>
 
     <v-card-text class="text-center">{{ profileText }}</v-card-text>
@@ -21,21 +37,21 @@
     <v-card-actions class="justify-center">
       <v-btn text disabled class="non-active">
         <div class="d-flex flex-column">
-          <span>{{numPosts}}</span>
+          <span>{{ numPosts }}</span>
           <span class="caption font-weight-light">POSTS</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
       <v-btn text @click="moveToFollowers">
         <div class="d-flex flex-column">
-          <span>{{numFollowers}}</span>
+          <span>{{ numFollowers }}</span>
           <span class="caption font-weight-light">FOLLOWERS</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
       <v-btn text @click="moveToFollowings">
         <div class="d-flex flex-column">
-          <span>{{numFollowings}}</span>
+          <span>{{ numFollowings }}</span>
           <span class="caption font-weight-light">FOLLOWINGS</span>
         </div>
       </v-btn>
@@ -44,6 +60,7 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 import { mapActions } from "vuex";
 
 export default {
@@ -110,7 +127,10 @@ export default {
         );
         if (doubleCheck) {
           this.sendFollow(this.uid);
-          alert("팔로우가 취소되었습니다.");
+          swal({
+            text: "팔로우가 취소되었습니다.",
+            dangerMode: true,
+          });
           this.isFollow = !this.isFollow;
           this.numFollowers--;
         }

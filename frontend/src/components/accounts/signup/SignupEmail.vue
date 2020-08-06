@@ -14,7 +14,7 @@
       v-model="email"
       :error-messages="error.email"
       label="E-mail."
-      @input="emailChecked=false"
+      @input="emailChecked = false"
       outlined
       solo
       required
@@ -34,14 +34,17 @@
       <br />
     </v-spacer>
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
+      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')"
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="!emailChecked"
         @click="emailVerification(email)"
         color="#ff6666"
         class="white--text"
-      >다음으로</v-btn>
+        >다음으로</v-btn
+      >
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
@@ -60,6 +63,7 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 import { mapActions } from "vuex";
 import * as EmailValidator from "email-validator";
 
@@ -69,7 +73,7 @@ export default {
     this.component = this;
   },
   watch: {
-    email: function () {
+    email: function() {
       this.checkForm();
     },
   },
@@ -97,14 +101,18 @@ export default {
         console.log("code : ", code);
         if (code.status === 200) {
           signupEmailComponent.overlay = !signupEmailComponent.overlay;
-          alert("인증번호가 발송되었습니다.");
+          swal("인증번호가 발송되었습니다.");
           this.$emit("toEmailVerification", {
             confirmCode: code,
             userEmail: email,
           });
         } else {
           signupEmailComponent.overlay = !signupEmailComponent.overlay;
-          alert("인증번호 발송에 실패하였습니다.");
+          swal({
+            text: "인증번호 발송에 실패하였습니다.",
+            icon: "error",
+            dangerMode: true,
+          });
         }
       });
     },
@@ -113,10 +121,13 @@ export default {
         // console.log(res);
         // console.log(this.emailChecked);
         if (res === true) {
-          alert("사용 가능한 이메일입니다.");
+          swal("사용 가능한 이메일입니다.");
           this.emailChecked = true;
         } else {
-          alert("이미 사용 중인 이메일입니다.");
+          swal({
+            text: "이미 사용 중인 이메일입니다.",
+            dangerMode: true,
+          });
           this.emailChecked = false;
         }
         if (this.emailChecked) {
@@ -143,5 +154,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

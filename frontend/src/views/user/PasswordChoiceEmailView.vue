@@ -2,21 +2,24 @@
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <IdCheck v-if="page == '1'" @toEmailCheck="page='2', setId, setPage(2)" />
+        <IdCheck
+          v-if="page == '1'"
+          @toEmailCheck="(page = '2'), setId, setPage(2)"
+        />
         <PasswordChoiceEmail
           v-if="page == '2'"
           @toEmailVerification="setConfirmCode"
-          @pageDown="page='1', setPage(1)"
+          @pageDown="(page = '1'), setPage(1)"
         />
         <PasswordChoiceEmailVerification
           v-if="page == '3'"
           @moveToConductPage="moveToConductPage"
-          @pageDown="page='2', setPage(2)"
+          @pageDown="(page = '2'), setPage(2)"
         />
         <PasswordChange
           v-if="page == '4'"
           @changePassword="doPasswordReset"
-          @pageDown="page='3', setPage(3)"
+          @pageDown="(page = '3'), setPage(3)"
         />
       </v-col>
     </v-row>
@@ -73,11 +76,10 @@ export default {
       this.setCode("");
     },
     setId(id) {
-      this.uid = id;
+      this.userEmailData.uid = id;
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -30,7 +30,11 @@
                 loop
                 muted
               ></video>
-              <v-img v-if="!preview.includes('data:video/mp4', 0)" :src="preview" width="100%"></v-img>
+              <v-img
+                v-if="!preview.includes('data:video/mp4', 0)"
+                :src="preview"
+                width="100%"
+              ></v-img>
             </v-window-item>
           </v-window>
 
@@ -39,8 +43,17 @@
               <v-icon>mdi-chevron-double-left</v-icon>
             </v-btn>
             <v-item-group v-model="i2" class="text-center" mandatory>
-              <v-item v-for="n in previews.length" :key="n" v-slot:default="{ active, toggle }">
-                <v-btn :input-value="active" icon @click="toggle" color="#ff6666">
+              <v-item
+                v-for="n in previews.length"
+                :key="n"
+                v-slot:default="{ active, toggle }"
+              >
+                <v-btn
+                  :input-value="active"
+                  icon
+                  @click="toggle"
+                  color="#ff6666"
+                >
                   <v-icon>mdi-record</v-icon>
                 </v-btn>
               </v-item>
@@ -62,7 +75,7 @@
             label="사진 또는 동영상 선택"
             @change="previewImage"
             color="#ff6666"
-            error-messages=".png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
+            error-messages="20mb 이하 .png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
           ></v-file-input>
           <v-spacer></v-spacer>
           <v-textarea
@@ -98,7 +111,11 @@
             autocorrect="off"
             autocomplete="off"
           ></v-text-field>
-          <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+          <div
+            v-for="tag in feedhashtag"
+            :key="tag"
+            style="display: inline-block;"
+          >
             <v-btn
               outlined
               solo
@@ -108,13 +125,20 @@
               color="#ff6666"
               small
               @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
-            ># {{ tag }}</v-btn>
+              ># {{ tag }}</v-btn
+            >
           </div>
           <v-spacer>
             <br />
           </v-spacer>
           <div>
-            <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+            <v-btn
+              @click="$router.go(-1)"
+              class="white--text"
+              color="#666666"
+              width="99"
+              >취소</v-btn
+            >
             <v-divider class="mr-5" vertical></v-divider>
             <!-- 클릭하면 피드 상세 페이지로 -->
             <v-btn
@@ -123,14 +147,16 @@
               @click="updateFeedByFormData()"
               color="#ff6666"
               class="white--text"
-            >작성 완료</v-btn>
+              >작성 완료</v-btn
+            >
             <v-btn
               v-else
               :disabled="!feed.title || !feed.content || !fileData"
               @click="insertFeedByFormData()"
               color="#ff6666"
               class="white--text"
-            >작성 완료</v-btn>
+              >작성 완료</v-btn
+            >
           </div>
         </v-card>
       </v-col>
@@ -139,6 +165,8 @@
 </template>
 
 <script>
+import swal from "sweetalert";
+
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -181,12 +209,36 @@ export default {
       console.log(file);
       if (file.length > 3) {
         // console.log(file.length);
-        alert("파일이 3개보다 많이 선택되었습니다.");
+        swal({
+          title: "파일 개수 초과",
+          text: "파일이 3개보다 많이 선택되었습니다.",
+          icon: "warning",
+          dangerMode: true,
+        });
         return false;
       }
       for (let i = 0; i < file.length; i++) {
         if (file[i].size > 20 * 1024 * 1024) {
-          alert("파일 사이즈가 20mb 보다 큽니다.");
+          swal({
+            title: "파일 용량 초과",
+            text: "20mb보다 큰 파일이 선택되었습니다.",
+            icon: "warning",
+            dangerMode: true,
+          });
+          return false;
+        } else if (
+          !/.mp4/.test(file[i].name) &&
+          !/.png/.test(file[i].name) &&
+          !/.gif/.test(file[i].name) &&
+          !/.jpg/.test(file[i].name) &&
+          !/.jpeg/.test(file[i].name)
+        ) {
+          swal({
+            title: "파일 형식 문제",
+            text: "파일 형식이 어긋납니다.",
+            icon: "error",
+            dangerMode: true,
+          });
           return false;
         } else {
           // console.log(file[i]);

@@ -3,6 +3,8 @@ import axios from "axios";
 import router from "@/router";
 import SERVER from "@/api/api";
 
+import swal from "sweetalert";
+
 export default {
   namespaced: true,
   state: {
@@ -86,7 +88,7 @@ export default {
           commit("accounts/SET_USERSIMPLEDATA", res.data.data, {
             root: true,
           });
-          alert("프로필이 수정되었습니다.");
+          swal("프로필이 수정되었습니다.");
           router.go(-1);
         })
         .catch((err) => console.log(err));
