@@ -40,7 +40,7 @@ public class ContestFeedFiles {
     
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="cfid", insertable = false, updatable = false)
     private ContestFeed contestFeed;
 
 }
