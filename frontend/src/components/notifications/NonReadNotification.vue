@@ -4,19 +4,27 @@
       <!-- <v-subheader v-if="item.headers" :key="item.header">{{ item.headers }}</v-subheader> -->
 
       <v-list-item :key="item.title" ripple @click="confirmNotification">
-        <v-avatar class="ml-3 mr-5" color="teal" size="40">
+        <!-- <v-avatar class="ml-3 mr-5" color="teal" size="40">
           <span class="white--text headline">SM</span>
-        </v-avatar>
+        </v-avatar>-->
+        <v-list-item-avatar class="ml-3 mr-5" :color="item.notiUprofile ? 'white' : 'grey'">
+          <v-icon v-if="!item.notiUprofile" dark>mdi-account</v-icon>
+          <v-img
+            v-if="item.notiUprofile"
+            :src="`data:${item.notiUprofile.type};base64,${item.notiUprofile.data}`"
+            :alt="item.notiUprofile.data"
+          />
+        </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title v-if="item.state !== 1" v-html="item.title"></v-list-item-title>
 
-          <v-list-item-subtitle v-if="item.state === 1">{{item.followid}} 님이 팔로우하였습니다.</v-list-item-subtitle>
+          <v-list-item-subtitle v-if="item.state === 1">{{item.notiUnick}} 님이 팔로우하였습니다.</v-list-item-subtitle>
           <v-list-item-subtitle
             v-if="item.state === 3"
-          >{{ item.commentid }}님이 '{{ item.title }}' 글에 댓글을 남겼습니다.</v-list-item-subtitle>
+          >{{ item.notiUnick }}님이 '{{ item.title }}' 글에 댓글을 남겼습니다.</v-list-item-subtitle>
           <v-list-item-subtitle
             v-if="item.state === 2"
-          >{{ item.likeid }}님이 '{{ item.title }}' 글을 좋아합니다.</v-list-item-subtitle>
+          >{{ item.notiUnick }}님이 '{{ item.title }}' 글을 좋아합니다.</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-row>

@@ -26,7 +26,7 @@ export default {
     SET_POLL(state, poll) {
       state.poll = poll;
     },
-    REDUCE_NOFIFYCOUNT(state) {
+    REDUCE_NOTIFYCOUNT(state) {
       state.nonReadCount--;
     },
   },
@@ -99,8 +99,9 @@ export default {
         .catch((err) => console.log(err.response));
     },
 
-    reduceNofifyCount({ commit }) {
-      commit("REDUCE_NOFITYCOUNT");
+    reduceNotifyCount({ commit }) {
+      console.log("reduce");
+      commit("REDUCE_NOTIFYCOUNT");
     },
   },
 };
