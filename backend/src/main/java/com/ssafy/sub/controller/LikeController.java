@@ -46,8 +46,10 @@ public class LikeController {
 		
 		// 알림 설정
 		int notiUid = feedService.feedDetail(fid).getUid();
-		notificationService.notificationInsert(NotificationNonRead.builder().state(2)
-												.uid(notiUid).lid(uid).fid(fid).regdate(new Date()).build());
+		if(uid!=notiUid) {
+			notificationService.notificationInsert(NotificationNonRead.builder().state(2)
+					.uid(notiUid).lid(uid).fid(fid).regdate(new Date()).build());
+		}
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.LIKE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
