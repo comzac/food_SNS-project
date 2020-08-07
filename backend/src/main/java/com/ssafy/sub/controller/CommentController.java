@@ -100,8 +100,10 @@ public class CommentController {
       
       // 알림 설정: fid번호로 fid유저 확인 후 저장
       int feedUid = feedService.feedDetail(comment.getFid()).getUid();
-      notificationService.notificationInsert(NotificationNonRead.builder().state(3)
-    		  .uid(feedUid).fid(comment.getFid()).cid(LoginUid).regdate(new Date()).build());
+      if(LoginUid!=feedUid) {
+	      notificationService.notificationInsert(NotificationNonRead.builder().state(3)
+	    		  .uid(feedUid).fid(comment.getFid()).cid(LoginUid).regdate(new Date()).build());
+      }
       
       Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);
       return new ResponseEntity<Result>(result, HttpStatus.OK);

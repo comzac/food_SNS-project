@@ -156,4 +156,10 @@ public class UserService {
 		return userRepository.findByUid(uid).orElse(null);
 	}
 	
+	public DBProfile getProfile(int uid) {
+		Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(uid));
+		if(dbProOptional.isPresent()) return dbProOptional.get();
+		else return null;
+	}
+	
 }

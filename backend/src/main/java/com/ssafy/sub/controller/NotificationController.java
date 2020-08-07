@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.sub.dto.DBProfile;
 import com.ssafy.sub.dto.Feed;
 import com.ssafy.sub.dto.NotificationNonRead;
 import com.ssafy.sub.dto.NotificationRead;
+import com.ssafy.sub.dto.User;
 import com.ssafy.sub.model.response.Notification;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
@@ -73,25 +75,39 @@ public class NotificationController {
 		List<Notification> nonReadResponse = new ArrayList<Notification>();
 		List<Notification> readResponse = new ArrayList<Notification>();
 		
-		String userStrId = userService.findById(LoginUid).getUid();
+		User LoginUser = userService.findById(LoginUid);
 		for(NotificationNonRead nr: notificationNonRead) {
 			switch(nr.getState()) {
 				case 1:	// follow
-					String followUid = userService.findById(nr.getRid()).getUid();
+					User follower = userService.findById(nr.getRid());
+					DBProfile profile = userService.getProfile(follower.getId());
 					nonReadResponse.add(Notification.builder().id(nr.getId()).state(nr.getState())
-														.uid(userStrId).followid(followUid).build());
+														.uid(LoginUser.getUid()).unick(LoginUser.getUnick())
+														.followid(follower.getUid()).notiUnick(follower.getUnick())
+														.notiUprofile(profile)
+														.build());
 					break;
 				case 2:	// like
 					Feed feed = feedService.feedDetail(nr.getFid());
-					String likeId = userService.findById(nr.getLid()).getUid();
-					nonReadResponse.add(Notification.builder().id(nr.getId()).state(nr.getState()).fid(nr.getFid())
-														.uid(userStrId).likeid(likeId).title(feed.getTitle()).build());	
+					User likeUser = userService.findById(nr.getLid());
+					profile = userService.getProfile(likeUser.getId());
+					nonReadResponse.add(Notification.builder().id(nr.getId()).state(nr.getState())
+														.uid(LoginUser.getUid()).unick(LoginUser.getUnick())
+														.likeid(likeUser.getUid()).notiUnick(likeUser.getUnick())
+														.notiUprofile(profile)
+														.fid(nr.getFid()).title(feed.getTitle())
+														.build());	
 					break;
 				case 3:	// comment
 					feed = feedService.feedDetail(nr.getFid());
-					String commentId = userService.findById(nr.getCid()).getUid();
-					nonReadResponse.add(Notification.builder().id(nr.getId()).state(nr.getState()).fid(nr.getFid())
-														.uid(userStrId).commentid(commentId).title(feed.getTitle()).build());
+					User commentUser = userService.findById(nr.getCid());
+					profile = userService.getProfile(commentUser.getId());
+					nonReadResponse.add(Notification.builder().id(nr.getId()).state(nr.getState())
+														.uid(LoginUser.getUid()).unick(LoginUser.getUnick())
+														.commentid(commentUser.getUid()).notiUnick(commentUser.getUnick())
+														.notiUprofile(profile)
+														.fid(nr.getFid()).title(feed.getTitle())
+														.build());
 					break;
 			}
 		}
@@ -99,21 +115,35 @@ public class NotificationController {
 		for(NotificationRead r: notificationRead) {
 			switch(r.getState()) {
 			case 1:	// follow
-				String followUid = userService.findById(r.getRid()).getUid();
+				User follower = userService.findById(r.getRid());
+				DBProfile profile = userService.getProfile(follower.getId());
 				readResponse.add(Notification.builder().id(r.getId()).state(r.getState())
-													.uid(userStrId).followid(followUid).build());
+													.uid(LoginUser.getUid()).unick(LoginUser.getUnick())
+													.followid(follower.getUid()).notiUnick(follower.getUnick())
+													.notiUprofile(profile)
+													.build());
 				break;
 			case 2:	// like
 				Feed feed = feedService.feedDetail(r.getFid());
-				String likeId = userService.findById(r.getLid()).getUid();
-				readResponse.add(Notification.builder().id(r.getId()).state(r.getState()).fid(r.getFid())
-													.uid(userStrId).likeid(likeId).title(feed.getTitle()).build());	
+				User likeUser = userService.findById(r.getLid());
+				profile = userService.getProfile(likeUser.getId());
+				readResponse.add(Notification.builder().id(r.getId()).state(r.getState())
+													.uid(LoginUser.getUid()).unick(LoginUser.getUnick())
+													.likeid(likeUser.getUid()).notiUnick(likeUser.getUnick())
+													.notiUprofile(profile)
+													.fid(r.getFid()).title(feed.getTitle())
+													.build());	
 				break;
 			case 3:	// comment
 				feed = feedService.feedDetail(r.getFid());
-				String commentId = userService.findById(r.getCid()).getUid();
-				readResponse.add(Notification.builder().id(r.getId()).state(r.getState()).fid(r.getFid())
-													.uid(userStrId).commentid(commentId).title(feed.getTitle()).build());
+				User commentUser = userService.findById(r.getCid());
+				profile = userService.getProfile(commentUser.getId());
+				readResponse.add(Notification.builder().id(r.getId()).state(r.getState())
+													.uid(LoginUser.getUid()).unick(LoginUser.getUnick())
+													.commentid(commentUser.getUid()).notiUnick(commentUser.getUnick())
+													.notiUprofile(profile)
+													.fid(r.getFid()).title(feed.getTitle())
+													.build());
 				break;
 			}
 		}
