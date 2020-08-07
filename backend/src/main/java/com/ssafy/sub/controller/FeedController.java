@@ -325,7 +325,7 @@ public class FeedController {
 	
 	
 	// 2-1. list 검색 ( )
-	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
+	@ApiOperation(value = "feedList의 목록을 검색한다", response = Feed.class)
 	@GetMapping(value = "/search/temp/{keyword}/{state}")
 	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword, @PathVariable String state) {
 		System.out.println(keyword);
