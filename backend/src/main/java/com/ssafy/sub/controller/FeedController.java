@@ -329,7 +329,7 @@ public class FeedController {
 	@GetMapping(value = "/search/temp/{keyword}/{state}")
 	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword, @PathVariable String state) {
 		System.out.println(keyword);
-		List<HashMap<String, Long>> list =new ArrayList<HashMap<String,Long>>();
+		List<HashMap<String, String>> list =new ArrayList<HashMap<String,String>>();
 		Result result = null;
 		switch(state) {
 		case "HASHTAG":
@@ -338,8 +338,8 @@ public class FeedController {
 				System.out.println(hashtag.getContent());
 				String hashContent = hashtag.getContent();
 				Long cnt = feedService.countFeedByHashtag(hashtag.getId());
-				HashMap<String, Long> map = new HashMap<String, Long>();
-				map.put(hashContent, cnt);
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put(hashContent, Long.toString(cnt));
 				list.add(map);
 			}
 			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_HASHTAG, list);
@@ -349,10 +349,13 @@ public class FeedController {
 			for (User user : userList) {
 				int user_id = user.getId();
 				String user_uid = user.getUid();
+				String user_nick = user.getUnick();
 				System.out.println(user_id);
 				Long cnt = feedService.countFeedByUser(user_id);
-				HashMap<String, Long> map = new HashMap<String, Long>();
-				map.put(user_uid, cnt);
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("uid", user_uid);
+				map.put("cnt", Long.toString(cnt));
+				map.put("unick", user_nick);
 				list.add(map);
 			}
 			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_USERS, list);
