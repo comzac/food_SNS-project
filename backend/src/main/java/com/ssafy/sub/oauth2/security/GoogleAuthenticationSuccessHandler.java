@@ -32,7 +32,7 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 //        httpSession.set setAttribute("login_user", getGoogleUser(authentication)); // 간단한 구글계정 정보를 세션에 저장
-
+    	System.out.println("userInfo");
     	Map<String, Object> userInfo = getGoogleUser(authentication);
     	request.setAttribute("userInfo", userInfo);
         request.getRequestDispatcher("/social/login").forward(request, response);

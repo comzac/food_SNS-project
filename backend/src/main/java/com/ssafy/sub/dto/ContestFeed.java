@@ -46,6 +46,6 @@ public class ContestFeed {
 	
 	@JsonManagedReference
 	@OneToMany(fetch = FetchType.LAZY,mappedBy="contestFeed")
-	private List<ContestFeedFiles> contestFeedFiles = new ArrayList<>();
+	private List<ContestFeedFiles> files = new ArrayList<>();
 
 }

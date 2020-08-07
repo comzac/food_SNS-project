@@ -69,6 +69,8 @@ public class ResponseMessage {
     public static final String UNLIKE_COMMENT = "댓글 좋아요 해제";
     public static final String FAIL_LIKE_COMMENT = "댓글 좋아요 실패";
     public static final String FAIL_UNLIKE_COMMENT = "댓글 좋아요 해제 실패";
+    
+    public static final String READ_ALL_CONTEST = "모든 콘테스트 조회 성공";
 
     public static final String AUTHORIZED = "인증 성공";
     public static final String UNAUTHORIZED = "인증 실패";

@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.sub.dto.ContestFeedFiles;
 import com.ssafy.sub.dto.DBFile;
 import com.ssafy.sub.dto.DBProfile;
-import com.ssafy.sub.dto.UserSimple;
 import com.ssafy.sub.exception.FileStorageException;
 import com.ssafy.sub.exception.MyFileNotFoundException;
+import com.ssafy.sub.repo.ContestFeedFilesRepository;
 import com.ssafy.sub.repo.DBFileRepository;
 import com.ssafy.sub.repo.DBProfileRepository;
 
@@ -26,6 +27,8 @@ public class FileStorageService {
     private DBFileRepository dbFileRepository;
     @Autowired
     private DBProfileRepository dbProfileRepository;
+    @Autowired
+    private ContestFeedFilesRepository contestFeedFilesRepository;
  
     @Transactional
     public DBProfile storeProfile(MultipartFile file, String text, String uid) throws FileStorageException {
@@ -114,5 +117,29 @@ public class FileStorageService {
     public List<DBFile> getFile(int fid) throws MyFileNotFoundException {
         return dbFileRepository.findAllByFid(fid)
                 .orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fid));
+    }
+
+	public ContestFeedFiles storeContestFile(MultipartFile file, int fid) throws FileStorageException {
+		// Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        try {
+            // Check if the file's name contains invalid characters
+            if(fileName.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+            } 
+
+            ContestFeedFiles cfFiles = ContestFeedFiles.builder()
+            							.cfid(fid).name(fileName).type(file.getContentType())
+            							.data(file.getBytes()).build();
+            
+            return contestFeedFilesRepository.save(cfFiles);
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+	}
+	
+	public List<ContestFeedFiles> getContestFiles(int fid) throws MyFileNotFoundException {
+        return contestFeedFilesRepository.findAllByCfid(fid);
     }
 }

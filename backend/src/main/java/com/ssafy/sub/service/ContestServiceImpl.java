@@ -1,5 +1,6 @@
 package com.ssafy.sub.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.repo.ContestFeedFilesRepository;
 import com.ssafy.sub.repo.ContestFeedLikeRepository;
+import com.ssafy.sub.repo.ContestFeedQueryDsl;
 import com.ssafy.sub.repo.ContestFeedRepository;
 import com.ssafy.sub.repo.ContestRepository;
 
@@ -29,10 +31,18 @@ public class ContestServiceImpl implements ContestService {
 	ContestFeedLikeRepository contestFeedLikeRepository;
 	@Autowired
 	ContestFeedFilesRepository contestFeedFilesRepository;
+	@Autowired
+	ContestFeedQueryDsl contestFeedQueryDsl;
 	
 	@Override
 	public List<Contest> getContest() {
-		return contestRepository.findAll();
+		return contestRepository.findAllByOrderByIdDesc();
+	}
+	
+	@Override
+	public int getContestlatestRound() {
+		Contest contest = contestRepository.findFirstByOrderByIdDesc();
+		return contest.getId();
 	}
 
 	@Override
@@ -46,8 +56,35 @@ public class ContestServiceImpl implements ContestService {
 	}
 
 	@Override
-	public ContestFeed getContestFeed(int fid) {
-		return contestFeedRepository.findById(fid).get();
+	public Optional<ContestFeed> getContestFeed(int fid) {
+		return contestFeedRepository.findById(fid);
+	}
+	
+	@Override
+	public HashMap<String, Object> getContestFeedLike(int fid) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		HashMap<String, Long> usex = new HashMap<String, Long>();
+		Long female = contestFeedQueryDsl.findLikeCountFemale(fid);
+		Long male = contestFeedQueryDsl.findLikeCountMale(fid);
+		usex.put("female", female);
+		usex.put("male", male);
+		
+		HashMap<String, Long> uage = new HashMap<String, Long>();
+		Long age10 = contestFeedQueryDsl.findLikeAge10(fid);
+		Long age20 = contestFeedQueryDsl.findLikeAge20(fid);
+		Long age30 = contestFeedQueryDsl.findLikeAge30(fid);
+		Long age40 = contestFeedQueryDsl.findLikeAge40(fid);
+		Long age50 = contestFeedQueryDsl.findLikeAge50(fid);
+		uage.put("age10", age10);
+		uage.put("age20", age20);
+		uage.put("age30", age30);
+		uage.put("age40", age40);
+		uage.put("age50", age50);
+		
+		map.put("usex", usex);
+		map.put("uage", uage);
+		return map;
 	}
 
 	@Override
@@ -56,13 +93,13 @@ public class ContestServiceImpl implements ContestService {
 	}
 
 	@Override
-	public ContestFeedLike insertContestFeedLike(int uid, int fid) {
+	public ContestFeedLike insertContestFeedLike(int fid, int uid) {
 		ContestFeedLike contestFeedLike = new ContestFeedLike(new ContestFeedLikeKey(fid, uid));
 		return contestFeedLikeRepository.save(contestFeedLike);
 	}
 
 	@Override
-	public void deleteContestFeedLike(int uid, int fid) {
+	public void deleteContestFeedLike(int fid, int uid) {
 		ContestFeedLike contestFeedLike = new ContestFeedLike(new ContestFeedLikeKey(fid, uid));
 		if(!contestFeedLikeRepository.findById(new ContestFeedLikeKey(fid, uid)).isPresent()) {
 			throw new RestException(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_FEED_LIKE);
@@ -83,4 +120,11 @@ public class ContestServiceImpl implements ContestService {
 		return contestFeedRepository.save(updateCFeed);
 	}
 	
+	@Override
+	public boolean findByContestFeedLike(int fid, int uid) {
+		if(!contestFeedLikeRepository.findById(new ContestFeedLikeKey(fid, uid)).isPresent())
+			return false;
+		else
+			return true;
+	}
 }
