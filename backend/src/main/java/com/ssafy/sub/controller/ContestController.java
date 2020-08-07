@@ -1,12 +1,10 @@
 package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ssafy.sub.dto.Contest;
 import com.ssafy.sub.dto.ContestFeed;
@@ -30,11 +27,9 @@ import com.ssafy.sub.dto.ContestFeedFiles;
 import com.ssafy.sub.dto.User;
 import com.ssafy.sub.exception.FileStorageException;
 import com.ssafy.sub.model.response.ContestFeedAll;
-import com.ssafy.sub.model.response.FeedAllResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
-import com.ssafy.sub.model.response.UploadFileResponse;
 import com.ssafy.sub.service.ContestService;
 import com.ssafy.sub.service.FileStorageService;
 
@@ -126,26 +121,24 @@ public class ContestController {
 	
 	@ApiOperation(value = "콘테스트 피드의 파일을 저장한다.", response = Result.class)
 	@PostMapping("/feeds/files")
-	public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam int fid) {
+	public ResponseEntity uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam int fid) 
+			throws FileStorageException {
 
-		return Arrays.asList(files).stream().map(file -> {
-			try {
-				return uploadFile(file, fid);
-			} catch (FileStorageException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}).collect(Collectors.toList());
+		List<ContestFeedFiles> fileNameList = new ArrayList<ContestFeedFiles>();
+		for (MultipartFile multipartFile : files) {
+			ContestFeedFiles fileName = uploadFile(multipartFile, fid);
+			fileNameList.add(fileName);
+		}
+		
+		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FILE, fileNameList);
+		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 
-	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fid") int fid)
+	public ContestFeedFiles uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fid") int fid)
 			throws FileStorageException {
+		
 		ContestFeedFiles cfFiles = fileStorageService.storeContestFile(file, fid);
-
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
-				.path(Integer.toString(cfFiles.getId())).toUriString();
-
-		return new UploadFileResponse(cfFiles.getName(), fileDownloadUri, file.getContentType(), file.getSize());
+		return cfFiles;
 	}
 	
 	@ApiOperation(value = "fid번 피드를 조회한다.", response = Result.class)
