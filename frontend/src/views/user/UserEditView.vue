@@ -15,6 +15,7 @@
 
 <script>
 import cookies from "vue-cookies";
+import swal from "sweetalert";
 
 import { mapActions } from "vuex";
 
@@ -34,7 +35,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions("accounts", ["setAuthorized", "setPage", "pwreset"]),
+    ...mapActions("accounts", [
+      "setAuthorized",
+      "setPage",
+      "pwreset",
+      "pwcheck",
+    ]),
     doPasswordReset(password) {
       var changeData = {};
       changeData.upw = password;
@@ -50,6 +56,41 @@ export default {
   beforeDestroy() {
     this.setAuthorized(false);
     this.setPage(1);
+  },
+  mounted() {
+    this.$emit("change-page", 1);
+    swal({
+      title: "비밀번호 입력",
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "계속하려면 비밀번호를 다시 입력해주세요.",
+          type: "password",
+        },
+      },
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((value) => {
+      console.log(value);
+      if (value) {
+        this.pwcheck(value).then((checkResult) => {
+          if (checkResult) {
+            this.setAuthorized(true);
+            this.isAuthorized = true;
+          } else {
+            swal({
+              title: "비밀번호 불일치",
+              text: "비밀번호를 다시 한번 확인해주세요.",
+              icon: "error",
+              dangerMode: true,
+            }).then(() => this.$router.go(-1));
+          }
+        });
+      } else {
+        this.$router.go(-1);
+      }
+    });
   },
 };
 </script>
