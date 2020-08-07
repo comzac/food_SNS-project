@@ -6,13 +6,9 @@
       <v-row>
         <v-col cols="12">
           <v-list-item class="mt-n3 mb-3">
-            <v-list-item-avatar class="ml-7" size="80" :color="authUserImgData ? 'white' : 'grey'">
-              <v-icon v-if="!authUserImgData" x-large dark>mdi-account</v-icon>
-              <v-img
-                v-if="authUserImgData"
-                :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                :alt="authUserImgName"
-              />
+            <v-list-item-avatar class="ml-7" size="80" :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-icon v-if="!authUserImgRoute" x-large dark>mdi-account</v-icon>
+              <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h5">{{authUserUnick}}</v-list-item-title>
@@ -54,9 +50,7 @@ export default {
   },
   computed: {
     ...mapGetters("accounts", [
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
+      "authUserImgRoute",
       "authUserUid",
       "authUserUnick",
     ]),
