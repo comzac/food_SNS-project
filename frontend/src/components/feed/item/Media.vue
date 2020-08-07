@@ -5,7 +5,7 @@
       <v-window-item v-for="(file, i) in dbFiles" :key="i">
         <video
           v-if="file.type === 'video/mp4'"
-          :src="`data:${file.type};base64,${file.data}`"
+          :src="media_dir + file.name"
           type="video/mp4"
           class="my-auto"
           width="100%"
@@ -13,11 +13,7 @@
           loop
           muted
         ></video>
-        <v-img
-          v-if="file.type !== 'video/mp4'"
-          :src="`data:${file.type};base64,${file.data}`"
-          width="100%"
-        ></v-img>
+        <v-img v-if="file.type !== 'video/mp4'" :src="media_dir + file.name" width="100%"></v-img>
       </v-window-item>
     </v-window>
 
@@ -40,6 +36,8 @@
 </template>
 
 <script>
+import SERVER from "@/api/api";
+
 export default {
   name: "Media",
   components: {},
@@ -50,6 +48,7 @@ export default {
     return {
       previews: [],
       i2: 0,
+      media_dir: SERVER.MEDIA_DIR,
     };
   },
   methods: {

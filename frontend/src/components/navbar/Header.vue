@@ -45,13 +45,9 @@
         >
           <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
           <v-list-item two-line>
-            <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
-              <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
-              <v-img
-                v-if="authUserImgData"
-                :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                :alt="authUserImgName"
-              />
+            <v-list-item-avatar :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
+              <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="white--text">
@@ -144,9 +140,7 @@ export default {
   computed: {
     ...mapGetters("accounts", [
       "isLoggedIn",
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
+      "authUserImgRoute",
       "authUserUid",
       "authUserUnick",
     ]),

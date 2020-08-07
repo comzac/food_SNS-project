@@ -17,11 +17,7 @@
         <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
         <v-list-item-avatar class="mr-5" :color="comment.user.uprofile ? 'white' : 'grey'">
           <v-icon v-if="!comment.user.uprofile" dark>mdi-account</v-icon>
-          <v-img
-            v-if="comment.user.uprofile"
-            :src="`data:${comment.user.uprofile.type};base64,${comment.user.uprofile.data}`"
-            :alt="comment.user.uprofile.data"
-          />
+          <v-img v-if="comment.user.uprofile.name" :src="media_dir + comment.user.uprofile.name" />
         </v-list-item-avatar>
       </router-link>
       <v-list-item-content class="text-left">
@@ -43,9 +39,16 @@
 </template>
 
 <script>
+import SERVER from "@/api/api";
+
 export default {
   name: "Comment",
   components: {},
+  data() {
+    return {
+      media_dir: SERVER.MEDIA_DIR,
+    };
+  },
   props: {
     fid: Number,
     comments: Array,

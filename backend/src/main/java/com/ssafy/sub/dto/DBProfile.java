@@ -38,8 +38,5 @@ public class DBProfile {
 
     private String type;
 
-    @Lob
-    private byte[] data;
-
     private String text;
 }

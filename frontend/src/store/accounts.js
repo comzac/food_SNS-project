@@ -28,24 +28,24 @@ export default {
   getters: {
     isLoggedIn: (state) => !!state.authToken,
     config: (state) => ({ headers: { "X-AUTH-TOKEN": state.authToken } }),
-    authUserImgData: (state) => {
-      if (state.userSimpleData.uprofile) {
-        if (state.userSimpleData.uprofile.data) {
-          return state.userSimpleData.uprofile.data;
-        } else return false;
-      } else return false;
-    },
-    authUserImgType: (state) => {
-      if (state.userSimpleData.uprofile) {
-        if (state.userSimpleData.uprofile.type) {
-          return state.userSimpleData.uprofile.type;
-        } else return false;
-      } else return false;
-    },
-    authUserImgName: (state) => {
+    // authUserImgType: (state) => {
+    //   if (state.userSimpleData.uprofile) {
+    //     if (state.userSimpleData.uprofile.type) {
+    //       return state.userSimpleData.uprofile.type;
+    //     } else return false;
+    //   } else return false;
+    // },
+    // authUserImgName: (state) => {
+    //   if (state.userSimpleData.uprofile) {
+    //     if (state.userSimpleData.uprofile.name) {
+    //       return state.userSimpleData.uprofile.name;
+    //     } else return false;
+    //   } else return false;
+    // },
+    authUserImgRoute: (state) => {
       if (state.userSimpleData.uprofile) {
         if (state.userSimpleData.uprofile.name) {
-          return state.userSimpleData.uprofile.name;
+          return SERVER.MEDIA_DIR + state.userSimpleData.uprofile.name;
         } else return false;
       } else return false;
     },

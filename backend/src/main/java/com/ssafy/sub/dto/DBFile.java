@@ -38,14 +38,11 @@ public class DBFile {
 
     private String type;
 
-    @Lob
-    private byte[] data;
 
-	public DBFile(int fid, String name, String type, byte[] data) {
+	public DBFile(int fid, String name, String type) {
 		this.fid = fid;
 		this.name = name;
 		this.type = type;
-		this.data = data;
 	}
     
     
