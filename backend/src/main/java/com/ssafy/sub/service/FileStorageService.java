@@ -25,7 +25,7 @@ import com.ssafy.sub.repo.ContestFeedFilesRepository;
 import com.ssafy.sub.repo.DBFileRepository;
 import com.ssafy.sub.repo.DBProfileRepository;
 
-@Service
+@Service("FileStorageService")
 public class FileStorageService {
 
 	@Autowired
@@ -159,21 +159,20 @@ public class FileStorageService {
 
 	public ContestFeedFiles storeContestFile(MultipartFile file, int fid) throws FileStorageException {
 		// Normalize file name
-		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
+		
+		String result = null;
+		ContestFeedFiles cfFiles = null;
 		try {
-			// Check if the file's name contains invalid characters
-			if (fileName.contains("..")) {
-				throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-			}
-
-			ContestFeedFiles cfFiles = ContestFeedFiles.builder().cfid(fid).name(fileName).type(file.getContentType())
-					.data(file.getBytes()).build();
-
-			return contestFeedFilesRepository.save(cfFiles);
-		} catch (IOException ex) {
-			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+			int pos = file.getOriginalFilename().lastIndexOf(".");
+			String format = file.getOriginalFilename().substring(pos);
+			result = UUID.randomUUID() + format;
+			Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
+			cfFiles = ContestFeedFiles.builder().cfid(fid).name(result).type(file.getContentType()).build();
+		} catch (Exception e) {
+			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 		}
+		
+		return contestFeedFilesRepository.save(cfFiles);
 	}
 
 	public List<ContestFeedFiles> getContestFiles(int fid) throws MyFileNotFoundException {
