@@ -113,10 +113,16 @@
 
                   <v-list class="text-center">
                     <!-- user 비교 필요 -->
-                    <v-list-item @click="showEdit(comment.comment.id)">
+                    <v-list-item
+                      v-if="authUserUnick === comment.comment.user.unick"
+                      @click="showEdit(comment.comment.id)"
+                    >
                       <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="deleteCommentAndFetch(comment.comment.id)">
+                    <v-list-item
+                      v-if="authUserUnick === comment.comment.user.unick"
+                      @click="deleteCommentAndFetch(comment.comment.id)"
+                    >
                       <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
@@ -167,6 +173,7 @@ export default {
       "authUserImgData",
       "authUserImgType",
       "authUserImgName",
+      "authUserUnick",
     ]),
   },
   methods: {
