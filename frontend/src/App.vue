@@ -19,7 +19,6 @@
         @click="top()"
         class="mb-14"
       >
-        {{ selection }}
         <v-icon color="#ffffff">mdi-arrow-up-bold</v-icon>
       </v-btn>
     </transition>
