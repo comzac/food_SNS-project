@@ -15,7 +15,7 @@
         class="text-decoration-none"
       >
         <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-        <v-list-item-avatar class="ma-auto" :color="comment.user.uprofile ? 'white' : 'grey'">
+        <v-list-item-avatar class="mr-5" :color="comment.user.uprofile ? 'white' : 'grey'">
           <v-icon v-if="!comment.user.uprofile" dark>mdi-account</v-icon>
           <v-img
             v-if="comment.user.uprofile"
