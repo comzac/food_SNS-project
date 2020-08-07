@@ -28,6 +28,7 @@ export default {
     ...mapActions("notifications", ["polling"]),
   },
   created() {
+    this.$store.dispatch("getNotifyCount", null, { root: true });
     this.polling(this.listItem.title);
   },
 };
