@@ -20,10 +20,7 @@
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link
-        class="text-decoration-none"
-        :to="{ name: 'FeedCreateView' }"
-      >
+      <router-link class="text-decoration-none" :to="{ name: 'FeedCreateView' }">
         <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
@@ -48,18 +45,16 @@
         >
           <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
           <v-list-item two-line>
-            <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
-              <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
-              <v-img
-                v-if="authUserImgData"
-                :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                :alt="authUserImgName"
-              />
+            <v-list-item-avatar :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
+              <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">{{
+              <v-list-item-title class="white--text">
+                {{
                 authUserUnick
-              }}</v-list-item-title>
+                }}
+              </v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
@@ -71,14 +66,8 @@
         </v-spacer>
         <v-list-item-group active-class="white--text" mandatory>
           <div v-for="listItem in listItemData" :key="listItem.id">
-            <NavigationListItem
-              v-if="listItem.title !== 'Account'"
-              :listItem="listItem"
-            />
-            <PasswordCheckModal
-              v-if="listItem.title === 'Account'"
-              :listItem="listItem"
-            />
+            <NavigationListItem v-if="listItem.title !== 'Account'" :listItem="listItem" />
+            <PasswordCheckModal v-if="listItem.title === 'Account'" :listItem="listItem" />
           </div>
         </v-list-item-group>
       </v-list>
@@ -138,9 +127,7 @@ export default {
   computed: {
     ...mapGetters("accounts", [
       "isLoggedIn",
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
+      "authUserImgRoute",
       "authUserUid",
       "authUserUnick",
     ]),

@@ -1,13 +1,9 @@
 <template>
   <div>
     <v-list-item two-line>
-      <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
-        <v-icon v-if="!imgData" dark>mdi-account</v-icon>
-        <v-img
-          v-if="imgData"
-          :src="`data:${imgType};base64,${imgData}`"
-          :alt="imgName"
-        />
+      <v-list-item-avatar :color="imgRoute ? 'white' : 'grey'">
+        <v-icon v-if="!imgRoute" dark>mdi-account</v-icon>
+        <v-img v-if="imgRoute" :src="imgRoute" />
       </v-list-item-avatar>
       <v-list-item-content
         class="follow-list-item"
@@ -20,20 +16,8 @@
       </v-list-item-content>
 
       <v-list-item-action>
-        <v-chip
-          v-if="!isFollow && !isMe"
-          color="#2699fb"
-          dark
-          @click="follow(uid)"
-          >Follow</v-chip
-        >
-        <v-chip
-          v-if="isFollow && !isMe"
-          color="#ff6666"
-          outlined
-          @click="follow(uid)"
-          >Unfollow</v-chip
-        >
+        <v-chip v-if="!isFollow && !isMe" color="#2699fb" dark @click="follow(uid)">Follow</v-chip>
+        <v-chip v-if="isFollow && !isMe" color="#ff6666" outlined @click="follow(uid)">Unfollow</v-chip>
       </v-list-item-action>
     </v-list-item>
     <v-divider></v-divider>
@@ -43,6 +27,7 @@
 <script>
 import swal from "sweetalert";
 import { mapState, mapActions } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   name: "UserFollowListItem",
@@ -56,19 +41,14 @@ export default {
   },
   computed: {
     ...mapState("accounts", ["userSimpleData"]),
-    imgData() {
-      if (this.user.dbProfile) {
-        return this.user.dbProfile.data;
-      } else return false;
-    },
-    imgType() {
-      if (this.user.dbProfile) {
-        return this.user.dbProfile.type;
-      } else return false;
-    },
     imgName() {
       if (this.user.dbProfile) {
         return this.user.dbProfile.name;
+      } else return false;
+    },
+    imgRoute() {
+      if (this.imgName) {
+        return SERVER.MEDIA_DIR + this.imgName;
       } else return false;
     },
     unick() {
