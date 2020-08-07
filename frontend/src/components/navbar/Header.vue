@@ -20,10 +20,7 @@
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link
-        class="text-decoration-none"
-        :to="{ name: 'FeedCreateView' }"
-      >
+      <router-link class="text-decoration-none" :to="{ name: 'FeedCreateView' }">
         <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
@@ -38,7 +35,7 @@
       class="whtie--text"
       width="200px"
     >
-      <v-list nav dense>
+      <v-list nav dense flat>
         <v-spacer>
           <br />
         </v-spacer>
@@ -57,9 +54,11 @@
               />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">{{
+              <v-list-item-title class="white--text">
+                {{
                 authUserUnick
-              }}</v-list-item-title>
+                }}
+              </v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
@@ -69,16 +68,19 @@
         <v-spacer>
           <br />
         </v-spacer>
-        <v-list-item-group active-class="white--text" mandatory>
-          <div v-for="listItem in listItemData" :key="listItem.id">
+        <v-list-item-group v-model="selection" active-class="white--text" mandatory>
+          <div v-for="(listItem, i) in listItemData" :key="i">
             <NavigationListItem
-              v-if="listItem.title !== 'Account'"
+              v-show="i!==7"
               :listItem="listItem"
+              :value="i"
+              @clear-item="drawer=false"
             />
-            <PasswordCheckModal
+            <!-- <PasswordCheckModal
               v-if="listItem.title === 'Account'"
               :listItem="listItem"
-            />
+              @clear-item="clearItem(), drawer=false"
+            />-->
           </div>
         </v-list-item-group>
       </v-list>
@@ -94,13 +96,16 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NavigationListItem from "./NavigationListItem";
-import PasswordCheckModal from "./PasswordCheckModal";
+// import PasswordCheckModal from "./PasswordCheckModal";
 
 export default {
   name: "Header",
   components: {
     NavigationListItem,
-    PasswordCheckModal,
+    // PasswordCheckModal,
+  },
+  props: {
+    selection: Number,
   },
   data: () => ({
     drawer: false,
@@ -133,6 +138,7 @@ export default {
         icon: "mdi-glass-cocktail",
         title: "Liquor",
       },
+      { id: "8", link: { name: "" }, icon: "mdi-plus", title: "Plus" },
     ],
   }),
   computed: {
@@ -147,6 +153,12 @@ export default {
   },
   methods: {
     ...mapActions("accounts", ["logout"]),
+    clearItem(item) {
+      this.selection = item;
+    },
+  },
+  updated() {
+    // console.log("header", this.selection);
   },
 };
 </script>

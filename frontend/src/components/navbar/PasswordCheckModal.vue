@@ -38,9 +38,8 @@
           color="grey"
           class="white--text"
           width="40%"
-          @click="dialog = false"
-          >취소</v-btn
-        >
+          @click="dialog = false, $emit('clear-item')"
+        >취소</v-btn>
         <v-spacer></v-spacer>
         <v-btn
           :disabled="tooShortPassword"
@@ -48,8 +47,7 @@
           color="#ff6666"
           width="40%"
           class="white--text"
-          >진행</v-btn
-        >
+        >진행</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>

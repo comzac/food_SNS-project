@@ -1,6 +1,6 @@
 <template>
   <router-link :to="listItem.link" class="text-decoration-none">
-    <v-list-item>
+    <v-list-item :value="value" :disabled="listItem.link.name==''?true:false">
       <v-list-item-icon>
         <v-icon>{{ listItem.icon }}</v-icon>
       </v-list-item-icon>
@@ -19,6 +19,7 @@ export default {
   name: "NavigationListItem",
   props: {
     listItem: Object,
+    value: Number,
   },
   computed: {
     ...mapState("notifications", ["nonReadCount"]),

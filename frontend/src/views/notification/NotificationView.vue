@@ -64,6 +64,9 @@ export default {
       this.readNotification = res.readNotification;
     });
   },
+  mounted() {
+    this.$emit("change-page", 3);
+  },
 };
 </script>
 

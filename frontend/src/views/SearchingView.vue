@@ -91,6 +91,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$emit("change-page", 2);
+  },
 };
 </script>
 

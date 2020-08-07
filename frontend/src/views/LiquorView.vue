@@ -440,6 +440,9 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.$emit("change-page", 6);
+  },
 };
 </script>
 
