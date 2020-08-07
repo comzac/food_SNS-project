@@ -75,21 +75,7 @@
                     좋아요 {{ comment.likeCount }}개
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-btn
-                  class="mr-1"
-                  color="#ff6666"
-                  icon
-                  x-small
-                  @click="commentLike({
-                  'comment': comment,
-                  'idx': idx
-                })"
-                >
-                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
-                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
-                </v-btn>
-                <!-- <span>{{comment.likeCount }}</span> -->
-                <v-menu left bottom>
+                <v-menu v-if="authUserUnick === comment.comment.user.unick" v-left bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
                       <v-icon>mdi-dots-horizontal</v-icon>
@@ -118,6 +104,21 @@
                     </v-list-item>
                   </v-list>
                 </v-menu>
+                <v-btn
+                  v-if="authUserUnick !== comment.comment.user.unick"
+                  class="mr-1"
+                  color="#ff6666"
+                  icon
+                  x-small
+                  @click="commentLike({
+                  'comment': comment,
+                  'idx': idx
+                })"
+                >
+                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
+                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
+                </v-btn>
+                <!-- <span>{{comment.likeCount }}</span> -->
               </v-list-item>
               <EditComment
                 class="update"
