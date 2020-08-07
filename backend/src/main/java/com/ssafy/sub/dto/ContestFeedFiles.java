@@ -35,9 +35,6 @@ public class ContestFeedFiles {
 
     private String type;
 
-    @Lob
-    private byte[] data;
-    
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="cfid", insertable = false, updatable = false)
