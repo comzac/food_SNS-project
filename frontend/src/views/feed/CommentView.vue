@@ -1,20 +1,20 @@
 <template>
-  <div>
+  <div class="background">
     <v-container>
       <v-row class="text-center" align="center" justify="center">
         <v-col cols="12">
-          <v-card flat class="text-left mx-auto" max-width="614" v-if="selectedFeed">
+          <!-- <v-card flat class="text-left mx-auto" max-width="614" v-if="selectedFeed">
             <p>
               <strong>{{ selectedFeed.feed.title }}</strong>
             </p>
             <p>{{ selectedFeed.feed.content }}</p>
-          </v-card>
-          <v-spacer>
+          </v-card>-->
+          <!-- <v-spacer>
             <br />
-          </v-spacer>
-          <v-card flat class="mx-auto" max-width="614">
+          </v-spacer>-->
+          <v-card flat class="mx-auto myCard" max-width="614">
             <v-row class="ma-0">
-              <v-list-item-avatar class="ma-auto" :color="authUserImgData ? 'white' : 'grey'">
+              <v-list-item-avatar class="mr-2" :color="authUserImgData ? 'white' : 'grey'">
                 <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
                 <v-img
                   v-if="authUserImgData"
@@ -23,8 +23,6 @@
                 />
               </v-list-item-avatar>
               <v-text-field
-                rounded
-                outlined
                 label="댓글달기"
                 type="text"
                 v-model="commentData.content"
@@ -35,28 +33,7 @@
                 hide-details
                 autocomplete="off"
                 class="oldStyle"
-              >
-                <!-- 댓글 안에 프로필 사진 -->
-                <!-- <template v-slot:prepend-inner>
-                  <v-btn
-                    v-if="!authUserImgData"
-                    icon
-                    class="ma-0"
-                    :color="authUserImgData ? 'white' : 'grey'"
-                  >
-                    <v-icon dark>mdi-account</v-icon>
-                  </v-btn>
-                  <v-avatar>
-                    <v-img
-                      v-if="authUserImgData"
-                      :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                      :alt="authUserImgName"
-                      max-width="30"
-                      max-height="30"
-                    />
-                  </v-avatar>
-                </template>-->
-              </v-text-field>
+              ></v-text-field>
             </v-row>
             <div v-for="(comment,idx) in comments.comments" :key="comment.comment.id">
               <v-list-item class="ma-0 pa-0">
@@ -64,9 +41,8 @@
                   :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
                   class="text-decoration-none"
                 >
-                  <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
                   <v-list-item-avatar
-                    class="mr-5"
+                    class="mr-2"
                     :color="comment.comment.user.uprofile ? 'white' : 'grey'"
                   >
                     <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
@@ -82,17 +58,25 @@
                     :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
                     class="text-decoration-none"
                   >
-                    <v-list-item-title class="black--text">{{ comment.comment.user.unick }}</v-list-item-title>
+                    <v-list-item-title class="mb-1 black--text">
+                      {{ comment.comment.user.unick }}
+                      <span
+                        style="font-size: 0.7rem; color: grey;"
+                      >{{ computeYMD(comment.comment.regdate) }}</span>
+                    </v-list-item-title>
                   </router-link>
-                  <v-list-item-subtitle class="black--text">{{ comment.comment.content }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="gray--text">
-                    {{ computeYMD(comment.comment.regdate) }}
-                    {{ comment.comment.editdate ? "(수정됨)" : "" }}
+                  <v-list-item-subtitle
+                    class="black--text mb-1"
+                    style="white-space:pre-wrap"
+                  >{{ comment.comment.content }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="gray--text" style="font-size: 0.7rem">
+                    <!-- {{ computeYMD(comment.comment.regdate) }}
+                    {{ comment.comment.editdate ? "(수정됨)" : "" }}-->
+                    좋아요 {{ comment.likeCount }}개
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-spacer></v-spacer>
-                <span>Likes {{comment.likeCount }}</span>
                 <v-btn
+                  class="mr-1"
                   color="#ff6666"
                   icon
                   x-small
@@ -104,6 +88,7 @@
                   <v-icon v-if="comment.islike">mdi-heart</v-icon>
                   <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
                 </v-btn>
+                <!-- <span>{{comment.likeCount }}</span> -->
                 <v-menu left bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
@@ -280,5 +265,14 @@ export default {
   > .v-icon {
   margin-top: 0 !important;
   padding: 0 !important;
+}
+/* div.background {
+  background-color: #f3f1eb;
+}
+.myCard {
+  background-color: #f3f1eb;
+} */
+div .v-list-item__subtitle .black--text {
+  word-wrap: break-word;
 }
 </style>
