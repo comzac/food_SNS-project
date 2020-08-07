@@ -7,20 +7,18 @@
       })
     "
   >
-    <v-img v-if="!imgData" :aspect-ratio="1" contain class="grey darken-4" />
+    <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-4" />
     <v-img
-      v-if="imgType != 'video/mp4'"
+      v-if="mediaType != 'video/mp4'"
       :aspect-ratio="1"
       contain
       class="grey lighten-2 img-link"
-      :src="`data:${imgType};base64,${imgData}`"
-      :alt="imgName"
+      :src="mediaRoute"
     />
     <video
-      v-if="imgType == 'video/mp4'"
+      v-if="mediaType == 'video/mp4'"
       :aspect-ratio="1"
-      :src="`data:${imgType};base64,${imgData}`"
-      :alt="imgName"
+      :src="mediaRoute"
       width="100%"
       height="100%"
       autoplay
@@ -31,6 +29,8 @@
 </template>
 
 <script>
+import SERVER from "@/api/api";
+
 export default {
   props: {
     feed: Object,
@@ -39,19 +39,19 @@ export default {
     fid() {
       return this.feed.id;
     },
-    imgData() {
-      if (this.feed.dbFiles) {
-        return this.feed.dbFiles[0].data;
-      } else return false;
-    },
-    imgType() {
+    mediaType() {
       if (this.feed.dbFiles) {
         return this.feed.dbFiles[0].type;
       } else return false;
     },
-    imgName() {
+    mediaName() {
       if (this.feed.dbFiles) {
         return this.feed.dbFiles[0].name;
+      } else return false;
+    },
+    mediaRoute() {
+      if (this.mediaName) {
+        return SERVER.MEDIA_DIR + this.mediaName;
       } else return false;
     },
   },

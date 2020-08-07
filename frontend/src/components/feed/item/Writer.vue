@@ -7,9 +7,9 @@
       }"
       class="text-decoration-none"
     >
-      <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
-        <v-img v-if="imgData" :src="`data:${imgType};base64,${imgData}`" :alt="imgName" width="40" />
-        <v-icon v-if="!imgData" dark>mdi-account</v-icon>
+      <v-list-item-avatar :color="imgRoute ? 'white' : 'grey'">
+        <v-img v-if="imgRoute" :src="imgRoute" width="40" />
+        <v-icon v-if="!imgRoute" dark>mdi-account</v-icon>
       </v-list-item-avatar>
     </router-link>
     <router-link
@@ -60,6 +60,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   name: "Writer",
@@ -69,19 +70,14 @@ export default {
   },
   computed: {
     ...mapState("accounts", ["authUserUid"]),
-    imgData() {
-      if (this.user.uprofile) {
-        return this.user.uprofile.data;
-      } else return false;
-    },
-    imgType() {
-      if (this.user.uprofile) {
-        return this.user.uprofile.type;
-      } else return false;
-    },
     imgName() {
       if (this.user.uprofile) {
         return this.user.uprofile.name;
+      } else return false;
+    },
+    imgRoute() {
+      if (this.imgName) {
+        return SERVER.MEDIA_DIR + this.imgName;
       } else return false;
     },
   },

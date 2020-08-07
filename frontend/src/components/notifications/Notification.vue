@@ -7,13 +7,9 @@
         <!-- <v-avatar class="ml-3 mr-5" color="teal" size="40">
           <span class="white--text headline">SM</span>
         </v-avatar>-->
-        <v-list-item-avatar class="ml-3 mr-5" :color="item.notiUprofile ? 'white' : 'grey'">
-          <v-icon v-if="!item.notiUprofile" dark>mdi-account</v-icon>
-          <v-img
-            v-if="item.notiUprofile"
-            :src="`data:${item.notiUprofile.type};base64,${item.notiUprofile.data}`"
-            :alt="item.notiUprofile.data"
-          />
+        <v-list-item-avatar class="ml-3 mr-5" :color="imgRoute ? 'white' : 'grey'">
+          <v-icon v-if="!imgRoute" dark>mdi-account</v-icon>
+          <v-img v-if="imgRoute" :src="imgRoute" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title v-if="item.state !== 1" v-html="item.title"></v-list-item-title>
@@ -34,11 +30,21 @@
 
 <script>
 import { mapActions } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   name: "Notification",
   props: {
     item: Object,
+  },
+  computed: {
+    imgRoute() {
+      if (this.item.notiUprofile) {
+        if (this.item.notiUprofile.name) {
+          return SERVER.MEDIA_DIR + this.item.notiUprofile.name;
+        } else return false;
+      } else return false;
+    },
   },
   methods: {
     ...mapActions("notifications", ["readNotification"]),
