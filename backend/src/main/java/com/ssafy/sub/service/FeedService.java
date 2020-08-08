@@ -52,11 +52,13 @@ public interface FeedService {
 
 	public List<Hashtag> findHashtagByKeyword(String keyword);
 
-	public List<Feed> feedPagenation(Long pageNum, Long fid, int limit);
+	public List<Feed> feedPagination(Long pageNum, Long fid, int limit);
 
 	public Long countFeedByHashtag(int id);
 
 	public Long countFeedByUser(int user_id);
+	
+	public List<Feed> feedFollowPagination(int uid, Long pageNum, Long fid, int limit);
 
 
 }

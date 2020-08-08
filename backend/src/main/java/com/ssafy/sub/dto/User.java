@@ -64,7 +64,6 @@ public class User implements UserDetails {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(length = 100)
-//	@CreationTimestamp
 	private Date uregdate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -76,8 +75,6 @@ public class User implements UserDetails {
 	
 	@Transient
 	private DBProfile DBProfile;
-//	@Transient
-//	private Profile profile;
 		
 	@ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

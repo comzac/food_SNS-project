@@ -3,10 +3,11 @@ package com.ssafy.sub.dto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +38,11 @@ public class DBFile {
     private String name;
 
     private String type;
-
+    
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="fid", insertable = false, updatable = false)
+    private Feed feed;
 
 	public DBFile(int fid, String name, String type) {
 		this.fid = fid;
