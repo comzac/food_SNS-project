@@ -1,6 +1,10 @@
 <template>
   <div>
-    <UserFollowListItem :user="user" v-for="user in userFollows" :key="user.uid" />
+    <UserFollowListItem
+      :user="user"
+      v-for="user in userFollows"
+      :key="user.uid"
+    />
   </div>
 </template>
 
@@ -17,5 +21,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

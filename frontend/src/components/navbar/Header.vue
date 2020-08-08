@@ -20,7 +20,10 @@
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link class="text-decoration-none" :to="{ name: 'FeedCreateView' }">
+      <router-link
+        class="text-decoration-none"
+        :to="{ name: 'FeedCreateView' }"
+      >
         <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
@@ -51,9 +54,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="white--text">
-                {{
-                authUserUnick
-                }}
+                {{ authUserUnick }}
               </v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
@@ -64,13 +65,17 @@
         <v-spacer>
           <br />
         </v-spacer>
-        <v-list-item-group v-model="selection" active-class="white--text" mandatory>
+        <v-list-item-group
+          v-model="selection"
+          active-class="white--text"
+          mandatory
+        >
           <div v-for="(listItem, i) in listItemData" :key="i">
             <NavigationListItem
-              v-show="i!==7"
+              v-show="i !== 7"
               :listItem="listItem"
               :value="i"
-              @clear-item="drawer=false"
+              @clear-item="drawer = false"
             />
             <!-- <PasswordCheckModal
               v-if="listItem.title === 'Account'"

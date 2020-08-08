@@ -29,7 +29,8 @@
             params: { keyword: tag.content },
           })
         "
-      ># {{ tag.content }}</span>
+        ># {{ tag.content }}</span
+      >
     </div>
   </div>
 </template>
