@@ -7,7 +7,7 @@
       })
     "
   >
-    <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-4" />
+    <!-- <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-4" /> -->
     <v-img
       v-if="mediaType != 'video/mp4'"
       :aspect-ratio="1"
@@ -40,12 +40,12 @@ export default {
       return this.feed.id;
     },
     mediaType() {
-      if (this.feed.dbFiles) {
+      if (this.feed.dbFiles.length) {
         return this.feed.dbFiles[0].type;
       } else return false;
     },
     mediaName() {
-      if (this.feed.dbFiles) {
+      if (this.feed.dbFiles.length) {
         return this.feed.dbFiles[0].name;
       } else return false;
     },
