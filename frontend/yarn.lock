@@ -8412,6 +8412,11 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
+vue-google-oauth2@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/vue-google-oauth2/-/vue-google-oauth2-1.5.5.tgz#5d26a57c07679142f9299a0f9177aa9f9cc95879"
+  integrity sha512-5+sH+bcaxbH1rWJeMOC7SljFNLvthdssF5nXmt7S+WeDOAsnZgsh/0BLf4YmkiVIiaFnBKc70nhwir83zF4vEg==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
