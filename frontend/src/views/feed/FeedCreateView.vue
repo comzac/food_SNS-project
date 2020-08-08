@@ -151,7 +151,7 @@
             >
             <v-btn
               v-else
-              :disabled="!feed.title || !feed.content || !fileData"
+              :disabled="!feed.title || !feed.content || !fileData.length"
               @click="insertFeedByFormData()"
               color="#ff6666"
               class="white--text"
