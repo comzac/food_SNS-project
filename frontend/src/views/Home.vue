@@ -74,6 +74,9 @@ export default {
       })
       .catch((err) => console.log(err.response));
   },
+  mounted() {
+    this.$emit("change-page", 0);
+  },
   destroyed() {
     console.log("destroyed");
     window.removeEventListener("scroll", this.infiniteScroll);
@@ -81,5 +84,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

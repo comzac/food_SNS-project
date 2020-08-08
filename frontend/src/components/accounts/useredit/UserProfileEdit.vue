@@ -4,41 +4,18 @@
     <v-container>
       <v-row>
         <v-col cols="4">
-          <v-avatar
-            size="70"
-            :color="data.hasImage || imageData ? 'white' : 'grey'"
-          >
-            <v-icon large v-show="!data.hasImage && !imageData" dark
-              >mdi-account</v-icon
-            >
-            <v-img
-              v-if="data.hasImage && !imageData"
-              :src="`data:${authUserImgType};base64,${authUserImgData}`"
-              :alt="authUserImgName"
-            />
+          <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
+            <v-icon large v-show="!data.hasImage && !imageData" dark>mdi-account</v-icon>
+            <v-img v-if="data.hasImage && !imageData" :src="authUserImgRoute" />
             <v-img v-if="imageData" :src="imageData" />
           </v-avatar>
         </v-col>
-        <v-col
-          v-if="!inputPhase"
-          cols="4"
-          class="d-flex justify-center align-center"
-        >
-          <v-btn
-            class="ml-4"
-            fab
-            dark
-            color="#ff6666"
-            @click="inputPhase = !inputPhase"
-          >
+        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
+          <v-btn class="ml-4" fab dark color="#ff6666" @click="inputPhase = !inputPhase">
             <v-icon large dark>mdi-image</v-icon>
           </v-btn>
         </v-col>
-        <v-col
-          v-if="!inputPhase"
-          cols="4"
-          class="d-flex justify-center align-center"
-        >
+        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
           <v-btn fab dark color="#ff6666" @click="removeProfileImg">
             <v-icon large dark>mdi-cached</v-icon>
           </v-btn>
@@ -61,13 +38,7 @@
           ></v-file-input>
         </v-col>
         <v-col cols="2">
-          <v-btn
-            v-show="inputPhase"
-            fab
-            small
-            class="ml-n1 mt-5"
-            @click="resetSelectImg"
-          >
+          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="resetSelectImg">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -102,21 +73,14 @@
       @input="nickcheck = false"
       autocomplete="off"
     ></v-text-field>
-    <v-btn
-      color="grey"
-      class="white--text mx-3 mt-7"
-      width="40%"
-      @click="$router.go(-1)"
-      >취소</v-btn
-    >
+    <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
     <v-btn
       color="#ff6666"
       width="40%"
       class="white--text mx-3 mt-7"
       @click="proceed"
       :disabled="!dataChanged"
-      >진행</v-btn
-    >
+    >진행</v-btn>
   </v-col>
 </template>
 
@@ -144,9 +108,7 @@ export default {
   },
   computed: {
     ...mapGetters("accounts", [
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
+      "authUserImgRoute",
       "authUserProfileText",
       "authUserUnick",
     ]),
@@ -161,7 +123,7 @@ export default {
         this.data.text === this.authUserProfileText &&
         this.data.unick === this.authUserUnick
       ) {
-        if (!this.data.hasImage && this.authUserImgData) {
+        if (!this.data.hasImage && this.authUserImgRoute) {
           return true;
         }
         return false;
@@ -204,7 +166,7 @@ export default {
     setInitData() {
       (this.data.unick = this.authUserUnick),
         (this.data.text = this.authUserProfileText);
-      if (this.authUserImgData) {
+      if (this.authUserImgRoute) {
         this.data.hasImage = true;
       }
     },

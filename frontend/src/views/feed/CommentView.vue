@@ -14,13 +14,9 @@
           </v-spacer>-->
           <v-card flat class="mx-auto myCard" max-width="614">
             <v-row class="ma-0">
-              <v-list-item-avatar class="mr-2" :color="authUserImgData ? 'white' : 'grey'">
-                <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
-                <v-img
-                  v-if="authUserImgData"
-                  :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                  :alt="authUserImgName"
-                />
+              <v-list-item-avatar class="ma-auto" :color="authUserImgRoute ? 'white' : 'grey'">
+                <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
+                <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
               </v-list-item-avatar>
               <v-text-field
                 label="댓글달기"
@@ -33,7 +29,28 @@
                 hide-details
                 autocomplete="off"
                 class="oldStyle"
-              ></v-text-field>
+              >
+                <!-- 댓글 안에 프로필 사진 -->
+                <!-- <template v-slot:prepend-inner>
+                  <v-btn
+                    v-if="!authUserImgRoute"
+                    icon
+                    class="ma-0"
+                    :color="authUserImgRoute ? 'white' : 'grey'"
+                  >
+                    <v-icon dark>mdi-account</v-icon>
+                  </v-btn>
+                  <v-avatar>
+                    <v-img
+                      v-if="authUserImgRoute"
+                      :src="`data:${authUserImgType};base64,${authUserImgRoute}`"
+                      :alt="authUserImgName"
+                      max-width="30"
+                      max-height="30"
+                    />
+                  </v-avatar>
+                </template>-->
+              </v-text-field>
             </v-row>
             <div v-for="(comment,idx) in comments.comments" :key="comment.comment.id">
               <v-list-item class="ma-0 pa-0">
@@ -47,9 +64,8 @@
                   >
                     <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="comment.comment.user.uprofile"
-                      :src="`data:${comment.comment.user.uprofile.type};base64,${comment.comment.user.uprofile.data}`"
-                      :alt="comment.comment.user.uprofile.data"
+                      v-if="comment.comment.user.uprofile.name"
+                      :src="media_dir + comment.comment.user.uprofile.name"
                     />
                   </v-list-item-avatar>
                 </router-link>
@@ -138,6 +154,7 @@
 <script>
 import EditComment from "@/components/feed/comment/EditComment";
 import { mapActions, mapState, mapGetters } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   name: "CommentView",
@@ -150,17 +167,13 @@ export default {
         content: "",
       },
       comments: "",
+      media_dir: SERVER.MEDIA_DIR,
     };
   },
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
     // ...mapState("comments", ["comments"]),
-    ...mapGetters("accounts", [
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
-      "authUserUnick",
-    ]),
+    ...mapGetters("accounts", ["authUserImgRoute", "authUserUnick"]),
   },
   methods: {
     ...mapActions("feeds", ["getFeedDetail"]),

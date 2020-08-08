@@ -1,13 +1,9 @@
 <template>
   <v-card class="mx-auto mt-10" flat max-width="975" outlined>
     <v-list-item>
-      <v-list-item-avatar :color="imgData ? 'white' : 'grey'">
-        <v-icon v-if="!imgData" dark>mdi-account</v-icon>
-        <v-img
-          v-if="imgData"
-          :src="`data:${imgType};base64,${imgData}`"
-          :alt="imgName"
-        />
+      <v-list-item-avatar :color="imgName ? 'white' : 'grey'">
+        <v-icon v-if="!imgName" dark>mdi-account</v-icon>
+        <v-img v-if="imgName" :src="imgRoute" />
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="title">{{ unick }}</v-list-item-title>
@@ -62,6 +58,7 @@
 <script>
 import swal from "sweetalert";
 import { mapActions } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   data() {
@@ -80,19 +77,14 @@ export default {
     uid() {
       return this.userDetailData.userFeeds.user.uid;
     },
-    imgData() {
-      if (this.userDetailData.userFeeds.user.uprofile) {
-        return this.userDetailData.userFeeds.user.uprofile.data;
-      } else return false;
-    },
-    imgType() {
-      if (this.userDetailData.userFeeds.user.uprofile) {
-        return this.userDetailData.userFeeds.user.uprofile.type;
-      } else return false;
-    },
     imgName() {
       if (this.userDetailData.userFeeds.user.uprofile) {
         return this.userDetailData.userFeeds.user.uprofile.name;
+      } else return false;
+    },
+    imgRoute() {
+      if (this.imgName) {
+        return SERVER.MEDIA_DIR + this.imgName;
       } else return false;
     },
     profileText() {

@@ -38,7 +38,7 @@
           color="grey"
           class="white--text"
           width="40%"
-          @click="dialog = false"
+          @click="(dialog = false), $emit('clear-item')"
           >취소</v-btn
         >
         <v-spacer></v-spacer>

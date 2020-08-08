@@ -38,7 +38,7 @@
       class="whtie--text"
       width="200px"
     >
-      <v-list nav dense>
+      <v-list nav dense flat>
         <v-spacer>
           <br />
         </v-spacer>
@@ -48,18 +48,14 @@
         >
           <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
           <v-list-item two-line>
-            <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
-              <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
-              <v-img
-                v-if="authUserImgData"
-                :src="`data:${authUserImgType};base64,${authUserImgData}`"
-                :alt="authUserImgName"
-              />
+            <v-list-item-avatar :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
+              <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">{{
-                authUserUnick
-              }}</v-list-item-title>
+              <v-list-item-title class="white--text">
+                {{ authUserUnick }}
+              </v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
@@ -69,16 +65,23 @@
         <v-spacer>
           <br />
         </v-spacer>
-        <v-list-item-group active-class="white--text" mandatory>
-          <div v-for="listItem in listItemData" :key="listItem.id">
+        <v-list-item-group
+          v-model="selection"
+          active-class="white--text"
+          mandatory
+        >
+          <div v-for="(listItem, i) in listItemData" :key="i">
             <NavigationListItem
-              v-if="listItem.title !== 'Account'"
+              v-show="i !== 7"
               :listItem="listItem"
+              :value="i"
+              @clear-item="drawer = false"
             />
-            <PasswordCheckModal
+            <!-- <PasswordCheckModal
               v-if="listItem.title === 'Account'"
               :listItem="listItem"
-            />
+              @clear-item="clearItem(), drawer=false"
+            />-->
           </div>
         </v-list-item-group>
       </v-list>
@@ -94,13 +97,16 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NavigationListItem from "./NavigationListItem";
-import PasswordCheckModal from "./PasswordCheckModal";
+// import PasswordCheckModal from "./PasswordCheckModal";
 
 export default {
   name: "Header",
   components: {
     NavigationListItem,
-    PasswordCheckModal,
+    // PasswordCheckModal,
+  },
+  props: {
+    selection: Number,
   },
   data: () => ({
     drawer: false,
@@ -133,20 +139,25 @@ export default {
         icon: "mdi-glass-cocktail",
         title: "Liquor",
       },
+      { id: "8", link: { name: "" }, icon: "mdi-plus", title: "Plus" },
     ],
   }),
   computed: {
     ...mapGetters("accounts", [
       "isLoggedIn",
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
+      "authUserImgRoute",
       "authUserUid",
       "authUserUnick",
     ]),
   },
   methods: {
     ...mapActions("accounts", ["logout"]),
+    clearItem(item) {
+      this.selection = item;
+    },
+  },
+  updated() {
+    // console.log("header", this.selection);
   },
 };
 </script>

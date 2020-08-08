@@ -49,8 +49,10 @@ export default {
     this.SET_USERPROFILEDATA(null);
     this.overlay = true;
   },
+  mounted() {
+    this.$emit("change-page", 7);
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

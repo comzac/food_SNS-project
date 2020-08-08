@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <Header v-if="isLoggedIn" />
+    <Header v-if="isLoggedIn" :selection="selection" />
     <v-main>
       <transition name="view">
-        <router-view />
+        <router-view @change-page="changePage" />
       </transition>
     </v-main>
     <transition name="slide-fade">
@@ -23,7 +23,7 @@
       </v-btn>
     </transition>
     <Signup v-if="$route.name == 'Login'" />
-    <Bottom v-if="isLoggedIn" />
+    <Bottom v-if="isLoggedIn" v-show="$route.name !== 'FeedCreateView'" />
   </v-app>
 </template>
 
@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       scrollY: false,
+      selection: 0,
     };
   },
   computed: {
@@ -59,6 +60,10 @@ export default {
     },
     top() {
       scrollTo(0, 0);
+    },
+    changePage(selection) {
+      // console.log("changePage", selection, typeof selection);
+      this.selection = selection;
     },
   },
   created() {

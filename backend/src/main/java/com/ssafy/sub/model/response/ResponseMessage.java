@@ -80,4 +80,8 @@ public class ResponseMessage {
     public static final String SERVICE_UNAVAILABLE = "현재 서비스를 사용하실 수 없습니다. 잠시후 다시 시도해 주세요.";
 
     public static final String DB_ERROR = "데이터베이스 에러";
+
+    public static final String CREATE_FILE = "파일 저장 성공";
+    
+    
 }

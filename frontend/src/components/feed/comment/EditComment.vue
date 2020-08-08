@@ -61,8 +61,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.v-input__slot {
-  min-height: 40px;
-}
-</style>
+<style></style>

@@ -12,10 +12,9 @@ export default {
   methods: {
     moveToBack() {
       this.$router.go(-1);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
