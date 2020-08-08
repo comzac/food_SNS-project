@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -45,7 +46,7 @@ public class ContestFeed {
 	private int likeCount;
 	
 	@JsonManagedReference
-	@OneToMany(fetch = FetchType.LAZY,mappedBy="contestFeed")
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="contestFeed", cascade = CascadeType.REMOVE)
 	private List<ContestFeedFiles> files = new ArrayList<>();
 
 }
