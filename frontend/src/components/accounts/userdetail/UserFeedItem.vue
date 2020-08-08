@@ -15,16 +15,22 @@
       class="grey lighten-2 img-link"
       :src="mediaRoute"
     />
-    <video
+    <v-responsive
       v-if="mediaType == 'video/mp4'"
-      :aspect-ratio="1"
-      :src="mediaRoute"
-      width="100%"
-      height="100%"
-      autoplay
-      loop
-      muted
-    ></video>
+      class="align-center"
+      aspect-ratio="1"
+      style="background-color:#e0e0e0;"
+    >
+      <video
+        :aspect-ratio="1"
+        :src="mediaRoute"
+        width="100%"
+        height="100%"
+        autoplay
+        loop
+        muted
+      ></video>
+    </v-responsive>
   </div>
 </template>
 

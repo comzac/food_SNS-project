@@ -12,8 +12,20 @@
       <v-btn v-if="mypage" color="grey" fab small dark @click="toProfileEdit">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-chip v-if="!mypage && !isFollow" color="#2699fb" dark @click="follow(uid)">Follow</v-chip>
-      <v-chip v-if="!mypage && isFollow" color="#ff6666" outlined @click="follow(uid)">Unfollow</v-chip>
+      <v-chip
+        v-if="!mypage && !isFollow"
+        color="#2699fb"
+        dark
+        @click="follow(uid)"
+        >Follow</v-chip
+      >
+      <v-chip
+        v-if="!mypage && isFollow"
+        color="#ff6666"
+        outlined
+        @click="follow(uid)"
+        >Unfollow</v-chip
+      >
     </v-list-item>
 
     <v-card-text class="text-center">{{ profileText }}</v-card-text>

@@ -1,6 +1,9 @@
 <template>
   <router-link :to="listItem.link" class="text-decoration-none">
-    <v-list-item :value="value" :disabled="listItem.link.name==''?true:false">
+    <v-list-item
+      :value="value"
+      :disabled="listItem.link.name == '' ? true : false"
+    >
       <v-list-item-icon>
         <v-icon>{{ listItem.icon }}</v-icon>
       </v-list-item-icon>
@@ -35,5 +38,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

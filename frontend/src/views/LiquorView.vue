@@ -9,13 +9,17 @@
             <v-col
               v-for="(liquor, n) in liquor_data"
               :key="n"
-              :cols="n%4==0?8:n%4==1?1:n%4==2?3:12"
+              :cols="n % 4 == 0 ? 8 : n % 4 == 1 ? 1 : n % 4 == 2 ? 3 : 12"
               class="white--text text-center"
             >
               <v-card
                 flat
-                :color="!item.operation?'#ffb3b3':''"
-                :class="!item.operation?'mb-1 pa-1 d-inline-flex white--text':'ma-0 pa-0 d-inline-flex justify-center align-center'"
+                :color="!item.operation ? '#ffb3b3' : ''"
+                :class="
+                  !item.operation
+                    ? 'mb-1 pa-1 d-inline-flex white--text'
+                    : 'ma-0 pa-0 d-inline-flex justify-center align-center'
+                "
                 v-for="(item, i) in liquor"
                 style="vertical-align: middle;"
                 :key="i"
@@ -28,21 +32,37 @@
                   class="align-center justify-center text-center"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <img :src="item.liquorimg" v-bind="attrs" v-on="on" width="40" height="40" class="liquor-image"/>
+                    <img
+                      :src="item.liquorimg"
+                      v-bind="attrs"
+                      v-on="on"
+                      width="40"
+                      height="40"
+                      class="liquor-image"
+                    />
                   </template>
-                  <img :src="item.liquorimg" width="325"/>
+                  <img :src="item.liquorimg" width="325" />
                   <br />
                   <strong>
                     <h3
-                      :style="!item.operation?'background-color: #ffb3b3;':''"
+                      :style="
+                        !item.operation ? 'background-color: #ffb3b3;' : ''
+                      "
                       class="pa-1 text-center"
                       v-html="item.liquor"
                     ></h3>
                   </strong>
                 </v-tooltip>
-                <v-icon class="operator" v-else color="#ff6666">{{ item.operation }}</v-icon>
+                <v-icon class="operator" v-else color="#ff6666">{{
+                  item.operation
+                }}</v-icon>
               </v-card>
-              <v-divider class="my-3" color="#ff6666" light v-if="n%4==3"></v-divider>
+              <v-divider
+                class="my-3"
+                color="#ff6666"
+                light
+                v-if="n % 4 == 3"
+              ></v-divider>
             </v-col>
           </v-row>
         </v-card>

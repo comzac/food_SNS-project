@@ -19,21 +19,30 @@
           <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
           <v-window v-model="i2" continuous>
             <v-window-item v-for="(preview, i) in previews" :key="i">
-              <video
+              <v-responsive
                 v-if="preview.includes('data:video/mp4', 0)"
-                :id="i"
-                :src="preview"
-                type="video/mp4"
-                width="100%"
-                class="my-auto"
-                autoplay
-                loop
-                muted
-              ></video>
+                class="align-center"
+                aspect-ratio="1"
+                style="background-color:#e0e0e0;"
+              >
+                <video
+                  :id="i"
+                  :src="preview"
+                  type="video/mp4"
+                  width="100%"
+                  class="my-auto"
+                  autoplay
+                  loop
+                  muted
+                ></video>
+              </v-responsive>
               <v-img
                 v-if="!preview.includes('data:video/mp4', 0)"
                 :src="preview"
                 width="100%"
+                :aspect-ratio="1"
+                contain
+                class="grey lighten-2"
               ></v-img>
             </v-window-item>
           </v-window>

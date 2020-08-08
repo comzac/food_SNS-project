@@ -33,16 +33,18 @@
           ></v-text-field>
           <div class="text-right">
             <router-link
-              :to="{name: 'RetrieveID'}"
+              :to="{ name: 'RetrieveID' }"
               class="text-decoration-none mr-2"
               style="color: #ff6666;"
-            >아이디 찾기</router-link>
+              >아이디 찾기</router-link
+            >
 
             <router-link
               to="/user/password_choice"
               class="text-decoration-none"
               style="color: #ff6666;"
-            >비밀번호 찾기</router-link>
+              >비밀번호 찾기</router-link
+            >
           </div>
           <v-spacer>
             <br />
@@ -51,10 +53,11 @@
             class="white--text"
             color="#ff6666"
             @click="login(loginData)"
-            :disabled="loginData.uid==0||loginData.upw.length<8"
+            :disabled="loginData.uid == 0 || loginData.upw.length < 8"
             width="100%"
             x-large
-          >LOGIN</v-btn>
+            >LOGIN</v-btn
+          >
           <v-spacer>
             <br />
           </v-spacer>
@@ -67,9 +70,16 @@
                 class="d-flex justify-space-around align-center px-5 py-1 social-icon"
               >
                 <v-avatar class="mr-3 ml-n2">
-                  <v-img max-width="30" contain src="@/assets/google-login.png" alt="Google" />
+                  <v-img
+                    max-width="30"
+                    contain
+                    src="@/assets/google-login.png"
+                    alt="Google"
+                  />
                 </v-avatar>
-                <h4 class="grey--text text--darken-2 mb-1">Log in with Google</h4>
+                <h4 class="grey--text text--darken-2 mb-1">
+                  Log in with Google
+                </h4>
               </v-sheet>
             </a>
             <!-- <v-spacer></v-spacer>

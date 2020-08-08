@@ -2,7 +2,11 @@
   <v-container class="signup" fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <BasicForm v-if="page == 1" @toEmailVerification="setSignupData" :signupData2="signupData" />
+        <BasicForm
+          v-if="page == 1"
+          @toEmailVerification="setSignupData"
+          :signupData2="signupData"
+        />
         <SignupEmail
           v-if="page == 2"
           @toEmailVerification="emailVerification"
