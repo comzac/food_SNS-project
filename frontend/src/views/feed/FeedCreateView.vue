@@ -344,6 +344,9 @@ export default {
       this.getFeedDetail(this.$route.params.fid).then(this.initData());
     }
   },
+  mounted() {
+    this.$emit("change-page", 7);
+  },
 };
 </script>
 
