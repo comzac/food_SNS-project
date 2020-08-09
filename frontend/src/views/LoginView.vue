@@ -126,7 +126,7 @@ export default {
         .then((googleUser) => {
           console.log(
             "googleUser info : ",
-            googleUser.getAuthResponse().id_token
+            googleUser.getAuthResponse()
           );
         })
         .catch((err) => console.log(err));
