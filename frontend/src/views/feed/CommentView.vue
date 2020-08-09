@@ -152,6 +152,7 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 import EditComment from "@/components/feed/comment/EditComment";
 import { mapActions, mapState, mapGetters } from "vuex";
 import SERVER from "@/api/api";
@@ -184,16 +185,20 @@ export default {
       "commentLikeUnlike",
     ]),
     createComment(commentData) {
-      commentData.fid = this.fid;
-      this.insertComment(commentData)
-        .then(() => {
-          this.fetchComments(this.fid);
-        })
-        .then(() => {
-          this.comments = this.$store.state.comments;
-          this.commentData.content = "";
-        })
-        .catch((err) => console.log(err.response));
+      if (commentData.content !== "") {
+        commentData.fid = this.fid;
+        this.insertComment(commentData)
+          .then(() => {
+            this.fetchComments(this.fid);
+          })
+          .then(() => {
+            this.comments = this.$store.state.comments;
+            this.commentData.content = "";
+          })
+          .catch((err) => console.log(err.response));
+      } else {
+        swal("댓글을 입력하세요.");
+      }
     },
     deleteCommentAndFetch(id) {
       this.deleteComment(id)
