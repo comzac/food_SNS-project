@@ -4,12 +4,14 @@
       <v-col cols="12" sm="8" md="6">
         <v-list two-line>
           <div
-            style="text-align:center;"
-            v-if="
-              nonReadNotification.length === 0 && readNotification.length === 0
-            "
+            style="text-align:center; margin-top:65px"
+            v-if="nonReadNotification.length === 0 && readNotification.length === 0"
           >
-            <template>알림이 없습니다.</template>
+            <img class="d-flex d-sm-none mx-auto" style="height: 300px; opacity:0.3" :src="beeImg" />
+            <img class="d-none d-sm-flex mx-auto" style="height: 100px; opacity:0.3" :src="beeImg" />
+            <template>
+              <p style="opacity:0.5">알림이 없는데용 ^_^</p>
+            </template>
           </div>
           <div>
             <template v-for="item in nonReadNotification">
@@ -39,6 +41,7 @@ export default {
   },
   data() {
     return {
+      beeImg: require("@/assets/bees/bee.png"),
       nonReadNotification: [],
       readNotification: [],
       // items: [
