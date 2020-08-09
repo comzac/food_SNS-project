@@ -239,7 +239,7 @@ public class UserSecurityController {
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(googleUser, googleUser.getRoles());
 		response.addHeader("token", token);
-
+		response.addHeader("access_token", googleToken.get("access_token"));
 		ValueOperations<String, Object> vop = redisTemplate.opsForValue();
 		Token jsonToken = new Token();
 		jsonToken.setUsername(googleUser.getUid());
