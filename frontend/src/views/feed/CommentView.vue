@@ -137,18 +137,15 @@
                   <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
                 </v-btn>
                 <!-- <span>{{comment.likeCount }}</span> -->
-              </v-list-item><EditComment
-              class="update"
-              :id="'b'+comment.comment.id"
-              :cid="comment.comment.id"
-              style="display: none;"
-              :comment="comment.comment"
-              <<<<<<< HEAD
-              @editComment="editComment()"
-              @close-edit-comment="closeEditComment"
-              =======
-              @editComment="editComment"
-              >>>>>>> feature/front/modifyui
+              </v-list-item>
+              <EditComment
+                class="update"
+                :id="'b'+comment.comment.id"
+                :cid="comment.comment.id"
+                style="display: none;"
+                :comment="comment.comment"
+                @editComment="editComment"
+                @close-edit-comment="closeEditComment"
               />
             </div>
           </v-card>
