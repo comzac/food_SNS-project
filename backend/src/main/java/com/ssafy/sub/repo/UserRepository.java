@@ -21,8 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findByUemail(String uemail);
 	Long deleteByUid(String uid);
 
-	@Query("Select u from User u where uid like CONCAT(:keyword,'%')")
-	List<User> findUserIdByKeyword(@Param("keyword") String keyword);
+	@Query("Select u from User u where unick like CONCAT(:keyword,'%')")
+	List<User> findUserNickByKeyword(@Param("keyword") String keyword);
 	
 	@Transactional
     @Modifying
