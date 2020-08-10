@@ -2,6 +2,7 @@ package com.ssafy.sub.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,31 @@ public class ContestServiceImpl implements ContestService {
 	}
 	
 	@Override
-	public int getContestlatestRound() {
-		Contest contest = contestRepository.findFirstByOrderByIdDesc();
-		return contest.getId();
+	public Contest getContestlatestRound() {
+		try {
+			Contest contest = contestRepository.findFirstByOrderByIdDesc();
+			return contest;
+		}catch(NoSuchElementException e) {
+			throw new RestException(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_CONTEST);
+		}
+	}
+
+	@Override
+	public Contest getContestById(int cid) {
+		try {
+			return contestRepository.findById(cid);
+		}catch(NoSuchElementException e) {
+			throw new RestException(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_CONTEST);
+		}
 	}
 
 	@Override
 	public List<ContestFeed> findByCidOrderByLike(int cid) {
-		return contestFeedRepository.findByCidOrderByLikeCountDesc(cid);
+		try {
+			return contestFeedRepository.findByCidOrderByLikeCountDesc(cid);
+		}catch(NoSuchElementException e) {
+			throw new RestException(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_FEED);
+		}
 	}
 
 	@Override
@@ -84,6 +102,7 @@ public class ContestServiceImpl implements ContestService {
 		
 		map.put("usex", usex);
 		map.put("uage", uage);
+		
 		return map;
 	}
 
@@ -127,4 +146,5 @@ public class ContestServiceImpl implements ContestService {
 		else
 			return true;
 	}
+
 }
