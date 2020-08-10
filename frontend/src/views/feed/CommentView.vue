@@ -209,14 +209,22 @@ export default {
       }
     },
     deleteCommentAndFetch(id) {
-      this.deleteComment(id)
-        .then(() => {
-          this.fetchComments(this.fid);
-        })
-        .then(() => {
-          this.comments = this.$store.state.comments;
-        })
-        .catch((err) => console.log(err.response));
+      swal({
+        title: "삭제하시겠습니까?",
+        text: "이 작업은 취소 할 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(() => {
+        this.deleteComment(id)
+          .then(() => {
+            this.fetchComments(this.fid);
+          })
+          .then(() => {
+            this.comments = this.$store.state.comments;
+          })
+          .catch((err) => console.log(err.response));
+      });
     },
     computeYMD(regdate) {
       var ymd =
