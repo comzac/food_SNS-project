@@ -33,17 +33,10 @@
       </template>
 
       <v-list class="text-center">
-<<<<<<< HEAD
-        <v-list-item v-if="user.uid === authUserUid" @click="moveToUpdateFeed">
-          <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
-        </v-list-item>
-        <v-list-item v-if="user.uid === authUserUid" @click="deleteFeedNow">
-=======
         <v-list-item v-if="user.unick === authUserUnick" @click="moveToUpdateFeed">
           <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
         </v-list-item>
         <v-list-item v-if="user.unick === authUserUnick" @click="deleteFeedNow">
->>>>>>> feature/front/feed
           <v-list-item-title class="red--text text-lighten-2">게시글 삭제</v-list-item-title>
         </v-list-item>
         <v-list-item @click="() => {}">
