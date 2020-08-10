@@ -17,6 +17,7 @@
             autoplay
             loop
             muted
+            playsinline
           ></video>
         </v-responsive>
         <v-img

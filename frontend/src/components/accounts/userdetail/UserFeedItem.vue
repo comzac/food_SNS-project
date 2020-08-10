@@ -29,6 +29,7 @@
         autoplay
         loop
         muted
+        playsinline
       ></video>
     </v-responsive>
   </div>

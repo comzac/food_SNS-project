@@ -6,7 +6,7 @@
         <router-view @change-page="changePage" />
       </transition>
     </v-main>
-    <transition name="slide-fade">
+    <transition v-if="$route.name !== 'CommentView'" name="slide-fade">
       <v-btn
         v-show="scrollY"
         color="#ff6666"
