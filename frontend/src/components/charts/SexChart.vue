@@ -13,7 +13,7 @@ export default {
           label: "좋아요",
           backgroundColor: "#f87979",
           barThickness: 60,
-          data: [20, 30],
+          data: [this.sexData.male, this.sexData.female],
         },
       ],
     },
@@ -51,6 +51,8 @@ export default {
   }),
 
   mounted() {
+    // console.log("sexC");
+    // console.log(this.sexData);
     this.renderChart(this.chartdata, this.options);
   },
 };
