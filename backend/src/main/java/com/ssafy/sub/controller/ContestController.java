@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +69,27 @@ public class ContestController {
 		
 		List<ContestFeedAll> contestFeedAll = new ArrayList<ContestFeedAll>();
 		
-		int latestRound = contestService.getContestlatestRound();
-		List<ContestFeed> contestFeeds = contestService.findByCidOrderByLike(latestRound);
+		// 가장 최근 회차의 콘테스트 정보 받아오기
+		Contest latestContest = contestService.getContestlatestRound();
+		if(latestContest==null) {
+			return new ResponseEntity<Result>(new Result(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_CONTEST, null), 
+					HttpStatus.NOT_FOUND);
+		}
+		
+		// 가장 최근 회차의 콘테스트의 id
+		int latestContestId = latestContest.getId();
+		List<ContestFeed> contestFeeds = contestService.findByCidOrderByLike(latestContestId);
 		boolean islike = false;
 		for(ContestFeed cFeed: contestFeeds) {
 			islike = contestService.findByContestFeedLike(cFeed.getId(), LoginUser.getId());
 			contestFeedAll.add(ContestFeedAll.builder().contestFeed(cFeed).islike(islike).build());
 		}
 		
-		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, contestFeedAll), 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("theme", latestContest.getTheme());
+		map.put("contestFeedAll", contestFeedAll);
+		
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, map), 
 				HttpStatus.OK);
 	}
 	
@@ -90,6 +103,13 @@ public class ContestController {
 					HttpStatus.FORBIDDEN);
 		}
 		
+		// 해당 회차의 콘테스트 정보 받아오기
+		Contest contest = contestService.getContestById(cid);
+		if(contest==null) {
+			return new ResponseEntity<Result>(new Result(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_CONTEST, null), 
+					HttpStatus.NOT_FOUND);
+		}
+		
 		List<ContestFeedAll> contestFeedAll = new ArrayList<ContestFeedAll>();
 		List<ContestFeed> contestFeeds = contestService.findByCidOrderByLike(cid);
 		boolean islike = false;
@@ -98,7 +118,11 @@ public class ContestController {
 			contestFeedAll.add(ContestFeedAll.builder().contestFeed(cFeed).islike(islike).build());
 		}
 		
-		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, contestFeedAll), 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("theme", contest.getTheme());
+		map.put("contestFeedAll", contestFeedAll);
+		
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, map), 
 				HttpStatus.OK);
 	}
 	
