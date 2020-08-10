@@ -2,7 +2,6 @@ package com.ssafy.sub.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import com.ssafy.sub.model.response.CommentResult;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
-import com.ssafy.sub.repo.CommentRepository;
 import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.LikeService;
