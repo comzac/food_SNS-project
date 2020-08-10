@@ -7,7 +7,7 @@
         <v-icon v-if="!like">mdi-heart-outline</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn color="#ff6666" icon x-small>
+      <v-btn class="share-btn" color="#ff6666" icon x-small @click="share()">
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-row>
@@ -29,13 +29,15 @@
             params: { keyword: tag.content },
           })
         "
-        ># {{ tag.content }}</span
-      >
+      ># {{ tag.content }}</span>
     </div>
   </div>
 </template>
 
+
 <script>
+import swal from "sweetalert";
+
 export default {
   name: "Main",
   props: {
@@ -77,6 +79,15 @@ export default {
       if (this.flow) {
         this.$router.push({ name: "FeedView", params: { fid: this.feed.id } });
       }
+    },
+    share() {
+      var tempElement = document.createElement("textarea");
+      document.body.appendChild(tempElement);
+      tempElement.value = `honeycombo.online/feed/${this.feed.id}`;
+      tempElement.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempElement);
+      swal("주소가 복사되었습니다.");
     },
   },
 };

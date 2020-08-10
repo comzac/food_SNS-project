@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import SERVER from "@/api/api";
 
 export default {
@@ -61,7 +61,7 @@ export default {
     item: Boolean,
   },
   computed: {
-    ...mapState("accounts", ["authUserUid"]),
+    ...mapGetters("accounts", ["authUserUid"]),
     imgName() {
       if (this.user.uprofile) {
         return this.user.uprofile.name;
