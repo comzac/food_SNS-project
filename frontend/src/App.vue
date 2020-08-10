@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header v-if="isLoggedIn" :selection="selection" />
+    <Header v-if="isLoggedIn" />
     <v-main>
       <transition name="view">
         <router-view @change-page="changePage" />
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import Header from "@/components/navbar/Header";
 import Bottom from "@/components/navbar/Bottom";
 import Signup from "@/components/navbar/Signup";
@@ -43,11 +43,11 @@ export default {
   data() {
     return {
       scrollY: false,
-      selection: 0,
     };
   },
   computed: {
     ...mapGetters("accounts", ["isLoggedIn"]),
+    ...mapGetters("frame", ["selection"]),
   },
   methods: {
     ...mapActions("accounts", ["getUserSimpleData"]),
@@ -61,9 +61,9 @@ export default {
     top() {
       scrollTo(0, 0);
     },
+    ...mapMutations("frame", ["SET_SELECTION"]),
     changePage(selection) {
-      // console.log("changePage", selection, typeof selection);
-      this.selection = selection;
+      this.SET_SELECTION(selection);
     },
   },
   created() {

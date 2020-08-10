@@ -2,7 +2,7 @@ export default {
   BASE_URL: "http://localhost:8080/",
   // BASE_URL: "http://172.30.1.16:8080/",
   // BASE_URL: "http://i3a108.p.ssafy.io:8080/",
-  MEDIA_DIR: "http://localhost/media/",
+  MEDIA_DIR: "http://127.0.0.1:8887/",
   // MEDIA_DIR: "http://i3a108.p.ssafy.io/media/",
   ROUTES: {
     accounts: {
@@ -44,8 +44,9 @@ export default {
       URL: "notifications/",
       getAll: "all/",
     },
-    contests: {
+    contest: {
       URL: "contests/",
+      list: "all/",
       feeds: "feeds/",
     },
   },
