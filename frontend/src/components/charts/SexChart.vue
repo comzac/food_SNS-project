@@ -2,6 +2,9 @@
 import { Bar } from "vue-chartjs";
 export default {
   extends: Bar,
+  props: {
+    sexData: Object,
+  },
   data: () => ({
     chartdata: {
       labels: ["남", "여"],
