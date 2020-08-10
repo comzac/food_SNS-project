@@ -141,6 +141,7 @@ const routes = [
     path: "/contest",
     name: "ContestList",
     component: ContestList,
+    meta: { title: "콘테스트 · HoneyCombo" },
   },
   {
     path: "/contest/:fid",

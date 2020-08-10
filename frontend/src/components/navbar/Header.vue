@@ -118,7 +118,12 @@ export default {
         icon: "mdi-bell",
         title: "Notification",
       },
-      { id: "5", link: { name: "" }, icon: "mdi-email", title: "Messages" },
+      {
+        id: "5",
+        link: { name: "ContestList" },
+        icon: "mdi-trophy",
+        title: "Contest",
+      },
       { id: "6", link: { name: "" }, icon: "mdi-cog", title: "Settings" },
       {
         id: "7",

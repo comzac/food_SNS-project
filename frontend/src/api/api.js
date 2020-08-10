@@ -44,5 +44,9 @@ export default {
       URL: "notifications/",
       getAll: "all/",
     },
+    contest: {
+      URL: "contests/",
+      list: "all/",
+    },
   },
 };
