@@ -20,10 +20,7 @@
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link
-        class="text-decoration-none"
-        :to="{ name: 'FeedCreateView' }"
-      >
+      <router-link class="text-decoration-none" :to="{ name: 'FeedCreateView' }">
         <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
@@ -53,9 +50,7 @@
               <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">
-                {{ authUserUnick }}
-              </v-list-item-title>
+              <v-list-item-title class="white--text">{{ authUserUnick }}</v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
@@ -65,11 +60,7 @@
         <v-spacer>
           <br />
         </v-spacer>
-        <v-list-item-group
-          v-model="selection"
-          active-class="white--text"
-          mandatory
-        >
+        <v-list-item-group v-model="selection" active-class="white--text" mandatory>
           <div v-for="(listItem, i) in listItemData" :key="i">
             <NavigationListItem
               v-show="i !== 7"
@@ -95,7 +86,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import NavigationListItem from "./NavigationListItem";
 // import PasswordCheckModal from "./PasswordCheckModal";
 
@@ -104,9 +95,6 @@ export default {
   components: {
     NavigationListItem,
     // PasswordCheckModal,
-  },
-  props: {
-    selection: Number,
   },
   data: () => ({
     drawer: false,
@@ -149,15 +137,22 @@ export default {
       "authUserUid",
       "authUserUnick",
     ]),
+    ...mapGetters("frame", { selectionFromStore: "selection" }),
+    selection: {
+      get() {
+        return this.selectionFromStore;
+      },
+      set(newSelection) {
+        return newSelection;
+      },
+    },
   },
   methods: {
     ...mapActions("accounts", ["logout"]),
+    ...mapMutations("frame", ["SET_SELECTION"]),
     clearItem(item) {
-      this.selection = item;
+      this.SET_SELECTION(item);
     },
-  },
-  updated() {
-    // console.log("header", this.selection);
   },
 };
 </script>

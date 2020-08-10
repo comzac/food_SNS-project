@@ -24,6 +24,7 @@ import CommentView from "@/views/feed/CommentView";
 import Liquor from "@/views/LiquorView";
 import NotificationView from "@/views/notification/NotificationView";
 
+import ContestList from "@/views/contest/ContestListView";
 import ContestFeed from "@/views/contest/ContestFeedView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
@@ -135,6 +136,11 @@ const routes = [
     path: "/liquor",
     name: "Liquor",
     component: Liquor,
+  },
+  {
+    path: "/contest",
+    name: "ContestList",
+    component: ContestList,
   },
   {
     path: "/contest/:fid",
