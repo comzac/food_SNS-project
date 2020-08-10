@@ -68,5 +68,33 @@ export default {
       };
       dispatch("getContestData", data);
     },
+    contestFeedLikeUnlike({ rootGetters }, likeData) {
+      const config = rootGetters["accounts/config"];
+      console.log("fid", likeData.fid, "like", likeData.like);
+      if (likeData.like) {
+        axios
+          .delete(
+            SERVER.BASE_URL +
+              SERVER.ROUTES.contest.URL +
+              SERVER.ROUTES.contest.likes +
+              likeData.fid,
+            config
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      } else {
+        axios
+          .post(
+            SERVER.BASE_URL +
+              SERVER.ROUTES.contest.URL +
+              SERVER.ROUTES.contest.likes +
+              likeData.fid,
+            null,
+            config
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.error(err));
+      }
+    },
   },
 };
