@@ -1,25 +1,28 @@
-
 <template>
-  <v-row justify="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-list two-line>
-        <div
-          style="text-align:center;"
-          v-if="nonReadNotification.length === 0 && readNotification.length === 0"
-        >
-          <template>알림이 없습니다.</template>
-        </div>
-        <div>
-          <template v-for="item in nonReadNotification">
-            <NonReadNotification :key="item.id" :item="item" />
-          </template>
-          <template v-for="item in readNotification">
-            <Notification :key="item.id" :item="item" />
-          </template>
-        </div>
-      </v-list>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="6">
+        <v-list two-line>
+          <div
+            style="text-align:center;"
+            v-if="
+              nonReadNotification.length === 0 && readNotification.length === 0
+            "
+          >
+            <template>알림이 없습니다.</template>
+          </div>
+          <div>
+            <template v-for="item in nonReadNotification">
+              <NonReadNotification :key="item.id" :item="item" />
+            </template>
+            <template v-for="item in readNotification">
+              <Notification :key="item.id" :item="item" />
+            </template>
+          </div>
+        </v-list>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -70,5 +73,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

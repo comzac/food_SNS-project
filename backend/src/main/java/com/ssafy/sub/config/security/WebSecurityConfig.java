@@ -1,9 +1,9 @@
 package com.ssafy.sub.config.security;
 
-import static com.ssafy.sub.oauth2.security.SocialType.FACEBOOK;
-import static com.ssafy.sub.oauth2.security.SocialType.GOOGLE;
-import static com.ssafy.sub.oauth2.security.SocialType.KAKAO;
-import static com.ssafy.sub.oauth2.security.SocialType.NAVER;
+//import static com.ssafy.sub.oauth2.security.SocialType.FACEBOOK;
+//import static com.ssafy.sub.oauth2.security.SocialType.GOOGLE;
+//import static com.ssafy.sub.oauth2.security.SocialType.KAKAO;
+//import static com.ssafy.sub.oauth2.security.SocialType.NAVER;
 
 import java.util.List;
 import java.util.Objects;
@@ -77,25 +77,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						.antMatchers("/admin/**").hasRole("ADMIN")
 						.antMatchers("/users/logout").hasRole("USER")
 //               		.antMatchers("/feeds/**").hasRole("USER")
-						.antMatchers("/facebook").hasAuthority(FACEBOOK.getRoleType()) 
-						
-						.antMatchers("/google").hasAuthority(GOOGLE.getRoleType()) 
-						.antMatchers("/kakao").hasAuthority(KAKAO.getRoleType()) 
-						.antMatchers("/naver").hasAuthority(NAVER.getRoleType())
+//						.antMatchers("/facebook").hasAuthority(FACEBOOK.getRoleType()) 
+//						
+//						.antMatchers("/google").hasAuthority(GOOGLE.getRoleType()) 
+//						.antMatchers("/kakao").hasAuthority(KAKAO.getRoleType()) 
+//						.antMatchers("/naver").hasAuthority(NAVER.getRoleType())
 						.anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
-				.and()
-					.oauth2Login()
-					.userInfoEndpoint()
-						.userService(new CustomOAuth2UserService())
-				.and()
-					.successHandler(googleAuthenticationSuccessHandler)
-//					.defaultSuccessUrl("/social/login")
-					.failureUrl("/login") 
-				.and() 
-					.exceptionHandling() 
-					.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+//				.and()
+//					.oauth2Login()
+//					.userInfoEndpoint()
+//						.userService(new CustomOAuth2UserService())
+//				.and()
+//					.successHandler(googleAuthenticationSuccessHandler)
+////					.defaultSuccessUrl("/social/login")
+//					.failureUrl("/login") 
+//				.and() 
+//					.exceptionHandling() 
+//					.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 
-				http
+//				http
+				.and()
 					.addFilterBefore(filter, CsrfFilter.class)
 					.addFilterBefore(new CorsFilter(), SecurityContextPersistenceFilter.class)
 					.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

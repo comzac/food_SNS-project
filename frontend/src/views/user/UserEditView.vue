@@ -2,11 +2,14 @@
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <UserEdit v-if="isAuthorized && page=='1'" @pwChange="page='2', setPage(2)" />
+        <UserEdit
+          v-if="isAuthorized && page == '1'"
+          @pwChange="(page = '2'), setPage(2)"
+        />
         <PasswordChange
           v-if="isAuthorized && page == '2'"
           @changePassword="doPasswordReset"
-          @pageDown="page='1', setPage(1)"
+          @pageDown="(page = '1'), setPage(1)"
         />
       </v-col>
     </v-row>
@@ -95,5 +98,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

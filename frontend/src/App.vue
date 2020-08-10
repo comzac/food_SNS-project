@@ -23,7 +23,7 @@
       </v-btn>
     </transition>
     <Signup v-if="$route.name == 'Login'" />
-    <Bottom v-if="isLoggedIn" />
+    <Bottom v-if="isLoggedIn" v-show="$route.name !== 'FeedCreateView'" />
   </v-app>
 </template>
 

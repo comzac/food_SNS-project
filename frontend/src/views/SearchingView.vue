@@ -7,8 +7,22 @@
             v-model="keyword"
             append-icon="mdi-magnify"
             @input="delaySearch()"
-            @click:append-outer="$router.push({ name: 'SearchedView', params: { keyword: keyword.replace(/^#/g,'').replace(/ /g, '') } })"
-            @keyup.enter="$router.push({ name: 'SearchedView', params: { keyword: keyword.replace(/^#/g,'').replace(/ /g, '') } })"
+            @click:append-outer="
+              $router.push({
+                name: 'SearchedView',
+                params: {
+                  keyword: keyword.replace(/^#/g, '').replace(/ /g, ''),
+                },
+              })
+            "
+            @keyup.enter="
+              $router.push({
+                name: 'SearchedView',
+                params: {
+                  keyword: keyword.replace(/^#/g, '').replace(/ /g, ''),
+                },
+              })
+            "
             label="검색어를 입력하세요"
             required
             autofocus
@@ -20,15 +34,29 @@
           ></v-text-field>
           <div v-for="item in search_items" :key="item.name">
             <v-text-field
-              @click="$router.push({ name: 'SearchedView', params: { keyword: Object.keys(item)[0] } })"
-              :value="`# ${Object.keys(item)[0]} - 게시물 ${Object.values(item)[0]} 개`"
+              @click="
+                $router.push({
+                  name: 'SearchedView',
+                  params: { keyword: Object.keys(item)[0] },
+                })
+              "
+              :value="
+                `# ${Object.keys(item)[0]} - 게시물 ${
+                  Object.values(item)[0]
+                } 개`
+              "
               color="#ff6666"
               readonly
             ></v-text-field>
           </div>
           <div v-for="search_user in search_users" :key="search_user.uid">
             <v-text-field
-              @click="$router.push({ name: 'UserDetail', params: { uid: search_user.uid } })"
+              @click="
+                $router.push({
+                  name: 'UserDetail',
+                  params: { uid: search_user.uid },
+                })
+              "
               :value="` ${search_user.unick} - 게시물 ${search_user.cnt} 개`"
               color="#ff6666"
               readonly
@@ -63,7 +91,7 @@ export default {
         this.timer = null;
       }
       const obj = this;
-      this.timer = setTimeout(function () {
+      this.timer = setTimeout(function() {
         obj.search();
       }, 500);
     },
@@ -97,5 +125,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

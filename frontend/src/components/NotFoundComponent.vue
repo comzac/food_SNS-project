@@ -12,10 +12,9 @@ export default {
   methods: {
     moveToHome() {
       this.$router.push({ name: "Home" });
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

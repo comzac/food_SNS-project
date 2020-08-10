@@ -3,17 +3,30 @@
     <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
     <v-window v-model="i2" @dblclick.native="$emit('likeUnlike')" continuous>
       <v-window-item v-for="(file, i) in dbFiles" :key="i">
-        <video
+        <v-responsive
           v-if="file.type === 'video/mp4'"
+          class="align-center"
+          aspect-ratio="1"
+          style="background-color:#e0e0e0;"
+        >
+          <video
+            :src="media_dir + file.name"
+            type="video/mp4"
+            class="my-auto"
+            width="100%"
+            autoplay
+            loop
+            muted
+          ></video>
+        </v-responsive>
+        <v-img
+          v-if="file.type !== 'video/mp4'"
+          :aspect-ratio="1"
+          contain
+          class="grey lighten-2"
           :src="media_dir + file.name"
-          type="video/mp4"
-          class="my-auto"
           width="100%"
-          autoplay
-          loop
-          muted
-        ></video>
-        <v-img v-if="file.type !== 'video/mp4'" :src="media_dir + file.name" width="100%"></v-img>
+        ></v-img>
       </v-window-item>
     </v-window>
 
@@ -22,7 +35,11 @@
         <v-icon>mdi-chevron-double-left</v-icon>
       </v-btn>
       <v-item-group v-model="i2" class="text-center" mandatory>
-        <v-item v-for="n in dbFiles.length" :key="n" v-slot:default="{ active, toggle }">
+        <v-item
+          v-for="n in dbFiles.length"
+          :key="n"
+          v-slot:default="{ active, toggle }"
+        >
           <v-btn :input-value="active" icon @click="toggle" color="#ff6666">
             <v-icon>mdi-record</v-icon>
           </v-btn>

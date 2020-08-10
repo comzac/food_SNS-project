@@ -3,6 +3,8 @@ package com.ssafy.sub.model.response;
 public class ResponseMessage {
 
     public static final String LOGIN_SUCCESS = "로그인 성공";
+    public static final String SOCIAL_LOGIN_SUCCESS = "소셜로그인 성공";
+    public static final String SOCIAL_LOGIN_FAIL = " 토큰 정보가 유효하지 않습니다.";
     public static final String LOGIN_FAIL_ID = "아이디를 확인해주세요";
     public static final String LOGIN_FAIL_PW = "비밀번호를 확인해주세요";
     public static final String LOGOUT_SUCCESS = "로그아웃 성공";
