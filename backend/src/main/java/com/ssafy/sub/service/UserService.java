@@ -144,8 +144,8 @@ public class UserService {
 		return 1;
 	}
 
-	public List<User> findUserIdByKeyword(String keyword) {
-		return userRepository.findUserIdByKeyword(keyword);
+	public List<User> findUserNickByKeyword(String keyword) {
+		return userRepository.findUserNickByKeyword(keyword);
 	}
 	
 	public User findByUemail(String uemail) {

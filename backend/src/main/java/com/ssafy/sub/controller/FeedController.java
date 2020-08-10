@@ -78,8 +78,7 @@ public class FeedController {
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
-//		feedList = feedService.feedHomePageList();
-		feedList = feedService.feedPagenation(0L, lastFid*1L, feedLimit);
+		feedList = feedService.feedPagination(0L, lastFid*1L, feedLimit);
 
 		User user;
 		UserSimple userSimple;
@@ -90,7 +89,7 @@ public class FeedController {
 			feedAll = new FeedAll();
 
 			// feed 넣기
-			feed = feedService.feedDetail(feedList.get(i).getId());
+			feed = feedList.get(i);
 			feedAll.setFeed(feed);
 			fid = feed.getId();
 
@@ -143,26 +142,76 @@ public class FeedController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "팔로우한 유저들의 피드", response = Result.class)
-	@PostMapping(value = "/page/follower")
-	public ResponseEntity feedFollowerPage() {
+	@GetMapping(value = "/page/follower/{lastFid}")
+	public ResponseEntity feedFollowerPage(@PathVariable int lastFid, Authentication authentication) {
 		System.out.println("log - feedFollowerPage");
 
-		String id;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		id = authentication.getName();
+		int LoginUserId = Integer.parseInt(authentication.getName());
+		
+		int uid = Integer.parseInt(authentication.getName());
+		String loginUserId = authentication.getName();
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
+		List<Feed> feedList = new ArrayList<Feed>();
 
-		List<Feed> feedList = feedService.findAllByFollower(Integer.parseInt(id)); // follower의 feedList 들고옴
-		List<User> userList = new ArrayList<User>();
+		int feedLimit = 5;
+		feedList = feedService.feedFollowPagination(LoginUserId, 0L, lastFid*1L, feedLimit); // follower의 feedList 들고옴
 
-		User user; // 해당 user의 정보를 들고와서 userList에 넣어줌
+		User user;
+		UserSimple userSimple;
+		Feed feed;
+		FeedAll feedAll;
+		int fid;
 		for (int i = 0; i < feedList.size(); i++) {
-			user = userService.findById(feedList.get(i).getUid());
-			userList.add(user);
+			feedAll = new FeedAll();
+
+			// feed 넣기
+			feed = feedList.get(i);
+			feedAll.setFeed(feed);
+			fid = feed.getId();
+
+			// user이름 조회
+			user = userService.findById(feed.getUid());
+			userSimple = userService.getSimpleUser(user.getUid()); // user 탈퇴하면 어떻게 처리할건지
+			feedAll.setUser(userSimple);
+
+			// commentCount
+			Long commentCount = 0L;
+			commentCount = commentService.commentCount(fid);
+			feedAll.setCommentCount(commentCount);
+			
+			// comment
+			int limit = 2;	// 2개만 불러오기
+			List<Comment> commentList = commentService.commentListLimit(fid, limit);
+			for(Comment c: commentList) {
+				String c_uid = userService.findById(c.getUid()).getUid();
+				c.setUser(userService.getSimpleUser(c_uid));
+			}
+			feedAll.setComment(commentList);
+
+			// hashtag
+			List<Hashtag> hashtagList = feedService.findFeedHashtagList(fid);
+			feedAll.setHashtag(hashtagList);
+
+			// like
+			boolean like = likeService.isFeedLiked(fid, uid);
+			feedAll.setLike(like);
+
+			// likeCount
+			int likeCount = likeService.feedLikeUserList(fid).size();
+			feedAll.setLikeCount(likeCount);
+
+			// 내 피드인지 여부
+			boolean mypage = true;
+			if (feed.getUid() != Integer.parseInt(loginUserId)) {
+				mypage = false;
+			}
+			feedAll.setMypage(mypage);
+
+			feedAllList.add(feedAll);
 		}
 
-		UserFeedResult result = new UserFeedResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedList, userList,
-				false);
-		return new ResponseEntity<UserFeedResult>(result, HttpStatus.OK);
+		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
+		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "유저의 개인 피드 목록을 조회한다", response = UserFeedResult.class)
@@ -186,9 +235,6 @@ public class FeedController {
 		// url로 들어온 유저의 정보
 		User user = userService.findByUid(uid);
 		List<Feed> feedList = feedService.feedUserPageList(user.getId());
-		for (Feed f : feedList) {
-			f.setDbFiles(feedService.feedDetail(f.getId()).getDbFiles());
-		}
 		int feedCount = feedService.getFeedCount(user.getId());
 		int followerCount = relationService.relationFollowerList(user.getId()).size();
 		int followingCount = relationService.relationFollowingList(user.getId()).size();
@@ -265,15 +311,6 @@ public class FeedController {
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>(); 
 
 		List<Feed> feedList = feedService.searchByHashtag(keyword);
-//		switch(state) {
-//		case "HASHTAG":
-//			feedList = feedService.searchByHashtag(keyword);			
-//			break;
-//		case "USERID":
-//			int findUid = userService.findByUid(keyword).getId();
-//			feedList = feedService.searchByUserID(findUid);			
-//			break;
-//		}
 
 		User user;
 		UserSimple userSimple;
@@ -284,7 +321,7 @@ public class FeedController {
 			feedAll = new FeedAll();
 
 			// feed 넣기
-			feed = feedService.feedDetail(feedList.get(i).getId());
+			feed = feedList.get(i);
 			feedAll.setFeed(feed);
 			fid = feed.getId();
 
@@ -345,7 +382,7 @@ public class FeedController {
 			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_HASHTAG, list);
 			break;
 		case "USERID":
-			List<User> userList = userService.findUserIdByKeyword(keyword);
+			List<User> userList = userService.findUserNickByKeyword(keyword);
 			for (User user : userList) {
 				int user_id = user.getId();
 				String user_uid = user.getUid();

@@ -2,6 +2,7 @@ package com.ssafy.sub.repo;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -39,13 +40,6 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 		QFeed feed = QFeed.feed;
 		QDBFile dbFile = QDBFile.dBFile;
 		System.out.println("feed List");
-//		return from(feed)
-//				.leftJoin(dbFile)
-//				.on(feed.id.eq(dbFile.id))
-//				.where(feed.uid.eq(uid))
-//				.orderBy(feed.regdate.desc())
-//				.distinct()
-//				.fetch();
 		return from(feed)
 				.where(feed.uid.eq(uid))
 				.orderBy(feed.regdate.desc())
@@ -104,6 +98,22 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 		return from(feed)
 				.where(feed.uid.eq(user_id))
 				.fetchCount();
+	}
+
+	public List<Feed> findByIdLessThanFollower(int uid, int fid, Pageable pageable) {
+		QFeed feed = QFeed.feed;
+		QRelationship relationShip = QRelationship.relationship;
+
+		return from(feed)
+				.leftJoin(relationShip)
+				.on(feed.uid.eq(relationShip.relationShipkey.relationuid))
+				.where(relationShip.relationShipkey.uid.eq(uid)
+						.or(feed.uid.eq(uid)))
+				.where(feed.id.lt(fid))
+				.orderBy(feed.id.desc())
+				.limit(pageable.getPageSize())
+				.distinct()
+				.fetch();
 	}
 
 }

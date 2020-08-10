@@ -69,13 +69,6 @@ public class FeedServiceImpl implements FeedService {
 	@Override
 	public List<Feed> findAllByFollower(int id) {
 		List<Feed> test = feedQueryDsl.findAllByFollower(id);
-		
-		for (Feed feed : test) {
-			System.out.println(feed.toString());
-		}
-		 
-		if(test.size() == 0)
-			System.out.println("null z?");
 		return test;
 	}
 
@@ -83,10 +76,6 @@ public class FeedServiceImpl implements FeedService {
 	public Feed feedDetail(int id) {
 		Feed feed = feedRepository.findById(id)
 		.orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_FEED, HttpStatus.NOT_FOUND));
-		
-		if(dbFileRepository.findAllByFid(id).isPresent()) {
-			feed.setDbFiles(dbFileRepository.findAllByFid(id).get());
-		}
 
 		return feed;
 	}
@@ -265,12 +254,20 @@ public class FeedServiceImpl implements FeedService {
 
 
 	@Override
-	public List<Feed> feedPagenation(Long pageNum, Long fid, int limit) {
+	public List<Feed> feedPagination(Long pageNum, Long fid, int limit) {
 		List<Feed> feedList = new ArrayList<Feed>();
 		Pageable pageable = PageRequest.of(0, limit, Sort.by("id").descending());
 		Page<Feed> feedPageList = feedRepository.findByIdLessThan(fid.intValue(), pageable);
 		feedList = feedPageList.getContent();
 		
 		return feedList;
+	}
+	
+	@Override
+	public List<Feed> feedFollowPagination(int uid, Long pageNum, Long fid, int limit) {
+		Pageable pageable = PageRequest.of(0, limit, Sort.by("id").descending());
+		List<Feed> feedPageList = feedQueryDsl.findByIdLessThanFollower(uid, fid.intValue(), pageable);
+		
+		return feedPageList;
 	}
 }
