@@ -1,7 +1,10 @@
 <template>
   <v-row>
     <v-col cols="2">
-      <v-list-item-avatar class="mr-5" :color="comment.user.uprofile ? 'white' : 'grey'">
+      <v-list-item-avatar
+        class="mr-5"
+        :color="comment.user.uprofile ? 'white' : 'grey'"
+      >
         <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
         <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
       </v-list-item-avatar>
@@ -34,7 +37,7 @@ export default {
   name: "EditComment",
   props: {
     comment: Object,
-    cid: String,
+    cid: Number,
   },
   components: {},
   computed: {
