@@ -3,6 +3,9 @@ import { Pie } from "vue-chartjs";
 
 export default {
   extends: Pie,
+  props: {
+    ageData: Object,
+  },
   mounted() {
     this.renderChart(
       {

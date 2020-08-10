@@ -9,25 +9,25 @@
             max-width="614"
           >
             <!-- 작성자 -->
-            <Writer :user="selectedFeed.user" :item="false" />
+            <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
             <Media
-              :dbFiles="selectedFeed.feed.dbFiles"
+              :dbFiles="selectedContestFeed.contestFeed.files"
               @likeUnlike="feedLU()"
             />
             <v-card-text>
               <!-- 본문 -->
               <Main
-                v-if="selectedFeed"
-                :feed="selectedFeed.feed"
+                v-if="selectedContestFeed"
+                :feed="selectedContestFeed.contestFeed"
                 :flow="false"
-                :like="selectedFeed.like"
-                :likeCount="selectedFeed.likeCount"
+                :like="selectedContestFeed.islike"
+                :likeCount="selectedContestFeed.contestFeed.likeCount"
                 @likeUnlike="feedLU()"
               />
               <!-- Comment module ?? -->
             </v-card-text>
-            <SexChart />
-            <AgeChart />
+            <SexChart :ageData="ageData" />
+            <AgeChart :sexData="sexData" />
           </v-card>
         </v-hover>
       </v-col>
@@ -38,7 +38,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-import Writer from "@/components/feed/item/Writer";
+// import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
 import AgeChart from "@/components/charts/AgeChart";
@@ -47,14 +47,14 @@ import SexChart from "@/components/charts/SexChart";
 export default {
   name: "FeedView",
   components: {
-    Writer,
+    // Writer,
     Main,
     Media,
     AgeChart,
     SexChart,
   },
   computed: {
-    ...mapState("feeds", ["selectedFeed"]),
+    ...mapState("contests", ["selectedContestFeed"]),
     ymd2() {
       if (this.ymd < 60) {
         return `${this.ymd}초 전`;
@@ -74,31 +74,35 @@ export default {
   data() {
     return {
       ymd: "",
+      ageData: null,
+      sexData: null,
     };
   },
   methods: {
-    ...mapActions("feeds", ["getFeedDetail"]),
+    ...mapActions("contests", ["getContestFeedDetail"]),
     ...mapActions("feeds", ["feedLikeUnlike"]),
     feedLU() {
       console.log("likeunlike");
       const likeData = {
         fid: this.$route.params.fid,
-        like: this.selectedFeed.like,
+        like: this.selectedContestFeed.like,
       };
       console.log(likeData);
       this.feedLikeUnlike(likeData).then(() => {
-        if (this.selectedFeed.like) {
-          this.selectedFeed.likeCount -= 1;
+        if (this.selectedContestFeed.like) {
+          this.selectedContestFeed.likeCount -= 1;
         } else {
-          this.selectedFeed.likeCount += 1;
+          this.selectedContestFeed.likeCount += 1;
         }
-        this.selectedFeed.like = !this.selectedFeed.like;
+        this.selectedContestFeed.like = !this.selectedContestFeed.like;
       });
     },
   },
   created() {
-    this.getFeedDetail(this.$route.params.fid).then((data) => {
+    this.getContestFeedDetail(this.$route.params.fid).then((data) => {
       console.log(data);
+      this.ageData = data.statistics.uage;
+      this.sexData = data.statistics.usex;
       this.ymd =
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(data.feed.regdate).getTime() / 1000);
