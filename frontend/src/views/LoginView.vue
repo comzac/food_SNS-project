@@ -134,8 +134,8 @@ export default {
             route: route,
             data: tokens,
           };
-          console.log("googleUser info : ", tokens);
-          console.log(route);
+          // console.log("googleUser info : ", tokens);
+          // console.log(route);
           this.postAuthData(info);
         })
         .catch((err) => console.log(err));

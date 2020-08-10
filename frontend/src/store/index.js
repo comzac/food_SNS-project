@@ -6,7 +6,8 @@ import moduleAccounts from "./accounts";
 import moduleFeeds from "./feeds";
 import moduleComments from "./comments";
 import moduleNotifications from "./notifications";
-import moduleContests from "./contests";
+import moduleContests from "./contest";
+import moduleFrame from "./frame";
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ const modules = {
   comments: moduleComments,
   notifications: moduleNotifications,
   contests: moduleContests,
+  frame: moduleFrame,
 };
 
 export default new Vuex.Store({

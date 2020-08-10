@@ -5,6 +5,9 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
+    <v-btn color="#ff6666" elevation="24" fixed bottom left fab @click="back()" class="mb-14">
+      <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -29,6 +32,9 @@ export default {
   methods: {
     ...mapActions("feeds", ["getUserPageData"]),
     ...mapMutations("feeds", ["SET_USERPROFILEDATA"]),
+    back() {
+      this.$router.go(-1);
+    },
   },
   created() {
     this.getUserPageData(this.$route.params.uid);
