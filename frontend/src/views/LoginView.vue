@@ -99,8 +99,7 @@
 
 <script>
 import { mapActions } from "vuex";
-// import axios from 'axios'
-// import SERVER from '@/api/api'
+import SERVER from "@/api/api";
 
 export default {
   name: "LoginView",
@@ -112,6 +111,7 @@ export default {
       "setEmail",
       "setCode",
       "setUid",
+      "postAuthData",
     ]),
     moveToSignup() {
       this.$router.push({ name: "Signup" });
@@ -124,10 +124,19 @@ export default {
       this.$gAuth
         .signIn(option)
         .then((googleUser) => {
-          console.log(
-            "googleUser info : ",
-            googleUser.getAuthResponse()
-          );
+          const tokens = {
+            access_token: googleUser.getAuthResponse().access_token,
+            id_token: googleUser.getAuthResponse().id_token,
+          };
+          const route =
+            SERVER.ROUTES.accounts.URL + SERVER.ROUTES.accounts.google;
+          const info = {
+            route: route,
+            data: tokens,
+          };
+          console.log("googleUser info : ", tokens);
+          console.log(route);
+          this.postAuthData(info);
         })
         .catch((err) => console.log(err));
     },

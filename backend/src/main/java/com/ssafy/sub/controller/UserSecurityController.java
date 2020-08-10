@@ -221,10 +221,9 @@ public class UserSecurityController {
 					.roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 // USER 로 설정
 					.build();
 			if (userService.findByUemail(email) == null) { // 가입정보가 없으면,
-
-				userRepository.save(googleUser);
+				googleUser = userRepository.save(googleUser);
 			} else { // 가입정보가 있다면,
-
+				googleUser = userService.findByUemail(email);
 			}
 			userInfos.put("uid", googleUser.getUid());
 			userInfos.put("uemail", googleUser.getUemail());
@@ -245,7 +244,9 @@ public class UserSecurityController {
 		jsonToken.setUsername(googleUser.getUid());
 		jsonToken.setRefreshToken(token);
 		vop.set(googleUser.getUid(), jsonToken);
-
+		
+		
+		System.out.println(token);
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(googleUser.getUid()));
 		Result result = new Result(StatusCode.OK, ResponseMessage.SOCIAL_LOGIN_SUCCESS, userInfos);
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.SOCIAL_LOGIN_SUCCESS, result),
