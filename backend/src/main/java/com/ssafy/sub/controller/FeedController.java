@@ -265,15 +265,6 @@ public class FeedController {
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>(); 
 
 		List<Feed> feedList = feedService.searchByHashtag(keyword);
-//		switch(state) {
-//		case "HASHTAG":
-//			feedList = feedService.searchByHashtag(keyword);			
-//			break;
-//		case "USERID":
-//			int findUid = userService.findByUid(keyword).getId();
-//			feedList = feedService.searchByUserID(findUid);			
-//			break;
-//		}
 
 		User user;
 		UserSimple userSimple;
@@ -345,7 +336,7 @@ public class FeedController {
 			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_HASHTAG, list);
 			break;
 		case "USERID":
-			List<User> userList = userService.findUserIdByKeyword(keyword);
+			List<User> userList = userService.findUserNickByKeyword(keyword);
 			for (User user : userList) {
 				int user_id = user.getId();
 				String user_uid = user.getUid();
