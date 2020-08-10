@@ -1,9 +1,6 @@
 <template>
   <router-link :to="listItem.link" class="text-decoration-none">
-    <v-list-item
-      :value="value"
-      :disabled="listItem.link.name == '' ? true : false"
-    >
+    <v-list-item :value="value" :disabled="listItem.link.name == '' ? true : false">
       <v-list-item-icon>
         <v-icon>{{ listItem.icon }}</v-icon>
       </v-list-item-icon>
@@ -32,8 +29,10 @@ export default {
     ...mapActions("notifications", ["polling"]),
   },
   created() {
-    this.$store.dispatch("getNotifyCount", null, { root: true });
-    this.polling(this.listItem.title);
+    if (this.listItem.title === "Navigation") {
+      this.$store.dispatch("getNotifyCount", null, { root: true });
+      this.polling(this.listItem.title);
+    }
   },
 };
 </script>
