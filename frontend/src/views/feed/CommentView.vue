@@ -1,20 +1,20 @@
 <template>
   <div class="background">
-    <v-container>
+    <v-container class="mb-12">
       <v-row class="text-center" align="center" justify="center">
         <v-col cols="12">
-          <!-- <v-card flat class="text-left mx-auto" max-width="614" v-if="selectedFeed">
+          <v-card flat class="text-left mx-auto" max-width="614" v-if="selectedFeed">
             <p>
               <strong>{{ selectedFeed.feed.title }}</strong>
             </p>
             <p>{{ selectedFeed.feed.content }}</p>
-          </v-card>-->
-          <!-- <v-spacer>
+          </v-card>
+          <v-spacer>
             <br />
-          </v-spacer>-->
+          </v-spacer>
           <v-card flat class="mx-auto myCard" max-width="614">
             <v-row class="ma-0">
-              <v-list-item-avatar class="ma-auto" :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-list-item-avatar class="ma-auto mr-2" :color="authUserImgRoute ? 'white' : 'grey'">
                 <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
                 <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
               </v-list-item-avatar>
@@ -53,7 +53,7 @@
               </v-text-field>
             </v-row>
             <div v-for="(comment,idx) in comments.comments" :key="comment.comment.id">
-              <v-list-item class="ma-0 pa-0">
+              <v-list-item class="ma-0 pa-0 align-start" :id="'a'+comment.comment.id">
                 <router-link
                   :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
                   class="text-decoration-none"
@@ -64,30 +64,32 @@
                   >
                     <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="comment.comment.user.uprofile.name"
+                      v-if="comment.comment.user.uprofile"
                       :src="media_dir + comment.comment.user.uprofile.name"
                     />
                   </v-list-item-avatar>
                 </router-link>
                 <v-list-item-content class="text-left">
-                  <router-link
+                  <!-- <router-link
                     :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
                     class="text-decoration-none"
-                  >
-                    <v-list-item-title class="mb-1 black--text">
-                      {{ comment.comment.user.unick }}
-                      <span
-                        style="font-size: 0.7rem; color: grey;"
-                      >{{ computeYMD(comment.comment.regdate) }}</span>
-                    </v-list-item-title>
-                  </router-link>
-                  <v-list-item-subtitle
-                    class="black--text mb-1"
-                    style="white-space:pre-wrap"
-                  >{{ comment.comment.content }}</v-list-item-subtitle>
+                  >-->
+                  <v-list-item-title class="mb-1 black--text">
+                    {{ comment.comment.user.unick }}
+                    <span
+                      style="font-size: 0.7rem; color: grey;"
+                    >{{ computeYMD(comment.comment.regdate) }}</span>
+                  </v-list-item-title>
+                  <!-- </router-link> -->
+                  <v-list-item-subtitle class="black--text mb-1" style="white-space:normal">
+                    {{ comment.comment.content }}
+                    <span
+                      style="font-size: 0.7rem; color: grey;"
+                    >{{ comment.comment.editdate ? "(수정됨)" : "" }}</span>
+                  </v-list-item-subtitle>
                   <v-list-item-subtitle class="gray--text" style="font-size: 0.7rem">
-                    <!-- {{ computeYMD(comment.comment.regdate) }}
-                    {{ comment.comment.editdate ? "(수정됨)" : "" }}-->
+                    <!-- {{ computeYMD(comment.comment.regdate) }} -->
+                    <!-- {{ comment.comment.editdate ? "(수정됨)" : "" }} -->
                     좋아요 {{ comment.likeCount }}개
                   </v-list-item-subtitle>
                 </v-list-item-content>
@@ -138,16 +140,20 @@
               </v-list-item>
               <EditComment
                 class="update"
-                :id="comment.comment.id"
+                :id="'b'+comment.comment.id"
+                :cid="comment.comment.id"
                 style="display: none;"
                 :comment="comment.comment"
-                @editComment="editComment()"
+                @editComment="editComment"
               />
             </div>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
+    <v-btn color="#ff6666" elevation="24" fixed bottom left fab @click="back()" class="mb-14">
+      <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -161,6 +167,7 @@ export default {
   components: { EditComment },
   data() {
     return {
+      edit: false,
       fid: this.$route.params.fid,
       commentData: {
         title: "",
@@ -229,14 +236,20 @@ export default {
     showEdit(comment_id) {
       const update = document.getElementsByClassName("update");
       update.forEach((item) => (item.style = "display: none;"));
-      document.getElementById(`${comment_id}`).style = "display: show;";
+      document.getElementById(`a${comment_id}`).style = "display: none;";
+      document.getElementById(`b${comment_id}`).style = "display: show;";
     },
-    editComment() {
-      const update = document.getElementsByClassName("update");
-      update.forEach((item) => (item.style = "display: none;"));
+    editComment(comment_id) {
+      // const update = document.getElementsByClassName("update");
+      console.log("asdf", comment_id);
+      document.getElementById(`b${comment_id}`).style = "display: none;";
+
+      // update.forEach((item) => (item.style = "display: none;"));
       this.fetchComments(this.fid).then(() => {
         this.comments = this.$store.state.comments;
       });
+      document.getElementById(`a${comment_id}`).style = "display: show;";
+
       // this.fetchComment(this.fid);
     },
 
@@ -257,6 +270,10 @@ export default {
       }
       // console.log("countcheck");
       this.comments.comments[idx].islike = !this.comments.comments[idx].islike;
+    },
+
+    back() {
+      this.$router.go(-1);
     },
   },
   created() {

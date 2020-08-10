@@ -1,13 +1,9 @@
 <template>
   <v-row>
     <v-col cols="2">
-      <v-list-item-avatar :color="authUserImgData ? 'white' : 'grey'">
-        <v-icon v-if="!authUserImgData" dark>mdi-account</v-icon>
-        <v-img
-          v-if="authUserImgData"
-          :src="`data:${authUserImgType};base64,${authUserImgData}`"
-          :alt="authUserImgName"
-        />
+      <v-list-item-avatar class="ma-auto" :color="authUserImgRoute ? 'white' : 'grey'">
+        <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
+        <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
       </v-list-item-avatar>
     </v-col>
     <v-col cols="10">
@@ -21,6 +17,7 @@
         @click:append="editComment()"
         @keyup.enter="editComment()"
         autocomplete="off"
+        autofocus
       ></v-text-field>
     </v-col>
     <!-- <v-col cols="2">
@@ -35,15 +32,11 @@ export default {
   name: "EditComment",
   props: {
     comment: Object,
+    cid: String,
   },
   components: {},
-
   computed: {
-    ...mapGetters("accounts", [
-      "authUserImgData",
-      "authUserImgType",
-      "authUserImgName",
-    ]),
+    ...mapGetters("accounts", ["authUserImgRoute"]),
   },
   methods: {
     ...mapActions("comments", ["updateComment"]),
@@ -51,9 +44,10 @@ export default {
       this.comment.editdate = new Date();
       // axios 로  this.comment 전송??
       // emit 해서 comments data 다시 받아오게
+      console.log("asdfasdf", this.cid);
       this.updateComment(this.comment)
         .then(() => {
-          this.$emit("editComment");
+          this.$emit("editComment", this.cid);
         })
         .catch((err) => console.log(err.response));
     },
