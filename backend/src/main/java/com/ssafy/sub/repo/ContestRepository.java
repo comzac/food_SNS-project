@@ -14,4 +14,6 @@ public interface ContestRepository extends JpaRepository<Contest, Long> {
 
 	List<Contest> findAllByOrderByIdDesc();
 
+	Contest findById(int cid);
+
 }
