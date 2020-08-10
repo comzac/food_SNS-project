@@ -14,7 +14,7 @@
           </v-spacer>-->
           <v-card flat class="mx-auto myCard" max-width="614">
             <v-row class="ma-0">
-              <v-list-item-avatar class="ma-auto" :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-list-item-avatar class="mr-2" :color="authUserImgRoute ? 'white' : 'grey'">
                 <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
                 <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
               </v-list-item-avatar>
@@ -64,7 +64,7 @@
                   >
                     <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="comment.comment.user.uprofile.name"
+                      v-if="comment.comment.user.uprofile"
                       :src="media_dir + comment.comment.user.uprofile.name"
                     />
                   </v-list-item-avatar>
@@ -91,7 +91,7 @@
                     좋아요 {{ comment.likeCount }}개
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-menu v-if="authUserUnick === comment.comment.user.unick" v-left bottom>
+                <v-menu v-if="authUserUnick === comment.comment.user.unick" bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
                       <v-icon>mdi-dots-horizontal</v-icon>
@@ -142,6 +142,7 @@
                 style="display: none;"
                 :comment="comment.comment"
                 @editComment="editComment()"
+                @close-edit-comment="closeEditComment"
               />
             </div>
           </v-card>
@@ -152,6 +153,7 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 import EditComment from "@/components/feed/comment/EditComment";
 import { mapActions, mapState, mapGetters } from "vuex";
 import SERVER from "@/api/api";
@@ -184,16 +186,20 @@ export default {
       "commentLikeUnlike",
     ]),
     createComment(commentData) {
-      commentData.fid = this.fid;
-      this.insertComment(commentData)
-        .then(() => {
-          this.fetchComments(this.fid);
-        })
-        .then(() => {
-          this.comments = this.$store.state.comments;
-          this.commentData.content = "";
-        })
-        .catch((err) => console.log(err.response));
+      if (commentData.content !== "") {
+        commentData.fid = this.fid;
+        this.insertComment(commentData)
+          .then(() => {
+            this.commentData.content = "";
+            this.fetchComments(this.fid);
+          })
+          .then(() => {
+            this.comments = this.$store.state.comments;
+          })
+          .catch((err) => console.log(err.response));
+      } else {
+        swal("댓글을 입력하세요.");
+      }
     },
     deleteCommentAndFetch(id) {
       this.deleteComment(id)
@@ -238,6 +244,9 @@ export default {
         this.comments = this.$store.state.comments;
       });
       // this.fetchComment(this.fid);
+    },
+    closeEditComment(id) {
+      document.getElementById(`${id}`).style = "display:none;";
     },
 
     commentLike(commentData) {
