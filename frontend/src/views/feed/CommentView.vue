@@ -1,26 +1,18 @@
 <template>
-  <div>
-    <v-container>
+  <div class="background">
+    <v-container class="mb-12">
       <v-row class="text-center" align="center" justify="center">
         <v-col cols="12">
-          <v-card flat class="text-left mx-auto" max-width="614" v-if="selectedFeed">
-            <p>
-              <strong>{{ selectedFeed.feed.title }}</strong>
-            </p>
-            <p>{{ selectedFeed.feed.content }}</p>
-          </v-card>
-          <v-spacer>
-            <br />
-          </v-spacer>
-          <v-card flat class="mx-auto" max-width="614">
+          <v-card flat class="mx-auto myCard" max-width="614">
             <v-row class="ma-0">
-              <v-list-item-avatar class="ma-auto" :color="authUserImgRoute ? 'white' : 'grey'">
+              <v-list-item-avatar
+                class="ma-auto mr-2"
+                :color="authUserImgRoute ? 'white' : 'grey'"
+              >
                 <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
                 <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
               </v-list-item-avatar>
               <v-text-field
-                rounded
-                outlined
                 label="댓글달기"
                 type="text"
                 v-model="commentData.content"
@@ -54,52 +46,68 @@
                 </template>-->
               </v-text-field>
             </v-row>
-            <div v-for="(comment,idx) in comments.comments" :key="comment.comment.id">
-              <v-list-item class="ma-0 pa-0">
+            <div
+              v-for="(comment, idx) in comments.comments"
+              :key="comment.comment.id"
+            >
+              <v-list-item
+                class="ma-0 pa-0 align-start"
+                :id="'a' + comment.comment.id"
+              >
                 <router-link
-                  :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
+                  :to="{
+                    name: 'UserDetail',
+                    params: { uid: comment.comment.user.uid },
+                  }"
                   class="text-decoration-none"
                 >
-                  <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
                   <v-list-item-avatar
-                    class="mr-5"
+                    class="mr-2"
                     :color="comment.comment.user.uprofile ? 'white' : 'grey'"
                   >
-                    <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
+                    <v-icon v-if="!comment.comment.user.uprofile" dark
+                      >mdi-account</v-icon
+                    >
                     <v-img
-                      v-if="comment.comment.user.uprofile.name"
+                      v-if="comment.comment.user.uprofile"
                       :src="media_dir + comment.comment.user.uprofile.name"
                     />
                   </v-list-item-avatar>
                 </router-link>
                 <v-list-item-content class="text-left">
-                  <router-link
+                  <!-- <router-link
                     :to="{ name: 'UserDetail', params: { uid: comment.comment.user.uid } }"
                     class="text-decoration-none"
+                  >-->
+                  <v-list-item-title class="mb-1 black--text">
+                    {{ comment.comment.user.unick }}
+                    <span style="font-size: 0.7rem; color: grey;">{{
+                      computeYMD(comment.comment.regdate)
+                    }}</span>
+                  </v-list-item-title>
+                  <!-- </router-link> -->
+                  <v-list-item-subtitle
+                    class="black--text mb-1"
+                    style="white-space:normal"
                   >
-                    <v-list-item-title class="black--text">{{ comment.comment.user.unick }}</v-list-item-title>
-                  </router-link>
-                  <v-list-item-subtitle class="black--text">{{ comment.comment.content }}</v-list-item-subtitle>
-                  <v-list-item-subtitle class="gray--text">
-                    {{ computeYMD(comment.comment.regdate) }}
-                    {{ comment.comment.editdate ? "(수정됨)" : "" }}
+                    {{ comment.comment.content }}
+                    <span style="font-size: 0.7rem; color: grey;">{{
+                      comment.comment.editdate ? "(수정됨)" : ""
+                    }}</span>
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle
+                    class="gray--text"
+                    style="font-size: 0.7rem"
+                  >
+                    <!-- {{ computeYMD(comment.comment.regdate) }} -->
+                    <!-- {{ comment.comment.editdate ? "(수정됨)" : "" }} -->
+                    좋아요 {{ comment.likeCount }}개
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-spacer></v-spacer>
-                <span>Likes {{comment.likeCount }}</span>
-                <v-btn
-                  color="#ff6666"
-                  icon
-                  x-small
-                  @click="commentLike({
-                  'comment': comment,
-                  'idx': idx
-                })"
+                <v-menu
+                  v-if="authUserUnick === comment.comment.user.unick"
+                  bottom
                 >
-                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
-                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
-                </v-btn>
-                <v-menu left bottom>
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
                       <v-icon>mdi-dots-horizontal</v-icon>
@@ -112,39 +120,79 @@
                       v-if="authUserUnick === comment.comment.user.unick"
                       @click="showEdit(comment.comment.id)"
                     >
-                      <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
+                      <v-list-item-title class="blue--text text-lighten-2"
+                        >댓글 수정</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item
                       v-if="authUserUnick === comment.comment.user.unick"
                       @click="deleteCommentAndFetch(comment.comment.id)"
                     >
-                      <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
+                      <v-list-item-title class="red--text text-lighten-2"
+                        >댓글 삭제</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
+                      <v-list-item-title class="red--text text-lighten-2"
+                        >댓글 신고</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
+                      <v-list-item-title class="blue--text text-lighten-2"
+                        >취소</v-list-item-title
+                      >
                     </v-list-item>
                   </v-list>
                 </v-menu>
+                <v-btn
+                  v-if="authUserUnick !== comment.comment.user.unick"
+                  class="mr-1"
+                  color="#ff6666"
+                  icon
+                  x-small
+                  @click="
+                    commentLike({
+                      comment: comment,
+                      idx: idx,
+                    })
+                  "
+                >
+                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
+                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
+                </v-btn>
+                <!-- <span>{{comment.likeCount }}</span> -->
               </v-list-item>
               <EditComment
                 class="update"
-                :id="comment.comment.id"
+                :id="'b' + comment.comment.id"
+                :cid="comment.comment.id"
                 style="display: none;"
                 :comment="comment.comment"
-                @editComment="editComment()"
+                @editComment="editComment"
+                @close-edit-comment="closeEditComment"
               />
             </div>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
+    <v-btn
+      color="#ff6666"
+      elevation="24"
+      fixed
+      bottom
+      left
+      fab
+      @click="back()"
+      class="mb-14"
+    >
+      <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
+    </v-btn>
   </div>
 </template>
 
 <script>
+import swal from "sweetalert";
 import EditComment from "@/components/feed/comment/EditComment";
 import { mapActions, mapState, mapGetters } from "vuex";
 import SERVER from "@/api/api";
@@ -154,6 +202,7 @@ export default {
   components: { EditComment },
   data() {
     return {
+      edit: false,
       fid: this.$route.params.fid,
       commentData: {
         title: "",
@@ -177,32 +226,46 @@ export default {
       "commentLikeUnlike",
     ]),
     createComment(commentData) {
-      commentData.fid = this.fid;
-      this.insertComment(commentData)
-        .then(() => {
-          this.fetchComments(this.fid);
-        })
-        .then(() => {
-          this.comments = this.$store.state.comments;
-          this.commentData.content = "";
-        })
-        .catch((err) => console.log(err.response));
+      if (commentData.content !== "") {
+        commentData.fid = this.fid;
+        this.insertComment(commentData)
+          .then(() => {
+            this.commentData.content = "";
+            this.fetchComments(this.fid);
+          })
+          .then(() => {
+            this.comments = this.$store.state.comments;
+          })
+          .catch((err) => console.log(err.response));
+      } else {
+        swal("댓글을 입력하세요.");
+      }
     },
     deleteCommentAndFetch(id) {
-      this.deleteComment(id)
-        .then(() => {
-          this.fetchComments(this.fid);
-        })
-        .then(() => {
-          this.comments = this.$store.state.comments;
-        })
-        .catch((err) => console.log(err.response));
+      swal({
+        title: "삭제하시겠습니까?",
+        text: "이 작업은 취소 할 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((doDelete) => {
+        if (doDelete) {
+          this.deleteComment(id)
+            .then(() => {
+              this.fetchComments(this.fid);
+            })
+            .then(() => {
+              this.comments = this.$store.state.comments;
+            })
+            .catch((err) => console.log(err.response));
+        }
+      });
     },
     computeYMD(regdate) {
       var ymd =
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(regdate).getTime() / 1000);
-      var ymd2 = function (ymd) {
+      var ymd2 = function(ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
         } else if (ymd < 3600) {
@@ -222,15 +285,24 @@ export default {
     showEdit(comment_id) {
       const update = document.getElementsByClassName("update");
       update.forEach((item) => (item.style = "display: none;"));
-      document.getElementById(`${comment_id}`).style = "display: show;";
+      document.getElementById(`a${comment_id}`).style = "display: none;";
+      document.getElementById(`b${comment_id}`).style = "display: show;";
     },
-    editComment() {
-      const update = document.getElementsByClassName("update");
-      update.forEach((item) => (item.style = "display: none;"));
+    editComment(comment_id) {
+      // const update = document.getElementsByClassName("update");
+      console.log("asdf", comment_id);
+      document.getElementById(`b${comment_id}`).style = "display: none;";
+
+      // update.forEach((item) => (item.style = "display: none;"));
       this.fetchComments(this.fid).then(() => {
         this.comments = this.$store.state.comments;
       });
+      document.getElementById(`a${comment_id}`).style = "display: show;";
+
       // this.fetchComment(this.fid);
+    },
+    closeEditComment(id) {
+      document.getElementById(`${id}`).style = "display:none;";
     },
 
     commentLike(commentData) {
@@ -250,6 +322,10 @@ export default {
       }
       // console.log("countcheck");
       this.comments.comments[idx].islike = !this.comments.comments[idx].islike;
+    },
+
+    back() {
+      this.$router.go(-1);
     },
   },
   created() {
@@ -272,5 +348,14 @@ export default {
   > .v-icon {
   margin-top: 0 !important;
   padding: 0 !important;
+}
+/* div.background {
+  background-color: #f3f1eb;
+}
+.myCard {
+  background-color: #f3f1eb;
+} */
+div .v-list-item__subtitle .black--text {
+  word-wrap: break-word;
 }
 </style>
