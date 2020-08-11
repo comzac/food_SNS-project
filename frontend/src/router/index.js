@@ -10,6 +10,7 @@ import UserDetailView from "@/views/user/UserDetailView";
 import UserFollowView from "@/views/user/UserFollowView";
 import UserEditView from "@/views/user/UserEditView";
 import UserProfileEditView from "@/views/user/UserProfileEditView";
+import UserAdditionalDataEditView from "@/views/user/UserAdditionalDataEditView";
 
 import Home from "@/views/Home";
 
@@ -26,6 +27,7 @@ import NotificationView from "@/views/notification/NotificationView";
 
 import ContestList from "@/views/contest/ContestListView";
 import ContestFeed from "@/views/contest/ContestFeedView";
+import ContestFeedCreate from "@/views/contest/ContestFeedCreateView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -93,6 +95,12 @@ const routes = [
     component: UserProfileEditView,
     meta: { title: "프로필 수정 · HoneyCombo" },
   },
+  {
+    path: "/user/edit/additional",
+    name: "UserAdditionalDataEdit",
+    component: UserAdditionalDataEditView,
+    meta: { title: "추가정보 입력 · HoneyCombo" },
+  },
 
   // feed
   {
@@ -147,6 +155,11 @@ const routes = [
     path: "/contest/:fid",
     name: "ContestFeed",
     component: ContestFeed,
+  },
+  {
+    path: "/contest/feed/create/:fid?",
+    name: "ContestFeedCreate",
+    component: ContestFeedCreate,
   },
 ];
 

@@ -1,18 +1,13 @@
 <template>
-  <div
-    @click="
-      $router.push({
-        name: 'ContestFeed',
-        params: { fid: fid},
-      })
-    "
-  >
-    <!-- <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-4" /> -->
+  <div @click="
+      moveToContestFeed
+    ">
+    <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-3" />
     <v-img
-      v-if="mediaType != 'video/mp4'"
+      v-if="mediaRoute && mediaType != 'video/mp4'"
       :aspect-ratio="1"
       contain
-      class="grey lighten-2 img-link"
+      class="grey lighten-3 img-link"
       :src="mediaRoute"
     />
     <v-responsive
@@ -62,11 +57,26 @@ export default {
       } else return false;
     },
   },
+  methods: {
+    moveToContestFeed() {
+      const ubirth = this.$store.state.accounts.userSimpleData.ubirth;
+      const usex = this.$store.state.accounts.userSimpleData.usex;
+      if (ubirth && usex) {
+        this.$router.push({
+          name: "ContestFeed",
+          params: { fid: this.fid },
+        });
+      } else {
+        this.$router.push({ name: "UserAdditionalDataEdit" });
+        // 들어가면 작성하자마자 돌아올수있게 설정하기
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.img-link {
+.v-image {
   cursor: pointer;
 }
 </style>

@@ -10,6 +10,10 @@
           >
             <!-- 작성자 -->
             <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
+            <Head
+              v-if="selectedContestFeed"
+              :feed="selectedContestFeed.contestFeed"
+            />
             <Media
               :dbFiles="selectedContestFeed.contestFeed.files"
               @likeUnlike="feedLU()"
@@ -26,8 +30,16 @@
               />
               <!-- Comment module ?? -->
             </v-card-text>
-            <SexChart :ageData="ageData" />
-            <AgeChart :sexData="sexData" />
+            <div v-if="selectedContestFeed.contestFeed.likeCount !== 0">
+              <SexChart v-if="sexData" :sexData="sexData" />
+              <AgeChart v-if="ageData" :ageData="ageData" />
+            </div>
+            <div v-else>
+              좋아요 데이터가 없습니다
+              <v-spacer>
+                <br />
+              </v-spacer>
+            </div>
           </v-card>
         </v-hover>
       </v-col>
@@ -38,7 +50,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-// import Writer from "@/components/feed/item/Writer";
+import Head from "@/components/contest/ContestFeedHead";
 import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
 import AgeChart from "@/components/charts/AgeChart";
@@ -47,7 +59,7 @@ import SexChart from "@/components/charts/SexChart";
 export default {
   name: "FeedView",
   components: {
-    // Writer,
+    Head,
     Main,
     Media,
     AgeChart,
@@ -78,29 +90,40 @@ export default {
       sexData: null,
     };
   },
+  watch() {
+    this.getContestFeedDetail(this.$route.params.fid).then((data) => {
+      // console.log("data");
+      // console.log(data.statistics);
+      this.ageData = data.statistics.uage;
+      this.sexData = data.statistics.usex;
+    });
+  },
   methods: {
-    ...mapActions("contests", ["getContestFeedDetail"]),
-    ...mapActions("feeds", ["feedLikeUnlike"]),
+    ...mapActions("contests", [
+      "getContestFeedDetail",
+      "contestFeedLikeUnlike",
+    ]),
     feedLU() {
       console.log("likeunlike");
       const likeData = {
         fid: this.$route.params.fid,
-        like: this.selectedContestFeed.like,
+        like: this.selectedContestFeed.islike,
       };
       console.log(likeData);
-      this.feedLikeUnlike(likeData).then(() => {
-        if (this.selectedContestFeed.like) {
-          this.selectedContestFeed.likeCount -= 1;
+      this.contestFeedLikeUnlike(likeData).then(() => {
+        if (this.selectedContestFeed.islike) {
+          this.selectedContestFeed.contestFeed.likeCount -= 1;
         } else {
-          this.selectedContestFeed.likeCount += 1;
+          this.selectedContestFeed.contestFeed.likeCount += 1;
         }
-        this.selectedContestFeed.like = !this.selectedContestFeed.like;
+        this.selectedContestFeed.islike = !this.selectedContestFeed.islike;
       });
     },
   },
   created() {
     this.getContestFeedDetail(this.$route.params.fid).then((data) => {
-      console.log(data);
+      // console.log("data");
+      // console.log(data.statistics);
       this.ageData = data.statistics.uage;
       this.sexData = data.statistics.usex;
       this.ymd =

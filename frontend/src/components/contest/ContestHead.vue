@@ -5,17 +5,21 @@
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on" class="mr-5">
             <v-icon left>mdi-trophy</v-icon>
-            {{currentTheme}}
+            {{ currentTheme }}
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in contestList" :key="index">
+          <v-list-item
+            v-for="(item, index) in contestList"
+            :key="index"
+            @click="getSelectedThemeFeeds(item.id)"
+          >
             <v-list-item-title>{{ item.theme }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
       <v-btn color="grey" fab small dark class="ml-5">
-        <v-icon>mdi-pencil</v-icon>
+        <v-icon @click="moveToContestFeedCreate">mdi-pencil</v-icon>
       </v-btn>
     </v-list-item>
   </v-card>
@@ -23,17 +27,35 @@
 
 <script>
 // import swal from "sweetalert";
+import { mapState, mapActions } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   props: {
     contestList: Array,
   },
   computed: {
+    ...mapState("contests", ["currentContest"]),
     currentTheme() {
-      return this.contestList[0].theme;
+      if (this.currentContest) {
+        return this.currentContest.theme;
+      } else return false;
     },
   },
-  methods: {},
+  methods: {
+    ...mapActions("contests", ["getContestData"]),
+    getSelectedThemeFeeds(cid) {
+      const route = SERVER.ROUTES.contest.URL + cid;
+      const data = {
+        route: route,
+        mode: "oneList",
+      };
+      this.getContestData(data);
+    },
+    moveToContestFeedCreate() {
+      this.$router.push({ name: "ContestFeedCreate" });
+    },
+  },
 };
 </script>
 
@@ -49,6 +71,10 @@ button.non-active.theme--light.v-btn.v-btn--disabled {
 .v-list {
   max-height: 35vh;
   overflow-y: auto;
+}
+
+.v-menu__content > div:nth-child(1) > div.v-list-item {
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .v-menu__content > div:nth-child(1) > div.v-list-item:hover {

@@ -58,6 +58,7 @@ export default {
     },
     authUserUid: (state) => state.userSimpleData.uid,
     authUserUnick: (state) => state.userSimpleData.unick,
+    authUserId: (state) => state.userSimpleData.id,
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -126,6 +127,7 @@ export default {
       commit("SET_SIGNUPDATA", signupData);
     },
     postAuthData({ commit }, info) {
+      console.log(info.data);
       return axios
         .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
@@ -389,6 +391,7 @@ export default {
             getters.config
           )
           .then((res) => {
+            console.log(res);
             commit("SET_USERSIMPLEDATA", res.data.data);
           })
           .catch((err) => console.log(err));
@@ -465,6 +468,26 @@ export default {
           commit("SET_USERFOLLOWS", res.data.data);
         })
         .catch((err) => console.log(err.response));
+    },
+    setAdditionalUserData({ state, commit, getters }, data) {
+      console.log("data : ", data);
+      const userEditRoute =
+        SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + state.userSimpleData.uid;
+      const simpleUserRoute =
+        SERVER.BASE_URL +
+        SERVER.ROUTES.accounts.URL +
+        SERVER.ROUTES.accounts.simple;
+      axios
+        .put(userEditRoute, data, getters.config)
+        .then((res) => {
+          console.log(res);
+          return axios.get(simpleUserRoute, getters.config);
+        })
+        .then((res) => {
+          console.log("res : ", res.data.data);
+          commit("SET_USERSIMPLEDATA", res.data.data);
+        })
+        .catch((err) => console.log(err));
     },
   },
 };

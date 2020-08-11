@@ -5,52 +5,54 @@ export default {
   props: {
     sexData: Object,
   },
-  data: () => ({
-    chartdata: {
-      labels: ["남", "여"],
-      datasets: [
-        {
-          label: "좋아요",
-          backgroundColor: "#f87979",
-          barThickness: 60,
-          data: [20, 30],
+  data() {
+    return {
+      chartdata: {
+        labels: ["남", "여"],
+        datasets: [
+          {
+            label: "좋아요",
+            backgroundColor: "#f87979",
+            barThickness: 60,
+            data: [this.sexData.male, this.sexData.female],
+          },
+        ],
+      },
+
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+                stepSize: 1,
+              },
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
         },
-      ],
-    },
-    // options: {
-    //   responsive: true,
-    //   maintainAspectRatio: false,
-    // },
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-              stepSize: 1,
-            },
-            gridLines: {
-              display: false,
-            },
-          },
-        ],
-        xAxes: [
-          {
-            gridLines: {
-              display: false,
-            },
-          },
-        ],
+        legend: {
+          display: true,
+        },
+        responsive: true,
+        maintainAspectRatio: false,
       },
-      legend: {
-        display: true,
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-    },
-  }),
+    };
+  },
 
   mounted() {
+    // console.log("sexC");
+    // console.log(this.sexData);
+    // console.log(this.chartdata);
     this.renderChart(this.chartdata, this.options);
   },
 };

@@ -157,8 +157,22 @@
                     })
                   "
                 >
-                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
-                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
+                  <!-- <v-icon v-if="comment.islike">mdi-heart</v-icon>
+                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon> -->
+                  <img
+                    class="like-btn"
+                    v-if="!comment.islike"
+                    :src="imgRoute.unlike"
+                    alt=""
+                  />
+                  <img
+                    class="like-btn"
+                    v-if="comment.islike"
+                    :src="imgRoute.like_small"
+                    alt=""
+                    s
+                  />
+                  <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
                 </v-btn>
                 <!-- <span>{{comment.likeCount }}</span> -->
               </v-list-item>
@@ -210,6 +224,11 @@ export default {
       },
       comments: "",
       media_dir: SERVER.MEDIA_DIR,
+      imgRoute: {
+        like_small: require("@/assets/like/like_small.png"),
+        like_big: require("@/assets/like/like_big.png"),
+        unlike: require("@/assets/like/unlike.png"),
+      },
     };
   },
   computed: {
@@ -357,5 +376,9 @@ export default {
 } */
 div .v-list-item__subtitle .black--text {
   word-wrap: break-word;
+}
+img.like-btn {
+  width: 18px;
+  height: 18px;
 }
 </style>
