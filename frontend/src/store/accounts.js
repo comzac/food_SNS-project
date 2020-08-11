@@ -58,6 +58,7 @@ export default {
     },
     authUserUid: (state) => state.userSimpleData.uid,
     authUserUnick: (state) => state.userSimpleData.unick,
+    authUserId: (state) => state.userSimpleData.id,
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -389,6 +390,7 @@ export default {
             getters.config
           )
           .then((res) => {
+            console.log(res);
             commit("SET_USERSIMPLEDATA", res.data.data);
           })
           .catch((err) => console.log(err));

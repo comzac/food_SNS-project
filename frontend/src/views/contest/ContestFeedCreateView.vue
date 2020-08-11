@@ -145,7 +145,7 @@ export default {
   name: "FeedCreateView",
   components: {},
   computed: {
-    ...mapState("feeds", ["selectedContestFeed"]),
+    ...mapState("contests", ["selectedContestFeed"]),
     isUpdatePage() {
       return !!this.$route.params.fid;
     },
@@ -165,7 +165,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("contests", ["insertContestFeed"]),
+    ...mapActions("contests", ["insertContestFeed", "getContestFeedDetail"]),
     next() {
       this.i2 = this.i2 + 1 === this.previews.length ? 0 : this.i2 + 1;
     },
@@ -245,19 +245,19 @@ export default {
     //   this.updateFeed(this.feedData);
     // },
 
-    // initData() {
-    //   this.feed.title = this.selectedFeed.feed.title;
-    //   this.feed.content = this.selectedFeed.feed.content;
-    //   // this.fileData = this.selectedFeed.dbFiles;
-    //   // this.feedhashtag = this.selectedFeed.hashtag;
-    // },
+    initData() {
+      this.feed.title = this.selectedContestFeed.contestFeed.title;
+      this.feed.content = this.selectedContestFeed.contestFeed.content;
+      // this.fileData = this.selectedFeed.dbFiles;
+      // this.feedhashtag = this.selectedFeed.hashtag;
+    },
   },
 
-  //   created() {
-  //     if (this.$route.params.fid) {
-  //       this.getFeedDetail(this.$route.params.fid).then(this.initData());
-  //     }
-  //   },
+  created() {
+    if (this.$route.params.fid) {
+      this.getContestFeedDetail(this.$route.params.fid).then(this.initData());
+    }
+  },
   //   mounted() {
   //     this.$emit("change-page", 7);
   //   },

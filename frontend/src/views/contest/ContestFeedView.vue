@@ -10,7 +10,10 @@
           >
             <!-- 작성자 -->
             <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
-            <Head />
+            <Head
+              v-if="selectedContestFeed"
+              :feed="selectedContestFeed.contestFeed"
+            />
             <Media
               :dbFiles="selectedContestFeed.contestFeed.files"
               @likeUnlike="feedLU()"
