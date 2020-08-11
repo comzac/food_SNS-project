@@ -26,6 +26,7 @@ import NotificationView from "@/views/notification/NotificationView";
 
 import ContestList from "@/views/contest/ContestListView";
 import ContestFeed from "@/views/contest/ContestFeedView";
+import ContestFeedCreate from "@/views/contest/ContestFeedCreateView";
 
 import NotFoundComponent from "@/components/NotFoundComponent";
 import ErrorComponent from "@/components/ErrorComponent";
@@ -147,6 +148,11 @@ const routes = [
     path: "/contest/:fid",
     name: "ContestFeed",
     component: ContestFeed,
+  },
+  {
+    path: "/contest/feed/create/:fid?",
+    name: "ContestFeedCreate",
+    component: ContestFeedCreate,
   },
 ];
 
