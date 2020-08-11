@@ -165,7 +165,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions("contests", ["insertContestFeed", "getContestFeedDetail"]),
+    ...mapActions("contests", [
+      "insertContestFeed",
+      "updateContestFeed",
+      "getContestFeedDetail",
+    ]),
     next() {
       this.i2 = this.i2 + 1 === this.previews.length ? 0 : this.i2 + 1;
     },
@@ -232,18 +236,11 @@ export default {
       this.insertContestFeed(this.feedData);
     },
 
-    // updateFeedByFormData() {
-    //   this.feedData.feed = this.feed;
-    //   let hashtagData = [];
-    //   this.feedhashtag.forEach((hashtag) => {
-    //     hashtagData.push({
-    //       content: hashtag,
-    //     });
-    //   });
-    //   this.feedData.hashtag = hashtagData;
-    //   this.feedData.id = this.$route.params.fid;
-    //   this.updateFeed(this.feedData);
-    // },
+    updateFeedByFormData() {
+      this.feedData.feed = this.feed;
+      this.feedData.id = this.$route.params.fid;
+      this.updateContestFeed(this.feedData);
+    },
 
     initData() {
       this.feed.title = this.selectedContestFeed.contestFeed.title;

@@ -150,5 +150,27 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+    updateContestFeed({ rootGetters }, feedData) {
+      const config = rootGetters["accounts/config"];
+      const id = feedData.id;
+      delete feedData.id;
+      axios
+        .put(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.contest.URL +
+            SERVER.ROUTES.contest.feeds +
+            id,
+          feedData,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "ContestFeed", params: { fid: id } });
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
   },
 };
