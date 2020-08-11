@@ -145,7 +145,7 @@ export default {
   name: "FeedCreateView",
   components: {},
   computed: {
-    ...mapState("feeds", ["selectedContestFeed"]),
+    ...mapState("contests", ["selectedContestFeed"]),
     isUpdatePage() {
       return !!this.$route.params.fid;
     },
@@ -165,7 +165,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions("contests", ["insertContestFeed"]),
+    ...mapActions("contests", [
+      "insertContestFeed",
+      "updateContestFeed",
+      "getContestFeedDetail",
+    ]),
     next() {
       this.i2 = this.i2 + 1 === this.previews.length ? 0 : this.i2 + 1;
     },
@@ -232,32 +236,25 @@ export default {
       this.insertContestFeed(this.feedData);
     },
 
-    // updateFeedByFormData() {
-    //   this.feedData.feed = this.feed;
-    //   let hashtagData = [];
-    //   this.feedhashtag.forEach((hashtag) => {
-    //     hashtagData.push({
-    //       content: hashtag,
-    //     });
-    //   });
-    //   this.feedData.hashtag = hashtagData;
-    //   this.feedData.id = this.$route.params.fid;
-    //   this.updateFeed(this.feedData);
-    // },
+    updateFeedByFormData() {
+      this.feedData.feed = this.feed;
+      this.feedData.id = this.$route.params.fid;
+      this.updateContestFeed(this.feedData);
+    },
 
-    // initData() {
-    //   this.feed.title = this.selectedFeed.feed.title;
-    //   this.feed.content = this.selectedFeed.feed.content;
-    //   // this.fileData = this.selectedFeed.dbFiles;
-    //   // this.feedhashtag = this.selectedFeed.hashtag;
-    // },
+    initData() {
+      this.feed.title = this.selectedContestFeed.contestFeed.title;
+      this.feed.content = this.selectedContestFeed.contestFeed.content;
+      // this.fileData = this.selectedFeed.dbFiles;
+      // this.feedhashtag = this.selectedFeed.hashtag;
+    },
   },
 
-  //   created() {
-  //     if (this.$route.params.fid) {
-  //       this.getFeedDetail(this.$route.params.fid).then(this.initData());
-  //     }
-  //   },
+  created() {
+    if (this.$route.params.fid) {
+      this.getContestFeedDetail(this.$route.params.fid).then(this.initData());
+    }
+  },
   //   mounted() {
   //     this.$emit("change-page", 7);
   //   },
