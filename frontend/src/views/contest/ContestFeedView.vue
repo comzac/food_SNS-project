@@ -10,6 +10,7 @@
           >
             <!-- 작성자 -->
             <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
+            <Head />
             <Media
               :dbFiles="selectedContestFeed.contestFeed.files"
               @likeUnlike="feedLU()"
@@ -46,7 +47,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-// import Writer from "@/components/feed/item/Writer";
+import Head from "@/components/contest/ContestFeedHead";
 import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
 import AgeChart from "@/components/charts/AgeChart";
@@ -55,7 +56,7 @@ import SexChart from "@/components/charts/SexChart";
 export default {
   name: "FeedView",
   components: {
-    // Writer,
+    Head,
     Main,
     Media,
     AgeChart,
