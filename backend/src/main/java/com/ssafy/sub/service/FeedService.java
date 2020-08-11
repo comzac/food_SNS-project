@@ -28,7 +28,7 @@ public interface FeedService {
 
 	public List<Hashtag> findAllHashtag();
 	
-	public boolean findByContent(String content);
+	public Hashtag findByContent(String content);
 	
 	public Hashtag hashtagInsert(String content);
 	
@@ -40,7 +40,7 @@ public interface FeedService {
 	
 	public List<Hashtag> feedHashtagList(int fid);
 	
-	public int feedHashtagListInsert(List<Hashtag> hashtagList);
+	public int feedHashtagListInsert(List<Hashtag> hashtagList, int fid);
 	
 	public List<Hashtag> feedHashtagListUpdate(int fid, List<Hashtag> hashtagList);
 	

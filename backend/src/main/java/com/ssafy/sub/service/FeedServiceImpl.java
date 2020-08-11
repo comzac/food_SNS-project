@@ -110,11 +110,8 @@ public class FeedServiceImpl implements FeedService {
 	}
 
 	@Override
-	public boolean findByContent(String content) {
-		if(hashtagRepository.findByContent(content)!=null) {
-			return false;
-		}
-		return true;
+	public Hashtag findByContent(String content) {
+		return hashtagRepository.findByContent(content);
 	}
 
 	@Override
@@ -169,8 +166,7 @@ public class FeedServiceImpl implements FeedService {
 	}
 
 	@Override
-	public int feedHashtagListInsert(List<Hashtag> hashtagList) {
-		int fid = (int) feedRepository.count();
+	public int feedHashtagListInsert(List<Hashtag> hashtagList, int fid) {
 		System.out.println(fid);
 		String content;
 		int hid;
