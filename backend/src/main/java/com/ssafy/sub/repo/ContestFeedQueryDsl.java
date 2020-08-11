@@ -24,7 +24,7 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.usex.eq(1))
+				.where(user.usex.eq(2))
 				.distinct()
 				.fetchCount();
 	}
@@ -37,7 +37,7 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.usex.eq(0))
+				.where(user.usex.eq(1))
 				.distinct()
 				.fetchCount();
 	}

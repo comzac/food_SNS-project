@@ -93,16 +93,14 @@ public class UserSecurityController {
 
 		User member = User.builder().uid(user.get("uid")).uemail(user.get("uemail")).unick(user.get("unick"))
 				.upw(passwordEncoder.encode(user.get("upw"))).uregdate(new Date()).ubirth(ubirth)
+				.usex(Integer.parseInt(user.get("usex")))
 				.roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 // USER 로 설정
 				.build();
 
-		userService.join(member).getUid();
+		User joinMember = userService.join(member);
 
 		// User 반환 정보
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("uid", member.getUid());
-		result.put("uemail", member.getUemail());
-		result.put("unick", member.getUnick());
+		UserSimple result = userService.getSimpleUser(joinMember.getUid());
 
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(member, member.getRoles());
@@ -127,7 +125,7 @@ public class UserSecurityController {
 	// 로그인
 	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = Result.class)
 	@PostMapping("/login")
-	public ResponseEntity<Result> login(@RequestBody Map<String, String> user, HttpServletResponse response) {
+	public ResponseEntity login(@RequestBody Map<String, String> user, HttpServletResponse response) {
 		System.out.println(user.toString());
 
 		User member = userRepository.findByUid(user.get("uid")).orElseThrow(
@@ -136,11 +134,6 @@ public class UserSecurityController {
 		if (!passwordEncoder.matches(user.get("upw"), member.getUpw())) {
 			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_PW, HttpStatus.NOT_FOUND);
 		}
-
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("uid", member.getUid());
-		result.put("uemail", member.getUemail());
-		result.put("unick", member.getUnick());
 
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(member, member.getRoles());
@@ -151,9 +144,11 @@ public class UserSecurityController {
 		jsonToken.setUsername(member.getUid());
 		jsonToken.setRefreshToken(token);
 		vop.set(member.getUid(), jsonToken);
+		
+		// User 반환 정보
+		UserSimple result = userService.getSimpleUser(member.getUid());
 
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(member.getUid()));
-//		System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(member.getU);
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result),
 				HttpStatus.OK);
 	}
@@ -428,12 +423,11 @@ public class UserSecurityController {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null),
 					HttpStatus.FORBIDDEN);
 		}
-		user.setUemail(userUpdate.get("uemail"));
 		
 		// 유저의 생일
 		try {
 			if(userUpdate.get("ubirth")!=null) {
-				SimpleDateFormat transFormat = new SimpleDateFormat("yy-MM-dd");
+				SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 				transFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 				Date ubirth = transFormat.parse(userUpdate.get("ubirth"));
 				user.setUbirth(ubirth);
