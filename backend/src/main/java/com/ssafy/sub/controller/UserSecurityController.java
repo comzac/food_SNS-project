@@ -1,4 +1,3 @@
-
 package com.ssafy.sub.controller;
 
 import java.io.IOException;
@@ -213,9 +212,13 @@ public class UserSecurityController {
 
 			int random = new Random().nextInt(900000) + 100000;
 			String upw = String.valueOf(random);
-			googleUser = User.builder().uemail(email).uid(email.split("@")[0]).unick(email.split("@")[0]) 
-					.upw(passwordEncoder.encode(upw)).uregdate(new Date())
-					.roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 // USER 로 설정
+			googleUser = User.builder().uemail(email).uid(email.split("@")[0]).unick(email.split("@")[0])
+					.upw(passwordEncoder.encode(upw)).uregdate(new Date()).roles(Collections.singletonList("ROLE_USER")) // 최초
+																															// 가입시
+																															// //
+																															// USER
+																															// 로
+																															// 설정
 					.build();
 			if (userService.findByUemail(email) == null) { // 가입정보가 없으면,
 				googleUser = userRepository.save(googleUser);
@@ -241,8 +244,7 @@ public class UserSecurityController {
 		jsonToken.setUsername(googleUser.getUid());
 		jsonToken.setRefreshToken(token);
 		vop.set(googleUser.getUid(), jsonToken);
-		
-		
+
 		System.out.println(token);
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(googleUser.getUid()));
 		Result result = new Result(StatusCode.OK, ResponseMessage.SOCIAL_LOGIN_SUCCESS, userInfos);

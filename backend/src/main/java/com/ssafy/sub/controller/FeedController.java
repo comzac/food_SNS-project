@@ -47,15 +47,21 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
+/***
+ * 
+ * @author 이선수
+ * @version 1.0 검색 임시 리스트 (해쉬태그, 유저 닉네임) 통합
+ */
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/feeds")
 public class FeedController {
 
 	@Autowired
-	private FeedService feedService;
+	private FeedService feedService; 
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
 	@Autowired
 	private CommentService commentService;
 	@Autowired
@@ -65,9 +71,14 @@ public class FeedController {
 	@Autowired
 	private RelationService relationService;
 
-	// 1. list 조회
+	/***
+	 * 페이지네이션 기능을 적용한 홈 피드 리스트 조회
+	 * @param lastFid - 조회된 마지막 피드의 pk
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return List<FeedAll>
+	 */
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
-	@GetMapping(value="/pagination/{lastFid}")
+	@GetMapping(value = "/pagination/{lastFid}")
 	public ResponseEntity feedHomePage(@PathVariable int lastFid, Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
 
@@ -77,7 +88,7 @@ public class FeedController {
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
-		feedList = feedService.feedPagination(0L, lastFid*1L, feedLimit);
+		feedList = feedService.feedPagination(0L, lastFid * 1L, feedLimit);
 
 		User user;
 		UserSimple userSimple;
@@ -101,11 +112,11 @@ public class FeedController {
 			Long commentCount = 0L;
 			commentCount = commentService.commentCount(fid);
 			feedAll.setCommentCount(commentCount);
-			
+
 			// comment
-			int limit = 2;	// 2개만 불러오기
+			int limit = 2; // 2개만 불러오기
 			List<Comment> commentList = commentService.commentListLimit(fid, limit);
-			for(Comment c: commentList) {
+			for (Comment c : commentList) {
 				String c_uid = userService.findById(c.getUid()).getUid();
 				c.setUser(userService.getSimpleUser(c_uid));
 			}
@@ -137,7 +148,12 @@ public class FeedController {
 		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
 
-	// 7. list by follower 조회
+	/***
+	 * 로그인한 유저의 팔로우 유저의 피드 조회
+	 * @param lastFid - 조회된 마지막 피드의 pk
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return List<FeedAll>
+	 */
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "팔로우한 유저들의 피드", response = Result.class)
@@ -146,14 +162,14 @@ public class FeedController {
 		System.out.println("log - feedFollowerPage");
 
 		int LoginUserId = Integer.parseInt(authentication.getName());
-		
+
 		int uid = Integer.parseInt(authentication.getName());
 		String loginUserId = authentication.getName();
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
-		feedList = feedService.feedFollowPagination(LoginUserId, 0L, lastFid*1L, feedLimit); // follower의 feedList 들고옴
+		feedList = feedService.feedFollowPagination(LoginUserId, 0L, lastFid * 1L, feedLimit); // follower의 feedList 들고옴
 
 		User user;
 		UserSimple userSimple;
@@ -177,11 +193,11 @@ public class FeedController {
 			Long commentCount = 0L;
 			commentCount = commentService.commentCount(fid);
 			feedAll.setCommentCount(commentCount);
-			
+
 			// comment
-			int limit = 2;	// 2개만 불러오기
+			int limit = 2; // 2개만 불러오기
 			List<Comment> commentList = commentService.commentListLimit(fid, limit);
-			for(Comment c: commentList) {
+			for (Comment c : commentList) {
 				String c_uid = userService.findById(c.getUid()).getUid();
 				c.setUser(userService.getSimpleUser(c_uid));
 			}
@@ -213,6 +229,12 @@ public class FeedController {
 		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
 
+	/***
+	 * 로그인한 유저의 개인 피드 조회
+	 * @param uid - 유저 id
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return UserPageResult
+	 */
 	@ApiOperation(value = "유저의 개인 피드 목록을 조회한다", response = UserFeedResult.class)
 	@GetMapping(value = "/page/{uid}")
 	public ResponseEntity feedUserPage(@PathVariable String uid, Authentication authentication) {
@@ -249,20 +271,41 @@ public class FeedController {
 		if (Integer.parseInt(user_id) != user.getId()) {
 			mypage = false;
 		}
-		
-		// 
+
+		//
 		boolean isFollow = false;
 		boolean isBlock = false;
-		Relationship followRS = relationService.followCheck(Integer.parseInt(user_id), user.getId());	// 로긴한 유저가 해당 피드유저 follow?
-		Relationship blockRS = relationService.followCheck(user.getId(), Integer.parseInt(user_id));	// 해당 피드유저가 로긴한 유저 block?
-		if(followRS!=null && followRS.getState()==0) isFollow=true;
-		if(blockRS!=null && blockRS.getState()==1) isBlock=true;
-		
-		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, 
-				userPage, mypage, isFollow, isBlock);
+		Relationship followRS = relationService.followCheck(Integer.parseInt(user_id), user.getId()); // 로긴한 유저가 해당 피드유저
+																										// follow?
+		Relationship blockRS = relationService.followCheck(user.getId(), Integer.parseInt(user_id)); // 해당 피드유저가 로긴한 유저
+																										// block?
+		if (followRS != null && followRS.getState() == 0)
+			isFollow = true;
+		if (blockRS != null && blockRS.getState() == 1)
+			isBlock = true;
+
+		UserPageResult result = new UserPageResult(StatusCode.OK, ResponseMessage.READ_USER_FEEDS, userPage, mypage,
+				isFollow, isBlock);
 		return new ResponseEntity<UserPageResult>(result, HttpStatus.OK);
 	}
 
+	/***
+	 * 유저의 프로필 변경
+	 * @param img - 프로필 사진
+	 * @param text - 프로필 문구
+	 * @param unick - 유저 닉네임
+	 * @param hasImage - 변경할 프로필 사진 유무
+				  hasImage : true
+			      1. img 변경
+			      2. img 유지
+			      hasImage:false
+			      1. db 내 data가 있는 경우, img 삭제
+			      2. db 내 data가 없는 경우, 유지
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return UserSimple
+	 * @throws FileStorageException
+	 */
+	
 	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
 	@PostMapping(value = "/page")
 //   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
@@ -273,13 +316,6 @@ public class FeedController {
 
 		String id;
 		id = authentication.getName();
-
-//      hasImage: true
-//      1. img가 들어오면 바꿔주기
-//      2. img가 들어오지 않으면 냅두기
-//      hasImage:false
-//      1. db에 파일이 있으면: 삭제
-//      2. db에 파일이 없으면: 냅두기
 
 		User user = userService.updateNick(Integer.parseInt(id), unick);
 
@@ -299,15 +335,20 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	// 2. list 검색 ( )
-	@ApiOperation(value = "feedList의 내용 중 일부를 검색한다", response = Feed.class)
+	/***
+	 * 검색 해쉬태그가 포함된 피드 리스트 정보 조회
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @param keyword - 검색한 해쉬태그
+	 * @return FeedAllResult
+	 */
+	@ApiOperation(value = "해쉬태그 기반 feedList를 검색한다", response = Feed.class)
 	@GetMapping(value = "/search/{keyword}")
-	public ResponseEntity<FeedAllResult> feedListSearch(Authentication authentication, @PathVariable String keyword) {
+	public ResponseEntity feedListSearch(Authentication authentication, @PathVariable String keyword) {
 		System.out.println("log - feedListSearch");
-		System.out.println(keyword);
+
 		int uid = Integer.parseInt(authentication.getName());
 		String loginUserId = authentication.getName();
-		List<FeedAll> feedAllList = new ArrayList<FeedAll>(); 
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 
 		List<Feed> feedList = feedService.searchByHashtag(keyword);
 
@@ -354,55 +395,67 @@ public class FeedController {
 
 			feedAllList.add(feedAll);
 		}
-		
+
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
 		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
-	
-	
-	// 2-1. list 검색 ( )
+
+	/***
+	 * 검색 과정 중 현재 키워드에 맞는 목록 조회
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @param keyword - 현재 검색창에 입력한 키워드
+	 * @return HashMap<String, List<HashMap<String, String>>>
+	 */
 	@ApiOperation(value = "feedList의 목록을 검색한다", response = Feed.class)
-	@GetMapping(value = "/search/temp/{keyword}/{state}")
-	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword, @PathVariable String state) {
-		System.out.println(keyword);
-		List<HashMap<String, String>> list =new ArrayList<HashMap<String,String>>();
+	@GetMapping(value = "/search/temp/{keyword}")
+	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword) {
+		System.out.println("log - feedTempSearch");
+
+		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String,String>>>();
 		Result result = null;
-		switch(state) {
-		case "HASHTAG":
-			List<Hashtag> hashtagList = feedService.findHashtagByKeyword(keyword);
-			for (Hashtag hashtag : hashtagList) {
-				System.out.println(hashtag.getContent());
-				String hashContent = hashtag.getContent();
-				Long cnt = feedService.countFeedByHashtag(hashtag.getId());
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put(hashContent, Long.toString(cnt));
-				list.add(map);
-			}
-			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_HASHTAG, list);
-			break;
-		case "USERID":
-			List<User> userList = userService.findUserNickByKeyword(keyword);
-			for (User user : userList) {
-				int user_id = user.getId();
-				String user_uid = user.getUid();
-				String user_nick = user.getUnick();
-				System.out.println(user_id);
-				Long cnt = feedService.countFeedByUser(user_id);
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put("uid", user_uid);
-				map.put("cnt", Long.toString(cnt));
-				map.put("unick", user_nick);
-				list.add(map);
-			}
-			result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_USERS, list);
-			break;
+
+		List<Hashtag> hashtagList = feedService.findHashtagByKeyword(keyword);
+		
+		for (Hashtag hashtag : hashtagList) {
+			System.out.println(hashtag.getContent());
+			String hashContent = hashtag.getContent();
+			Long cnt = feedService.countFeedByHashtag(hashtag.getId());
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put(hashContent, Long.toString(cnt));
+			list.add(map);
+		}
+
+		totalList.put("hashtag", list);
+		
+		list = new ArrayList<HashMap<String, String>>();
+		List<User> userList = userService.findUserNickByKeyword(keyword);
+		for (User user : userList) {
+			int user_id = user.getId();
+			String user_uid = user.getUid();
+			String user_nick = user.getUnick();
+			System.out.println(user_id);
+			Long cnt = feedService.countFeedByUser(user_id);
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("uid", user_uid);
+			map.put("cnt", Long.toString(cnt));
+			map.put("unick", user_nick);
+			list.add(map);
 		}
 		
+		totalList.put("unick", list);
+		
+		result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_USERS, totalList);
+
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
-	
-	
-	// 3. list 추가
+
+	/***
+	 * 새로운 피드 작성
+	 * @param feedAll - 새로운 피드의 세부 정보
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return int (새로 생성한 피드의 fid pk)
+	 */
 	@ApiOperation(value = "feedList에 정보를 추가한다", response = Result.class)
 	@PostMapping
 	public ResponseEntity<Result> feedInsert(@RequestBody FeedAll feedAll, Authentication authentication) {
@@ -425,7 +478,12 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 
-	// 4. list 상세
+	/***
+	 * 피드의 상세 정보 조회
+	 * @param id - 피드 pk
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return List<FeedAll> ############ 이 부분은 단일인데 리스트로 해둔건가?
+	 */
 	@ApiOperation(value = "특정 feed를 조회한다", response = Result.class)
 	@GetMapping(value = "/{id}")
 	public ResponseEntity feedDetail(@PathVariable int id, Authentication authentication) {
@@ -474,26 +532,32 @@ public class FeedController {
 		Long commentCount = 0L;
 		commentCount = commentService.commentCount(id);
 		feedAll.setCommentCount(commentCount);
-		
+
 		// Comment 정보
-		int limit = 2;	// 2개만 불러오기
+		int limit = 2; // 2개만 불러오기
 		List<Comment> commentList = commentService.commentListLimit(id, limit);
-		for(Comment c: commentList) {
+		for (Comment c : commentList) {
 			String c_uid = userService.findById(c.getUid()).getUid();
 			c.setUser(userService.getSimpleUser(c_uid));
 		}
 		feedAll.setComment(commentList);
-		
+
 		feedAllList.add(feedAll);
 
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_FEED, feedAllList);
 		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
 
-	// 5. list 수정
+	/***
+	 * 피드 정보 수정
+	 * @param id - 피드 pk
+	 * @param feedAll - 수정된 피드의 세부 정보
+	 * @param authentication - 로그인한 유저의 권한 정보
+	 * @return
+	 */
 	@ApiOperation(value = "feed의 정보를 수정한다", response = Result.class)
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Result> feedUpdate(@PathVariable int id, @RequestBody FeedAll feedAll,
+	public ResponseEntity feedUpdate(@PathVariable int id, @RequestBody FeedAll feedAll,
 			Authentication authentication) {
 		System.out.println("log - feedUpdate");
 
@@ -516,10 +580,14 @@ public class FeedController {
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
-	// 6. list 삭제
+	/***
+	 * 피드 삭제
+	 * @param id - 피드 pk
+	 * @return null
+	 */
 	@ApiOperation(value = "feed의 정보를 삭제한다", response = Result.class)
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Result> feedDelete(@PathVariable int id) {
+	public ResponseEntity feedDelete(@PathVariable int id) {
 		System.out.println("log - feedDelete");
 
 		feedService.feedDelete(id);
