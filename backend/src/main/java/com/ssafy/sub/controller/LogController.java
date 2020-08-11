@@ -1,11 +1,12 @@
 package com.ssafy.sub.controller;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.time.LocalDate;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Setter
 @RequestMapping("/logs")
 public class LogController {
-	
+		
 	private String filename;
 	
 	@Value("${logging.recommand.root}") // multipartfile 로컬 저장소 경로 (.yml 내)
@@ -39,23 +40,40 @@ public class LogController {
 	private String textName;
 	private PrintWriter pw;
 	
-	
-	
 	@GetMapping("/update")
 	public ResponseEntity update() throws IOException {
 		
 		// 분석
+		File file = new File("filePath"+textName);
+		
+		HashMap<String, Integer> recommandMap = new HashMap<String, Integer>();
+		
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String line = "";
+		String[] splitedStr = null;
+		
+		while((line = br.readLine()) != null) {
+			splitedStr = null;
+			
+			splitedStr = line.split(", ");
+			
+			
+			
+		}
 		
 		
-		if(bw != null)
-			pw.close();
 		
 		
 		
-		// 파일 생성
-		textName = LocalDate.now().toString();
-		bw = new BufferedWriter(new FileWriter(this.filePath+textName+".txt"));
-		pw = new PrintWriter(bw,true);
+//		if(bw != null)
+//			pw.close();
+//		
+//		
+//		
+//		// 파일 생성
+//		textName = LocalDate.now().toString();
+//		bw = new BufferedWriter(new FileWriter(this.filePath+textName+".txt"));
+//		pw = new PrintWriter(bw,true);
 		return null;
 	}
 	
