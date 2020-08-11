@@ -10,10 +10,7 @@
           >
             <!-- 작성자 -->
             <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
-            <Media
-              :dbFiles="selectedContestFeed.contestFeed.files"
-              @likeUnlike="feedLU()"
-            />
+            <Media :dbFiles="selectedContestFeed.contestFeed.files" @likeUnlike="feedLU()" />
             <v-card-text>
               <!-- 본문 -->
               <Main
