@@ -1,5 +1,7 @@
 package com.ssafy.sub.dto;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +17,9 @@ import lombok.ToString;
 @ToString
 public class UserSimple {
 	
+	// id
+	private int id;
+	
 	// uid
 	private String uid;
 	
@@ -23,5 +28,11 @@ public class UserSimple {
 	
 	// uprofile
 	private DBProfile uprofile;
+	
+	// ubirth
+	private Date ubirth;
+	
+	// usex
+	private int usex;
 	
 }

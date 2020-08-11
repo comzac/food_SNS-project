@@ -113,15 +113,12 @@ public class UserSecurityController {
 	}
 
 	// 3개반 반환
-	@ApiOperation(value = "3가지 정보만 가져온다.", response = UserSimple.class)
+	@ApiOperation(value = "user의 정보를 가져온다.", response = UserSimple.class)
 	@GetMapping("/simple")
-	public ResponseEntity getUserSimple(HttpServletRequest request) {
-		String username = null;
-		String token = jwtTokenProvider.resolveToken(request);
-		if (jwtTokenProvider.validateToken(token)) {
-			username = jwtTokenProvider.getUName(token);
-		}
-		UserSimple userSimple = userService.getSimpleUser(username);
+	public ResponseEntity getUserSimple(Authentication authentication) {
+		User loginUser = (User) authentication.getPrincipal();
+		
+		UserSimple userSimple = userService.getSimpleUser(loginUser.getUid());
 
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_USER, userSimple),
 				HttpStatus.OK);

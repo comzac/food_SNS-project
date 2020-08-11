@@ -293,7 +293,8 @@ public class FeedController {
 			dbProfile = fileStorageService.updateProfile(text, id, hasImage);
 		}
 
-		UserSimple res = new UserSimple(user.getUid(), user.getUnick(), dbProfile);
+		UserSimple res = UserSimple.builder().id(user.getId()).uid(user.getUid()).unick(user.getUnick())
+										.uprofile(dbProfile).ubirth(user.getUbirth()).usex(user.getUsex()).build();
 		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
 
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
