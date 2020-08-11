@@ -10,7 +10,9 @@ export default {
     contestList: null,
     currentContest: null,
   },
-  getters: {},
+  getters: {
+    currentContestId: (state) => state.currentContest.cid,
+  },
   mutations: {
     SET_SELECTEDCONTESTFEED(state, feed) {
       state.selectedContestFeed = feed;
@@ -107,7 +109,7 @@ export default {
           .catch((err) => console.error(err));
       }
     },
-    insertContestFeed({ rootGetters }, feedData) {
+    insertContestFeed({ rootGetters, getters }, feedData) {
       // console.log("insertContestFeed");
       // console.log(feedData);
       const config = rootGetters["accounts/config"];
@@ -125,7 +127,7 @@ export default {
       const newFeedData = feedData.feed;
       // console.log("newFeedData");
       // console.log(newFeedData);
-      newFeedData.cid = 1;
+      newFeedData.cid = getters.currentContestId;
       // console.log("lastFeedData");
       // console.log(newFeedData);
       axios
@@ -155,17 +157,24 @@ export default {
         .catch((err) => console.log(err.response));
     },
 
-    updateContestFeed({ rootGetters }, feedData) {
+    updateContestFeed({ rootGetters, getters }, feedData) {
       const config = rootGetters["accounts/config"];
       const id = feedData.id;
       delete feedData.id;
+      const newFeedData = feedData.feed;
+      // console.log("newFeedData");
+      // console.log(newFeedData);
+      newFeedData.cid = getters.currentContestId;
+      // console.log("lastFeedData");
+      // console.log(newFeedData);
+      console.log(feedData);
       axios
         .put(
           SERVER.BASE_URL +
             SERVER.ROUTES.contest.URL +
             SERVER.ROUTES.contest.feeds +
             id,
-          feedData,
+          newFeedData,
           config
         )
         .then((res) => {
