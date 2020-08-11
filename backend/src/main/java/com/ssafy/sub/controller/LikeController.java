@@ -1,6 +1,8 @@
 package com.ssafy.sub.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.sub.dto.Hashtag;
 import com.ssafy.sub.dto.NotificationNonRead;
+import com.ssafy.sub.dto.User;
 import com.ssafy.sub.model.response.ResponseMessage;
 import com.ssafy.sub.model.response.Result;
 import com.ssafy.sub.model.response.StatusCode;
@@ -36,12 +40,17 @@ public class LikeController {
 	private NotificationService notificationService;
 	@Autowired
 	private FeedService feedService;
+	
+	@Autowired
+	LogController logController;
 
 	// 1. feed like
 	@ApiOperation(value = "피드 좋아요", response = Result.class)
 	@PostMapping(value = "/feed/{fid}")
 	public ResponseEntity feedLikeInsert(@PathVariable int fid, Authentication authentication) {
-		int uid = Integer.parseInt(authentication.getName());
+		User loginUser = (User) authentication.getPrincipal();
+		
+		int uid = loginUser.getId();
 		likeService.feedLikeInsert(fid, uid);
 		
 		// 알림 설정
@@ -50,6 +59,11 @@ public class LikeController {
 			notificationService.notificationInsert(NotificationNonRead.builder().state(2)
 					.uid(notiUid).lid(uid).fid(fid).regdate(new Date()).build());
 		}
+
+		// for log
+		String action = "like";	// for log action
+		List<Hashtag> hashtagListLog = feedService.findFeedHashtagList(fid);
+		logController.setString(loginUser, action, hashtagListLog);
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.LIKE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
@@ -59,8 +73,15 @@ public class LikeController {
 	@ApiOperation(value = "피드 좋아요 취소", response = Result.class)
 	@DeleteMapping(value = "/feed/{fid}")
 	public ResponseEntity feedLikeDelete(@PathVariable int fid, Authentication authentication) {
-		int uid = Integer.parseInt(authentication.getName());
+		User loginUser = (User) authentication.getPrincipal();
+		
+		int uid = loginUser.getId();
 		likeService.feedLikeDelete(fid, uid);
+		
+		// for log
+		String action = "unlike";	// for log action
+		List<Hashtag> hashtagListLog = feedService.findFeedHashtagList(fid);
+		logController.setString(loginUser, action, hashtagListLog);
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.UNLIKE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);

@@ -151,9 +151,6 @@ public class UserSecurityController {
 		// User 반환 정보
 		UserSimple result = userService.getSimpleUser(member.getUid());
 		
-		logController.write("헤헤2");
-		
-		
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(member.getUid()));
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result),
 				HttpStatus.OK);

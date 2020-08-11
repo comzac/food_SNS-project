@@ -1,5 +1,7 @@
 package com.ssafy.sub.controller;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +72,9 @@ public class FeedController {
 	private LikeService likeService;
 	@Autowired
 	private RelationService relationService;
+	
+	@Autowired
+	LogController logController;
 
 	/***
 	 * 페이지네이션 기능을 적용한 홈 피드 리스트 조회
@@ -347,10 +352,15 @@ public class FeedController {
 	public ResponseEntity feedListSearch(Authentication authentication, @PathVariable String keyword) {
 		System.out.println("log - feedListSearch");
 
-		int uid = Integer.parseInt(authentication.getName());
-		String loginUserId = authentication.getName();
-		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
+		User loginUser = (User) authentication.getPrincipal();
 
+		// for log
+		String action = "search";	// for log action
+		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
+		hashtagListLog.add(feedService.findByContent(keyword));
+		logController.setString(loginUser, action, hashtagListLog);
+
+		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = feedService.searchByHashtag(keyword);
 
 		User user;
@@ -380,7 +390,7 @@ public class FeedController {
 			feedAll.setHashtag(hashtagList);
 
 			// like
-			boolean like = likeService.isFeedLiked(fid, uid);
+			boolean like = likeService.isFeedLiked(fid, loginUser.getId());
 			feedAll.setLike(like);
 
 			// likeCount
@@ -389,7 +399,7 @@ public class FeedController {
 
 			// 내 피드인지 여부
 			boolean mypage = true;
-			if (feed.getUid() != Integer.parseInt(loginUserId)) {
+			if (feed.getUid() != loginUser.getId()) {
 				mypage = false;
 			}
 			feedAll.setMypage(mypage);
@@ -411,6 +421,14 @@ public class FeedController {
 	@GetMapping(value = "/search/temp/{keyword}")
 	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword) {
 		System.out.println("log - feedTempSearch");
+		
+		User loginUser = (User) authentication.getPrincipal();
+
+		// for log
+		String action = "search";	// for log action
+		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
+		hashtagListLog.add(feedService.findByContent(keyword));
+		logController.setString(loginUser, action, hashtagListLog);
 
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String,String>>>();
@@ -462,18 +480,23 @@ public class FeedController {
 	public ResponseEntity<Result> feedInsert(@RequestBody FeedAll feedAll, Authentication authentication) {
 		System.out.println("log - feedInsert");
 
-		User user = (User) authentication.getPrincipal();
-
+		User loginUser = (User) authentication.getPrincipal();
+		
 		// user는 token으로 Feed
 		Feed feed = feedAll.getFeed();
 		System.out.println(feed.toString());
-		feed.setUid(user.getId());
+		feed.setUid(loginUser.getId());
 		Feed insertedFeed = feedService.feedInsert(feed);
 		int fid = insertedFeed.getId();
 
 		// hashtag
 		List<Hashtag> hashtagList = feedAll.getHashtag();
-		feedService.feedHashtagListInsert(hashtagList);
+		feedService.feedHashtagListInsert(hashtagList, fid);
+		
+		// for log
+		String action = "insert";	// for log action
+		List<Hashtag> hashtagListLog = feedService.findFeedHashtagList(fid);
+		logController.setString(loginUser, action, hashtagListLog);
 
 		Result result = new Result(StatusCode.CREATED, ResponseMessage.CREATE_FEED, fid);
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
@@ -490,9 +513,9 @@ public class FeedController {
 	public ResponseEntity feedDetail(@PathVariable int id, Authentication authentication) {
 		System.out.println("log - feedDetail");
 
-		String user_id = null;
+		User loginUser = new User();
 		try {
-			user_id = authentication.getName();
+			loginUser = (User) authentication.getPrincipal();
 		} catch (Exception e) {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null),
 					HttpStatus.FORBIDDEN);
@@ -511,18 +534,18 @@ public class FeedController {
 		feedAll.setUser(userSimple);
 
 		// hashtag 정보
-		List<Hashtag> hashtag = feedService.findFeedHashtagList(id);
-		feedAll.setHashtag(hashtag);
+		List<Hashtag> hashtagList = feedService.findFeedHashtagList(id);
+		feedAll.setHashtag(hashtagList);
 
 		// 내 피드인지 정보
 		boolean mypage = true;
-		if (Integer.parseInt(user_id) != feed.getUid()) {
+		if (loginUser.getId() != feed.getUid()) {
 			mypage = false;
 		}
 		feedAll.setMypage(mypage);
 
 		// like
-		boolean like = likeService.isFeedLiked(id, Integer.parseInt(user_id));
+		boolean like = likeService.isFeedLiked(id, loginUser.getId());
 		feedAll.setLike(like);
 
 		// likeCount
@@ -544,6 +567,10 @@ public class FeedController {
 		feedAll.setComment(commentList);
 
 		feedAllList.add(feedAll);
+		
+		// for log
+		String action = "revisit";	// for log action
+		logController.setString(loginUser, action, hashtagList);
 
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_FEED, feedAllList);
 		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
