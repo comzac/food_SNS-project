@@ -1,5 +1,6 @@
 import axios from "axios";
 import SERVER from "@/api/api";
+import router from "@/router";
 
 export default {
   namespaced: true,
@@ -105,6 +106,95 @@ export default {
           .then((res) => console.log(res))
           .catch((err) => console.error(err));
       }
+    },
+    insertContestFeed({ rootGetters }, feedData) {
+      // console.log("insertContestFeed");
+      // console.log(feedData);
+      const config = rootGetters["accounts/config"];
+      const form = new FormData();
+      const mediaData = feedData.dbFiles;
+      // console.log(feedData.dbFiles);
+      delete feedData.dbFiles;
+      // console.log(config);
+      mediaData.forEach((file) => {
+        form.append("files", file);
+      });
+      // let id;
+      // console.log("feedData");
+      // console.log(feedData);
+      const newFeedData = feedData.feed;
+      // console.log("newFeedData");
+      // console.log(newFeedData);
+      newFeedData.cid = 1;
+      // console.log("lastFeedData");
+      // console.log(newFeedData);
+      axios
+        .post(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.contest.URL +
+            SERVER.ROUTES.contest.feeds,
+          newFeedData,
+          config
+        )
+        .then((res) => {
+          console.log(res.data.data);
+          // id = res.data.data;
+          form.append("fid", res.data.data);
+          return axios.post(
+            SERVER.BASE_URL +
+              SERVER.ROUTES.contest.URL +
+              SERVER.ROUTES.contest.files,
+            form,
+            config
+          );
+        })
+        .then((res) => {
+          console.log("res:", res);
+          router.push({ name: "ContestList" });
+        })
+        .catch((err) => console.log(err.response));
+    },
+
+    updateContestFeed({ rootGetters }, feedData) {
+      const config = rootGetters["accounts/config"];
+      const id = feedData.id;
+      delete feedData.id;
+      axios
+        .put(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.contest.URL +
+            SERVER.ROUTES.contest.feeds +
+            id,
+          feedData,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "ContestFeed", params: { fid: id } });
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+
+    deleteContestFeed({ rootGetters }, id) {
+      const config = rootGetters["accounts/config"];
+
+      axios
+        .delete(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.contest.URL +
+            SERVER.ROUTES.contest.feeds +
+            id,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "ContestList" });
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
     },
   },
 };

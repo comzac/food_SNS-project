@@ -50,6 +50,7 @@ export default {
       list: "all/",
       feeds: "feeds/",
       likes: "likes/",
+      files: "feeds/files",
     },
   },
 };

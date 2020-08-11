@@ -5,7 +5,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on" class="mr-5">
             <v-icon left>mdi-trophy</v-icon>
-            {{currentTheme}}
+            {{ currentTheme }}
           </v-btn>
         </template>
         <v-list>
@@ -19,7 +19,7 @@
         </v-list>
       </v-menu>
       <v-btn color="grey" fab small dark class="ml-5">
-        <v-icon>mdi-pencil</v-icon>
+        <v-icon @click="moveToContestFeedCreate">mdi-pencil</v-icon>
       </v-btn>
     </v-list-item>
   </v-card>
@@ -51,6 +51,9 @@ export default {
         mode: "oneList",
       };
       this.getContestData(data);
+    },
+    moveToContestFeedCreate() {
+      this.$router.push({ name: "ContestFeedCreate" });
     },
   },
 };

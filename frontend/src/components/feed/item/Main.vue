@@ -1,9 +1,18 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
-        <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon>
+      <v-btn
+        class="mr-1"
+        color="#ff6666"
+        icon
+        x-small
+        @click="$emit('likeUnlike')"
+      >
+        <!-- <v-icon v-if="like">mdi-heart</v-icon>
+        <v-icon v-if="!like">mdi-heart-outline</v-icon> -->
+        <img v-if="!like" :src="imgRoute.unlike" alt="" />
+        <img v-if="like" :src="imgRoute.like_small" alt="" s />
+        <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
       </v-btn>
       <span style="font-size: 15px">{{ likeCount }}</span>
       <v-spacer></v-spacer>
@@ -29,11 +38,11 @@
             params: { keyword: tag.content },
           })
         "
-      ># {{ tag.content }}</span>
+        ># {{ tag.content }}</span
+      >
     </div>
   </div>
 </template>
-
 
 <script>
 import swal from "sweetalert";
@@ -52,6 +61,11 @@ export default {
       ymd:
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(this.feed.regdate).getTime() / 1000),
+      imgRoute: {
+        like_small: require("@/assets/like/like_small.png"),
+        like_big: require("@/assets/like/like_big.png"),
+        unlike: require("@/assets/like/unlike.png"),
+      },
     };
   },
   computed: {
@@ -99,5 +113,9 @@ p.text-overflow {
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 222px;
+}
+img {
+  width: 18px;
+  height: 18px;
 }
 </style>

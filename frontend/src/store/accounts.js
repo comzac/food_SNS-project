@@ -58,6 +58,7 @@ export default {
     },
     authUserUid: (state) => state.userSimpleData.uid,
     authUserUnick: (state) => state.userSimpleData.unick,
+    authUserId: (state) => state.userSimpleData.id,
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -126,6 +127,7 @@ export default {
       commit("SET_SIGNUPDATA", signupData);
     },
     postAuthData({ commit }, info) {
+      console.log(info.data);
       return axios
         .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
@@ -389,6 +391,7 @@ export default {
             getters.config
           )
           .then((res) => {
+            console.log(res);
             commit("SET_USERSIMPLEDATA", res.data.data);
           })
           .catch((err) => console.log(err));
