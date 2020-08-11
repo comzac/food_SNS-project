@@ -66,7 +66,7 @@ public class User implements UserDetails {
 	@Column(length = 100)
 	private Date uregdate;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(length = 100)
 	private Date ubirth;
 	
