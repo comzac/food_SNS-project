@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
+      <v-btn
+        class="mr-1"
+        color="#ff6666"
+        icon
+        x-small
+        @click="$emit('likeUnlike')"
+      >
         <v-icon v-if="like">mdi-heart</v-icon>
         <v-icon v-if="!like">mdi-heart-outline</v-icon>
       </v-btn>
@@ -29,7 +35,8 @@
             params: { keyword: tag.content },
           })
         "
-      ># {{ tag.content }}</span>
+        ># {{ tag.content }}</span
+      >
     </div>
   </div>
 </template>

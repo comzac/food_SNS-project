@@ -7,68 +7,6 @@
           <br />
           <v-row class="ma-0 align-center justify-center">
             <v-col
-              col="6"
-              v-for="(liquor, n) in liquor_data2"
-              :key="n"
-              @click="modal(liquor)"
-            >
-              <v-dialog v-model="liquor.datum2.dialog" width="295">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-card
-                    v-bind="attrs"
-                    v-on="on"
-                    max-width="295px"
-                    class="mx-auto"
-                  >
-                    <img
-                      class="liquor-image"
-                      :src="liquor.datum2.liquorimg"
-                      width="100%"
-                    />
-                    <br />
-                    <strong>
-                      <h3
-                        style="background-color: #ffb3b3;"
-                        class="pa-1 text-center"
-                        v-html="liquor.datum2.liquor"
-                      ></h3>
-                    </strong>
-                  </v-card>
-                </template>
-                <v-card max-width="295px" class="mx-auto">
-                  <Liquor :datum="liquor.datum1" />
-                </v-card>
-              </v-dialog>
-              <!-- <v-tooltip>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-card
-                    v-bind="attrs"
-                    v-on="on"
-                    max-width="295px"
-                    class="mx-auto"
-                  >
-                    <img
-                      class="liquor-image"
-                      :src="liquor.datum2.liquorimg"
-                      width="100%"
-                    />
-                    <br />
-                    <strong>
-                      <h3
-                        style="background-color: #ffb3b3;"
-                        class="pa-1 text-center"
-                        v-html="liquor.datum2.liquor"
-                      ></h3>
-                    </strong>
-                  </v-card>
-                </template>
-                <v-card max-width="295px" class="mx-auto">
-                  <Liquor :datum="liquor.datum1" />
-                </v-card>
-              </v-tooltip> -->
-            </v-col>
-            <v-col cols="12"></v-col>
-            <v-col
               v-for="(liquor, n) in liquor_data"
               :key="n"
               :cols="n % 4 == 0 ? 8 : n % 4 == 1 ? 1 : n % 4 == 2 ? 3 : 12"
@@ -103,7 +41,6 @@
                       class="liquor-image"
                     />
                   </template>
-
                   <img :src="item.liquorimg" width="325" />
                   <br />
                   <strong>
@@ -116,9 +53,9 @@
                     ></h3>
                   </strong>
                 </v-tooltip>
-                <v-icon class="operator" v-else color="#ff6666">
-                  {{ item.operation }}
-                </v-icon>
+                <v-icon class="operator" v-else color="#ff6666">{{
+                  item.operation
+                }}</v-icon>
               </v-card>
               <v-divider
                 class="my-3"
@@ -135,81 +72,10 @@
 </template>
 
 <script>
-import Liquor from "@/components/Liquor";
-
 export default {
   name: "LiquorView",
-  components: {
-    Liquor,
-  },
   data() {
     return {
-      liquor_data2: [
-        {
-          datum1: {
-            labels: ["밀키스 블루"],
-            datasets: [
-              {
-                label: "밀키스 40%",
-                backgroundColor: "#f87979",
-                data: [40],
-              },
-              {
-                label: "블루 레모네이드 40%",
-                backgroundColor: "#3D5B96",
-                data: [40],
-              },
-              {
-                label: "소주 20%",
-                backgroundColor: "#1EFFFF",
-                data: [20],
-              },
-              {
-                label: "",
-                backgroundColor: "transparent",
-                data: [10],
-              },
-            ],
-          },
-          datum2: {
-            liquor: "밀키스 블루",
-            liquorimg: require("@/assets/liquor/milkisblue.jpg"),
-            dialog: false,
-          },
-        },
-        {
-          datum1: {
-            labels: ["모구모구 스파클링"],
-            datasets: [
-              {
-                label: "모구모구",
-                backgroundColor: "#f87979",
-                data: [30],
-              },
-              {
-                label: "스파클링",
-                backgroundColor: "#3D5B96",
-                data: [30],
-              },
-              {
-                label: "소주",
-                backgroundColor: "#1EFFFF",
-                data: [40],
-              },
-              {
-                label: "",
-                backgroundColor: "transparent",
-                data: [10],
-              },
-            ],
-          },
-          datum2: {
-            liquor: "모구모구 스파클링",
-            liquorimg: require("@/assets/liquor/pinkC.jpg"),
-            dialog: false,
-          },
-        },
-      ],
       liquor_data: [
         [
           {
@@ -601,10 +467,10 @@ export default {
 </script>
 
 <style scoped>
-/* @media (min-width: 992px) {
+@media (min-width: 992px) {
   .liquor-image {
-    width: 307 !important;
-    height: 307 !important;
+    width: 100px !important;
+    height: 100px !important;
   }
-} */
+}
 </style>
