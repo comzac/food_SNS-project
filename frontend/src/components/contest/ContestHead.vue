@@ -9,7 +9,11 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in contestList" :key="index">
+          <v-list-item
+            v-for="(item, index) in contestList"
+            :key="index"
+            @click="getSelectedThemeFeeds(item.id)"
+          >
             <v-list-item-title>{{ item.theme }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -23,17 +27,27 @@
 
 <script>
 // import swal from "sweetalert";
+import { mapState, mapActions } from "vuex";
+import SERVER from "@/api/api";
 
 export default {
   props: {
     contestList: Array,
   },
   computed: {
-    currentTheme() {
-      return this.contestList[0].theme;
+    ...mapState("contests", ["currentTheme"]),
+  },
+  methods: {
+    ...mapActions("contests", ["getContestData"]),
+    getSelectedThemeFeeds(cid) {
+      const route = SERVER.ROUTES.contest.URL + cid;
+      const data = {
+        route: route,
+        mode: "oneList",
+      };
+      this.getContestData(data);
     },
   },
-  methods: {},
 };
 </script>
 
@@ -49,6 +63,10 @@ button.non-active.theme--light.v-btn.v-btn--disabled {
 .v-list {
   max-height: 35vh;
   overflow-y: auto;
+}
+
+.v-menu__content > div:nth-child(1) > div.v-list-item {
+  border-bottom: 1px solid #d3d3d3;
 }
 
 .v-menu__content > div:nth-child(1) > div.v-list-item:hover {

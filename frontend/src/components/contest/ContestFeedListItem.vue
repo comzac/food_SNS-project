@@ -7,12 +7,12 @@
       })
     "
   >
-    <!-- <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-4" /> -->
+    <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-3" />
     <v-img
-      v-if="mediaType != 'video/mp4'"
+      v-if="mediaRoute && mediaType != 'video/mp4'"
       :aspect-ratio="1"
       contain
-      class="grey lighten-2 img-link"
+      class="grey lighten-3 img-link"
       :src="mediaRoute"
     />
     <v-responsive
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-.img-link {
+.v-image {
   cursor: pointer;
 }
 </style>
