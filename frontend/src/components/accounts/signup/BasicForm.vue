@@ -74,6 +74,8 @@
       color="#ff6666"
       :error-messages="signupData.ubirth ? '' : '생년월일을 입력해주세요'"
       autocomplete="off"
+      max="2100-12-31"
+      min="1900-01-01"
     ></v-text-field>
 
     <v-radio-group v-model="signupData.usex" row>
@@ -106,8 +108,7 @@
         color="#ff6666"
         class="white--text"
         @click="$router.push({ name: 'Login' }), setSignupData2({})"
-        >뒤로가기</v-btn
-      >
+      >뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="
@@ -125,8 +126,7 @@
         @click="toEmailVerification()"
         color="#ff6666"
         class="white--text"
-        >다음으로</v-btn
-      >
+      >다음으로</v-btn>
     </div>
   </v-card>
 </template>
