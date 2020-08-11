@@ -1,13 +1,17 @@
 package com.ssafy.sub.service;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +29,33 @@ import com.ssafy.sub.repo.ContestFeedFilesRepository;
 import com.ssafy.sub.repo.DBFileRepository;
 import com.ssafy.sub.repo.DBProfileRepository;
 
+/**
+ * 유저의 프로필 및 피드의 multipartfile 업로드 관리
+ * 
+ * @author 이선수
+ * @version 1.0, 파일업로드 형식 변환 및 파일 저장 전 리사이징 처리
+ */
 @Service
 public class FileStorageService {
 
 	@Autowired
-	private DBFileRepository dbFileRepository;
+	private DBFileRepository dbFileRepository; // 피드 multipartfile 관리 repo
 	@Autowired
-	private DBProfileRepository dbProfileRepository;
+	private DBProfileRepository dbProfileRepository; // 프로필 multipartfile 관리 repo
 	@Autowired
-	private ContestFeedFilesRepository contestFeedFilesRepository;
+	private ContestFeedFilesRepository contestFeedFilesRepository; // 콘테스트 multipartfile 관리 repo
 
-	@Value("${spring.file.location}")
+	@Value("${spring.file.location}") // multipartfile 로컬 저장소 경로 (.yml 내)
 	private String filePath;
 
+	/***
+	 * 유저프로필의 문구 및 프로필 사진 저장 기능
+	 * @param file
+	 * @param text
+	 * @param uid
+	 * @return DBProfile (저장 or 변환된 프로필 정보)
+	 * @throws FileStorageException
+	 */
 	@Transactional
 	public DBProfile storeProfile(MultipartFile file, String text, String uid) throws FileStorageException {
 
@@ -89,6 +107,11 @@ public class FileStorageService {
 		}
 	}
 
+	/***
+	 * uid에 해당하는 프로필 정보에 이미지 데이터 유무 확인
+	 * @param uid
+	 * @return boolean
+	 */
 	public boolean hasProfile(String uid) {
 		DBProfile dbProfile = dbProfileRepository.findByUid(uid).get();
 		if (dbProfile.getName() != null)
@@ -97,6 +120,14 @@ public class FileStorageService {
 			return false;
 	}
 
+	/***
+	 * 유저프로필의 문구 및 프로필 사진 업데이트 기능
+	 * @param text
+	 * @param uid
+	 * @param hasImage
+	 * @return DBProfile
+	 * @throws FileStorageException
+	 */
 	@Transactional
 	public DBProfile updateProfile(String text, String uid, boolean hasImage) throws FileStorageException {
 		DBProfile dbProfile;
@@ -123,28 +154,30 @@ public class FileStorageService {
 		}
 	}
 
+	/***
+	 * multipartfile 로컬 저장 기능
+	 * @param file
+	 * @param fid
+	 * @return String (저장된 파일명)
+	 * @throws FileStorageException
+	 */
 	public String storeFile(MultipartFile file, int fid) throws FileStorageException {
-		// Normalize file name
-//        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//
-//        try {
-//            // Check if the file's name contains invalid characters
-//            if(fileName.contains("..")) {
-//                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-//            } 
-//
-//            DBFile dbFile = new DBFile(fid, fileName, file.getContentType(), file.getBytes());
-//
-//            return dbFileRepository.save(dbFile);
-//        } catch (IOException ex) {
-//            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-//        }
+	
 		String result = null;
 		try {
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String format = file.getOriginalFilename().substring(pos);
 			result = UUID.randomUUID() + format;
-			Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
+
+			String extension = file.getContentType().split("/")[1];
+			if(extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")) {
+				BufferedImage img = resize(file.getInputStream(), 400, 400);
+				File out = new File(filePath+File.separator+ result);
+				ImageIO.write(img, extension, out);
+			}else {
+				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));				
+			}
+			
 			dbFileRepository.save(new DBFile(fid, result, file.getContentType()));
 		} catch (Exception e) {
 			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
@@ -152,11 +185,46 @@ public class FileStorageService {
 		return result;
 	}
 
+	/***
+	 * 사이즈 지정값(400x400) 이미지 리사이징 기능
+	 * @param inputStream
+	 * @param width
+	 * @param height
+	 * @return BufferedImage
+	 * @throws IOException
+	 */
+    public static BufferedImage resize(InputStream inputStream, int width, int height)
+            throws IOException {
+        BufferedImage inputImage = ImageIO.read(inputStream);
+
+        BufferedImage outputImage =
+                new BufferedImage(width, height, inputImage.getType());
+
+        Graphics2D graphics2D = outputImage.createGraphics();
+        graphics2D.drawImage(inputImage, 0, 0, width, height, null);
+        graphics2D.dispose();
+
+        return outputImage;
+    }
+    
+    /***
+     * fid(feed pk)의 DBFile list 정보 호출
+     * @param fid
+     * @return List<DBFile>
+     * @throws MyFileNotFoundException
+     */
 	public List<DBFile> getFile(int fid) throws MyFileNotFoundException {
 		return dbFileRepository.findAllByFid(fid)
 				.orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fid));
 	}
 
+	/***
+	 * 콘테스트 피드 multipartfile 저장
+	 * @param file
+	 * @param fid
+	 * @return ContestFeedFiles
+	 * @throws FileStorageException
+	 */
 	public ContestFeedFiles storeContestFile(MultipartFile file, int fid) throws FileStorageException {
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -176,6 +244,12 @@ public class FileStorageService {
 		}
 	}
 
+	/***
+	 * fid(contestfeed pk)의 ContestFeedFiles list 정보 호출
+	 * @param fid
+	 * @return List<ContestFeedFiles>
+	 * @throws MyFileNotFoundException
+	 */
 	public List<ContestFeedFiles> getContestFiles(int fid) throws MyFileNotFoundException {
 		return contestFeedFilesRepository.findAllByCfid(fid);
 	}
