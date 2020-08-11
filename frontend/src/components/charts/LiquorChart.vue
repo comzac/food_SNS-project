@@ -51,6 +51,7 @@ const horizonalLinePlugin = {
 };
 
 import { Bar } from "vue-chartjs";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 export default {
   extends: Bar,
@@ -59,13 +60,42 @@ export default {
   },
   beforeMount() {
     this.addPlugin(horizonalLinePlugin);
+    this.addPlugin(ChartDataLabels);
   },
   mounted() {
     this.renderChart(this.datum, {
-      legend: {
-        position: "bottom",
+      plugins: {
+        datalabels: {
+          color: "white",
+          align: "center",
+          anchor: "center",
+          font: {
+            size: "14",
+            family: "'Noto Sans KR', sans-serif",
+            weight: "bold",
+          },
+          formatter: function(value, label) {
+            return label.dataset.label + "\n" + value + "%";
+          },
+          textAlign: "center",
+        },
       },
-      showTooltips: false,
+      legend: {
+        display: false,
+        position: "bottom",
+        labels: {
+          align: "end",
+          fullWidth: false,
+          boxWidth: 10,
+          fontSize: 14,
+          padding: 5,
+          fontFamilhy: "'Noto Sans KR', sans-serif",
+          fontStyle: "Bold",
+        },
+      },
+      tooltips: {
+        caretSize: 0,
+      },
       responsive: true,
       maintainAspectRatio: false,
       scales: {
