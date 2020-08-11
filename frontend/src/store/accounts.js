@@ -469,5 +469,25 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+    setAdditionalUserData({ state, commit, getters }, data) {
+      console.log("data : ", data);
+      const userEditRoute =
+        SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + state.userSimpleData.uid;
+      const simpleUserRoute =
+        SERVER.BASE_URL +
+        SERVER.ROUTES.accounts.URL +
+        SERVER.ROUTES.accounts.simple;
+      axios
+        .put(userEditRoute, data, getters.config)
+        .then((res) => {
+          console.log(res);
+          return axios.get(simpleUserRoute, getters.config);
+        })
+        .then((res) => {
+          console.log("res : ", res.data.data);
+          commit("SET_USERSIMPLEDATA", res.data.data);
+        })
+        .catch((err) => console.log(err));
+    },
   },
 };

@@ -35,7 +35,12 @@ export default {
     contestList: Array,
   },
   computed: {
-    ...mapState("contests", ["currentTheme"]),
+    ...mapState("contests", ["currentContest"]),
+    currentTheme() {
+      if (this.currentContest) {
+        return this.currentContest.theme;
+      } else return false;
+    },
   },
   methods: {
     ...mapActions("contests", ["getContestData"]),

@@ -8,7 +8,7 @@ export default {
     selectedContestFeed: null,
     contestFeeds: null,
     contestList: null,
-    currentTheme: null,
+    currentContest: null,
   },
   getters: {},
   mutations: {
@@ -21,8 +21,8 @@ export default {
     SET_CONTESTLIST(state, list) {
       state.contestList = list;
     },
-    SET_CURRENTTHEME(state, theme) {
-      state.currentTheme = theme;
+    SET_CURRENTCONTEST(state, data) {
+      state.currentContest = data;
     },
   },
   actions: {
@@ -50,9 +50,13 @@ export default {
         .get(SERVER.BASE_URL + data.route, rootGetters["accounts/config"])
         .then((res) => {
           if (data.mode === "oneList") {
-            console.log(res.data.data.contestFeedAll);
+            console.log(res.data.data);
             commit("SET_CONTESTFEEDS", res.data.data.contestFeedAll);
-            commit("SET_CURRENTTHEME", res.data.data.theme);
+            const contestData = {
+              theme: res.data.data.theme,
+              cid: res.data.data.cid,
+            };
+            commit("SET_CURRENTCONTEST", contestData);
           } else if (data.mode === "lists") {
             commit("SET_CONTESTLIST", res.data.data);
           }
