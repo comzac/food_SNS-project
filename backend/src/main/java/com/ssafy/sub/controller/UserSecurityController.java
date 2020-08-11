@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -427,8 +428,25 @@ public class UserSecurityController {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null),
 					HttpStatus.FORBIDDEN);
 		}
-
 		user.setUemail(userUpdate.get("uemail"));
+		
+		// 유저의 생일
+		try {
+			if(userUpdate.get("ubirth")!=null) {
+				SimpleDateFormat transFormat = new SimpleDateFormat("yy-MM-dd");
+				transFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+				Date ubirth = transFormat.parse(userUpdate.get("ubirth"));
+				user.setUbirth(ubirth);
+			}
+		} catch (ParseException e) {
+			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_BIRTH);
+		}
+		
+		// 유저의 성별
+		if(userUpdate.get("usex")!=null) {
+			user.setUsex(Integer.parseInt(userUpdate.get("usex")));
+		}
+		
 		System.out.println(userUpdate.toString());
 		userService.userUpdate(user);
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, user), HttpStatus.OK);
