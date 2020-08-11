@@ -127,6 +127,7 @@ export default {
       commit("SET_SIGNUPDATA", signupData);
     },
     postAuthData({ commit }, info) {
+      console.log(info.data);
       return axios
         .post(SERVER.BASE_URL + info.route, info.data, {
           headers: {
