@@ -7,11 +7,12 @@
           <br />
           <v-row class="ma-0 align-center justify-center">
             <v-col
-              col="6"
-              v-for="(liquor, n) in liquor_data2"
+              cols="6"
+              v-for="(liquor, n) in liquor_data"
               :key="n"
               @click="modal(liquor)"
             >
+              <!-- 모달 방식 -->
               <v-dialog v-model="liquor.datum2.dialog" width="295">
                 <template v-slot:activator="{ on, attrs }">
                   <v-card
@@ -27,11 +28,11 @@
                     />
                     <br />
                     <strong>
-                      <h3
+                      <h4
                         style="background-color: #ffb3b3;"
                         class="pa-1 text-center"
                         v-html="liquor.datum2.liquor"
-                      ></h3>
+                      ></h4>
                     </strong>
                   </v-card>
                 </template>
@@ -39,6 +40,7 @@
                   <Liquor :datum="liquor.datum1" />
                 </v-card>
               </v-dialog>
+              <!-- 툴팁 방식 -->
               <!-- <v-tooltip>
                 <template v-slot:activator="{ on, attrs }">
                   <v-card
@@ -67,7 +69,7 @@
                 </v-card>
               </v-tooltip> -->
             </v-col>
-            <v-col cols="12"></v-col>
+            <!-- <v-col cols="12"></v-col>
             <v-col
               v-for="(liquor, n) in liquor_data"
               :key="n"
@@ -126,7 +128,7 @@
                 light
                 v-if="n % 4 == 3"
               ></v-divider>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-card>
       </v-col>
@@ -144,25 +146,30 @@ export default {
   },
   data() {
     return {
-      liquor_data2: [
+      liquor_data: [
         {
           datum1: {
-            labels: ["밀키스 블루"],
+            labels: [""],
             datasets: [
               {
-                label: "밀키스 40%",
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "밀키스",
                 backgroundColor: "#f87979",
-                data: [40],
+                data: [30],
               },
               {
-                label: "블루 레모네이드 40%",
+                label: "블루 레모네이드",
                 backgroundColor: "#3D5B96",
-                data: [40],
+                data: [30],
               },
               {
-                label: "소주 20%",
-                backgroundColor: "#1EFFFF",
-                data: [20],
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [40],
               },
               {
                 label: "",
@@ -179,8 +186,13 @@ export default {
         },
         {
           datum1: {
-            labels: ["모구모구 스파클링"],
+            labels: [""],
             datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
               {
                 label: "모구모구",
                 backgroundColor: "#f87979",
@@ -193,7 +205,7 @@ export default {
               },
               {
                 label: "소주",
-                backgroundColor: "#1EFFFF",
+                backgroundColor: "#6937a1",
                 data: [40],
               },
               {
@@ -209,388 +221,366 @@ export default {
             dialog: false,
           },
         },
-      ],
-      liquor_data: [
-        [
-          {
-            liquor: "밀키스",
-            liquorimg: require("@/assets/liquor/milkis.jpg"),
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "모구모구",
+                backgroundColor: "#f87979",
+                data: [35],
+              },
+              {
+                label: "유어스 자몽",
+                backgroundColor: "#3D5B96",
+                data: [35],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "블루 레몬에이드",
-            liquorimg: require("@/assets/liquor/blueL.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "밀키스 블루<br/>밀키스 + 블루레몬에이드 + (얼음)<br/>/ 1 : 1 /<br/>소주 2oz or 보드가 1oz",
-            liquorimg: require("@/assets/liquor/milkisblue.jpg"),
-          },
-        ],
-        [],
-        [
-          {
-            liquor: "모구모구 (or 코코팜)",
-            liquorimg: require("@/assets/liquor/mogu.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "스파클링 (복숭아)",
-            liquorimg: require("@/assets/liquor/sparkling.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "모구모구 스파클링<br/>모구모구(or 코코팜) + 스파클링(복숭아)<br/>/ 1 : 1 /<br/>소주 2oz or 보드가 1oz",
-            liquorimg: require("@/assets/liquor/pinkC.jpg"),
-          },
-        ],
-        [],
-        [
-          {
-            liquor: "모구모구 (or 코코팜)",
-            liquorimg: require("@/assets/liquor/mogu.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "유어스 자몽 (or 오션스프레이)",
-            liquorimg: require("@/assets/liquor/zamong.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "복숭아 자몽에이드<br/>모구모구(or 코코팜) + 유어스 자몽<br/>/ 1 : 1 /<br/>소주 1oz or 보드가 0.5oz",
+          datum2: {
+            liquor: "복숭아 자몽에이드",
             liquorimg: require("@/assets/liquor/peachzamong.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "갈아만든 배",
-            liquorimg: require("@/assets/liquor/pear.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "갈아만든 배",
+                backgroundColor: "#f87979",
+                data: [50],
+              },
+              {
+                label: "갈아만든 유자",
+                backgroundColor: "#3D5B96",
+                data: [50],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "갈아만든 유자",
-            liquorimg: require("@/assets/liquor/citron.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "갈아만든 숙취음료<br/>갈아만든 배 + 갈아만든 유자<br/>/ 1 :1 /<br/>(숙취음료임 술 ㄴㄴ)",
+          datum2: {
+            liquor: "갈아만든 숙취음료",
             liquorimg: require("@/assets/liquor/citronpear.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "토닉워터",
-            liquorimg: require("@/assets/liquor/tonic.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "토닉워터",
+                backgroundColor: "#f87979",
+                data: [40],
+              },
+              {
+                label: "슈웹스",
+                backgroundColor: "#3D5B96",
+                data: [30],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "슈웹스 (or 오렌지나)",
-            liquorimg: require("@/assets/liquor/schweppes.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카, 진)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "레몬토닉<br/>토닉워터 + 슈웹스(or 오렌지나)<br/>/ 1 : 1 /<br/>소주 2oz or 보드가 1oz or 진 1oz",
-            liquorimg: require("@/assets/liquor/lemontonic.jpg"),
-          },
-        ],
-        [],
-        [
-          {
-            liquor: "소주",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
+          datum2: {
             liquor: "레몬토닉",
             liquorimg: require("@/assets/liquor/lemontonic.jpg"),
+            dialog: false,
           },
-        ],
-        [
-          {
-            operation: "mdi-equal",
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "쏘토닉",
+                backgroundColor: "#f87979",
+                data: [70],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-        ],
-        [
-          {
-            liquor: "쏘토닉<br/>레몬토닉<br/>/ /2 : 1/<br/>소주",
+          datum2: {
+            liquor: "쏘토닉",
             liquorimg: require("@/assets/liquor/sotonic.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "메로나",
-            liquorimg: require("@/assets/liquor/merona.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "메로나",
+                backgroundColor: "#f87979",
+                data: [40],
+              },
+              {
+                label: "사이다",
+                backgroundColor: "#3D5B96",
+                data: [30],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "사이다",
-            liquorimg: require("@/assets/liquor/cider.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "메로나 크림 소다<br/>메로나 1개 + 사이다 가득<br/>소주 2oz or 보드카 1oz",
+          datum2: {
+            liquor: "메로나 크림 소다",
             liquorimg: require("@/assets/liquor/meronacream.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "폴라포",
-            liquorimg: require("@/assets/liquor/polapo.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "폴라포",
+                backgroundColor: "#f87979",
+                data: [30],
+              },
+              {
+                label: "슈웹스",
+                backgroundColor: "#3D5B96",
+                data: [30],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [40],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "슈웹스",
-            liquorimg: require("@/assets/liquor/schweppes.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "폴라포 소다<br/>폴라포 1개 + 슈웹스<br/>/ 1 : 2 /<br/>소주 2oz or 보드가 1oz",
+          datum2: {
+            liquor: "폴라포 소다",
             liquorimg: require("@/assets/liquor/polapoju.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "스크류바",
-            liquorimg: require("@/assets/liquor/screw.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "스크류바",
+                backgroundColor: "#f87979",
+                data: [30],
+              },
+              {
+                label: "사이다",
+                backgroundColor: "#3D5B96",
+                data: [30],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [40],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "사이다",
-            liquorimg: require("@/assets/liquor/cider.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "스크류 소다<br/>스크류바 1개 + 사이다 가득<br/>소주 2oz or 보드카 1oz",
+          datum2: {
+            liquor: "스크류 소다",
             liquorimg: require("@/assets/liquor/screwju.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "아이스초코",
-            liquorimg: require("@/assets/liquor/icechoco.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "아이스 초코",
+                backgroundColor: "#f87979",
+                data: [40],
+              },
+              {
+                label: "바나나 우유",
+                backgroundColor: "#3D5B96",
+                data: [30],
+              },
+              {
+                label: "위스키",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "바나나우유",
-            liquorimg: require("@/assets/liquor/banana.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "위스키 (보드카, 소주)",
-            liquorimg: require("@/assets/liquor/wiski.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "초코 바나나<br/>아이스초코 + 바나나 우유<br/>/ 1 : 1 /<br/>소주 2oz or 보드카 1oz or 위스키 1oz",
+          datum2: {
+            liquor: "초코 바나나",
             liquorimg: require("@/assets/liquor/chocobanana.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "녹차라떼",
-            liquorimg: require("@/assets/liquor/green.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "녹차라떼",
+                backgroundColor: "#f87979",
+                data: [50],
+              },
+              {
+                label: "초코우유",
+                backgroundColor: "#3D5B96",
+                data: [20],
+              },
+              {
+                label: "위스키",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "초코우유",
-            liquorimg: require("@/assets/liquor/choco.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "위스키, (보드카, 소주)",
-            liquorimg: require("@/assets/liquor/wiski.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "초코녹차라떼<br/>녹차라떼 + 초코 우유<br/>/ 7 : 3 /<br/>소주 2oz or 보드카 1oz or 위스키 1oz",
+          datum2: {
+            liquor: "초코녹차라떼",
             liquorimg: require("@/assets/liquor/greenchoco.jpg"),
+            dialog: false,
           },
-        ],
-        [],
-        [
-          {
-            liquor: "딸기우유",
-            liquorimg: require("@/assets/liquor/strawberry.jpg"),
+        },
+        {
+          datum1: {
+            labels: [""],
+            datasets: [
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+              {
+                label: "딸기우유",
+                backgroundColor: "#f87979",
+                data: [35],
+              },
+              {
+                label: "수박에이드",
+                backgroundColor: "#3D5B96",
+                data: [35],
+              },
+              {
+                label: "소주",
+                backgroundColor: "#6937a1",
+                data: [30],
+              },
+              {
+                label: "",
+                backgroundColor: "transparent",
+                data: [10],
+              },
+            ],
           },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "수박에이드",
-            liquorimg: require("@/assets/liquor/watermelon.jpg"),
-          },
-          {
-            operation: "mdi-plus",
-          },
-          {
-            liquor: "소주 (보드카)",
-            liquorimg: require("@/assets/liquor/soju.jpg"),
-          },
-        ],
-        [
-          {
-            operation: "mdi-equal",
-          },
-        ],
-        [
-          {
-            liquor:
-              "딸박<br/>딸기우유 + 수박에이드<br/>/ 1 : 1 /<br/>소주 2oz or 보드카 1oz",
+          datum2: {
+            liquor: "딸박",
             liquorimg: require("@/assets/liquor/strawberrywatermelon.jpg"),
+            dialog: false,
           },
-        ],
+        },
       ],
     };
   },

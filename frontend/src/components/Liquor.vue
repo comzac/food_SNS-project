@@ -30,6 +30,6 @@ export default {
 }
 .liquor2 {
   width: 290px;
-  height: 380px;
+  height: 300px;
 }
 </style>
