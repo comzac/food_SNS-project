@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,6 +87,7 @@ public class ContestController {
 		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cid", latestContest.getId());
 		map.put("theme", latestContest.getTheme());
 		map.put("contestFeedAll", contestFeedAll);
 
@@ -119,6 +121,7 @@ public class ContestController {
 		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cid", cid);
 		map.put("theme", contest.getTheme());
 		map.put("contestFeedAll", contestFeedAll);
 
@@ -164,7 +167,7 @@ public class ContestController {
 		ContestFeedFiles cfFiles = fileStorageService.storeContestFile(file, fid);
 		return cfFiles;
 	}
-
+	
 	@ApiOperation(value = "fid번 피드를 조회한다.", response = Result.class)
 	@GetMapping(value = "/feeds/{fid}")
 	public ResponseEntity getContestFeed(@PathVariable int fid, Authentication authentication) {
@@ -190,6 +193,27 @@ public class ContestController {
 				HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "fid번 피드를 수정한다.", response = Result.class)
+	@PutMapping(value = "/feeds/{fid}")
+	public ResponseEntity ContestFeed(@PathVariable int fid, @RequestBody ContestFeed updateContestFeed, Authentication authentication) {
+		User loginUser = (User) authentication.getPrincipal();
+		if (loginUser == null) {
+			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null),
+					HttpStatus.FORBIDDEN);
+		}
+
+		updateContestFeed.setId(fid);
+		ContestFeed contestFeed = contestService.updateContestFeed(updateContestFeed);
+
+		HashMap<String, Object> statistics = contestService.getContestFeedLike(fid);
+
+		boolean islike = false;
+		islike = contestService.findByContestFeedLike(fid, loginUser.getId());
+
+		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_FEED,
+				ContestFeedAll.builder().contestFeed(contestFeed).statistics(statistics).islike(islike).build()),
+				HttpStatus.OK);
+	}
 	@ApiOperation(value = "fid번 피드를 삭제한다.", response = Result.class)
 	@DeleteMapping(value = "/feeds/{fid}")
 	public ResponseEntity deleteContestFeed(@PathVariable int fid, Authentication authentication) {
