@@ -43,12 +43,17 @@ public class UserServiceImpl implements UserService {
 				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
 		
 		UserSimple userSimple = new UserSimple();
+		
+		userSimple.setId(user.getId());
 		userSimple.setUid(user.getUid());
 		userSimple.setUnick(user.getUnick());
 
 		if(dbProfileRepository.findByUid(String.valueOf(user.getId())).isPresent()) {
 			userSimple.setUprofile(dbProfileRepository.findByUid(String.valueOf(user.getId())).get());
 		}
+		
+		userSimple.setUbirth(user.getUbirth());
+		userSimple.setUsex(user.getUsex());
 		
 		return userSimple;
 	}

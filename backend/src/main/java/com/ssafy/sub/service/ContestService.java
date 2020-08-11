@@ -44,6 +44,13 @@ public interface ContestService {
 	 * @return ContestFeed (콘테스트 피드 정보)
 	 */
 	public ContestFeed insertContestFeed(ContestFeed cFeed);
+
+	/**
+	 * 콘테스트 피드 수정
+	 * @param ContestFeed contestFeed - 수정하려는 콘테스트 피드 정보
+	 * @return ContestFeed (콘테스트 피드 정보)
+	 */
+	public ContestFeed updateContestFeed(ContestFeed updateContestFeed);
 	
 	/**
 	 * 상세 콘테스트 피드 조회

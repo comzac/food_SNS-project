@@ -77,6 +77,15 @@ public class ContestServiceImpl implements ContestService {
 	public Optional<ContestFeed> getContestFeed(int fid) {
 		return contestFeedRepository.findById(fid);
 	}
+
+	@Override
+	public ContestFeed updateContestFeed(ContestFeed updateContestFeed) {
+		ContestFeed contestFeed = contestFeedRepository.findById(updateContestFeed.getId()).
+				orElseThrow(() -> new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER));
+		contestFeed.setTitle(updateContestFeed.getTitle());
+		contestFeed.setContent(updateContestFeed.getContent());
+		return contestFeedRepository.save(contestFeed);
+	}
 	
 	@Override
 	public HashMap<String, Object> getContestFeedLike(int fid) {
@@ -146,5 +155,6 @@ public class ContestServiceImpl implements ContestService {
 		else
 			return true;
 	}
+
 
 }

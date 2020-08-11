@@ -1,4 +1,3 @@
-
 package com.ssafy.sub.controller;
 
 import java.io.IOException;
@@ -10,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,16 +93,14 @@ public class UserSecurityController {
 
 		User member = User.builder().uid(user.get("uid")).uemail(user.get("uemail")).unick(user.get("unick"))
 				.upw(passwordEncoder.encode(user.get("upw"))).uregdate(new Date()).ubirth(ubirth)
+				.usex(Integer.parseInt(user.get("usex")))
 				.roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 // USER 로 설정
 				.build();
 
-		userService.join(member).getUid();
+		User joinMember = userService.join(member);
 
 		// User 반환 정보
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("uid", member.getUid());
-		result.put("uemail", member.getUemail());
-		result.put("unick", member.getUnick());
+		UserSimple result = userService.getSimpleUser(joinMember.getUid());
 
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(member, member.getRoles());
@@ -113,15 +111,12 @@ public class UserSecurityController {
 	}
 
 	// 3개반 반환
-	@ApiOperation(value = "3가지 정보만 가져온다.", response = UserSimple.class)
+	@ApiOperation(value = "user의 정보를 가져온다.", response = UserSimple.class)
 	@GetMapping("/simple")
-	public ResponseEntity getUserSimple(HttpServletRequest request) {
-		String username = null;
-		String token = jwtTokenProvider.resolveToken(request);
-		if (jwtTokenProvider.validateToken(token)) {
-			username = jwtTokenProvider.getUName(token);
-		}
-		UserSimple userSimple = userService.getSimpleUser(username);
+	public ResponseEntity getUserSimple(Authentication authentication) {
+		User loginUser = (User) authentication.getPrincipal();
+		
+		UserSimple userSimple = userService.getSimpleUser(loginUser.getUid());
 
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.READ_USER, userSimple),
 				HttpStatus.OK);
@@ -130,7 +125,7 @@ public class UserSecurityController {
 	// 로그인
 	@ApiOperation(value = "로그인 후 user정보를 반환한다.", response = Result.class)
 	@PostMapping("/login")
-	public ResponseEntity<Result> login(@RequestBody Map<String, String> user, HttpServletResponse response) {
+	public ResponseEntity login(@RequestBody Map<String, String> user, HttpServletResponse response) {
 		System.out.println(user.toString());
 
 		User member = userRepository.findByUid(user.get("uid")).orElseThrow(
@@ -139,11 +134,6 @@ public class UserSecurityController {
 		if (!passwordEncoder.matches(user.get("upw"), member.getUpw())) {
 			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.LOGIN_FAIL_PW, HttpStatus.NOT_FOUND);
 		}
-
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("uid", member.getUid());
-		result.put("uemail", member.getUemail());
-		result.put("unick", member.getUnick());
 
 		// JWT 생성
 		String token = jwtTokenProvider.createToken(member, member.getRoles());
@@ -154,9 +144,11 @@ public class UserSecurityController {
 		jsonToken.setUsername(member.getUid());
 		jsonToken.setRefreshToken(token);
 		vop.set(member.getUid(), jsonToken);
+		
+		// User 반환 정보
+		UserSimple result = userService.getSimpleUser(member.getUid());
 
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(member.getUid()));
-//		System.out.println("Redis 확인: "+redisTemplate.opsForValue().get(member.getU);
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result),
 				HttpStatus.OK);
 	}
@@ -213,9 +205,13 @@ public class UserSecurityController {
 
 			int random = new Random().nextInt(900000) + 100000;
 			String upw = String.valueOf(random);
-			googleUser = User.builder().uemail(email).uid(email.split("@")[0]).unick(email.split("@")[0]) 
-					.upw(passwordEncoder.encode(upw)).uregdate(new Date())
-					.roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 // USER 로 설정
+			googleUser = User.builder().uemail(email).uid(email.split("@")[0]).unick(email.split("@")[0])
+					.upw(passwordEncoder.encode(upw)).uregdate(new Date()).roles(Collections.singletonList("ROLE_USER")) // 최초
+																															// 가입시
+																															// //
+																															// USER
+																															// 로
+																															// 설정
 					.build();
 			if (userService.findByUemail(email) == null) { // 가입정보가 없으면,
 				googleUser = userRepository.save(googleUser);
@@ -241,8 +237,7 @@ public class UserSecurityController {
 		jsonToken.setUsername(googleUser.getUid());
 		jsonToken.setRefreshToken(token);
 		vop.set(googleUser.getUid(), jsonToken);
-		
-		
+
 		System.out.println(token);
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(googleUser.getUid()));
 		Result result = new Result(StatusCode.OK, ResponseMessage.SOCIAL_LOGIN_SUCCESS, userInfos);
@@ -428,8 +423,24 @@ public class UserSecurityController {
 			return new ResponseEntity<Result>(new Result(StatusCode.FORBIDDEN, ResponseMessage.UNAUTHORIZED, null),
 					HttpStatus.FORBIDDEN);
 		}
-
-		user.setUemail(userUpdate.get("uemail"));
+		
+		// 유저의 생일
+		try {
+			if(userUpdate.get("ubirth")!=null) {
+				SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+				transFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+				Date ubirth = transFormat.parse(userUpdate.get("ubirth"));
+				user.setUbirth(ubirth);
+			}
+		} catch (ParseException e) {
+			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_BIRTH);
+		}
+		
+		// 유저의 성별
+		if(userUpdate.get("usex")!=null) {
+			user.setUsex(Integer.parseInt(userUpdate.get("usex")));
+		}
+		
 		System.out.println(userUpdate.toString());
 		userService.userUpdate(user);
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, user), HttpStatus.OK);
