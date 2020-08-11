@@ -8,16 +8,11 @@
         x-small
         @click="$emit('likeUnlike')"
       >
-<<<<<<< HEAD
         <!-- <v-icon v-if="like">mdi-heart</v-icon>
         <v-icon v-if="!like">mdi-heart-outline</v-icon> -->
         <img v-if="!like" :src="imgRoute.unlike" alt="" />
         <img v-if="like" :src="imgRoute.like_small" alt="" s />
         <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
-=======
-        <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon>
->>>>>>> feature/front/liquor
       </v-btn>
       <span style="font-size: 15px">{{ likeCount }}</span>
       <v-spacer></v-spacer>
