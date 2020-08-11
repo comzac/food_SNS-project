@@ -57,7 +57,7 @@ public class ContestController {
 	}
 	
 	@ApiOperation(value = "최근 콘테스트의 정보를 반환한다", response = Result.class)
-	@GetMapping(value="/")
+	@GetMapping
 	public ResponseEntity getContestLatest(Authentication authentication) {
 		System.out.println("latest contest list");
 		
