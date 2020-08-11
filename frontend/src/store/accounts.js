@@ -59,6 +59,12 @@ export default {
     authUserUid: (state) => state.userSimpleData.uid,
     authUserUnick: (state) => state.userSimpleData.unick,
     authUserId: (state) => state.userSimpleData.id,
+    authUserSex: (state) => state.userSimpleData.usex,
+    authUserAge: (state) => {
+      const date = state.userSimpleData.ubirth.split("-");
+      const nowDate = new Date().getFullYear();
+      return nowDate - date[0] + 1;
+    },
   },
   mutations: {
     SET_TOKEN(state, token) {

@@ -10,14 +10,8 @@
           >
             <!-- 작성자 -->
             <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
-            <Head
-              v-if="selectedContestFeed"
-              :feed="selectedContestFeed.contestFeed"
-            />
-            <Media
-              :dbFiles="selectedContestFeed.contestFeed.files"
-              @likeUnlike="feedLU()"
-            />
+            <Head v-if="selectedContestFeed" :feed="selectedContestFeed.contestFeed" />
+            <Media :dbFiles="selectedContestFeed.contestFeed.files" @likeUnlike="feedLU()" />
             <v-card-text>
               <!-- 본문 -->
               <Main
@@ -48,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 import Head from "@/components/contest/ContestFeedHead";
 import Main from "@/components/feed/item/Main";
@@ -67,6 +61,7 @@ export default {
   },
   computed: {
     ...mapState("contests", ["selectedContestFeed"]),
+    ...mapGetters("accounts", ["authUserSex", "authUserAge"]),
     ymd2() {
       if (this.ymd < 60) {
         return `${this.ymd}초 전`;
@@ -92,8 +87,8 @@ export default {
   },
   watch() {
     this.getContestFeedDetail(this.$route.params.fid).then((data) => {
-      // console.log("data");
-      // console.log(data.statistics);
+      console.log("watch");
+      console.log(data.statistics);
       this.ageData = data.statistics.uage;
       this.sexData = data.statistics.usex;
     });
@@ -113,23 +108,58 @@ export default {
       this.contestFeedLikeUnlike(likeData).then(() => {
         if (this.selectedContestFeed.islike) {
           this.selectedContestFeed.contestFeed.likeCount -= 1;
+          if (this.authUserSex === 1) {
+            this.sexData.male -= 1;
+          } else {
+            this.sexData.female -= 1;
+          }
+          if (this.authUserAge >= 50) {
+            this.ageData.age50 -= 1;
+          } else if (this.authUserAge >= 40) {
+            this.ageData.age40 -= 1;
+          } else if (this.authUserAge >= 30) {
+            this.ageData.age30 -= 1;
+          } else if (this.authUserAge >= 20) {
+            this.ageData.age20 -= 1;
+          } else {
+            this.ageData.age10 -= 1;
+          }
         } else {
           this.selectedContestFeed.contestFeed.likeCount += 1;
+          if (this.authUserSex === 1) {
+            this.sexData.male += 1;
+          } else {
+            this.sexData.female += 1;
+          }
+          if (this.authUserAge >= 50) {
+            this.ageData.age50 += 1;
+          } else if (this.authUserAge >= 40) {
+            this.ageData.age40 += 1;
+          } else if (this.authUserAge >= 30) {
+            this.ageData.age30 += 1;
+          } else if (this.authUserAge >= 20) {
+            this.ageData.age20 += 1;
+          } else {
+            this.ageData.age10 += 1;
+          }
         }
         this.selectedContestFeed.islike = !this.selectedContestFeed.islike;
       });
     },
+    initContestFeedDetail() {
+      this.getContestFeedDetail(this.$route.params.fid).then((data) => {
+        // console.log("data");
+        // console.log(data.statistics);
+        this.ageData = data.statistics.uage;
+        this.sexData = data.statistics.usex;
+        this.ymd =
+          parseInt(new Date().getTime() / 1000) -
+          parseInt(new Date(data.feed.regdate).getTime() / 1000);
+      });
+    },
   },
   created() {
-    this.getContestFeedDetail(this.$route.params.fid).then((data) => {
-      // console.log("data");
-      // console.log(data.statistics);
-      this.ageData = data.statistics.uage;
-      this.sexData = data.statistics.usex;
-      this.ymd =
-        parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(data.feed.regdate).getTime() / 1000);
-    });
+    this.initContestFeedDetail();
   },
 };
 </script>
