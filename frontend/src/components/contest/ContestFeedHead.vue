@@ -14,7 +14,7 @@
             >게시글 수정</v-list-item-title
           >
         </v-list-item>
-        <v-list-item v-if="feed.uid === authUserId">
+        <v-list-item v-if="feed.uid === authUserId" @click="deleteFeedNow">
           <v-list-item-title class="red--text text-lighten-2"
             >게시글 삭제</v-list-item-title
           >
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import swal from "sweetalert";
+import { mapGetters, mapActions } from "vuex";
 import router from "@/router";
 
 export default {
@@ -47,8 +48,22 @@ export default {
     ...mapGetters("accounts", ["authUserId"]),
   },
   methods: {
+    ...mapActions("contests", ["deleteContestFeed"]),
     moveToUpdateFeed() {
       router.push({ name: "ContestFeedCreate", params: { fid: this.feed.id } });
+    },
+    deleteFeedNow() {
+      swal({
+        title: "삭제하시겠습니까?",
+        text: "이 작업은 취소 할 수 없습니다.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((doDelete) => {
+        if (doDelete) {
+          this.deleteContestFeed(this.$route.params.fid);
+        }
+      });
     },
   },
 };

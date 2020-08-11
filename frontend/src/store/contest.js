@@ -172,5 +172,25 @@ export default {
           console.log(err.response);
         });
     },
+
+    deleteContestFeed({ rootGetters }, id) {
+      const config = rootGetters["accounts/config"];
+
+      axios
+        .delete(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.contest.URL +
+            SERVER.ROUTES.contest.feeds +
+            id,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          router.push({ name: "ContestList" });
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
   },
 };
