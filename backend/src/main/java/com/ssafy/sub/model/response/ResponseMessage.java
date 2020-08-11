@@ -9,6 +9,7 @@ public class ResponseMessage {
     public static final String LOGIN_FAIL_PW = "비밀번호를 확인해주세요";
     public static final String LOGOUT_SUCCESS = "로그아웃 성공";
     public static final String LOGOUT_FAIL = "로그아웃 실패";
+    public static final String NOT_FOUND_BIRTH = "생일을 입력해주세요";
     
     public static final String READ_NOTIFICATION = "알림 조회 성공";
     public static final String FAIL_READ_NOTIFICATION = "알림 조회 실패";
@@ -85,6 +86,5 @@ public class ResponseMessage {
     public static final String DB_ERROR = "데이터베이스 에러";
 
     public static final String CREATE_FILE = "파일 저장 성공";
-    
     
 }
