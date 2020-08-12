@@ -9,6 +9,7 @@ export default {
   namespaced: true,
   state: {
     feeds: [],
+    followFeeds: [],
     userProfileData: null,
     selectedFeed: null,
   },
@@ -20,6 +21,12 @@ export default {
       state.feeds = state.feeds.concat(feeds);
     },
     CLEAR_FEEDS(state) {
+      state.feeds = [];
+    },
+    SET_FOLLOWFEEDS(state, feeds) {
+      state.feeds = state.feeds.concat(feeds);
+    },
+    CLEAR_FOLLOWFEEDS(state) {
       state.feeds = [];
     },
     SET_USERPROFILEDATA(state, userProfileData) {
@@ -51,6 +58,29 @@ export default {
 
     clearFeeds({ commit }) {
       commit("CLEAR_FEEDS");
+    },
+
+    fetchFollowFeeds({ commit, rootGetters }, fid) {
+      const config = rootGetters["accounts/config"];
+      console.log(config);
+      return axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.followerPagination +
+            fid,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          commit("SET_FOLLOWFEEDS", res.data.feedAll);
+          return res.data.feedAll;
+        })
+        .catch((err) => console.log(err.response));
+    },
+
+    clearFollowFeeds({ commit }) {
+      commit("CLEAR_FOLLOWFEEDS");
     },
 
     getUserPageData({ commit, rootGetters }, uid) {

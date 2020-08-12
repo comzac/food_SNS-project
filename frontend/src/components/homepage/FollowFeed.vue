@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>HomeTwo</h1>
+    <h1>Follow</h1>
     <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
@@ -18,7 +18,7 @@ export default {
     FeedItem,
   },
   computed: {
-    ...mapState("feeds", ["feeds"]),
+    ...mapState("feeds", ["followFeeds"]),
   },
   data() {
     return {
@@ -29,7 +29,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("feeds", ["fetchFeeds", "clearFeeds"]),
+    ...mapActions("feeds", ["fetchFollowFeeds", "clearFollowFeeds"]),
     setFeeds(feeds) {
       this.feed_data = this.feed_data.concat(feeds);
     },
@@ -45,7 +45,7 @@ export default {
         // feed_data2.feed.id += 1;
         // this.feed_data.push(feed_data2);
         // this.page += 1;
-        this.fetchFeeds(this.fid).then((newFeeds) => {
+        this.fetchFollowFeeds(this.fid).then((newFeeds) => {
           console.log("infinite scroll get");
           newFeeds.forEach((feed) => {
             if (feed.feed.id < this.fid) {
@@ -59,8 +59,8 @@ export default {
   },
   created() {
     console.log("created");
-    this.clearFeeds();
-    this.fetchFeeds(this.fid)
+    this.clearFollowFeeds();
+    this.fetchFollowFeeds(this.fid)
       .then((newFeeds) => {
         // console.log(newFeeds);
         newFeeds.forEach((feed) => {

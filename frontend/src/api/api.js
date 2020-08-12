@@ -27,6 +27,7 @@ export default {
       URL: "feeds/",
       page: "page/",
       pagination: "pagination/",
+      followerPagination: "page/follower/",
       search: "search",
     },
     comments: {
