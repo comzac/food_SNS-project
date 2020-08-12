@@ -23,7 +23,10 @@ export default {
     return {
       // feed 를 page 를 증가시키면서 하나씩 받아와야 할 듯
       page: 1,
-      fid: 100000,
+      feedParams: {
+        lastFid: 100000,
+        lastFidRecommand: 0,
+      },
       feed_data: [],
     };
   },
@@ -44,11 +47,16 @@ export default {
         // feed_data2.feed.id += 1;
         // this.feed_data.push(feed_data2);
         // this.page += 1;
-        this.fetchFeeds(this.fid).then((newFeeds) => {
+        this.feedParams.lastFidRecommand = 0;
+        this.fetchFeeds(this.feedParams).then((newFeeds) => {
           console.log("infinite scroll get");
           newFeeds.forEach((feed) => {
-            if (feed.feed.id < this.fid) {
-              this.fid = feed.feed.id;
+            if (feed.recommand) {
+              this.feedParams.lastFidRecommand = feed.feed.id;
+            } else {
+              if (feed.feed.id < this.feedParams.lastFid) {
+                this.feedParams.lastFid = feed.feed.id;
+              }
             }
           });
           this.setFeeds(newFeeds);
@@ -57,14 +65,21 @@ export default {
     },
   },
   created() {
-    console.log("created");
+    console.log("createdAll");
     this.clearFeeds();
-    this.fetchFeeds(this.fid)
+    this.fetchFeeds(this.feedParams)
       .then((newFeeds) => {
         // console.log(newFeeds);
+        console.log("infinite scroll get");
         newFeeds.forEach((feed) => {
-          if (feed.feed.id < this.fid) {
-            this.fid = feed.feed.id;
+          // console.log(feed);
+          if (feed.recommand) {
+            this.feedParams.lastFidRecommand = feed.feed.id;
+          } else {
+            if (feed.feed.id < this.feedParams.lastFid) {
+              // console.log(feed.feed);
+              this.feedParams.lastFid = feed.feed.id;
+            }
           }
         });
         this.setFeeds(newFeeds);

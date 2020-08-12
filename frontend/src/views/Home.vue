@@ -2,12 +2,8 @@
   <div>
     <v-row align="center" justify="center" class="pb-5">
       <v-btn-toggle v-model="showFeedAll">
-        <v-btn class="toggle">
-          All
-        </v-btn>
-        <v-btn class="toggle">
-          Follower
-        </v-btn>
+        <v-btn class="toggle">All</v-btn>
+        <v-btn class="toggle">Follower</v-btn>
       </v-btn-toggle>
     </v-row>
     <FeedAll v-if="!showFeedAll" />

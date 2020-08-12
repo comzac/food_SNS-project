@@ -25,9 +25,9 @@ export default {
     },
     feeds: {
       URL: "feeds/",
-      page: "page/",
+      page: "pages/",
       pagination: "pagination/",
-      followerPagination: "page/follower/",
+      followerPagination: "pages/follower/",
       search: "search",
     },
     comments: {

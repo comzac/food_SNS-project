@@ -37,15 +37,14 @@ export default {
     },
   },
   actions: {
-    fetchFeeds({ commit, rootGetters }, fid) {
+    fetchFeeds({ commit, rootGetters }, feedParams) {
       const config = rootGetters["accounts/config"];
+      // console.log(config);
+      config.params = feedParams;
       console.log(config);
       return axios
         .get(
-          SERVER.BASE_URL +
-            SERVER.ROUTES.feeds.URL +
-            SERVER.ROUTES.feeds.pagination +
-            fid,
+          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
           config
         )
         .then((res) => {
@@ -60,15 +59,16 @@ export default {
       commit("CLEAR_FEEDS");
     },
 
-    fetchFollowFeeds({ commit, rootGetters }, fid) {
+    fetchFollowFeeds({ commit, rootGetters }, feedParams) {
       const config = rootGetters["accounts/config"];
-      console.log(config);
+      // console.log(feedParams);
+      config.params = feedParams;
+      // console.log(config);
       return axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
-            SERVER.ROUTES.feeds.followerPagination +
-            fid,
+            SERVER.ROUTES.feeds.followerPagination,
           config
         )
         .then((res) => {
