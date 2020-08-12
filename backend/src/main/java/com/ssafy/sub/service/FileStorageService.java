@@ -195,9 +195,13 @@ public class FileStorageService {
 
 			String extension = file.getContentType().split("/")[1];
 			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff") || extension.equals("jfif") ) {
+				
 				BufferedImage img = resize(file.getInputStream(), resizingW, resizingH);
 				File out = new File(filePath + File.separator + result);
-				ImageIO.write(img, extension, out);
+				if(width <= 400 && height <= 400)
+					ImageIO.write(image, extension, out);
+				else
+					ImageIO.write(img, extension, out);
 			} else {
 				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
 			}
