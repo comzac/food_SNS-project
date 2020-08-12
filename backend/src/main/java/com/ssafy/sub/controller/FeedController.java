@@ -90,6 +90,7 @@ public class FeedController {
 			@RequestParam(value = "lastFidRecommand", required = false) int lastFidRecommand,
 			Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
+		System.out.println(lastFid+" "+lastFidRecommand);
 		
 		User loginUser = (User) authentication.getPrincipal();
 
@@ -97,7 +98,7 @@ public class FeedController {
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
-		feedList = feedService.feedPagination(0L, lastFid * 1L, feedLimit);
+		feedList.addAll(feedService.feedPagination(0L, lastFid * 1L, feedLimit));
 		
 		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
 				loginUser.getId(), 
@@ -195,7 +196,7 @@ public class FeedController {
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
-		feedList = feedService.feedFollowPagination(loginUser.getId(), 0L, lastFid * 1L, feedLimit); // follower의 feedList 들고옴
+		feedList.addAll(feedService.feedFollowPagination(loginUser.getId(), 0L, lastFid * 1L, feedLimit));	// follower의 feedList 들고옴
 		
 		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
 				loginUser.getId(), 
