@@ -177,13 +177,16 @@ public class FileStorageService {
 		resizingW = resizingH = 400;
 
 		if(width > height && width > 400) {
+			System.out.println("1");
 			resizingW = 400;
 			resizingH = (int) (height * (400/(double)width));
 		}else if(width < height && height > 400) {
+			System.out.println("2");
 			resizingW = (int) (width * (400/(double)height));
 			resizingH = 400;
 		}
 		
+		System.out.println(resizingW + " / " + resizingH);
 		String result = null;
 		try {
 			int pos = file.getOriginalFilename().lastIndexOf(".");
@@ -192,9 +195,13 @@ public class FileStorageService {
 
 			String extension = file.getContentType().split("/")[1];
 			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff") || extension.equals("jfif") ) {
+				
 				BufferedImage img = resize(file.getInputStream(), resizingW, resizingH);
 				File out = new File(filePath + File.separator + result);
-				ImageIO.write(img, extension, out);
+				if(width <= 400 && height <= 400)
+					ImageIO.write(image, extension, out);
+				else
+					ImageIO.write(img, extension, out);
 			} else {
 				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
 			}
@@ -219,7 +226,7 @@ public class FileStorageService {
 		BufferedImage inputImage = ImageIO.read(inputStream);
 
 		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType());
-
+		System.out.println(width + " / " + height);
 		Graphics2D graphics2D = outputImage.createGraphics();
 		graphics2D.drawImage(inputImage, 0, 0, width, height, null);
 		graphics2D.dispose();
