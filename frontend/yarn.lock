@@ -2161,6 +2161,11 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.6.0"
     color-convert "^1.9.3"
 
+chartjs-plugin-datalabels@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.7.0.tgz#f72e44edb2db45ef68913e9320bcc50398a205e6"
+  integrity sha512-PKVUX14nYhH0wcdCpgOoC39Gbzvn6cZ7O9n+bwc02yKD9FTnJ7/TSrBcfebmolFZp1Rcicr9xbT0a5HUbigS7g==
+
 check-types@^8.0.3:
   version "8.0.3"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-8.0.3.tgz#3356cca19c889544f2d7a95ed49ce508a0ecf552"
@@ -8412,14 +8417,6 @@ vue-eslint-parser@^7.0.0:
     esquery "^1.0.1"
     lodash "^4.17.15"
 
-vue-flip@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/vue-flip/-/vue-flip-1.0.2.tgz#c8c6ca2e11822670b010804f93c64223457a6950"
-  integrity sha512-AJEEzDnK0PihZZp9jpIzSa+RgGvk1lLeKPGPXVQqurY9CRIZvzsegQ9T4Oh9H8jngZ4pAEBbh7kvmrqAQL+qgQ==
-  dependencies:
-    core-js "^3.6.5"
-    vue "^2.6.10"
-
 vue-google-oauth2@^1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/vue-google-oauth2/-/vue-google-oauth2-1.5.5.tgz#5d26a57c07679142f9299a0f9177aa9f9cc95879"
@@ -8467,7 +8464,7 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@^2.6.10, vue@^2.6.11:
+vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
