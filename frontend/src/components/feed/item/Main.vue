@@ -60,7 +60,8 @@ export default {
     return {
       ymd:
         parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(this.feed.regdate).getTime() / 1000),
+        parseInt(new Date(this.feed.regdate).getTime() / 1000) +
+        1,
       imgRoute: {
         like_small: require("@/assets/like/like_small.png"),
         like_big: require("@/assets/like/like_big.png"),
