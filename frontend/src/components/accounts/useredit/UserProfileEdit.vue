@@ -4,18 +4,37 @@
     <v-container>
       <v-row>
         <v-col cols="4">
-          <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
-            <v-icon large v-show="!data.hasImage && !imageData" dark>mdi-account</v-icon>
+          <v-avatar
+            size="70"
+            :color="data.hasImage || imageData ? 'white' : 'grey'"
+          >
+            <v-icon large v-show="!data.hasImage && !imageData" dark
+              >mdi-account</v-icon
+            >
             <v-img v-if="data.hasImage && !imageData" :src="authUserImgRoute" />
             <v-img v-if="imageData" :src="imageData" />
           </v-avatar>
         </v-col>
-        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
-          <v-btn class="ml-4" fab dark color="#ff6666" @click="inputPhase = !inputPhase">
+        <v-col
+          v-if="!inputPhase"
+          cols="4"
+          class="d-flex justify-center align-center"
+        >
+          <v-btn
+            class="ml-4"
+            fab
+            dark
+            color="#ff6666"
+            @click="inputPhase = !inputPhase"
+          >
             <v-icon large dark>mdi-image</v-icon>
           </v-btn>
         </v-col>
-        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
+        <v-col
+          v-if="!inputPhase"
+          cols="4"
+          class="d-flex justify-center align-center"
+        >
           <v-btn fab dark color="#ff6666" @click="removeProfileImg">
             <v-icon large dark>mdi-cached</v-icon>
           </v-btn>
@@ -28,17 +47,23 @@
             truncate-length="15"
             class="mt-3"
             prepend-icon
-            accept=".png, .jpeg, .gif, .jpg"
+            accept=".png, .jpeg, .gif, .jpg, .jfif"
             outlined
             solo
             label="사진 선택"
             @change="previewImage"
             color="#ff6666"
-            error-messages="png, jpeg, gif, jpg 형식"
+            error-messages="png, jp(e)g, gif, jfif 형식 최대 2mb"
           ></v-file-input>
         </v-col>
         <v-col cols="2">
-          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="resetSelectImg">
+          <v-btn
+            v-show="inputPhase"
+            fab
+            small
+            class="ml-n1 mt-5"
+            @click="resetSelectImg"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -73,14 +98,21 @@
       @input="nickcheck = false"
       autocomplete="off"
     ></v-text-field>
-    <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
+    <v-btn
+      color="grey"
+      class="white--text mx-3 mt-7"
+      width="40%"
+      @click="$router.go(-1)"
+      >취소</v-btn
+    >
     <v-btn
       color="#ff6666"
       width="40%"
       class="white--text mx-3 mt-7"
       @click="proceed"
       :disabled="!dataChanged"
-    >진행</v-btn>
+      >진행</v-btn
+    >
   </v-col>
 </template>
 
@@ -143,9 +175,34 @@ export default {
     },
     previewImage(file) {
       if (file) {
-        if (file.size > 200 * 1024) {
+        if (file.size > 2 * 1024 * 1024) {
+          console.log(this.data);
+          this.data.img = null;
+          this.data.hasImage = false;
+          console.log(this.data);
           swal({
-            text: "프로필 사진은 200kb 를 넘을 수 없습니다.",
+            title: "파일 용량 초과",
+            text: "프로필 사진은 2mb 를 넘을 수 없습니다.",
+            icon: "warning",
+            dangerMode: true,
+          });
+          return false;
+        } else if (
+          !/.png/.test(file.name) &&
+          !/.gif/.test(file.name) &&
+          !/.jpg/.test(file.name) &&
+          !/.jfif/.test(file.name) &&
+          !/.jpeg/.test(file.name)
+        ) {
+          console.log(this.data);
+          this.data.img = null;
+          this.data.hasImage = false;
+
+          console.log(this.data);
+          swal({
+            title: "파일 형식 문제",
+            text: "파일 형식이 어긋납니다.",
+            icon: "error",
             dangerMode: true,
           });
           return false;
