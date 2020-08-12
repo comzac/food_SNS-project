@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import Comment from "@/components/Comment";
+import Comment from "@/components/feed/Comment";
 import { mapActions, mapState } from "vuex";
 
 import Writer from "@/components/feed/item/Writer";

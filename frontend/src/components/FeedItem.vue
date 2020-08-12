@@ -40,7 +40,7 @@
 <script>
 import { mapActions } from "vuex";
 
-import Comment from "@/components/Comment";
+import Comment from "@/components/feed/item/Comment";
 import Writer from "@/components/feed/item/Writer";
 import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
