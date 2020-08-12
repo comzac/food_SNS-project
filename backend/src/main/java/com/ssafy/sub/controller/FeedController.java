@@ -105,7 +105,7 @@ public class FeedController {
 				userService.getUserAge(loginUser.getUbirth()), 
 				loginUser.getUsex(),
 				lastFidRecommand);
-		if(recommandFeed!=null) {
+		if(recommandFeed!=null && recommandFeed.getId()!=0) {
 			feedList.add(recommandFeed);
 		}
 
@@ -203,7 +203,7 @@ public class FeedController {
 				userService.getUserAge(loginUser.getUbirth()), 
 				loginUser.getUsex(),
 				lastFidRecommand);
-		if(recommandFeed!=null) {
+		if(recommandFeed!=null && recommandFeed.getId()!=0) {
 			feedList.add(recommandFeed);
 		}
 		
