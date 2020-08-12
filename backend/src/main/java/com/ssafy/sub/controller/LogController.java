@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,95 +61,99 @@ public class LogController {
 
 	@GetMapping("/update")
 	public ResponseEntity update() throws IOException {
-
-		textName = "2020-08-11.txt";
+		System.out.println(textName + ": txt");
+		String oldTextName = textName;
+		
 		// 분석
-		File file = new File(filePath + textName);
+		System.out.println(oldTextName);
+		File file = new File(filePath + oldTextName + ".txt");
 
-		HashMap<String, Integer> recommandMap = new HashMap<String, Integer>();
-		HashMap<String, Integer> recommandCnt = new HashMap<String, Integer>();
+		if(file.exists()) {
+			System.out.println("존재");
+			HashMap<String, Integer> recommandMap = new HashMap<String, Integer>();
+			HashMap<String, Integer> recommandCnt = new HashMap<String, Integer>();
 
-		BufferedReader br = new BufferedReader(new FileReader(file));
-		String line = "";
-		String[] splitedStr = null;
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line = "";
+			String[] splitedStr = null;
 
-		while ((line = br.readLine()) != null) {
-			splitedStr = null;
-			//System.out.println(line);
-			splitedStr = line.split(", ");
+			while ((line = br.readLine()) != null) {
+				splitedStr = null;
+				//System.out.println(line);
+				splitedStr = line.split(", ");
 
-			String time, uid, gender, age, action, hashtag;
-			time = splitedStr[0];
-			uid = splitedStr[1];
-			gender = splitedStr[2];
-			age = splitedStr[3];
-			action = splitedStr[4];
-			hashtag = splitedStr[5].split(":")[1];
+				String time, uid, gender, age, action, hashtag;
+				time = splitedStr[0];
+				uid = splitedStr[1];
+				gender = splitedStr[2];
+				age = splitedStr[3];
+				action = splitedStr[4];
+				hashtag = splitedStr[5].split(":")[1];
 
-			int score = 0;
+				int score = 0;
 
-			switch (action) {
-			case "like":
-				score = 1;
-				break;
-			case "search":
-				score = 2;
-				break;
-			case "revisit":
-				score = 3;
-				break;
-			case "insert":
-				score = 4;
-				break;
-			case "unlike":
-				score = -1;
-				break;
+				switch (action) {
+				case "like":
+					score = 1;
+					break;
+				case "search":
+					score = 2;
+					break;
+				case "revisit":
+					score = 3;
+					break;
+				case "insert":
+					score = 4;
+					break;
+				case "unlike":
+					score = -1;
+					break;
+				}
+
+				String key = age + "_" + gender + "_" + hashtag;
+
+				if (recommandMap.get(key) == null) {
+					recommandMap.put(key, score);
+					recommandCnt.put(key, 1);
+				} else {
+					int old = recommandMap.get(key);
+					recommandMap.put(key, old + score);
+					
+					int oldCnt = recommandCnt.get(key);
+					recommandCnt.put(key, oldCnt+1);
+				}
 			}
+			br.close();
+			
+			int ageGroup, gender, hid, score, today, cnt, avg;
+			
+			for (HashMap.Entry<String, Integer> elem : recommandMap.entrySet()) {
 
-			String key = age + "_" + gender + "_" + hashtag;
-
-			if (recommandMap.get(key) == null) {
-				recommandMap.put(key, score);
-				recommandCnt.put(key, 1);
-			} else {
-				int old = recommandMap.get(key);
-				recommandMap.put(key, old + score);
-				
-				int oldCnt = recommandCnt.get(key);
-				recommandCnt.put(key, oldCnt+1);
+				String key = elem.getKey();
+				String value = Integer.toString(elem.getValue());
+				String [] keyList = key.split("_");
+				ageGroup = Integer.parseInt(keyList[0]);
+				gender = Integer.parseInt(keyList[1]);
+				hid = Integer.parseInt(keyList[2]);
+				score = 0;
+				today = Integer.parseInt(value);
+				cnt = recommandCnt.get(key);
+				avg = today/cnt;
+				RecommandKey recommnadKey = new RecommandKey(gender, ageGroup, hid);
+				Recommand recommand = new Recommand(recommnadKey, score, today, cnt, avg);
+				System.out.println(gender); 
+				logService.update(recommand); 
 			}
 		}
-		br.close();
 		
-		int ageGroup, gender, hid, score, today, cnt, avg;
+
 		
-		for (HashMap.Entry<String, Integer> elem : recommandMap.entrySet()) {
-
-			String key = elem.getKey();
-			String value = Integer.toString(elem.getValue());
-			String [] keyList = key.split("_");
-			ageGroup = Integer.parseInt(keyList[0]);
-			gender = Integer.parseInt(keyList[1]);
-			hid = Integer.parseInt(keyList[2]);
-			score = 0;
-			today = Integer.parseInt(value);
-			cnt = recommandCnt.get(key);
-			avg = today/cnt;
-			RecommandKey recommnadKey = new RecommandKey(gender, ageGroup, hid);
-			Recommand recommand = new Recommand(recommnadKey, score, today, cnt, avg);
-			System.out.println(gender); 
-			logService.update(recommand);
-		}
-
-//		if(bw != null)
-//			pw.close();
-//		
-//		
-//		
-//		// 파일 생성
-//		textName = LocalDate.now().toString();
-//		bw = new BufferedWriter(new FileWriter(this.filePath+textName+".txt"));
-//		pw = new PrintWriter(bw,true);
+		// 파일 생성
+		textName = LocalDateTime.now().toString().replace(":", "-").substring(0, 19);
+		bw = new BufferedWriter(new FileWriter(this.filePath+textName+".txt"));
+		pw = new PrintWriter(bw,true);
+		
+		
 		return null;
 	}
 
