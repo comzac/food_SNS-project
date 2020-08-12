@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.JPAExpressions;
 import com.ssafy.sub.dto.Feed;
+import com.ssafy.sub.dto.FeedHashtag;
 import com.ssafy.sub.dto.QDBFile;
 import com.ssafy.sub.dto.QFeed;
 import com.ssafy.sub.dto.QFeedHashtag;
 import com.ssafy.sub.dto.QHashtag;
+import com.ssafy.sub.dto.QRecommand;
+import com.ssafy.sub.dto.QRecommandKey;
 import com.ssafy.sub.dto.QRelationship;
 
 
@@ -114,6 +117,43 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 				.limit(pageable.getPageSize())
 				.distinct()
 				.fetch();
+	}
+	
+	public List<Feed> findByRecommandHid(int hid, int uid) {
+		QFeed feed = QFeed.feed;
+		QRelationship relationShip = QRelationship.relationship;
+		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
+		
+		return from(feed)
+				.leftJoin(feedHashtag)
+				.on(feedHashtag.feedHashtagkey.hid.eq(hid))
+				.where(feed.uid.notIn(
+						JPAExpressions.select(relationShip.relationShipkey.relationuid)
+							.from(relationShip)
+							.where(relationShip.relationShipkey.uid.eq(uid)))
+					.and(feed.uid.eq(uid)))
+				.orderBy(feed.id.desc())
+				.distinct()
+				.fetch();
+	}
+	
+	public Feed findByRecommandHidFetchOne(int hid, int uid, int lastFidRecommand) {
+		QFeed feed = QFeed.feed;
+		QRelationship relationShip = QRelationship.relationship;
+		QFeedHashtag feedHashtag = QFeedHashtag.feedHashtag;
+		
+		return from(feed)
+				.leftJoin(feedHashtag)
+				.on(feedHashtag.feedHashtagkey.hid.eq(hid))
+				.where(feed.uid.notIn(
+						JPAExpressions.select(relationShip.relationShipkey.relationuid)
+							.from(relationShip)
+							.where(relationShip.relationShipkey.uid.eq(uid)))
+					.and(feed.uid.eq(uid).not()))
+				.where(feed.id.lt(lastFidRecommand))
+				.orderBy(feed.id.desc())
+				.distinct()
+				.fetchFirst();
 	}
 
 }

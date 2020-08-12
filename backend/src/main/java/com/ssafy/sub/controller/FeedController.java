@@ -79,21 +79,34 @@ public class FeedController {
 	/***
 	 * 페이지네이션 기능을 적용한 홈 피드 리스트 조회
 	 * @param lastFid - 조회된 마지막 피드의 pk
+	 * @param lastFidRecommand - 조회된 추천피드 마지막 피드의 pk
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return List<FeedAll>
 	 */
 	@ApiOperation(value = "로그인한 유저의 홈 피드를 조회한다", response = Result.class)
-	@GetMapping(value = "/pagination/{lastFid}")
-	public ResponseEntity feedHomePage(@PathVariable int lastFid, Authentication authentication) {
+	@GetMapping(value = "/pages")
+	public ResponseEntity feedHomePage(
+			@RequestParam(value = "lastFid", required = false) int lastFid, 
+			@RequestParam(value = "lastFidRecommand", required = false) int lastFidRecommand,
+			Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
+		
+		User loginUser = (User) authentication.getPrincipal();
 
-		int uid = Integer.parseInt(authentication.getName());
-		String loginUserId = authentication.getName();
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
 		feedList = feedService.feedPagination(0L, lastFid * 1L, feedLimit);
+		
+		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
+				loginUser.getId(), 
+				userService.getUserAge(loginUser.getUbirth()), 
+				loginUser.getUsex(),
+				lastFidRecommand);
+		if(recommandFeed!=null) {
+			feedList.add(recommandFeed);
+		}
 
 		User user;
 		UserSimple userSimple;
@@ -132,7 +145,7 @@ public class FeedController {
 			feedAll.setHashtag(hashtagList);
 
 			// like
-			boolean like = likeService.isFeedLiked(fid, uid);
+			boolean like = likeService.isFeedLiked(fid, loginUser.getId());
 			feedAll.setLike(like);
 
 			// likeCount
@@ -141,10 +154,17 @@ public class FeedController {
 
 			// 내 피드인지 여부
 			boolean mypage = true;
-			if (feed.getUid() != Integer.parseInt(loginUserId)) {
+			if (feed.getUid() != loginUser.getId()) {
 				mypage = false;
 			}
 			feedAll.setMypage(mypage);
+			
+			// 추천 피드인지 여부
+			boolean recommand = false;
+			if(i == feedLimit) {
+				recommand = true;
+			}
+			feedAll.setRecommand(recommand);
 
 			feedAllList.add(feedAll);
 		}
@@ -162,20 +182,30 @@ public class FeedController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@ApiOperation(value = "팔로우한 유저들의 피드", response = Result.class)
-	@GetMapping(value = "/page/follower/{lastFid}")
-	public ResponseEntity feedFollowerPage(@PathVariable int lastFid, Authentication authentication) {
+	@GetMapping(value = "/pages/follower")
+	public ResponseEntity feedFollowerPage(
+			@RequestParam(value = "lastFid", required = false) int lastFid, 
+			@RequestParam(value = "lastFidRecommand", required = false) int lastFidRecommand, 
+			Authentication authentication) {
 		System.out.println("log - feedFollowerPage");
 
-		int LoginUserId = Integer.parseInt(authentication.getName());
+		User loginUser = (User) authentication.getPrincipal();
 
-		int uid = Integer.parseInt(authentication.getName());
-		String loginUserId = authentication.getName();
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = new ArrayList<Feed>();
 
 		int feedLimit = 5;
-		feedList = feedService.feedFollowPagination(LoginUserId, 0L, lastFid * 1L, feedLimit); // follower의 feedList 들고옴
-
+		feedList = feedService.feedFollowPagination(loginUser.getId(), 0L, lastFid * 1L, feedLimit); // follower의 feedList 들고옴
+		
+		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
+				loginUser.getId(), 
+				userService.getUserAge(loginUser.getUbirth()), 
+				loginUser.getUsex(),
+				lastFidRecommand);
+		if(recommandFeed!=null) {
+			feedList.add(recommandFeed);
+		}
+		
 		User user;
 		UserSimple userSimple;
 		Feed feed;
@@ -200,8 +230,8 @@ public class FeedController {
 			feedAll.setCommentCount(commentCount);
 
 			// comment
-			int limit = 2; // 2개만 불러오기
-			List<Comment> commentList = commentService.commentListLimit(fid, limit);
+			int commentLimit = 2; // 2개만 불러오기
+			List<Comment> commentList = commentService.commentListLimit(fid, commentLimit);
 			for (Comment c : commentList) {
 				String c_uid = userService.findById(c.getUid()).getUid();
 				c.setUser(userService.getSimpleUser(c_uid));
@@ -213,7 +243,7 @@ public class FeedController {
 			feedAll.setHashtag(hashtagList);
 
 			// like
-			boolean like = likeService.isFeedLiked(fid, uid);
+			boolean like = likeService.isFeedLiked(fid, loginUser.getId());
 			feedAll.setLike(like);
 
 			// likeCount
@@ -222,10 +252,17 @@ public class FeedController {
 
 			// 내 피드인지 여부
 			boolean mypage = true;
-			if (feed.getUid() != Integer.parseInt(loginUserId)) {
+			if (feed.getUid() != loginUser.getId()) {
 				mypage = false;
 			}
 			feedAll.setMypage(mypage);
+			
+			// 추천 피드인지 여부
+			boolean recommand = false;
+			if(i == feedLimit) {
+				recommand = true;
+			}
+			feedAll.setRecommand(recommand);
 
 			feedAllList.add(feedAll);
 		}
@@ -313,7 +350,6 @@ public class FeedController {
 	
 	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
 	@PostMapping(value = "/page")
-//   public ResponseEntity userPageUpdate(@RequestBody UserSimple userSimple, Authentication authentication) throws FileStorageException {
 	public ResponseEntity userPageUpdate(@RequestParam(value = "img", required = false) MultipartFile img,
 			@RequestParam("text") String text, @RequestParam("unick") String unick,
 			@RequestParam("hasImage") boolean hasImage, Authentication authentication) throws FileStorageException {
@@ -362,7 +398,7 @@ public class FeedController {
 
 		List<FeedAll> feedAllList = new ArrayList<FeedAll>();
 		List<Feed> feedList = feedService.searchByHashtag(keyword);
-
+		
 		User user;
 		UserSimple userSimple;
 		Feed feed;
