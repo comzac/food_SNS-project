@@ -22,13 +22,25 @@ public class Recommand {
     @EmbeddedId
     protected RecommandKey recommandkey;
 
-    @Column(name="score")
-    private int score;
+    @Column(name="accumulate")
+    private int accumulate;
 
-	public Recommand(RecommandKey recommandkey, int score) {
+    @Column(name="today")
+    private int today;
+
+    @Column(name="cnt")
+    private int cnt;
+
+    @Column(name="avg")
+    private int avg;
+
+	public Recommand(RecommandKey recommandkey, int accumulate, int today, int cnt, int avg) {
 		super();
 		this.recommandkey = recommandkey;
-		this.score = score;
+		this.accumulate = accumulate;
+		this.today = today;
+		this.cnt = cnt;
+		this.avg = avg;
 	}
 
 }
