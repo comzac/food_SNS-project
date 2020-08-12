@@ -29,7 +29,6 @@ import com.ssafy.sub.repo.ContestFeedFilesRepository;
 import com.ssafy.sub.repo.DBFileRepository;
 import com.ssafy.sub.repo.DBProfileRepository;
 
-
 /**
  * 유저의 프로필 및 피드의 multipartfile 업로드 관리
  * 
@@ -52,6 +51,7 @@ public class FileStorageService {
 
 	/***
 	 * 유저프로필의 문구 및 프로필 사진 저장 기능
+	 * 
 	 * @param file
 	 * @param text
 	 * @param uid
@@ -64,7 +64,7 @@ public class FileStorageService {
 		Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
 
 		String filename = null;
-		
+
 		if (!updateProfile.isPresent()) {
 
 			try {
@@ -79,7 +79,7 @@ public class FileStorageService {
 					.build();
 			return dbProfileRepository.save(dbProfile);
 		} else {
-			File localfile = new File(filePath + File.separator+ updateProfile.get().getName());
+			File localfile = new File(filePath + File.separator + updateProfile.get().getName());
 			System.out.println(localfile.getPath());
 			if (localfile.exists()) {
 				if (localfile.delete()) {
@@ -111,6 +111,7 @@ public class FileStorageService {
 
 	/***
 	 * uid에 해당하는 프로필 정보에 이미지 데이터 유무 확인
+	 * 
 	 * @param uid
 	 * @return boolean
 	 */
@@ -124,6 +125,7 @@ public class FileStorageService {
 
 	/***
 	 * 유저프로필의 문구 및 프로필 사진 업데이트 기능
+	 * 
 	 * @param text
 	 * @param uid
 	 * @param hasImage
@@ -158,13 +160,30 @@ public class FileStorageService {
 
 	/***
 	 * multipartfile 로컬 저장 기능
+	 * 
 	 * @param file
 	 * @param fid
 	 * @return String (저장된 파일명)
 	 * @throws FileStorageException
+	 * @throws IOException
 	 */
-	public String storeFile(MultipartFile file, int fid) throws FileStorageException {
-	
+	public String storeFile(MultipartFile file, int fid) throws FileStorageException, IOException {
+
+		BufferedImage image = ImageIO.read(file.getInputStream());
+		int width = image.getWidth();
+		int height = image.getHeight();
+
+		int resizingW, resizingH;
+		resizingW = resizingH = 400;
+
+		if(width > height && width > 400) {
+			resizingW = 400;
+			resizingH = (int) (height * (400/(double)width));
+		}else if(width < height && height > 400) {
+			resizingW = (int) (width * (400/(double)height));
+			resizingH = 400;
+		}
+		
 		String result = null;
 		try {
 			int pos = file.getOriginalFilename().lastIndexOf(".");
@@ -172,14 +191,14 @@ public class FileStorageService {
 			result = UUID.randomUUID() + format;
 
 			String extension = file.getContentType().split("/")[1];
-			if(extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")) {
-				BufferedImage img = resize(file.getInputStream(), 400, 400);
-				File out = new File(filePath+File.separator+ result);
+			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff") || extension.equals("jfif") ) {
+				BufferedImage img = resize(file.getInputStream(), resizingW, resizingH);
+				File out = new File(filePath + File.separator + result);
 				ImageIO.write(img, extension, out);
-			}else {
-				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));				
+			} else {
+				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
 			}
-			
+
 			dbFileRepository.save(new DBFile(fid, result, file.getContentType()));
 		} catch (Exception e) {
 			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
@@ -189,32 +208,32 @@ public class FileStorageService {
 
 	/***
 	 * 사이즈 지정값(400x400) 이미지 리사이징 기능
+	 * 
 	 * @param inputStream
 	 * @param width
 	 * @param height
 	 * @return BufferedImage
 	 * @throws IOException
 	 */
-    public static BufferedImage resize(InputStream inputStream, int width, int height)
-            throws IOException {
-        BufferedImage inputImage = ImageIO.read(inputStream);
+	public static BufferedImage resize(InputStream inputStream, int width, int height) throws IOException {
+		BufferedImage inputImage = ImageIO.read(inputStream);
 
-        BufferedImage outputImage =
-                new BufferedImage(width, height, inputImage.getType());
+		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType());
 
-        Graphics2D graphics2D = outputImage.createGraphics();
-        graphics2D.drawImage(inputImage, 0, 0, width, height, null);
-        graphics2D.dispose();
+		Graphics2D graphics2D = outputImage.createGraphics();
+		graphics2D.drawImage(inputImage, 0, 0, width, height, null);
+		graphics2D.dispose();
 
-        return outputImage;
-    }
-    
-    /***
-     * fid(feed pk)의 DBFile list 정보 호출
-     * @param fid
-     * @return List<DBFile>
-     * @throws MyFileNotFoundException
-     */
+		return outputImage;
+	}
+
+	/***
+	 * fid(feed pk)의 DBFile list 정보 호출
+	 * 
+	 * @param fid
+	 * @return List<DBFile>
+	 * @throws MyFileNotFoundException
+	 */
 	public List<DBFile> getFile(int fid) throws MyFileNotFoundException {
 		return dbFileRepository.findAllByFid(fid)
 				.orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fid));
@@ -222,6 +241,7 @@ public class FileStorageService {
 
 	/***
 	 * 콘테스트 피드 multipartfile 저장
+	 * 
 	 * @param file
 	 * @param fid
 	 * @return ContestFeedFiles
@@ -229,7 +249,7 @@ public class FileStorageService {
 	 */
 	public ContestFeedFiles storeContestFile(MultipartFile file, int fid) throws FileStorageException {
 		// Normalize file name
-		
+
 		String result = null;
 		ContestFeedFiles cfFiles = null;
 		try {
@@ -241,12 +261,13 @@ public class FileStorageService {
 		} catch (Exception e) {
 			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 		}
-		
+
 		return contestFeedFilesRepository.save(cfFiles);
 	}
 
 	/***
 	 * fid(contestfeed pk)의 ContestFeedFiles list 정보 호출
+	 * 
 	 * @param fid
 	 * @return List<ContestFeedFiles>
 	 * @throws MyFileNotFoundException
