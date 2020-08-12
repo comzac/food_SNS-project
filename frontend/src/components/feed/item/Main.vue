@@ -21,7 +21,7 @@
       </v-btn>
     </v-row>
     <p class="text-left">
-      <v-row class="space-around mx-0">
+      <v-row class="space-around mx-0" @click="overflow2()">
         <strong>{{ feed.title }}</strong>
         <v-spacer></v-spacer>
         <small>{{ ymd2 }}</small>
@@ -60,7 +60,8 @@ export default {
     return {
       ymd:
         parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(this.feed.regdate).getTime() / 1000),
+        parseInt(new Date(this.feed.regdate).getTime() / 1000) +
+        1,
       imgRoute: {
         like_small: require("@/assets/like/like_small.png"),
         like_big: require("@/assets/like/like_big.png"),
@@ -117,5 +118,8 @@ p.text-overflow {
 img {
   width: 18px;
   height: 18px;
+}
+p:hover {
+  cursor: pointer;
 }
 </style>

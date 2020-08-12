@@ -103,7 +103,8 @@ export default {
       console.log(data);
       this.ymd =
         parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(data.feed.regdate).getTime() / 1000);
+        parseInt(new Date(data.feed.regdate).getTime() / 1000) +
+        1;
     });
   },
 };
