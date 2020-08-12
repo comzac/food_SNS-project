@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,9 +69,43 @@ public class LogController {
 			splitedStr = null;
 			
 			splitedStr = line.split(", ");
+			 
+			String time, uid, gender, ageGroup, action, hid;
+			time = splitedStr[0];
+			uid = splitedStr[1];
+			gender = splitedStr[2];
+			ageGroup = splitedStr[3];
+			action = splitedStr[4];
+			hid = splitedStr[5];
 			
+			int score = 0;
+			switch(action) {
+			case "like":
+				score = 1;
+				break;
+			case "search":
+				score = 2;
+				break;
+			case "revisit":
+				score = 3;
+				break;
+			case "insert":
+				score = 4;
+				break;
+			case "unlike":
+				score = -1;
+				break;
+			}
 			
-			
+			String key = gender + "_" + ageGroup;
+			if(recommandMap.get(key) == null) {
+				recommandMap.put(key, score);
+			}else {
+				int old = recommandMap.get(key);
+				recommandMap.put(key, old+score);
+			}
+
+			//recommandMap.forEach((key, value) -> System.out.println("key: " + key + ", value: " + value));
 		}
 		
 		
