@@ -60,6 +60,7 @@
               >
                 <v-btn
                   :input-value="active"
+                  x-small
                   icon
                   @click="toggle"
                   color="#ff6666"
@@ -79,13 +80,13 @@
             v-if="!isUpdatePage"
             v-model="fileData"
             prepend-icon
-            accept=".png, .jpeg, .gif, .jpg, .mp4"
+            accept=".png, .jpeg, .gif, .jpg, .jfif, .mp4"
             outlined
             solo
             label="사진 또는 동영상 선택"
             @change="previewImage"
             color="#ff6666"
-            error-messages="20mb 이하 .png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
+            error-messages="20mb 이하 .png, jp(e)g, .jfif, gif, .mp4 파일만 최대 8개 업로드 됩니다."
           ></v-file-input>
           <v-spacer></v-spacer>
           <v-textarea
@@ -218,7 +219,7 @@ export default {
       this.fileData = [];
       this.i2 = 0;
       console.log(file);
-      if (file.length > 3) {
+      if (file.length > 8) {
         // console.log(file.length);
         swal({
           title: "파일 개수 초과",
@@ -242,6 +243,7 @@ export default {
           !/.png/.test(file[i].name) &&
           !/.gif/.test(file[i].name) &&
           !/.jpg/.test(file[i].name) &&
+          !/.jfif/.test(file[i].name) &&
           !/.jpeg/.test(file[i].name)
         ) {
           swal({
