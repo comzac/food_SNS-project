@@ -7,7 +7,7 @@
             v-model="keyword"
             append-icon="mdi-magnify"
             @input="delaySearch()"
-            @click:append-outer="
+            @click:append="
               $router.push({
                 name: 'SearchedView',
                 params: {
