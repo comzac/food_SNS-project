@@ -4,16 +4,11 @@
       <v-container>
         <v-row class="mx-0 align-center">
           <h1 class="red--text text--lighten-2"># {{ keyword }}</h1>
-          <v-spacer></v-spacer>
-          <h3>게시물 {{ searched_items.length }}</h3>
-          <v-spacer></v-spacer>
+          <h1 v-if="keyword2 !== ''" class="red--text text--lighten-2 ml-4">
+            # {{ keyword2 }}
+          </h1>
         </v-row>
-        <v-row v-if="keyword2 !== ''" class="mx-0 align-center">
-          <h1 class="red--text text--lighten-2"># {{ keyword2 }}</h1>
-          <v-spacer></v-spacer>
-          <h3>게시물 {{ searched_items2.length }}</h3>
-          <v-spacer></v-spacer>
-        </v-row>
+        <v-spacer></v-spacer>
         <v-text-field
           v-model="keyword2"
           @input="changeItem()"
@@ -85,7 +80,7 @@ export default {
     },
     changeItem() {
       this.keyword2 = this.keyword2.toUpperCase();
-      console.log(this.keyword2);
+      // console.log(this.keyword2);
       this.searched_items2 = this.searched_items.filter((i) =>
         i.hashtag.some((j) => j.content.includes(this.keyword2))
       );
@@ -95,7 +90,7 @@ export default {
     this.searchfeed(this.keyword);
     setTimeout(() => {
       this.overlay = false;
-      console.log(this.searched_items);
+      // console.log(this.searched_items);
     }, 800);
   },
   beforeRouteUpdate(to, from, next) {
