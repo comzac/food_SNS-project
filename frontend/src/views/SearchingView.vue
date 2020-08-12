@@ -41,7 +41,7 @@
                 })
               "
               :value="
-                `# ${Object.keys(item)[0]} - 게시물 ${
+                `# ${Object.keys(item)[0]} - 관련 게시물 ${
                   Object.values(item)[0]
                 } 개`
               "
@@ -57,7 +57,9 @@
                   params: { uid: search_user.uid },
                 })
               "
-              :value="` ${search_user.unick} - 게시물 ${search_user.cnt} 개`"
+              :value="
+                ` ${search_user.unick} - 작성 게시물 ${search_user.cnt} 개`
+              "
               color="#ff6666"
               readonly
             ></v-text-field>
@@ -101,14 +103,9 @@ export default {
       if (this.keyword != "") {
         this.searchKeyword(this.keyword)
           .then((res) => {
-            if (/^#/.test(this.keyword)) {
-              console.log("res", res);
-              this.search_items = res.data;
-              this.search_users = [];
-            } else {
-              this.search_users = res.data;
-              this.search_items = [];
-            }
+            console.log("res", res);
+            this.search_items = res.data.hashtag;
+            this.search_users = res.data.unick;
           })
           .catch((err) => {
             console.error(err);
