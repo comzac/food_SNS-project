@@ -36,8 +36,18 @@
         <v-icon>mdi-chevron-double-left</v-icon>
       </v-btn>
       <v-item-group v-model="i2" class="text-center" mandatory>
-        <v-item v-for="n in dbFiles.length" :key="n" v-slot:default="{ active, toggle }">
-          <v-btn :input-value="active" icon @click="toggle" color="#ff6666">
+        <v-item
+          v-for="n in dbFiles.length"
+          :key="n"
+          v-slot:default="{ active, toggle }"
+        >
+          <v-btn
+            :input-value="active"
+            icon
+            x-small
+            @click="toggle"
+            color="#ff6666"
+          >
             <v-icon>mdi-record</v-icon>
           </v-btn>
         </v-item>
