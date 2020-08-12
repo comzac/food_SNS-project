@@ -16,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Embeddable
 public class RecommandKey implements Serializable {
+
     @Column(name = "gender")
     private int gender;
 
@@ -24,4 +25,6 @@ public class RecommandKey implements Serializable {
     
     @Column(name = "hashtag")
     private int hashtag;
+
+
 }
