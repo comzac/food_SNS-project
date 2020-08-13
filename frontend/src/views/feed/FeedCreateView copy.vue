@@ -17,7 +17,6 @@
               autocorrect="off"
               autocomplete="off"
             ></v-text-field>
-
             <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
             <v-window v-model="i2" continuous>
               <v-window-item v-for="(preview, i) in previews" :key="i">
@@ -40,26 +39,13 @@
                   ></video>
                 </v-responsive>
                 <v-img
-                  v-else-if="preview.includes('data:image/gif', 0)"
+                  v-if="!preview.includes('data:video/mp4', 0)"
                   :src="preview"
                   width="100%"
                   :aspect-ratio="1"
                   contain
                   class="grey lighten-2"
                 ></v-img>
-                <v-responsive
-                  v-else
-                  class="align-center"
-                  aspect-ratio="1"
-                  style="background-color:#e0e0e0;"
-                >
-                  <Croppers
-                    :imgSrc="preview"
-                    :profile="false"
-                    @set-number="number=i"
-                    @set-data="addCoordi"
-                  />
-                </v-responsive>
               </v-window-item>
             </v-window>
 
@@ -68,8 +54,18 @@
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
               <v-item-group v-model="i2" class="text-center" mandatory>
-                <v-item v-for="n in previews.length" :key="n" v-slot:default="{ active, toggle }">
-                  <v-btn :input-value="active" icon x-small @click="toggle" color="#ff6666">
+                <v-item
+                  v-for="n in previews.length"
+                  :key="n"
+                  v-slot:default="{ active, toggle }"
+                >
+                  <v-btn
+                    :input-value="active"
+                    icon
+                    x-small
+                    @click="toggle"
+                    color="#ff6666"
+                  >
                     <v-icon>mdi-record</v-icon>
                   </v-btn>
                 </v-item>
@@ -127,7 +123,11 @@
               autocorrect="off"
               autocomplete="off"
             ></v-text-field>
-            <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+            <div
+              v-for="tag in feedhashtag"
+              :key="tag"
+              style="display: inline-block;"
+            >
               <v-btn
                 outlined
                 solo
@@ -137,13 +137,20 @@
                 color="#ff6666"
                 small
                 @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
-              ># {{ tag }}</v-btn>
+                ># {{ tag }}</v-btn
+              >
             </div>
             <v-spacer>
               <br />
             </v-spacer>
             <div>
-              <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+              <v-btn
+                @click="$router.go(-1)"
+                class="white--text"
+                color="#666666"
+                width="99"
+                >취소</v-btn
+              >
               <v-divider class="mr-5" vertical></v-divider>
               <!-- 클릭하면 피드 상세 페이지로 -->
               <v-btn
@@ -152,14 +159,16 @@
                 @click="updateFeedByFormData()"
                 color="#ff6666"
                 class="white--text"
-              >작성 완료</v-btn>
+                >작성 완료</v-btn
+              >
               <v-btn
                 v-else
                 :disabled="!feed.title || !feed.content || !fileData.length"
                 @click="insertFeedByFormData(), (overlay = true)"
                 color="#ff6666"
                 class="white--text"
-              >작성 완료</v-btn>
+                >작성 완료</v-btn
+              >
             </div>
           </v-card>
         </v-col>
@@ -174,13 +183,11 @@
 <script>
 import swal from "sweetalert";
 
-import Croppers from "@/components/feed/item/Croppers";
-
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "FeedCreateView",
-  components: { Croppers },
+  components: {},
   computed: {
     ...mapState("feeds", ["selectedFeed"]),
     isUpdatePage() {
@@ -189,7 +196,6 @@ export default {
   },
   data() {
     return {
-      number: null,
       overlay: false,
       i2: 0,
       feedData: {},
@@ -206,12 +212,6 @@ export default {
     };
   },
   methods: {
-    addCoordi(data) {
-      console.log("coordi", data);
-      this.fileData[this.number].coordi = data;
-      console.log(this.fileData);
-      this.number = null;
-    },
     ...mapActions("feeds", ["insertFeed", "updateFeed", "getFeedDetail"]),
     next() {
       this.i2 = this.i2 + 1 === this.previews.length ? 0 : this.i2 + 1;

@@ -2,39 +2,30 @@
   <v-col cols="12" sm="8" md="6" lg="4">
     <h2 class="text-left red--text text--lighten-2 ml-3">프로필 수정</h2>
     <v-container>
+      <v-row class="text-center align-center justify-center">
+        <Croppers
+          v-show="!imageData.includes('data:image/gif', 0) && data.hasImage"
+          v-if="imageData"
+          :imgSrc="imageData"
+          :profile="true"
+          @set-data="addCoordi"
+          @set-image="changeImage"
+        />
+      </v-row>
       <v-row>
         <v-col cols="4">
-          <v-avatar
-            size="70"
-            :color="data.hasImage || imageData ? 'white' : 'grey'"
-          >
-            <v-icon large v-show="!data.hasImage && !imageData" dark
-              >mdi-account</v-icon
-            >
+          <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
+            <v-icon large v-show="!data.hasImage && !imageData" dark>mdi-account</v-icon>
             <v-img v-if="data.hasImage && !imageData" :src="authUserImgRoute" />
             <v-img v-if="imageData" :src="imageData" />
           </v-avatar>
         </v-col>
-        <v-col
-          v-if="!inputPhase"
-          cols="4"
-          class="d-flex justify-center align-center"
-        >
-          <v-btn
-            class="ml-4"
-            fab
-            dark
-            color="#ff6666"
-            @click="inputPhase = !inputPhase"
-          >
+        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
+          <v-btn class="ml-4" fab dark color="#ff6666" @click="inputPhase = !inputPhase">
             <v-icon large dark>mdi-image</v-icon>
           </v-btn>
         </v-col>
-        <v-col
-          v-if="!inputPhase"
-          cols="4"
-          class="d-flex justify-center align-center"
-        >
+        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
           <v-btn fab dark color="#ff6666" @click="removeProfileImg">
             <v-icon large dark>mdi-cached</v-icon>
           </v-btn>
@@ -57,13 +48,7 @@
           ></v-file-input>
         </v-col>
         <v-col cols="2">
-          <v-btn
-            v-show="inputPhase"
-            fab
-            small
-            class="ml-n1 mt-5"
-            @click="resetSelectImg"
-          >
+          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="resetSelectImg">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -98,30 +83,27 @@
       @input="nickcheck = false"
       autocomplete="off"
     ></v-text-field>
-    <v-btn
-      color="grey"
-      class="white--text mx-3 mt-7"
-      width="40%"
-      @click="$router.go(-1)"
-      >취소</v-btn
-    >
+    <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
     <v-btn
       color="#ff6666"
       width="40%"
       class="white--text mx-3 mt-7"
       @click="proceed"
       :disabled="!dataChanged"
-      >진행</v-btn
-    >
+    >진행</v-btn>
   </v-col>
 </template>
 
 <script>
 import swal from "sweetalert";
+import Croppers from "@/components/feed/item/Croppers";
 
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  components: {
+    Croppers,
+  },
   data() {
     return {
       rules: [
@@ -163,6 +145,13 @@ export default {
     },
   },
   methods: {
+    addCoordi(data) {
+      console.log("coordi", data);
+      this.data.img.coordi = data;
+    },
+    changeImage(cropImg) {
+      this.imageData = cropImg;
+    },
     ...mapActions("accounts", ["nickCheck"]),
     ...mapActions("feeds", ["setUserProfileData"]),
     nickCheck2(unick) {
@@ -174,6 +163,7 @@ export default {
       } else this.nickcheck = true;
     },
     previewImage(file) {
+      this.imageData = "";
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
           console.log(this.data);
@@ -228,6 +218,7 @@ export default {
       }
     },
     proceed() {
+      console.log(this.data);
       if (this.nickcheck) {
         if (this.data.img) {
           this.data.hasImage = true;
