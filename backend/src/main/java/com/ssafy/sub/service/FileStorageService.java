@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -163,45 +165,78 @@ public class FileStorageService {
 	 * 
 	 * @param file
 	 * @param fid
+	 * @param coordi
 	 * @return String (저장된 파일명)
 	 * @throws FileStorageException
 	 * @throws IOException
 	 */
-	public String storeFile(MultipartFile file, int fid) throws FileStorageException, IOException {
+	public String storeFile(MultipartFile file, int fid, String coordi) throws FileStorageException, IOException {
 
-		BufferedImage image = ImageIO.read(file.getInputStream());
-		int width = image.getWidth();
-		int height = image.getHeight();
-
-		int resizingW, resizingH;
-		resizingW = resizingH = 400;
-
-		if(width > height && width > 400) {
-			System.out.println("1");
-			resizingW = 400;
-			resizingH = (int) (height * (400/(double)width));
-		}else if(width < height && height > 400) {
-			System.out.println("2");
-			resizingW = (int) (width * (400/(double)height));
-			resizingH = 400;
-		}
+		String extension = file.getContentType().split("/")[1];
 		
-		System.out.println(resizingW + " / " + resizingH);
+		int x, y, width, height, oldW, oldH;
+		x = y = 0;
+		width = height = 400;
+		boolean isCoordi = false;
+		if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
+				|| extension.equals("jfif")) {
+			BufferedImage image = ImageIO.read(file.getInputStream());
+			
+			width = oldW = image.getWidth();
+			height = oldH = image.getHeight();			
+		}
+		if(!coordi.equals("")) { // 크롭 한 경우,
+			isCoordi = true;
+			String parse;
+			parse = coordi.replace("{", "");
+			parse = coordi.replace("{", "");
+			String[] coordis = parse.split(",");
+			List<String> pos = new ArrayList<String>();
+			for (String string : coordis) {
+				pos.add(string.split(":")[1]);
+			}
+			x = (int) Float.parseFloat(pos.get(0));
+			y = (int) Float.parseFloat(pos.get(1));
+			width = (int) Float.parseFloat(pos.get(2));
+			height = (int) Float.parseFloat(pos.get(3));
+		}else {
+			if (width >= height && width > 400) {
+				height = (int) (height * (400 / (double) width));
+				width = 400;
+			} else if (width <= height && height > 400) {
+				width = (int) (width * (400 / (double) height));
+				height = 400;
+			} else if (width < 400 && width >= height) {
+				height = (int) (height * (400 / (double) width));
+				width = 400;
+			} else if (width <= height && height < 400) {
+				width = (int) (width * (400 / (double) height));
+				height = 400;
+			}
+		}
 		String result = null;
 		try {
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String format = file.getOriginalFilename().substring(pos);
+			
 			result = UUID.randomUUID() + format;
 
-			String extension = file.getContentType().split("/")[1];
-			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff") || extension.equals("jfif") ) {
-				
-				BufferedImage img = resize(file.getInputStream(), resizingW, resizingH);
+			
+			
+			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
+					|| extension.equals("jfif")) {
+
 				File out = new File(filePath + File.separator + result);
-				if(width <= 400 && height <= 400)
-					ImageIO.write(image, extension, out);
-				else
-					ImageIO.write(img, extension, out);
+				if(isCoordi) {
+					BufferedImage img = resize(file.getInputStream(), x, y, width, height);
+					BufferedImage img2 = resize(img, 400, 400);
+					ImageIO.write(img2, extension, out);					
+				}else {
+					System.out.println("no크롭");
+					BufferedImage img = resize(file.getInputStream(), width, height);
+					ImageIO.write(img, extension, out);					
+				}
+
 			} else {
 				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
 			}
@@ -213,6 +248,29 @@ public class FileStorageService {
 		return result;
 	}
 
+
+	public static BufferedImage resize(InputStream inputStream, int width, int height) throws IOException {
+		BufferedImage inputImage = ImageIO.read(inputStream);
+		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType()); // 사진틀
+		Graphics2D graphics2D = outputImage.createGraphics();
+		graphics2D.drawImage(inputImage, 0, 0, width, height, null); // 그릴 곳
+		graphics2D.dispose();
+
+		return outputImage;
+	}
+	
+	public static BufferedImage resize(InputStream inputStream, int x, int y, int width, int height) throws IOException {
+		BufferedImage inputImage = ImageIO.read(inputStream);
+		int oldW, oldH;
+		oldW = inputImage.getWidth();
+		oldH = inputImage.getHeight();
+		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType()); // 사진틀
+		Graphics2D graphics2D = outputImage.createGraphics();
+		graphics2D.drawImage(inputImage, -x, -y, oldW, oldH, null); // 그릴 곳
+		graphics2D.dispose();
+
+		return outputImage;
+	}
 	/***
 	 * 사이즈 지정값(400x400) 이미지 리사이징 기능
 	 * 
@@ -222,17 +280,16 @@ public class FileStorageService {
 	 * @return BufferedImage
 	 * @throws IOException
 	 */
-	public static BufferedImage resize(InputStream inputStream, int width, int height) throws IOException {
-		BufferedImage inputImage = ImageIO.read(inputStream);
-
+	public static BufferedImage resize(BufferedImage inputImg, int width, int height) throws IOException {
+		BufferedImage inputImage = inputImg;
 		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType());
-		System.out.println(width + " / " + height);
 		Graphics2D graphics2D = outputImage.createGraphics();
 		graphics2D.drawImage(inputImage, 0, 0, width, height, null);
 		graphics2D.dispose();
 
 		return outputImage;
 	}
+
 
 	/***
 	 * fid(feed pk)의 DBFile list 정보 호출
