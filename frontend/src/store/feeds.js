@@ -48,6 +48,10 @@ export default {
           config
         )
         .then((res) => {
+          delete config.params;
+          return res;
+        })
+        .then((res) => {
           console.log(res);
           commit("SET_FEEDS", res.data.feedAll);
           return res.data.feedAll;
@@ -71,6 +75,10 @@ export default {
             SERVER.ROUTES.feeds.followerPagination,
           config
         )
+        .then((res) => {
+          delete config.params;
+          return res;
+        })
         .then((res) => {
           console.log(res);
           commit("SET_FOLLOWFEEDS", res.data.feedAll);
