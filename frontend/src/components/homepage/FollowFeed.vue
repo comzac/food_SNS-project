@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Follow</h1>
     <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
