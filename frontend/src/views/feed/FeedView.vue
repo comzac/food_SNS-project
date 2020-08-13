@@ -23,6 +23,7 @@
                 :flow="false"
                 :like="selectedFeed.like"
                 :likeCount="selectedFeed.likeCount"
+                :item="false"
                 @likeUnlike="feedLU()"
               />
               <!-- Comment module ?? -->

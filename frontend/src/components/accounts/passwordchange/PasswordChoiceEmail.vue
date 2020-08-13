@@ -4,7 +4,7 @@
       아이디 찾기
     </h1>
     <h1 class="text-left ml-3" style="color:#ff6666;" v-if="!isRetrieveIDPage">
-      이메일로 찾기
+      비밀번호 찾기
     </h1>
     <br />
     <br />
@@ -25,7 +25,10 @@
     <br />
     <br />
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')"
+      <v-btn
+        color="#ff6666"
+        class="white--text"
+        @click="$emit('pageDown'), $emit('go-back')"
         >뒤로가기</v-btn
       >
       <v-divider class="mr-5" vertical></v-divider>
