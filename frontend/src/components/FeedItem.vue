@@ -21,6 +21,7 @@
                 :flow="true"
                 :like="feed.like"
                 :likeCount="feed.likeCount"
+                :item="true"
                 @likeUnlike="feedLU()"
               />
               <!-- 댓글 -->

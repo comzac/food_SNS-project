@@ -20,6 +20,16 @@
 
             <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
             <v-window v-model="i2" continuous>
+              <v-window-item v-if="fileData == ''">
+                <v-img
+                  :src="require('@/assets/bees/bee.png')"
+                  width="100%"
+                  :aspect-ratio="1"
+                  contain
+                  class="grey lighten-2"
+                  style="opacity: 0.6;"
+                ></v-img>
+              </v-window-item>
               <v-window-item v-for="(preview, i) in previews" :key="i">
                 <v-responsive
                   v-if="preview.includes('data:video/mp4', 0)"
@@ -104,6 +114,7 @@
               error-messages="20mb 이하 .png, jp(e)g, gif, jfif .mp4 파일만 최대 8개 업로드 됩니다."
             ></v-file-input>
             <v-spacer></v-spacer>
+
             <v-textarea
               color="#ff6666"
               v-model="feed.content"
@@ -112,7 +123,6 @@
               outlined
               solo
               :error-messages="feed.content ? '' : '내용을 입력하세요'"
-              single-line
               autocomplete="off"
             ></v-textarea>
             <v-spacer>

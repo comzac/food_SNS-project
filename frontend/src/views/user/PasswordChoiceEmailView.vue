@@ -69,6 +69,7 @@ export default {
       this.setPage(4);
     },
     doPasswordReset(password) {
+      // console.log(this.userEmailData);
       this.userEmailData.upw = password;
       this.pwreset(this.userEmailData);
       this.setPage(1);

@@ -2,11 +2,15 @@
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <PasswordChoiceEmail v-if="page == '1' && !uid" @toEmailVerification="setConfirmCode" />
+        <PasswordChoiceEmail
+          v-if="page == '1' && !uid"
+          @toEmailVerification="setConfirmCode"
+          @go-back="$router.go(-1)"
+        />
         <PasswordChoiceEmailVerification
           v-if="page == '2' && !uid"
           @moveToConductPage="moveToConductPage"
-          @pageDown="page='1', setPage(1)"
+          @pageDown="(page = '1'), setPage(1)"
         />
         <RetrieveIDPage v-if="uid" :uid="uid" />
       </v-col>
@@ -69,5 +73,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
