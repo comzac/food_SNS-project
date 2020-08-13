@@ -21,12 +21,6 @@ public class NotificationServiceImpl implements NotificationService {
 	@Autowired
 	NotificationNonReadRepository notificationNonReadRepository;
 	
-	@Override
-	public Map<Long, String> register(Long userId, String token) {
-		Map<Long, String> tokenMap = new HashMap<>();
-		tokenMap.put(userId, token);
-		return tokenMap;
-	}
 
 	@Override
 	public List<NotificationNonRead> findNotificationNonReadByUid(int uid) {
@@ -38,11 +32,6 @@ public class NotificationServiceImpl implements NotificationService {
 		return notificationReadRepository.findAllByUidOrderByIdDesc(uid);
 	}
 	
-	@Override
-	public List<NotificationRead> findNotificationReadByUidLimit(int uid, int limit) {
-		return null;
-	}
-
 	@Override
 	public NotificationRead readNotification(int nid) {
 		System.out.println("read "+nid);
