@@ -51,16 +51,8 @@ export default {
       showFeedFollow: false,
     };
   },
-<<<<<<< HEAD
-  methods: {
-    changeState() {
-      this.showFeedAll = !this.showFeedAll;
-      this.showFeedFollow = !this.showFeedFollow;
-    },
-=======
   mounted() {
     this.$emit("change-page", 0);
->>>>>>> front
   },
 };
 </script>
