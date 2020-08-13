@@ -1,5 +1,8 @@
 package com.ssafy.sub.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -167,9 +170,33 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public DBProfile getProfile(int uid) {
-		Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(uid));
+		Optional<DBProfile> dbProOptional = dbProfileRepository.findByUid(String.valueOf(uid));	// 확인
 		if(dbProOptional.isPresent()) return dbProOptional.get();
 		else return null;
+	}
+	
+	@Override
+	public int getUserAge(Date ubirth) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date age10 = sdf.parse("2002-01-01");
+			Date age20 = sdf.parse("1992-01-01");
+			Date age30 = sdf.parse("1982-01-01");
+			Date age40 = sdf.parse("1972-01-01");
+			
+			int userAge = 0;
+			if(ubirth.after(age10)) userAge=10;
+			else if(ubirth.after(age20) && ubirth.before(age10)) userAge=20;
+			else if(ubirth.after(age30) && ubirth.before(age20)) userAge=30;
+			else if(ubirth.after(age40) && ubirth.before(age30)) userAge=40;
+			else userAge=50;
+			
+			return userAge;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 	
 }

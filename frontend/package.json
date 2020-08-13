@@ -18,6 +18,7 @@
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.0",
     "vue-cookies": "^1.7.2",
+    "vue-cropperjs": "^4.1.0",
     "vue-google-oauth2": "^1.5.5",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",

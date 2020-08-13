@@ -1,5 +1,6 @@
 package com.ssafy.sub.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class FileController {
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@PostMapping("/upload/multipleFiles")
 	public ResponseEntity<Result> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files,
-			@RequestParam int fid) throws FileStorageException {
+			@RequestParam int fid) throws FileStorageException, IOException {
 
 		List<String> fileNameList = new ArrayList<String>();
 		for (MultipartFile multipartFile : files) {
@@ -48,7 +49,7 @@ public class FileController {
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 
-	public String uploadFile(MultipartFile file, int fid) throws FileStorageException {
+	public String uploadFile(MultipartFile file, int fid) throws FileStorageException, IOException {
 		String fileName = fileStorageService.storeFile(file, fid);
 		return fileName;
 	}

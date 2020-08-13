@@ -15,9 +15,15 @@
         class="text-decoration-none"
       >
         <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-        <v-list-item-avatar class="mr-5" :color="comment.user.uprofile ? 'white' : 'grey'">
+        <v-list-item-avatar
+          class="mr-5"
+          :color="comment.user.uprofile ? 'white' : 'grey'"
+        >
           <v-icon v-if="!comment.user.uprofile" dark>mdi-account</v-icon>
-          <v-img v-if="comment.user.uprofile" :src="media_dir + comment.user.uprofile.name" />
+          <v-img
+            v-if="comment.user.uprofile"
+            :src="media_dir + comment.user.uprofile.name"
+          />
         </v-list-item-avatar>
       </router-link>
       <v-list-item-content class="text-left">
@@ -26,15 +32,11 @@
           class="text-decoration-none"
         >
           <v-list-item-title class="black--text">
-            {{
-            comment.user.unick
-            }}
+            {{ comment.user.unick }}
           </v-list-item-title>
         </router-link>
         <v-list-item-subtitle class="black--text">
-          {{
-          comment.content
-          }}
+          {{ comment.content }}
         </v-list-item-subtitle>
         <v-list-item-subtitle class="gray--text">
           {{ computeYMD(comment.regdate) }}
@@ -75,8 +77,9 @@ export default {
     computeYMD(regdate) {
       var ymd =
         parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(regdate).getTime() / 1000);
-      var ymd2 = function (ymd) {
+        parseInt(new Date(regdate).getTime() / 1000) +
+        1;
+      var ymd2 = function(ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
         } else if (ymd < 3600) {

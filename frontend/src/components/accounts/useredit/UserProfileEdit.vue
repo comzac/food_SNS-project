@@ -2,6 +2,16 @@
   <v-col cols="12" sm="8" md="6" lg="4">
     <h2 class="text-left red--text text--lighten-2 ml-3">프로필 수정</h2>
     <v-container>
+      <v-row class="text-center align-center justify-center">
+        <Croppers
+          v-show="!imageData.includes('data:image/gif', 0) && data.hasImage"
+          v-if="imageData"
+          :imgSrc="imageData"
+          :profile="true"
+          @set-data="addCoordi"
+          @set-image="changeImage"
+        />
+      </v-row>
       <v-row>
         <v-col cols="4">
           <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
@@ -28,13 +38,13 @@
             truncate-length="15"
             class="mt-3"
             prepend-icon
-            accept=".png, .jpeg, .gif, .jpg"
+            accept=".png, .jpeg, .gif, .jpg, .jfif"
             outlined
             solo
             label="사진 선택"
             @change="previewImage"
             color="#ff6666"
-            error-messages="png, jpeg, gif, jpg 형식"
+            error-messages="png, jp(e)g, gif, jfif 형식 최대 2mb"
           ></v-file-input>
         </v-col>
         <v-col cols="2">
@@ -86,10 +96,14 @@
 
 <script>
 import swal from "sweetalert";
+import Croppers from "@/components/feed/item/Croppers";
 
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  components: {
+    Croppers,
+  },
   data() {
     return {
       rules: [
@@ -131,6 +145,13 @@ export default {
     },
   },
   methods: {
+    addCoordi(data) {
+      console.log("coordi", data);
+      this.data.img.coordi = data;
+    },
+    changeImage(cropImg) {
+      this.imageData = cropImg;
+    },
     ...mapActions("accounts", ["nickCheck"]),
     ...mapActions("feeds", ["setUserProfileData"]),
     nickCheck2(unick) {
@@ -142,10 +163,36 @@ export default {
       } else this.nickcheck = true;
     },
     previewImage(file) {
+      this.imageData = "";
       if (file) {
-        if (file.size > 200 * 1024) {
+        if (file.size > 2 * 1024 * 1024) {
+          console.log(this.data);
+          this.data.img = null;
+          this.data.hasImage = false;
+          console.log(this.data);
           swal({
-            text: "프로필 사진은 200kb 를 넘을 수 없습니다.",
+            title: "파일 용량 초과",
+            text: "프로필 사진은 2mb 를 넘을 수 없습니다.",
+            icon: "warning",
+            dangerMode: true,
+          });
+          return false;
+        } else if (
+          !/.png/.test(file.name) &&
+          !/.gif/.test(file.name) &&
+          !/.jpg/.test(file.name) &&
+          !/.jfif/.test(file.name) &&
+          !/.jpeg/.test(file.name)
+        ) {
+          console.log(this.data);
+          this.data.img = null;
+          this.data.hasImage = false;
+
+          console.log(this.data);
+          swal({
+            title: "파일 형식 문제",
+            text: "파일 형식이 어긋납니다.",
+            icon: "error",
             dangerMode: true,
           });
           return false;
@@ -171,6 +218,7 @@ export default {
       }
     },
     proceed() {
+      console.log(this.data);
       if (this.nickcheck) {
         if (this.data.img) {
           this.data.hasImage = true;

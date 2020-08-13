@@ -9,6 +9,7 @@ export default {
   namespaced: true,
   state: {
     feeds: [],
+    followFeeds: [],
     userProfileData: null,
     selectedFeed: null,
   },
@@ -22,6 +23,12 @@ export default {
     CLEAR_FEEDS(state) {
       state.feeds = [];
     },
+    SET_FOLLOWFEEDS(state, feeds) {
+      state.feeds = state.feeds.concat(feeds);
+    },
+    CLEAR_FOLLOWFEEDS(state) {
+      state.feeds = [];
+    },
     SET_USERPROFILEDATA(state, userProfileData) {
       state.userProfileData = userProfileData;
     },
@@ -30,15 +37,14 @@ export default {
     },
   },
   actions: {
-    fetchFeeds({ commit, rootGetters }, fid) {
+    fetchFeeds({ commit, rootGetters }, feedParams) {
       const config = rootGetters["accounts/config"];
+      // console.log(config);
+      config.params = feedParams;
       console.log(config);
       return axios
         .get(
-          SERVER.BASE_URL +
-            SERVER.ROUTES.feeds.URL +
-            SERVER.ROUTES.feeds.pagination +
-            fid,
+          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
           config
         )
         .then((res) => {
@@ -53,13 +59,37 @@ export default {
       commit("CLEAR_FEEDS");
     },
 
+    fetchFollowFeeds({ commit, rootGetters }, feedParams) {
+      const config = rootGetters["accounts/config"];
+      // console.log(feedParams);
+      config.params = feedParams;
+      // console.log(config);
+      return axios
+        .get(
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.feeds.followerPagination,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          commit("SET_FOLLOWFEEDS", res.data.feedAll);
+          return res.data.feedAll;
+        })
+        .catch((err) => console.log(err.response));
+    },
+
+    clearFollowFeeds({ commit }) {
+      commit("CLEAR_FOLLOWFEEDS");
+    },
+
     getUserPageData({ commit, rootGetters }, uid) {
       const config = rootGetters["accounts/config"];
       axios
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
-            SERVER.ROUTES.feeds.page +
+            SERVER.ROUTES.accounts.page +
             uid,
           config
         )
@@ -80,7 +110,9 @@ export default {
       console.log(data.hasImage);
       axios
         .post(
-          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.accounts.page,
           formData,
           config
         )
@@ -188,23 +220,14 @@ export default {
     },
     searchKeyword({ rootGetters }, keyword) {
       console.log(keyword);
-      var state;
-      if (/^#/.test(keyword)) {
-        state = "HASHTAG";
-        keyword = keyword.replace(/^#/g, "").replace(/ /g, "");
-      } else {
-        keyword = keyword.replace(/ /g, "");
-        state = "USERID";
-      }
+      keyword = keyword.replace(/ /g, "");
       const config = rootGetters["accounts/config"];
       console.log(
         SERVER.BASE_URL +
           SERVER.ROUTES.feeds.URL +
           SERVER.ROUTES.feeds.search +
           "/temp/" +
-          keyword +
-          "/" +
-          state
+          keyword
       );
       return axios
         .get(
@@ -212,9 +235,7 @@ export default {
             SERVER.ROUTES.feeds.URL +
             SERVER.ROUTES.feeds.search +
             "/temp/" +
-            keyword +
-            "/" +
-            state,
+            keyword,
           config
         )
         .then((res) => {

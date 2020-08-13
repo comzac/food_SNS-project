@@ -283,7 +283,8 @@ export default {
     computeYMD(regdate) {
       var ymd =
         parseInt(new Date().getTime() / 1000) -
-        parseInt(new Date(regdate).getTime() / 1000);
+        parseInt(new Date(regdate).getTime() / 1000) +
+        1;
       var ymd2 = function(ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
