@@ -48,6 +48,7 @@ export default {
     return {
       tab: 0,
       showFeedAll: true,
+      showFeedFollow: false,
     };
   },
   mounted() {
