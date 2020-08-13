@@ -87,4 +87,5 @@ public class ResponseMessage {
 
     public static final String CREATE_FILE = "파일 저장 성공";
     
+    public static final String LOG_UPDATE_SUCCESS = "유저 로그 데이터 분석 성공";
 }

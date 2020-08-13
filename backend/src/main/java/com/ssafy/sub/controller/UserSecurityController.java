@@ -76,6 +76,9 @@ public class UserSecurityController {
 	@Autowired
 	RedisTemplate<String, Object> redisTemplate;
 
+	@Autowired
+	LogController logController;
+	
 	// 회원가입
 	@ApiOperation(value = "회원가입. 성공 시 User정보, 실패 시 null 반환한다.", response = Result.class)
 	@PostMapping("/join")
@@ -147,7 +150,7 @@ public class UserSecurityController {
 		
 		// User 반환 정보
 		UserSimple result = userService.getSimpleUser(member.getUid());
-
+		
 		System.out.println("Redis 확인: " + redisTemplate.opsForValue().get(member.getUid()));
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, result),
 				HttpStatus.OK);

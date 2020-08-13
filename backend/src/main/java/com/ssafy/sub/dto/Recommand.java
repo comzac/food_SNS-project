@@ -18,17 +18,30 @@ import lombok.ToString;
 @Entity
 @ToString
 public class Recommand {
-	
-	@EmbeddedId
-    protected RecommandKey recommandKey;
-	
-	@Column(name = "score")
-    private int score;
 
-	public Recommand(RecommandKey recommandKey, int score) {
+    @EmbeddedId
+    protected RecommandKey recommandkey;
+
+    @Column(name="accumulate")
+    private int accumulate;
+
+    @Column(name="today")
+    private int today;
+
+    @Column(name="cnt")
+    private int cnt;
+
+    @Column(name="avg")
+    private int avg;
+
+	public Recommand(RecommandKey recommandkey, int accumulate, int today, int cnt, int avg) {
 		super();
-		this.recommandKey = recommandKey;
-		this.score = score;
+		this.recommandkey = recommandkey;
+		this.accumulate = accumulate;
+		this.today = today;
+		this.cnt = cnt;
+		this.avg = avg;
 	}
-	
+
 }
+
