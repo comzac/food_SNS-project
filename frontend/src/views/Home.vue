@@ -1,13 +1,17 @@
 <template>
   <div>
-    <v-row align="center" justify="center" class="pb-5">
-      <v-btn-toggle v-model="showFeedAll">
-        <v-btn class="toggle">All</v-btn>
-        <v-btn class="toggle">Follower</v-btn>
-      </v-btn-toggle>
+    <v-row align="center" justify="center">
+      <div @click="changeState">
+        <v-btn v-if="showFeedAll" text color="#ff6666">All</v-btn>
+        <v-btn v-else text>All</v-btn>
+      </div>
+      <div @click="changeState">
+        <v-btn v-if="showFeedFollow" text color="#ff6666">Followers</v-btn>
+        <v-btn v-else text>Followers</v-btn>
+      </div>
     </v-row>
-    <FeedAll v-if="!showFeedAll" />
-    <FollowFeed v-if="showFeedAll" />
+    <FeedAll v-if="showFeedAll" />
+    <FollowFeed v-else />
   </div>
 </template>
 
@@ -23,7 +27,14 @@ export default {
   data() {
     return {
       showFeedAll: true,
+      showFeedFollow: false,
     };
+  },
+  methods: {
+    changeState() {
+      this.showFeedAll = !this.showFeedAll;
+      this.showFeedFollow = !this.showFeedFollow;
+    },
   },
 };
 </script>
