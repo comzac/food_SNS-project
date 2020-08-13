@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,9 @@ import com.ssafy.sub.dto.Hashtag;
 import com.ssafy.sub.dto.Recommand;
 import com.ssafy.sub.dto.RecommandKey;
 import com.ssafy.sub.dto.User;
+import com.ssafy.sub.model.response.ResponseMessage;
+import com.ssafy.sub.model.response.Result;
+import com.ssafy.sub.model.response.StatusCode;
 import com.ssafy.sub.service.LogService;
 import com.ssafy.sub.service.UserService;
 
@@ -153,8 +157,8 @@ public class LogController {
 		bw = new BufferedWriter(new FileWriter(this.filePath+textName+".txt"));
 		pw = new PrintWriter(bw,true);
 		
-		
-		return null;
+		Result result = new Result(StatusCode.OK, ResponseMessage.LOG_UPDATE_SUCCESS, null);
+		return new ResponseEntity<Result>(result, HttpStatus.OK);
 	}
 
 	public void setString(User loginUser, String action, List<Hashtag> hashtagList) {
