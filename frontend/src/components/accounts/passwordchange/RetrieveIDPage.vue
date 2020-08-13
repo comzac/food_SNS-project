@@ -16,7 +16,7 @@
     >
     <v-divider class="mr-5" vertical></v-divider>
     <v-btn
-      @click="$router.push({ name: 'PasswordChoice' })"
+      @click="$router.push({ name: 'PasswordChoiceEmail' })"
       color="#ff6666"
       class="white--text"
       >비밀번호찾기</v-btn
