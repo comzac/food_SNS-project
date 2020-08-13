@@ -3,7 +3,7 @@
     <v-list-item class="justify-center mb-5">
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on" class="mr-5">
+          <v-btn dark v-bind="attrs" v-on="on" class="mr-5 contest-btn">
             <v-icon left>mdi-trophy</v-icon>
             {{ currentTheme }}
           </v-btn>
@@ -18,7 +18,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn color="grey" fab small dark class="ml-5">
+      <v-btn color="black" fab small dark class="ml-5">
         <v-icon @click="moveToContestFeedCreate">mdi-pencil</v-icon>
       </v-btn>
     </v-list-item>

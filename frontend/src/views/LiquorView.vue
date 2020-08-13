@@ -3,29 +3,15 @@
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
         <v-card flat width="614" class="mx-auto">
-          <h1 class="text-left" style="color: #ff6666;">금주의 칵테일</h1>
+          <h1 class="text-left" style="color: #ff6666;">스까무라</h1>
           <br />
           <v-row class="ma-0 align-center justify-center">
-            <v-col
-              cols="6"
-              v-for="(liquor, n) in liquor_data"
-              :key="n"
-              @click="modal(liquor)"
-            >
+            <v-col cols="6" v-for="(liquor, n) in liquor_data" :key="n" @click="modal(liquor)">
               <!-- 모달 방식 -->
               <v-dialog v-model="liquor.datum2.dialog" width="295">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-card
-                    v-bind="attrs"
-                    v-on="on"
-                    max-width="295px"
-                    class="mx-auto"
-                  >
-                    <img
-                      class="liquor-image"
-                      :src="liquor.datum2.liquorimg"
-                      width="100%"
-                    />
+                  <v-card v-bind="attrs" v-on="on" max-width="295px" class="mx-auto">
+                    <img class="liquor-image" :src="liquor.datum2.liquorimg" width="100%" />
                     <br />
                     <strong>
                       <h4
@@ -67,7 +53,7 @@
                 <v-card max-width="295px" class="mx-auto">
                   <Liquor :datum="liquor.datum1" />
                 </v-card>
-              </v-tooltip> -->
+              </v-tooltip>-->
             </v-col>
             <!-- <v-col cols="12"></v-col>
             <v-col
@@ -128,7 +114,7 @@
                 light
                 v-if="n % 4 == 3"
               ></v-divider>
-            </v-col> -->
+            </v-col>-->
           </v-row>
         </v-card>
       </v-col>

@@ -63,7 +63,7 @@ export default {
     ...mapActions("notifications", ["getNotifications"]),
   },
   created() {
-    // console.log(this.$store);
+    // console.log(this.$store);v
     this.getNotifications().then((res) => {
       // console.log(res);
       this.nonReadNotification = res.nonReadNotification;

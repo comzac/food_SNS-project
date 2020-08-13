@@ -27,6 +27,10 @@
         playsinline
       ></video>
     </v-responsive>
+    <h5 class="text-center">
+      <img src="@/assets/like/contest_like.png" class="like-icon mb-n1 mt-1" />
+      {{likeCount}}
+    </h5>
   </div>
 </template>
 
@@ -56,6 +60,9 @@ export default {
         return SERVER.MEDIA_DIR + this.mediaName;
       } else return false;
     },
+    likeCount() {
+      return this.feed.likeCount;
+    },
   },
   methods: {
     moveToContestFeed() {
@@ -68,7 +75,6 @@ export default {
         });
       } else {
         this.$router.push({ name: "UserAdditionalDataEdit" });
-        // 들어가면 작성하자마자 돌아올수있게 설정하기
       }
     },
   },
@@ -78,5 +84,10 @@ export default {
 <style scoped>
 .v-image {
   cursor: pointer;
+}
+
+.like-icon {
+  width: 18px;
+  height: 18px;
 }
 </style>
