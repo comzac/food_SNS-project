@@ -37,11 +37,14 @@ public class FileController {
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
 	@PostMapping("/upload/multipleFiles")
 	public ResponseEntity<Result> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files,
-			@RequestParam int fid) throws FileStorageException, IOException {
+			@RequestParam int fid, @RequestParam("coordi") String[] coordi ) throws FileStorageException, IOException {
 
 		List<String> fileNameList = new ArrayList<String>();
-		for (MultipartFile multipartFile : files) {
-			String fileName = uploadFile(multipartFile, fid);
+		int len = files.length;
+
+		for(int i = 0 ; i < len ;i++)
+		{
+			String fileName = uploadFile(files[i], fid, coordi[i]);
 			fileNameList.add(fileName);
 		}
 
@@ -49,8 +52,8 @@ public class FileController {
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 
-	public String uploadFile(MultipartFile file, int fid) throws FileStorageException, IOException {
-		String fileName = fileStorageService.storeFile(file, fid);
+	public String uploadFile(MultipartFile file, int fid, String coordi) throws FileStorageException, IOException {
+		String fileName = fileStorageService.storeFile(file, fid, coordi);
 		return fileName;
 	}
 
