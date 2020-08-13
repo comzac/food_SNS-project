@@ -1,19 +1,5 @@
 <template>
   <div>
-<<<<<<< HEAD
-    <v-row align="center" justify="center">
-      <div @click="changeState">
-        <v-btn v-if="showFeedAll" text color="#ff6666">All</v-btn>
-        <v-btn v-else text>All</v-btn>
-      </div>
-      <div @click="changeState">
-        <v-btn v-if="showFeedFollow" text color="#ff6666">Followers</v-btn>
-        <v-btn v-else text>Followers</v-btn>
-      </div>
-    </v-row>
-    <FeedAll v-if="showFeedAll" />
-    <FollowFeed v-else />
-=======
     <v-tabs
       v-model="tab"
       background-color="transparent"
@@ -46,7 +32,6 @@
     </v-row>
     <FeedAll v-if="!showFeedAll" />
     <FollowFeed v-if="showFeedAll" /> -->
->>>>>>> front
   </div>
 </template>
 
