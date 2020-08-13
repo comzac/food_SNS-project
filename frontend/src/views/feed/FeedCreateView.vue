@@ -56,7 +56,7 @@
                   <Croppers
                     :imgSrc="preview"
                     :profile="false"
-                    @set-number="number=i"
+                    @set-number="number = i"
                     @set-data="addCoordi"
                   />
                 </v-responsive>
@@ -68,8 +68,18 @@
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
               <v-item-group v-model="i2" class="text-center" mandatory>
-                <v-item v-for="n in previews.length" :key="n" v-slot:default="{ active, toggle }">
-                  <v-btn :input-value="active" icon x-small @click="toggle" color="#ff6666">
+                <v-item
+                  v-for="n in previews.length"
+                  :key="n"
+                  v-slot:default="{ active, toggle }"
+                >
+                  <v-btn
+                    :input-value="active"
+                    icon
+                    x-small
+                    @click="toggle"
+                    color="#ff6666"
+                  >
                     <v-icon>mdi-record</v-icon>
                   </v-btn>
                 </v-item>
@@ -127,7 +137,11 @@
               autocorrect="off"
               autocomplete="off"
             ></v-text-field>
-            <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+            <div
+              v-for="tag in feedhashtag"
+              :key="tag"
+              style="display: inline-block;"
+            >
               <v-btn
                 outlined
                 solo
@@ -137,13 +151,20 @@
                 color="#ff6666"
                 small
                 @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
-              ># {{ tag }}</v-btn>
+                ># {{ tag }}</v-btn
+              >
             </div>
             <v-spacer>
               <br />
             </v-spacer>
             <div>
-              <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
+              <v-btn
+                @click="$router.go(-1)"
+                class="white--text"
+                color="#666666"
+                width="99"
+                >취소</v-btn
+              >
               <v-divider class="mr-5" vertical></v-divider>
               <!-- 클릭하면 피드 상세 페이지로 -->
               <v-btn
@@ -152,14 +173,16 @@
                 @click="updateFeedByFormData()"
                 color="#ff6666"
                 class="white--text"
-              >작성 완료</v-btn>
+                >작성 완료</v-btn
+              >
               <v-btn
                 v-else
                 :disabled="!feed.title || !feed.content || !fileData.length"
                 @click="insertFeedByFormData(), (overlay = true)"
                 color="#ff6666"
                 class="white--text"
-              >작성 완료</v-btn>
+                >작성 완료</v-btn
+              >
             </div>
           </v-card>
         </v-col>
@@ -208,7 +231,10 @@ export default {
   methods: {
     addCoordi(data) {
       console.log("coordi", data);
-      this.fileData[this.number].coordi = data;
+      this.fileData[this.number].coordi = data
+        .replace(/ /g, "")
+        .replace(/\r/g, "")
+        .replace(/\n/g, "");
       console.log(this.fileData);
       this.number = null;
     },
