@@ -1,5 +1,7 @@
 package com.ssafy.sub.repo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -43,68 +45,85 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 	}
 	
 	// 10대 좋아요 수
-	public Long findLikeAge10(int fid) {
+	public Long findLikeAge10(int fid) throws ParseException {
 		QContestFeedLike contestFeedLike = QContestFeedLike.contestFeedLike;
 		QUser user = QUser.user;
+		System.out.println(user.ubirth.after(new Date(2002)));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = sdf.parse("2002-01-01");
 		
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(new Date(2002)))
+				.where(user.ubirth.after(date1))
 				.distinct()
 				.fetchCount();
 	}
 	
 	// 20대 좋아요 수
-	public Long findLikeAge20(int fid) {
+	public Long findLikeAge20(int fid) throws ParseException {
 		QContestFeedLike contestFeedLike = QContestFeedLike.contestFeedLike;
 		QUser user = QUser.user;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = sdf.parse("2001-12-31");
+		Date date2 = sdf.parse("1992-01-01");
 		
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(new Date(1992)).and(user.ubirth.before(new Date(2001))))
+				.where(user.ubirth.after(date2).and(user.ubirth.before(date1)))
 				.distinct()
 				.fetchCount();
 	}
 	
 	// 30대 좋아요 수
-	public Long findLikeAge30(int fid) {
+	public Long findLikeAge30(int fid) throws ParseException {
 		QContestFeedLike contestFeedLike = QContestFeedLike.contestFeedLike;
 		QUser user = QUser.user;
-		Date date = new Date(); 
-		date.setYear(2002);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = sdf.parse("1991-12-31");
+		Date date2 = sdf.parse("1982-01-01");
 		
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(new Date(1982)).and(user.ubirth.before(new Date(1991))))
+				.where(user.ubirth.after(date2).and(user.ubirth.before(date1)))
 				.distinct()
 				.fetchCount();
 	}
 	
 	// 40대 좋아요 수
-	public Long findLikeAge40(int fid) {
+	public Long findLikeAge40(int fid) throws ParseException {
 		QContestFeedLike contestFeedLike = QContestFeedLike.contestFeedLike;
 		QUser user = QUser.user;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = sdf.parse("1981-12-31");
+		Date date2 = sdf.parse("1982-01-01");
 		
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(new Date(1972)).and(user.ubirth.before(new Date(1981))))
+				.where(user.ubirth.after(date2).and(user.ubirth.before(date1)))
 				.distinct()
 				.fetchCount();
 	}
 	
 	// 50대 좋아요 수
-	public Long findLikeAge50(int fid) {
+	public Long findLikeAge50(int fid) throws ParseException {
 		QContestFeedLike contestFeedLike = QContestFeedLike.contestFeedLike;
 		QUser user = QUser.user;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = sdf.parse("1971-12-31");
 		
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.before(new Date(1971)))
+				.where(user.ubirth.before(date1))
 				.distinct()
 				.fetchCount();
 	}

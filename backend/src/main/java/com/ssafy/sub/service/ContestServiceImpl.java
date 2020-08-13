@@ -1,5 +1,6 @@
 package com.ssafy.sub.service;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -98,16 +99,22 @@ public class ContestServiceImpl implements ContestService {
 		usex.put("male", male);
 		
 		HashMap<String, Long> uage = new HashMap<String, Long>();
-		Long age10 = contestFeedQueryDsl.findLikeAge10(fid);
-		Long age20 = contestFeedQueryDsl.findLikeAge20(fid);
-		Long age30 = contestFeedQueryDsl.findLikeAge30(fid);
-		Long age40 = contestFeedQueryDsl.findLikeAge40(fid);
-		Long age50 = contestFeedQueryDsl.findLikeAge50(fid);
-		uage.put("age10", age10);
-		uage.put("age20", age20);
-		uage.put("age30", age30);
-		uage.put("age40", age40);
-		uage.put("age50", age50);
+		try {
+			Long age10 = contestFeedQueryDsl.findLikeAge10(fid);
+			Long age20 = contestFeedQueryDsl.findLikeAge20(fid);
+			Long age30 = contestFeedQueryDsl.findLikeAge30(fid);
+			Long age40 = contestFeedQueryDsl.findLikeAge40(fid);
+			Long age50 = contestFeedQueryDsl.findLikeAge50(fid);
+
+			uage.put("age10", age10);
+			uage.put("age20", age20);
+			uage.put("age30", age30);
+			uage.put("age40", age40);
+			uage.put("age50", age50);
+			
+		} catch (ParseException e) {
+			throw new RestException(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_BIRTH);
+		}
 		
 		map.put("usex", usex);
 		map.put("uage", uage);

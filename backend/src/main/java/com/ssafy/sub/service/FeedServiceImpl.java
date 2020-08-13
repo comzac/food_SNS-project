@@ -29,6 +29,7 @@ import com.ssafy.sub.repo.FeedQueryDsl;
 import com.ssafy.sub.repo.FeedRepository;
 import com.ssafy.sub.repo.HashtagQueryDsl;
 import com.ssafy.sub.repo.HashtagRepository;
+import com.ssafy.sub.repo.LogQueryDsl;
 
 @Service
 public class FeedServiceImpl implements FeedService {
@@ -47,6 +48,8 @@ public class FeedServiceImpl implements FeedService {
 	DBFileRepository dbFileRepository;
 	@Autowired
 	FeedQueryDsl feedQueryDsl;
+	@Autowired
+	LogQueryDsl logQueryDsl;
 
 	@Override
 	public List<Feed> feedHomePageList() {
@@ -110,11 +113,8 @@ public class FeedServiceImpl implements FeedService {
 	}
 
 	@Override
-	public boolean findByContent(String content) {
-		if(hashtagRepository.findByContent(content)!=null) {
-			return false;
-		}
-		return true;
+	public Hashtag findByContent(String content) {
+		return hashtagRepository.findByContent(content);
 	}
 
 	@Override
@@ -143,24 +143,6 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public List<Hashtag> feedHashtagList(int fid) {
-		List<FeedHashtag> feedHashtagList = new ArrayList<FeedHashtag>();
-		List<Hashtag> hashtagList = new ArrayList<Hashtag>();
-		
-		if(feedHashtagQueryDsl.findAllByFid(fid)!=null) {
-			feedHashtagList = feedHashtagQueryDsl.findAllByFid(fid);
-		}
-		
-		Hashtag hashtag;
-		for(FeedHashtag fh: feedHashtagList) {
-			hashtag = hashtagRepository.findById(fh.getFeedHashtagkey().getFid()).get();
-			hashtagList.add(hashtag);
-		}
-		
-		return hashtagList;
-	}
-
-	@Override
 	public int getFeedCount(int uid) {
 		// feed 수
 		int feedCount = 0;
@@ -169,8 +151,7 @@ public class FeedServiceImpl implements FeedService {
 	}
 
 	@Override
-	public int feedHashtagListInsert(List<Hashtag> hashtagList) {
-		int fid = (int) feedRepository.count();
+	public int feedHashtagListInsert(List<Hashtag> hashtagList, int fid) {
 		System.out.println(fid);
 		String content;
 		int hid;
@@ -269,5 +250,44 @@ public class FeedServiceImpl implements FeedService {
 		List<Feed> feedPageList = feedQueryDsl.findByIdLessThanFollower(uid, fid.intValue(), pageable);
 		
 		return feedPageList;
+	}
+
+	@Override
+	public List<Feed> getRecommandFeed(int uid, int uageGroup, int usex) {
+		//  Accumulate가 높은순으로 해쉬태그 리스트 반환
+		List<Integer> hidList = logQueryDsl.findHidOrderByAccumulate(uageGroup, usex);
+		List<Feed> recommandFeedList = new ArrayList<Feed>();
+		if(!hidList.isEmpty()) {
+			// 추천할 피드없으면 해쉬태그 계속 타고 내려가기
+			for(int hid: hidList) {
+				recommandFeedList = feedQueryDsl.findByRecommandHid(hid, uid);	
+				if(!recommandFeedList.isEmpty()) break;
+			}
+		}
+		return recommandFeedList;
+	}
+	
+	@Override
+	public Feed getRecommandFeedFetchOne(int uid, int uageGroup, int usex, int lastFidRecommand) {
+		//  Accumulate가 높은순으로 해쉬태그 리스트 반환
+		List<Integer> hidList = logQueryDsl.findHidOrderByAccumulate(uageGroup, usex);
+		List<Feed> recommandFeedList = new ArrayList<Feed>();
+		
+		Feed recommandFeed = new Feed();
+		boolean flag=false;
+		if(!hidList.isEmpty()) {
+			// 추천할 피드없으면 해쉬태그 계속 타고 내려가기
+			for(int hid: hidList) {
+				if(flag) lastFidRecommand=Integer.MAX_VALUE;	// 해쉬태그 넘어가면 마지막 피드번호 갱신
+
+//				recommandFeedList = feedQueryDsl.findByRecommandHidFetchOne(hid, uid, lastFidRecommand);	
+//				if(!recommandFeedList.isEmpty()) break;
+				recommandFeed = feedQueryDsl.findByRecommandHidFetchOne(hid, uid, lastFidRecommand);
+				if(recommandFeed!=null) break;
+				
+				flag=true;
+			}
+		}
+		return recommandFeed;
 	}
 }

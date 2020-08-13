@@ -24,10 +24,6 @@ public class FeedAll {
 	
 	// 해시태그
 	private List<Hashtag> hashtag;
-//	private String[] hashtag;
-	
-//	// 미디어(사진들)
-//	private MultipartFile[] dbFiles;
 	
 	// 댓글
 	private List<Comment> comment;
@@ -46,5 +42,8 @@ public class FeedAll {
 	
 	// 로그인 유저가 내 피드인지 여부
 	private boolean mypage;
+	
+	// 피드 추천
+	private boolean recommand;
 
 }
