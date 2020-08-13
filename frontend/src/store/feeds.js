@@ -114,6 +114,7 @@ export default {
           .replace(/\r/g, "")
           .replace(/\n/g, "")
       );
+      formData.append("coordi", "");
       console.log(data.hasImage);
       axios
         .post(
@@ -153,6 +154,7 @@ export default {
             : ""
         );
       });
+      form.append("coordi", "");
       // let id;
       console.log("form", feedData);
       axios
