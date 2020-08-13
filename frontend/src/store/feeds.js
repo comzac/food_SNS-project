@@ -89,7 +89,7 @@ export default {
         .get(
           SERVER.BASE_URL +
             SERVER.ROUTES.feeds.URL +
-            SERVER.ROUTES.feeds.page +
+            SERVER.ROUTES.accounts.page +
             uid,
           config
         )
@@ -110,7 +110,9 @@ export default {
       console.log(data.hasImage);
       axios
         .post(
-          SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
+          SERVER.BASE_URL +
+            SERVER.ROUTES.feeds.URL +
+            SERVER.ROUTES.accounts.page,
           formData,
           config
         )
