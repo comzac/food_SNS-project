@@ -44,13 +44,13 @@
       </template>
 
       <v-list class="text-center">
-        <v-list-item v-if="!recommand && user.unick === authUserUnick" @click="moveToUpdateFeed">
+        <v-list-item v-if="user.unick === authUserUnick" @click="moveToUpdateFeed">
           <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
         </v-list-item>
-        <v-list-item v-if="!recommand && user.unick === authUserUnick" @click="deleteFeedNow">
+        <v-list-item v-if="user.unick === authUserUnick" @click="deleteFeedNow">
           <v-list-item-title class="red--text text-lighten-2">게시글 삭제</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="reportFeed">
+        <v-list-item v-if="user.unick !== authUserUnick" @click="reportFeed">
           <v-list-item-title class="red--text text-lighten-2">게시글 신고</v-list-item-title>
         </v-list-item>
         <v-list-item @click="() => {}">
