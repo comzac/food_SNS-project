@@ -26,7 +26,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.usex.eq(2))
+				.where(user.usex.eq(2)
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}
@@ -39,7 +40,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.usex.eq(1))
+				.where(user.usex.eq(1)
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}
@@ -56,7 +58,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(date1))
+				.where(user.ubirth.after(date1)
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}
@@ -73,7 +76,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(date2).and(user.ubirth.before(date1)))
+				.where(user.ubirth.after(date2).and(user.ubirth.before(date1))
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}
@@ -90,7 +94,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(date2).and(user.ubirth.before(date1)))
+				.where(user.ubirth.after(date2).and(user.ubirth.before(date1))
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}
@@ -107,7 +112,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.after(date2).and(user.ubirth.before(date1)))
+				.where(user.ubirth.after(date2).and(user.ubirth.before(date1))
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}
@@ -123,7 +129,8 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		return from(contestFeedLike)
 				.leftJoin(user)
 				.on(contestFeedLike.contestFeedLikeKey.uid.eq(user.id))
-				.where(user.ubirth.before(date1))
+				.where(user.ubirth.before(date1)
+						.and(contestFeedLike.contestFeedLikeKey.cfid.eq(fid)))
 				.distinct()
 				.fetchCount();
 	}

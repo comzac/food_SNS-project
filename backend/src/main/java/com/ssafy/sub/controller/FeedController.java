@@ -462,10 +462,10 @@ public class FeedController {
 		User loginUser = (User) authentication.getPrincipal();
 
 		// for log
-		String action = "search";	// for log action
-		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
-		hashtagListLog.add(feedService.findByContent(keyword));
-		logController.setString(loginUser, action, hashtagListLog);
+//		String action = "search";	// for log action
+//		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
+//		hashtagListLog.add(feedService.findByContent(keyword));
+//		logController.setString(loginUser, action, hashtagListLog);
 
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String,String>>>();
