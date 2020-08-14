@@ -246,6 +246,7 @@ export default {
           // Start the reader job - read file as a data url (base64 format)
           reader.readAsDataURL(file);
         }
+        swal("프로필 사진이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
       }
     },
     setInitData() {
