@@ -126,7 +126,8 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 		
 		return from(feed)
 				.leftJoin(feedHashtag)
-				.on(feedHashtag.feedHashtagkey.hid.eq(hid))
+				.on(feedHashtag.feedHashtagkey.fid.eq(feed.id))
+				.where(feedHashtag.feedHashtagkey.hid.eq(hid))
 				.where(feed.uid.notIn(
 						JPAExpressions.select(relationShip.relationShipkey.relationuid)
 							.from(relationShip)
@@ -144,7 +145,8 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 		
 		return from(feed)
 				.leftJoin(feedHashtag)
-				.on(feedHashtag.feedHashtagkey.hid.eq(hid))
+				.on(feedHashtag.feedHashtagkey.fid.eq(feed.id))
+				.where(feedHashtag.feedHashtagkey.hid.eq(hid))
 				.where(feed.uid.notIn(
 						JPAExpressions.select(relationShip.relationShipkey.relationuid)
 							.from(relationShip)

@@ -107,7 +107,7 @@ public class ContestFeedQueryDsl extends QuerydslRepositorySupport{
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date1 = sdf.parse("1981-12-31");
-		Date date2 = sdf.parse("1982-01-01");
+		Date date2 = sdf.parse("1972-01-01");
 		
 		return from(contestFeedLike)
 				.leftJoin(user)
