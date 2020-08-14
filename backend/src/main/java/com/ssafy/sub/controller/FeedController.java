@@ -79,13 +79,8 @@ public class FeedController {
 
 	/***
 	 * 페이지네이션 기능을 적용한 홈 피드 리스트 조회
-<<<<<<< HEAD
 	 * @param lastFid - 조회된 마지막 피드의 pk
 	 * @param lastFidRecommand - 조회된 추천피드 마지막 피드의 pk
-=======
-	 * 
-	 * @param lastFid        - 조회된 마지막 피드의 pk
->>>>>>> feature/back/crop
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return List<FeedAll>
 	 */
@@ -106,13 +101,16 @@ public class FeedController {
 		int feedLimit = 5;
 		feedList.addAll(feedService.feedPagination(0L, lastFid * 1L, feedLimit));
 		
+		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
 		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
 				loginUser.getId(), 
 				userService.getUserAge(loginUser.getUbirth()), 
 				loginUser.getUsex(),
 				lastFidRecommand);
 		if(recommandFeed!=null && recommandFeed.getId()!=0) {
-			feedList.add(recommandFeed);
+			if(recommandFeed.getId()!=lastFidRecommand) {
+				feedList.add(recommandFeed);
+			}
 		}
 
 		User user;
@@ -168,7 +166,7 @@ public class FeedController {
 			
 			// 추천 피드인지 여부
 			boolean recommand = false;
-			if(i == feedLimit) {
+			if(recommandFeed!=null && i==(feedList.size()-1)) {
 				recommand = true;
 			}
 			feedAll.setRecommand(recommand);
@@ -205,13 +203,16 @@ public class FeedController {
 		int feedLimit = 5;
 		feedList.addAll(feedService.feedFollowPagination(loginUser.getId(), 0L, lastFid * 1L, feedLimit));	// follower의 feedList 들고옴
 		
+		System.out.println("lastfeed id: "+lastFidRecommand);
 		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
 				loginUser.getId(), 
 				userService.getUserAge(loginUser.getUbirth()), 
 				loginUser.getUsex(),
 				lastFidRecommand);
 		if(recommandFeed!=null && recommandFeed.getId()!=0) {
-			feedList.add(recommandFeed);
+			if(recommandFeed.getId()!=lastFidRecommand) {
+				feedList.add(recommandFeed);
+			}
 		}
 		
 		User user;
@@ -267,7 +268,7 @@ public class FeedController {
 			
 			// 추천 피드인지 여부
 			boolean recommand = false;
-			if(i == feedLimit) {
+			if(recommandFeed!=null && i==(feedList.size()-1)) {
 				recommand = true;
 			}
 			feedAll.setRecommand(recommand);
@@ -470,6 +471,8 @@ public class FeedController {
 
 		User loginUser = (User) authentication.getPrincipal();
 
+<<<<<<< backend/src/main/java/com/ssafy/sub/controller/FeedController.java
+=======
 		// for log
 //		String action = "search";	// for log action
 //		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
@@ -477,6 +480,7 @@ public class FeedController {
 //		logController.setString(loginUser, action, hashtagListLog);
 
 
+>>>>>>> backend/src/main/java/com/ssafy/sub/controller/FeedController.java
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String, String>>>();
 		Result result = null;
