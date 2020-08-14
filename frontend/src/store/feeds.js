@@ -48,6 +48,10 @@ export default {
           config
         )
         .then((res) => {
+          delete config.params;
+          return res;
+        })
+        .then((res) => {
           console.log(res);
           commit("SET_FEEDS", res.data.feedAll);
           return res.data.feedAll;
@@ -71,6 +75,10 @@ export default {
             SERVER.ROUTES.feeds.followerPagination,
           config
         )
+        .then((res) => {
+          delete config.params;
+          return res;
+        })
         .then((res) => {
           console.log(res);
           commit("SET_FOLLOWFEEDS", res.data.feedAll);
@@ -107,6 +115,14 @@ export default {
       formData.append("text", data.text);
       formData.append("img", data.img);
       formData.append("hasImage", data.hasImage);
+      formData.append(
+        "coordi",
+        data.coordi
+          .replace(/ /g, "")
+          .replace(/\r/g, "")
+          .replace(/\n/g, "")
+      );
+      formData.append("coordi", "");
       console.log(data.hasImage);
       axios
         .post(
@@ -127,18 +143,28 @@ export default {
     },
 
     insertFeed({ rootGetters }, feedData) {
-      console.log(feedData);
+      console.log("feedDataa", feedData);
       const config = rootGetters["accounts/config"];
       const form = new FormData();
       const mediaData = feedData.dbFiles;
-      console.log(feedData.dbFiles);
+      console.log("dbFiles", feedData.dbFiles);
       delete feedData.dbFiles;
       console.log(config);
       mediaData.forEach((file) => {
         form.append("files", file);
+        form.append(
+          "coordi",
+          file.coordi
+            ? file.coordi
+                .replace(/ /g, "")
+                .replace(/\r/g, "")
+                .replace(/\n/g, "")
+            : ""
+        );
       });
+      form.append("coordi", "");
       // let id;
-      console.log(feedData);
+      console.log("form", feedData);
       axios
         .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
         .then((res) => {
