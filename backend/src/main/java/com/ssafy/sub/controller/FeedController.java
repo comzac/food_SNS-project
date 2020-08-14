@@ -1,5 +1,6 @@
 package com.ssafy.sub.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -61,9 +62,9 @@ import io.swagger.annotations.ApiOperation;
 public class FeedController {
 
 	@Autowired
-	private FeedService feedService; 
+	private FeedService feedService;
 	@Autowired
-	private UserService userService; 
+	private UserService userService;
 	@Autowired
 	private CommentService commentService;
 	@Autowired
@@ -72,7 +73,7 @@ public class FeedController {
 	private LikeService likeService;
 	@Autowired
 	private RelationService relationService;
-	
+
 	@Autowired
 	LogController logController;
 
@@ -179,7 +180,8 @@ public class FeedController {
 
 	/***
 	 * 로그인한 유저의 팔로우 유저의 피드 조회
-	 * @param lastFid - 조회된 마지막 피드의 pk
+	 * 
+	 * @param lastFid        - 조회된 마지막 피드의 pk
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return List<FeedAll>
 	 */
@@ -280,7 +282,8 @@ public class FeedController {
 
 	/***
 	 * 로그인한 유저의 개인 피드 조회
-	 * @param uid - 유저 id
+	 * 
+	 * @param uid            - 유저 id
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return UserPageResult
 	 */
@@ -340,26 +343,25 @@ public class FeedController {
 
 	/***
 	 * 유저의 프로필 변경
-	 * @param img - 프로필 사진
-	 * @param text - 프로필 문구
-	 * @param unick - 유저 닉네임
-	 * @param hasImage - 변경할 프로필 사진 유무
-				  hasImage : true
-			      1. img 변경
-			      2. img 유지
-			      hasImage:false
-			      1. db 내 data가 있는 경우, img 삭제
-			      2. db 내 data가 없는 경우, 유지
+	 * 
+	 * @param img            - 프로필 사진
+	 * @param text           - 프로필 문구
+	 * @param unick          - 유저 닉네임
+	 * @param hasImage       - 변경할 프로필 사진 유무 hasImage : true 1. img 변경 2. img 유지
+	 *                       hasImage:false 1. db 내 data가 있는 경우, img 삭제 2. db 내
+	 *                       data가 없는 경우, 유지
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return UserSimple
 	 * @throws FileStorageException
+	 * @throws IOException
 	 */
-	
+
 	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
 	@PostMapping(value = "/page")
 	public ResponseEntity userPageUpdate(@RequestParam(value = "img", required = false) MultipartFile img,
-			@RequestParam("text") String text, @RequestParam("unick") String unick,
-			@RequestParam("hasImage") boolean hasImage, Authentication authentication) throws FileStorageException {
+			@RequestParam("coordi") String[] coordi, @RequestParam("text") String text,
+			@RequestParam("unick") String unick, @RequestParam("hasImage") boolean hasImage,
+			Authentication authentication) throws FileStorageException, IOException {
 		System.out.println("log - userPageUpdate");
 
 		String id;
@@ -370,7 +372,7 @@ public class FeedController {
 		DBProfile dbProfile;
 		if (hasImage) {
 			if (img != null)
-				dbProfile = fileStorageService.storeProfile(img, text, id);
+				dbProfile = fileStorageService.storeProfile(img, text, id, coordi[0]);
 			else
 				dbProfile = fileStorageService.updateProfile(text, id, hasImage);
 		} else {
@@ -378,7 +380,7 @@ public class FeedController {
 		}
 
 		UserSimple res = UserSimple.builder().id(user.getId()).uid(user.getUid()).unick(user.getUnick())
-										.uprofile(dbProfile).ubirth(user.getUbirth()).usex(user.getUsex()).build();
+				.uprofile(dbProfile).ubirth(user.getUbirth()).usex(user.getUsex()).build();
 		Result result = new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, res);
 
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
@@ -386,8 +388,9 @@ public class FeedController {
 
 	/***
 	 * 검색 해쉬태그가 포함된 피드 리스트 정보 조회
+	 * 
 	 * @param authentication - 로그인한 유저의 권한 정보
-	 * @param keyword - 검색한 해쉬태그
+	 * @param keyword        - 검색한 해쉬태그
 	 * @return FeedAllResult
 	 */
 	@ApiOperation(value = "해쉬태그 기반 feedList를 검색한다", response = Feed.class)
@@ -398,7 +401,7 @@ public class FeedController {
 		User loginUser = (User) authentication.getPrincipal();
 
 		// for log
-		String action = "search";	// for log action
+		String action = "search"; // for log action
 		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
 		hashtagListLog.add(feedService.findByContent(keyword));
 		logController.setString(loginUser, action, hashtagListLog);
@@ -456,23 +459,34 @@ public class FeedController {
 
 	/***
 	 * 검색 과정 중 현재 키워드에 맞는 목록 조회
+	 * 
 	 * @param authentication - 로그인한 유저의 권한 정보
-	 * @param keyword - 현재 검색창에 입력한 키워드
+	 * @param keyword        - 현재 검색창에 입력한 키워드
 	 * @return HashMap<String, List<HashMap<String, String>>>
 	 */
 	@ApiOperation(value = "feedList의 목록을 검색한다", response = Feed.class)
 	@GetMapping(value = "/search/temp/{keyword}")
 	public ResponseEntity<Result> feedTempSearch(Authentication authentication, @PathVariable String keyword) {
 		System.out.println("log - feedTempSearch");
-		
+
 		User loginUser = (User) authentication.getPrincipal();
 
+<<<<<<< backend/src/main/java/com/ssafy/sub/controller/FeedController.java
+=======
+		// for log
+//		String action = "search";	// for log action
+//		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
+//		hashtagListLog.add(feedService.findByContent(keyword));
+//		logController.setString(loginUser, action, hashtagListLog);
+
+
+>>>>>>> backend/src/main/java/com/ssafy/sub/controller/FeedController.java
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String,String>>>();
+		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String, String>>>();
 		Result result = null;
 
 		List<Hashtag> hashtagList = feedService.findHashtagByKeyword(keyword);
-		
+
 		for (Hashtag hashtag : hashtagList) {
 			System.out.println(hashtag.getContent());
 			String hashContent = hashtag.getContent();
@@ -483,7 +497,7 @@ public class FeedController {
 		}
 
 		totalList.put("hashtag", list);
-		
+
 		list = new ArrayList<HashMap<String, String>>();
 		List<User> userList = userService.findUserNickByKeyword(keyword);
 		for (User user : userList) {
@@ -498,9 +512,9 @@ public class FeedController {
 			map.put("unick", user_nick);
 			list.add(map);
 		}
-		
+
 		totalList.put("unick", list);
-		
+
 		result = new Result(StatusCode.OK, ResponseMessage.READ_SEARCHED_USERS, totalList);
 
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
@@ -508,7 +522,8 @@ public class FeedController {
 
 	/***
 	 * 새로운 피드 작성
-	 * @param feedAll - 새로운 피드의 세부 정보
+	 * 
+	 * @param feedAll        - 새로운 피드의 세부 정보
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return int (새로 생성한 피드의 fid pk)
 	 */
@@ -518,7 +533,7 @@ public class FeedController {
 		System.out.println("log - feedInsert");
 
 		User loginUser = (User) authentication.getPrincipal();
-		
+
 		// user는 token으로 Feed
 		Feed feed = feedAll.getFeed();
 		System.out.println(feed.toString());
@@ -529,9 +544,9 @@ public class FeedController {
 		// hashtag
 		List<Hashtag> hashtagList = feedAll.getHashtag();
 		feedService.feedHashtagListInsert(hashtagList, fid);
-		
+
 		// for log
-		String action = "insert";	// for log action
+		String action = "insert"; // for log action
 		List<Hashtag> hashtagListLog = feedService.findFeedHashtagList(fid);
 		logController.setString(loginUser, action, hashtagListLog);
 
@@ -541,7 +556,8 @@ public class FeedController {
 
 	/***
 	 * 피드의 상세 정보 조회
-	 * @param id - 피드 pk
+	 * 
+	 * @param id             - 피드 pk
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return List<FeedAll> ############ 이 부분은 단일인데 리스트로 해둔건가?
 	 */
@@ -604,9 +620,9 @@ public class FeedController {
 		feedAll.setComment(commentList);
 
 		feedAllList.add(feedAll);
-		
+
 		// for log
-		String action = "revisit";	// for log action
+		String action = "revisit"; // for log action
 		logController.setString(loginUser, action, hashtagList);
 
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_FEED, feedAllList);
@@ -615,8 +631,9 @@ public class FeedController {
 
 	/***
 	 * 피드 정보 수정
-	 * @param id - 피드 pk
-	 * @param feedAll - 수정된 피드의 세부 정보
+	 * 
+	 * @param id             - 피드 pk
+	 * @param feedAll        - 수정된 피드의 세부 정보
 	 * @param authentication - 로그인한 유저의 권한 정보
 	 * @return
 	 */
@@ -647,6 +664,7 @@ public class FeedController {
 
 	/***
 	 * 피드 삭제
+	 * 
 	 * @param id - 피드 pk
 	 * @return null
 	 */
