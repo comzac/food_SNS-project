@@ -256,6 +256,7 @@ export default {
       this.i2 = this.i2 - 1 < 0 ? this.previews.length - 1 : this.i2 - 1;
     },
     previewImage(file) {
+      this.overlay = true;
       this.previews = [];
       this.fileData = [];
       this.i2 = 0;
@@ -268,6 +269,7 @@ export default {
           icon: "warning",
           dangerMode: true,
         });
+        this.overlay = false;
         return false;
       }
       for (let i = 0; i < file.length; i++) {
@@ -278,6 +280,8 @@ export default {
             icon: "warning",
             dangerMode: true,
           });
+
+          this.overlay = false;
           return false;
         } else if (
           !/.mp4/.test(file[i].name) &&
@@ -294,6 +298,7 @@ export default {
             icon: "error",
             dangerMode: true,
           });
+          this.overlay = false;
           return false;
         } else {
           // console.log(file[i]);
@@ -326,6 +331,9 @@ export default {
       //   // Start the reader job - read file as a data url (base64 format)
       //   reader.readAsDataURL(file);
       // }
+      window.scrollTo(0, 0);
+      this.overlay = false;
+      swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
     },
     insertFeedByFormData() {
       this.feedData.feed = this.feed;
