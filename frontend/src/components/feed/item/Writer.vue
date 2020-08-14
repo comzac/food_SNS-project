@@ -1,6 +1,7 @@
 <template>
   <v-list-item>
     <router-link
+      v-if="!recommand"
       :to="{
         name: 'UserDetail',
         params: { uid: user.uid },
@@ -13,6 +14,7 @@
       </v-list-item-avatar>
     </router-link>
     <router-link
+      v-if="!recommand"
       :to="{
         name: 'UserDetail',
         params: { uid: user.uid },
@@ -20,14 +22,19 @@
       class="text-decoration-none"
     >
       <v-list-item-content>
-        <v-list-item-title class="text-left red--text text--lighten-2">{{
+        <v-list-item-title class="text-left red--text text--lighten-2">
+          {{
           user.unick
-        }}</v-list-item-title>
-        <v-list-item-subtitle class="text-left red--text text--lighten-2">{{
+          }}
+        </v-list-item-title>
+        <v-list-item-subtitle class="text-left red--text text--lighten-2">
+          {{
           user.uid
-        }}</v-list-item-subtitle>
+          }}
+        </v-list-item-subtitle>
       </v-list-item-content>
     </router-link>
+    <v-list-item-content v-if="recommand">추천 피드</v-list-item-content>
     <v-spacer></v-spacer>
     <v-menu v-if="!item" left bottom>
       <template v-slot:activator="{ on, attrs }">
@@ -37,28 +44,17 @@
       </template>
 
       <v-list class="text-center">
-        <v-list-item
-          v-if="user.unick === authUserUnick"
-          @click="moveToUpdateFeed"
-        >
-          <v-list-item-title class="blue--text text-lighten-2"
-            >게시글 수정</v-list-item-title
-          >
+        <v-list-item v-if="user.unick === authUserUnick" @click="moveToUpdateFeed">
+          <v-list-item-title class="blue--text text-lighten-2">게시글 수정</v-list-item-title>
         </v-list-item>
         <v-list-item v-if="user.unick === authUserUnick" @click="deleteFeedNow">
-          <v-list-item-title class="red--text text-lighten-2"
-            >게시글 삭제</v-list-item-title
-          >
+          <v-list-item-title class="red--text text-lighten-2">게시글 삭제</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="user.unick !== authUserUnick" @click="reportFeed">
+          <v-list-item-title class="red--text text-lighten-2">게시글 신고</v-list-item-title>
         </v-list-item>
         <v-list-item @click="() => {}">
-          <v-list-item-title class="red--text text-lighten-2"
-            >게시글 신고</v-list-item-title
-          >
-        </v-list-item>
-        <v-list-item @click="() => {}">
-          <v-list-item-title class="blue--text text-lighten-2"
-            >취소</v-list-item-title
-          >
+          <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -75,6 +71,7 @@ export default {
   props: {
     user: Object,
     item: Boolean,
+    recommand: Boolean,
   },
   computed: {
     ...mapGetters("accounts", ["authUserUnick"]),
@@ -110,6 +107,10 @@ export default {
           this.deleteFeed(this.$route.params.fid);
         }
       });
+    },
+
+    reportFeed() {
+      swal("신고가 접수되었습니다.");
     },
   },
 };
