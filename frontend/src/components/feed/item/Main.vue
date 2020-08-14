@@ -27,10 +27,12 @@
         <small>{{ ymd2 }}</small>
       </v-row>
     </p>
-    <p v-if="item" :class="overflow" @click="overflow2()">{{ feed.content }}</p>
-    <pre v-if="!item" :class="overflow" @click="overflow2()">{{
-      feed.content
-    }}</pre>
+    <p v-if="item" :class="overflow" @click="overflow2()">
+      {{ feed.content }}
+    </p>
+    <p v-if="!item" style="white-space: pre-line" class="text-left">
+      {{ feed.content }}
+    </p>
     <div class="text-left" v-if="hashtag">
       <span
         class="mr-2"
