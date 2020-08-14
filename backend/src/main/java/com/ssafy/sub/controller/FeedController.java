@@ -107,11 +107,11 @@ public class FeedController {
 				userService.getUserAge(loginUser.getUbirth()), 
 				loginUser.getUsex(),
 				lastFidRecommand);
-		if(recommandFeed!=null && recommandFeed.getId()!=0) {
-			if(recommandFeed.getId()!=lastFidRecommand) {
-				feedList.add(recommandFeed);
-			}
-		}
+		if(recommandFeed!=null && feedList.size()!=0) {
+            if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
+                feedList.add(recommandFeed);
+            }
+        }
 
 		User user;
 		UserSimple userSimple;
@@ -194,6 +194,7 @@ public class FeedController {
 			@RequestParam(value = "lastFidRecommand", required = false) int lastFidRecommand, 
 			Authentication authentication) {
 		System.out.println("log - feedFollowerPage");
+		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
 
 		User loginUser = (User) authentication.getPrincipal();
 
@@ -209,11 +210,11 @@ public class FeedController {
 				userService.getUserAge(loginUser.getUbirth()), 
 				loginUser.getUsex(),
 				lastFidRecommand);
-		if(recommandFeed!=null && recommandFeed.getId()!=0) {
-			if(recommandFeed.getId()!=lastFidRecommand) {
-				feedList.add(recommandFeed);
-			}
-		}
+		if(recommandFeed!=null && feedList.size()!=0) {
+            if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
+                feedList.add(recommandFeed);
+            }
+        }
 		
 		User user;
 		UserSimple userSimple;
@@ -471,16 +472,6 @@ public class FeedController {
 
 		User loginUser = (User) authentication.getPrincipal();
 
-<<<<<<< backend/src/main/java/com/ssafy/sub/controller/FeedController.java
-=======
-		// for log
-//		String action = "search";	// for log action
-//		List<Hashtag> hashtagListLog = new ArrayList<Hashtag>();
-//		hashtagListLog.add(feedService.findByContent(keyword));
-//		logController.setString(loginUser, action, hashtagListLog);
-
-
->>>>>>> backend/src/main/java/com/ssafy/sub/controller/FeedController.java
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		HashMap<String, List<HashMap<String, String>>> totalList = new HashMap<String, List<HashMap<String, String>>>();
 		Result result = null;

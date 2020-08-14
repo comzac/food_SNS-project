@@ -1,17 +1,8 @@
 <template>
   <div>
-    <v-tabs
-      v-model="tab"
-      background-color="transparent"
-      color="#ff6666"
-      centered
-    >
-      <v-tab>
-        Follower
-      </v-tab>
-      <v-tab>
-        All
-      </v-tab>
+    <v-tabs v-model="tab" background-color="transparent" color="#ff6666" centered>
+      <v-tab>Followers</v-tab>
+      <v-tab>All</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
@@ -31,7 +22,7 @@
       </v-btn-toggle>
     </v-row>
     <FeedAll v-if="!showFeedAll" />
-    <FollowFeed v-if="showFeedAll" /> -->
+    <FollowFeed v-if="showFeedAll" />-->
   </div>
 </template>
 
