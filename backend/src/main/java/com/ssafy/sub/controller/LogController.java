@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +43,7 @@ import lombok.Setter;
  * @version 1.0 검색 임시 리스트 (해쉬태그, 유저 닉네임) 통합
  */
 
+@Component
 @CrossOrigin(origins = "*")
 @RestController
 @Getter
@@ -63,6 +66,7 @@ public class LogController {
 	private String textName;
 	private PrintWriter pw;
 
+	@Scheduled(fixedDelay = 24 * 60 * 60 * 1000L)	// 서버시작 후 24시간마다 반복
 	@GetMapping("/update")
 	public ResponseEntity update() throws IOException {
 		System.out.println(textName + ": txt");
@@ -154,6 +158,7 @@ public class LogController {
 		
 		// 파일 생성
 		textName = LocalDateTime.now().toString().replace(":", "-").substring(0, 19);
+//		textName = LocalDate.now().toString();
 		bw = new BufferedWriter(new FileWriter(this.filePath+textName+".txt"));
 		pw = new PrintWriter(bw,true);
 		
