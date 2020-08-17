@@ -91,7 +91,6 @@ public class FeedController {
 			@RequestParam(value = "lastFidRecommand", required = false) int lastFidRecommand,
 			Authentication authentication) {
 		System.out.println("log - feedUserHomePage");
-		System.out.println(lastFid+" "+lastFidRecommand);
 		
 		User loginUser = (User) authentication.getPrincipal();
 
@@ -102,16 +101,19 @@ public class FeedController {
 		feedList.addAll(feedService.feedPagination(0L, lastFid * 1L, feedLimit));
 		
 		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
-		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
-				loginUser.getId(), 
-				userService.getUserAge(loginUser.getUbirth()), 
-				loginUser.getUsex(),
-				lastFidRecommand);
-		if(recommandFeed!=null && feedList.size()!=0) {
-            if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
-                feedList.add(recommandFeed);
-            }
-        }
+		Feed recommandFeed = new Feed();
+		if(lastFidRecommand!=0) {
+			recommandFeed = feedService.getRecommandFeedFetchOne(
+					loginUser.getId(), 
+					userService.getUserAge(loginUser.getUbirth()), 
+					loginUser.getUsex(),
+					lastFidRecommand);
+			if(recommandFeed!=null && feedList.size()!=0) {
+				if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
+					feedList.add(recommandFeed);
+				}
+			}
+		}
 
 		User user;
 		UserSimple userSimple;
@@ -194,7 +196,6 @@ public class FeedController {
 			@RequestParam(value = "lastFidRecommand", required = false) int lastFidRecommand, 
 			Authentication authentication) {
 		System.out.println("log - feedFollowerPage");
-		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
 
 		User loginUser = (User) authentication.getPrincipal();
 
@@ -204,17 +205,20 @@ public class FeedController {
 		int feedLimit = 5;
 		feedList.addAll(feedService.feedFollowPagination(loginUser.getId(), 0L, lastFid * 1L, feedLimit));	// follower의 feedList 들고옴
 		
-		System.out.println("lastfeed id: "+lastFidRecommand);
-		Feed recommandFeed = feedService.getRecommandFeedFetchOne(
-				loginUser.getId(), 
-				userService.getUserAge(loginUser.getUbirth()), 
-				loginUser.getUsex(),
-				lastFidRecommand);
-		if(recommandFeed!=null && feedList.size()!=0) {
-            if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
-                feedList.add(recommandFeed);
-            }
-        }
+		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
+		Feed recommandFeed = new Feed();
+		if(lastFidRecommand!=0) {
+			recommandFeed = feedService.getRecommandFeedFetchOne(
+					loginUser.getId(), 
+					userService.getUserAge(loginUser.getUbirth()), 
+					loginUser.getUsex(),
+					lastFidRecommand);
+			if(recommandFeed!=null && feedList.size()!=0) {
+				if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
+					feedList.add(recommandFeed);
+				}
+			}
+		}
 		
 		User user;
 		UserSimple userSimple;
@@ -356,7 +360,6 @@ public class FeedController {
 	 * @throws FileStorageException
 	 * @throws IOException
 	 */
-
 	@ApiOperation(value = "유저의 개인 프로필을 수정한다", response = UserFeedResult.class)
 	@PostMapping(value = "/page")
 	public ResponseEntity userPageUpdate(@RequestParam(value = "img", required = false) MultipartFile img,
