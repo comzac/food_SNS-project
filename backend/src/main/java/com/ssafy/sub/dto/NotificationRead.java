@@ -41,6 +41,8 @@ public class NotificationRead {
 	
 	private int state;
 	
+	private int actionUid;
+	
 	//private String content;
 	
 }

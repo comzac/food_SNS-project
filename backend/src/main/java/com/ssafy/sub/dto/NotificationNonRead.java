@@ -41,5 +41,7 @@ public class NotificationNonRead {
 	private Date regdate;
 	
 	private int state;
+	
+	private int actionUid;
 
 }

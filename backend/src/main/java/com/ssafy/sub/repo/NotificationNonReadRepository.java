@@ -22,4 +22,7 @@ public interface NotificationNonReadRepository extends JpaRepository<Notificatio
 
 	List<NotificationNonRead> findAllByUidOrderByIdDesc(int uid);
 
+	@Transactional
+	void deleteAllByFid(int fid);
+
 }

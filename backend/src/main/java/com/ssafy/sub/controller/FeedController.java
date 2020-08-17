@@ -41,6 +41,7 @@ import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.FileStorageService;
 import com.ssafy.sub.service.LikeService;
+import com.ssafy.sub.service.NotificationService;
 import com.ssafy.sub.service.RelationService;
 import com.ssafy.sub.service.UserService;
 
@@ -71,6 +72,8 @@ public class FeedController {
 	private LikeService likeService;
 	@Autowired
 	private RelationService relationService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@Autowired
 	LogController logController;
@@ -106,7 +109,7 @@ public class FeedController {
 				loginUser.getUsex());
 
 		Feed recommandFeed = new Feed();
-		if(recommandFeedList.isEmpty()) {
+		if(!recommandFeedList.isEmpty()) {
 			int random = (int) (Math.random()*recommandFeedList.size());	//모든 추천피드 중 무작위로
 			if(feedList.size()==feedLimit) {	//feedList가 5개일때만 추천피드 가도록 바꿈
 				recommandFeed = recommandFeedList.get(random);
@@ -676,6 +679,7 @@ public class FeedController {
 		System.out.println("log - feedDelete");
 
 		feedService.feedDelete(id);
+		notificationService.feedDelete(id);
 
 		Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);
