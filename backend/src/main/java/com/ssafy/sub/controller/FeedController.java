@@ -106,7 +106,7 @@ public class FeedController {
 				loginUser.getUsex());
 
 		Feed recommandFeed = new Feed();
-		if(recommandFeedList.isEmpty()) {
+		if(!recommandFeedList.isEmpty()) {
 			int random = (int) (Math.random()*recommandFeedList.size());	//모든 추천피드 중 무작위로
 			if(feedList.size()==feedLimit) {	//feedList가 5개일때만 추천피드 가도록 바꿈
 				recommandFeed = recommandFeedList.get(random);

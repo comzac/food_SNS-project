@@ -66,7 +66,7 @@ public class LogController {
 	private String textName;
 	private PrintWriter pw;
 
-	@Scheduled(fixedDelay = 24 * 60 * 60 * 1000L)	// 서버시작 후 24시간마다 반복
+	@Scheduled(fixedDelay = 6 * 60 * 60 * 1000L)	// 서버시작 후 24시간마다 반복
 	@GetMapping("/update")
 	public ResponseEntity update() throws IOException {
 		System.out.println(textName + ": txt");
