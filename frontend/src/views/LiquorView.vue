@@ -571,7 +571,7 @@ export default {
     };
   },
   mounted() {
-    this.$emit("change-page", 6);
+    this.$emit("change-page", 5);
   },
 };
 </script>
