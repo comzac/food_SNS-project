@@ -175,7 +175,8 @@ public class RelationController {
 	
 		// 알림 설정
 		notificationService.notificationInsert(NotificationNonRead.builder().state(1)
-												.uid(rid).rid(Integer.parseInt(id)).regdate(new Date()).build());
+												.uid(rid).rid(Integer.parseInt(id))
+												.actionUid(Integer.parseInt(id)).regdate(new Date()).build());
 		
 		Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_FOLLOWER, followResult);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);

@@ -2,6 +2,8 @@ package com.ssafy.sub.repo;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssafy.sub.dto.NotificationNonRead;
@@ -18,4 +20,7 @@ public interface NotificationReadRepository extends JpaRepository<NotificationRe
 	NotificationNonRead save(NotificationNonRead notificationNonRead);
 
 	List<NotificationRead> findAllByUidOrderByIdDesc(int uid);
+
+	@Transactional
+	void deleteAllByFid(int fid);
 }

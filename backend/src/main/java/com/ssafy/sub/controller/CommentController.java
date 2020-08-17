@@ -91,16 +91,17 @@ public class CommentController {
    public ResponseEntity<Result> commentInsert(@RequestBody Comment comment, Authentication authentication) {
       System.out.println("log - commentInsert");
       
-      int LoginUid = Integer.parseInt(authentication.getName());
-      comment.setUid(LoginUid);
+      int loginUid = Integer.parseInt(authentication.getName());
+      comment.setUid(loginUid);
       comment.setRegdate(new Date());
       Comment insertedComment = commentService.commentInsert(comment); 
       
       // 알림 설정: fid번호로 fid유저 확인 후 저장
       int feedUid = feedService.feedDetail(comment.getFid()).getUid();
-      if(LoginUid!=feedUid) {
+      if(loginUid!=feedUid) {
 	      notificationService.notificationInsert(NotificationNonRead.builder().state(3)
-	    		  .uid(feedUid).fid(comment.getFid()).cid(LoginUid).regdate(new Date()).build());
+	    		  .uid(feedUid).fid(comment.getFid()).cid(loginUid)
+	    		  .actionUid(loginUid).regdate(new Date()).build());
       }
       
       Result result = new Result(StatusCode.OK, ResponseMessage.CREATE_COMMENT, insertedComment);

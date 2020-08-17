@@ -77,7 +77,7 @@ public class LogController {
 		File file = new File(filePath + oldTextName + ".txt");
 
 		if(file.exists()) {
-			System.out.println("존재");
+			System.out.println("분석");
 			HashMap<String, Integer> recommandMap = new HashMap<String, Integer>();
 			HashMap<String, Integer> recommandCnt = new HashMap<String, Integer>();
 
@@ -149,7 +149,7 @@ public class LogController {
 				avg = today/cnt;
 				RecommandKey recommnadKey = new RecommandKey(gender, ageGroup, hid);
 				Recommand recommand = new Recommand(recommnadKey, score, today, cnt, avg);
-				System.out.println(gender); 
+//				System.out.println(gender); 
 				logService.update(recommand); 
 			}
 		}
