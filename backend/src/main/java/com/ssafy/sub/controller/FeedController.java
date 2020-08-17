@@ -1,8 +1,6 @@
 package com.ssafy.sub.controller;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,15 +99,20 @@ public class FeedController {
 		feedList.addAll(feedService.feedPagination(0L, lastFid * 1L, feedLimit));
 		
 		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
+		List<Feed> recommandFeedList = new ArrayList<Feed>();
+		recommandFeedList = feedService.getRecommandFeed(
+				loginUser.getId(), 
+				userService.getUserAge(loginUser.getUbirth()), 
+				loginUser.getUsex());
+
 		Feed recommandFeed = new Feed();
-		if(lastFidRecommand!=0) {
-			recommandFeed = feedService.getRecommandFeedFetchOne(
-					loginUser.getId(), 
-					userService.getUserAge(loginUser.getUbirth()), 
-					loginUser.getUsex(),
-					lastFidRecommand);
-			if(recommandFeed!=null && feedList.size()!=0) {
-				if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
+		if(recommandFeedList.isEmpty()) {
+			int random = (int) (Math.random()*recommandFeedList.size());	//모든 추천피드 중 무작위로
+			if(feedList.size()==feedLimit) {	//feedList가 5개일때만 추천피드 가도록 바꿈
+				recommandFeed = recommandFeedList.get(random);
+				if(recommandFeed.getId()==lastFidRecommand || recommandFeed.getId()==0) {
+					recommandFeed=null;
+				}else {
 					feedList.add(recommandFeed);
 				}
 			}
@@ -168,7 +171,7 @@ public class FeedController {
 			
 			// 추천 피드인지 여부
 			boolean recommand = false;
-			if(recommandFeed!=null && i==(feedList.size()-1)) {
+			if(recommandFeed!=null && i==feedLimit) {
 				recommand = true;
 			}
 			feedAll.setRecommand(recommand);
@@ -179,7 +182,7 @@ public class FeedController {
 		FeedAllResult result = new FeedAllResult(StatusCode.OK, ResponseMessage.READ_ALL_FEEDS, feedAllList);
 		return new ResponseEntity<FeedAllResult>(result, HttpStatus.OK);
 	}
-
+	
 	/***
 	 * 로그인한 유저의 팔로우 유저의 피드 조회
 	 * 
@@ -206,15 +209,20 @@ public class FeedController {
 		feedList.addAll(feedService.feedFollowPagination(loginUser.getId(), 0L, lastFid * 1L, feedLimit));	// follower의 feedList 들고옴
 		
 		System.out.println("lastfeed id: "+lastFid+" "+lastFidRecommand);
+		List<Feed> recommandFeedList = new ArrayList<Feed>();
+		recommandFeedList = feedService.getRecommandFeed(
+				loginUser.getId(), 
+				userService.getUserAge(loginUser.getUbirth()), 
+				loginUser.getUsex());
+
 		Feed recommandFeed = new Feed();
-		if(lastFidRecommand!=0) {
-			recommandFeed = feedService.getRecommandFeedFetchOne(
-					loginUser.getId(), 
-					userService.getUserAge(loginUser.getUbirth()), 
-					loginUser.getUsex(),
-					lastFidRecommand);
-			if(recommandFeed!=null && feedList.size()!=0) {
-				if(recommandFeed.getId()!=lastFidRecommand && recommandFeed.getId()!=0) {
+		if(!recommandFeedList.isEmpty()) {
+			int random = (int) (Math.random()*recommandFeedList.size());
+			if(feedList.size()==feedLimit) {	//feed list가 5개일때
+				recommandFeed = recommandFeedList.get(random);
+				if(recommandFeed.getId()==lastFidRecommand || recommandFeed.getId()==0) {
+					recommandFeed=null;
+				}else {
 					feedList.add(recommandFeed);
 				}
 			}
@@ -273,7 +281,7 @@ public class FeedController {
 			
 			// 추천 피드인지 여부
 			boolean recommand = false;
-			if(recommandFeed!=null && i==(feedList.size()-1)) {
+			if(recommandFeed!=null && i==feedLimit) {
 				recommand = true;
 			}
 			feedAll.setRecommand(recommand);
