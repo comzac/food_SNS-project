@@ -1,5 +1,6 @@
 package com.ssafy.sub.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,12 +149,15 @@ public class ContestController {
 
 	@ApiOperation(value = "콘테스트 피드의 파일을 저장한다.", response = Result.class)
 	@PostMapping("/feeds/files")
-	public ResponseEntity uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam int fid)
-			throws FileStorageException {
+	public ResponseEntity uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, @RequestParam int fid, @RequestParam("coordi") String[] coordi)
+			throws FileStorageException, IOException {
 
 		List<ContestFeedFiles> fileNameList = new ArrayList<ContestFeedFiles>();
-		for (MultipartFile multipartFile : files) {
-			ContestFeedFiles fileName = uploadFile(multipartFile, fid);
+		int len = files.length;
+		 
+		for(int i = 0 ; i < len; i++)
+		{
+			ContestFeedFiles fileName = uploadFile(files[i], fid, coordi[i]);
 			fileNameList.add(fileName);
 		}
 
@@ -161,11 +165,12 @@ public class ContestController {
 		return new ResponseEntity<Result>(result, HttpStatus.CREATED);
 	}
 
-	public ContestFeedFiles uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fid") int fid)
-			throws FileStorageException {
+	public ContestFeedFiles uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fid") int fid, String coordi)
+			throws FileStorageException, IOException {
 
-		ContestFeedFiles cfFiles = fileStorageService.storeContestFile(file, fid);
+		ContestFeedFiles cfFiles = fileStorageService.storeContestFile(file, fid, coordi);
 		return cfFiles;
+		
 	}
 	
 	@ApiOperation(value = "fid번 피드를 조회한다.", response = Result.class)

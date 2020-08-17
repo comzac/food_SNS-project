@@ -386,23 +386,83 @@ public class FileStorageService {
 	 * @param fid
 	 * @return ContestFeedFiles
 	 * @throws FileStorageException
+	 * @throws IOException 
 	 */
-	public ContestFeedFiles storeContestFile(MultipartFile file, int fid) throws FileStorageException {
-		// Normalize file name
+	public ContestFeedFiles storeContestFile(MultipartFile file, int fid, String coordi) throws FileStorageException, IOException {
 
-		String result = null;
+
+		String extension = file.getContentType().split("/")[1];
 		ContestFeedFiles cfFiles = null;
+
+		int x, y, width, height, oldW, oldH;
+		x = y = 0;
+		width = height = 400;
+		boolean isCoordi = false;
+		if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
+				|| extension.equals("jfif")) {
+			BufferedImage image = ImageIO.read(file.getInputStream());
+
+			width = oldW = image.getWidth();
+			height = oldH = image.getHeight();
+		}
+		if (!coordi.equals("")) { // 크롭 한 경우,
+			isCoordi = true;
+			String parse;
+			parse = coordi.replace("{", "");
+			parse = coordi.replace("{", "");
+			String[] coordis = parse.split(",");
+			List<String> pos = new ArrayList<String>();
+			for (String string : coordis) {
+				pos.add(string.split(":")[1]);
+			}
+			x = (int) Float.parseFloat(pos.get(0));
+			y = (int) Float.parseFloat(pos.get(1));
+			width = (int) Float.parseFloat(pos.get(2));
+			height = (int) Float.parseFloat(pos.get(3));
+		} else {
+			if (width >= height && width > 400) {
+				height = (int) (height * (400 / (double) width));
+				width = 400;
+			} else if (width <= height && height > 400) {
+				width = (int) (width * (400 / (double) height));
+				height = 400;
+			} else if (width < 400 && width >= height) {
+				height = (int) (height * (400 / (double) width));
+				width = 400;
+			} else if (width <= height && height < 400) {
+				width = (int) (width * (400 / (double) height));
+				height = 400;
+			}
+		}
+		String result = null;
 		try {
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String format = file.getOriginalFilename().substring(pos);
+
 			result = UUID.randomUUID() + format;
-			Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
-			cfFiles = ContestFeedFiles.builder().cfid(fid).name(result).type(file.getContentType()).build();
+
+			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
+					|| extension.equals("jfif")) {
+
+				File out = new File(filePath + File.separator + result);
+				if (isCoordi) {
+					BufferedImage img = resize(file.getInputStream(), x, y, width, height);
+					BufferedImage img2 = resize(img, 400, 400);
+					ImageIO.write(img2, extension, out);
+				} else {
+					System.out.println("no크롭");
+					BufferedImage img = resize(file.getInputStream(), width, height);
+					ImageIO.write(img, extension, out);
+				}
+			} else {
+				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
 		}
-
+		cfFiles = ContestFeedFiles.builder().cfid(fid).name(result).type(file.getContentType()).build();
 		return contestFeedFilesRepository.save(cfFiles);
+		
 	}
 
 	/***
