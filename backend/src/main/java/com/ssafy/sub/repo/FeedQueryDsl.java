@@ -132,7 +132,7 @@ public class FeedQueryDsl extends QuerydslRepositorySupport {
 						JPAExpressions.select(relationShip.relationShipkey.relationuid)
 							.from(relationShip)
 							.where(relationShip.relationShipkey.uid.eq(uid)))
-					.and(feed.uid.eq(uid)))
+					.and(feed.uid.eq(uid).not()))
 				.orderBy(feed.id.desc())
 				.distinct()
 				.fetch();
