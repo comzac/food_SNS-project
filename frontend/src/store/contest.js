@@ -120,7 +120,17 @@ export default {
       // console.log(config);
       mediaData.forEach((file) => {
         form.append("files", file);
+        form.append(
+          "coordi",
+          file.coordi
+            ? file.coordi
+                .replace(/ /g, "")
+                .replace(/\r/g, "")
+                .replace(/\n/g, "")
+            : ""
+        );
       });
+      form.append("coordi", "");
       // let id;
       // console.log("feedData");
       // console.log(feedData);
