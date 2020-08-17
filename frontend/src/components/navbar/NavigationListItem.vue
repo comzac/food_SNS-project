@@ -6,7 +6,7 @@
       </v-list-item-icon>
       <v-list-item-title>{{ listItem.title }}</v-list-item-title>
       <div v-if="listItem.title === 'Notification'">
-        <v-list-item>{{ nonReadCount }}</v-list-item>
+        <span class="mr-1">{{ nonReadCount }}</span>
       </div>
     </v-list-item>
   </router-link>

@@ -43,7 +43,6 @@
           :to="{ name: 'UserDetail', params: { uid: authUserUid } }"
           class="text-decoration-none"
         >
-          <!-- 추후에 params.uid는 로그인 한 유저의 uid으로 바꿔야 한다 -->
           <v-list-item two-line>
             <v-list-item-avatar :color="authUserImgRoute ? 'white' : 'grey'">
               <v-icon v-if="!authUserImgRoute" dark>mdi-account</v-icon>
@@ -124,15 +123,13 @@ export default {
         icon: "mdi-trophy",
         title: "Contest",
       },
-      { id: "6", link: { name: "" }, icon: "mdi-cog", title: "Settings" },
       {
-        id: "7",
+        id: "6",
         link: { name: "Liquor" },
         // icon: "mdi-glass-mug-variant",
         icon: "mdi-glass-cocktail",
         title: "Liquor",
       },
-      { id: "8", link: { name: "" }, icon: "mdi-plus", title: "Plus" },
     ],
   }),
   computed: {
