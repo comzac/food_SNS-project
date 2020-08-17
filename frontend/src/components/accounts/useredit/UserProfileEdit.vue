@@ -116,6 +116,7 @@ export default {
         text: "",
         img: null,
         hasImage: false,
+        coordi: "",
       },
       inputPhase: false,
     };
@@ -147,7 +148,10 @@ export default {
   methods: {
     addCoordi(data) {
       console.log("coordi", data);
-      this.data.img.coordi = data;
+      this.data.coordi = data
+        .replace(/ /g, "")
+        .replace(/\r/g, "")
+        .replace(/\n/g, "");
     },
     changeImage(cropImg) {
       this.imageData = cropImg;
@@ -164,6 +168,8 @@ export default {
     },
     previewImage(file) {
       this.imageData = "";
+      this.data.coordi = "";
+
       if (file) {
         if (file.size > 2 * 1024 * 1024) {
           console.log(this.data);
@@ -208,6 +214,7 @@ export default {
           // Start the reader job - read file as a data url (base64 format)
           reader.readAsDataURL(file);
         }
+        swal("프로필 사진이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
       }
     },
     setInitData() {

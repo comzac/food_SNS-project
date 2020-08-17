@@ -1,149 +1,179 @@
 <template>
-  <v-container fill-height>
-    <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12">
-        <v-card flat class="mx-auto" max-width="614">
-          <v-text-field
-            label="제목"
-            outlined
-            solo
-            name="title"
-            type="text"
-            v-model="feed.title"
-            color="#ff6666"
-            :error-messages="feed.title ? '' : '제목을 입력해주세요'"
-            autocapitalize="off"
-            autocorrect="off"
-            autocomplete="off"
-          ></v-text-field>
-          <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-          <v-window v-model="i2" continuous>
-            <v-window-item v-for="(preview, i) in previews" :key="i">
-              <v-responsive
-                v-if="preview.includes('data:video/mp4', 0)"
-                class="align-center"
-                aspect-ratio="1"
-                style="background-color:#e0e0e0;"
-              >
-                <video
-                  :id="i"
-                  :src="preview"
-                  type="video/mp4"
+  <div>
+    <v-container fill-height>
+      <v-row class="text-center" align="center" justify="center">
+        <v-col cols="12">
+          <v-card flat class="mx-auto" max-width="614">
+            <v-text-field
+              label="제목"
+              outlined
+              solo
+              name="title"
+              type="text"
+              v-model="feed.title"
+              color="#ff6666"
+              :error-messages="feed.title ? '' : '제목을 입력해주세요'"
+              autocapitalize="off"
+              autocorrect="off"
+              autocomplete="off"
+            ></v-text-field>
+            <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
+            <v-window v-model="i2" continuous>
+              <v-window-item v-if="fileData == ''">
+                <v-img
+                  :src="require('@/assets/bees/bee.png')"
                   width="100%"
-                  class="my-auto"
-                  autoplay
-                  loop
-                  muted
-                  playsinline
-                ></video>
-              </v-responsive>
-              <v-img
-                v-if="!preview.includes('data:video/mp4', 0)"
-                :src="preview"
-                width="100%"
-                :aspect-ratio="1"
-                contain
-                class="grey lighten-2"
-              ></v-img>
-            </v-window-item>
-          </v-window>
-
-          <v-card-actions class="justify-space-between">
-            <v-btn text @click="prev" color="#ff6666">
-              <v-icon>mdi-chevron-double-left</v-icon>
-            </v-btn>
-            <v-item-group v-model="i2" class="text-center" mandatory>
-              <v-item
-                v-for="n in previews.length"
-                :key="n"
-                v-slot:default="{ active, toggle }"
-              >
-                <v-btn
-                  :input-value="active"
-                  icon
-                  @click="toggle"
-                  color="#ff6666"
+                  :aspect-ratio="1"
+                  contain
+                  class="grey lighten-2"
+                  style="opacity: 0.6;"
+                ></v-img>
+              </v-window-item>
+              <v-window-item v-for="(preview, i) in previews" :key="i">
+                <v-responsive
+                  v-if="preview.includes('data:video/mp4', 0)"
+                  class="align-center"
+                  aspect-ratio="1"
+                  style="background-color:#e0e0e0;"
                 >
-                  <v-icon>mdi-record</v-icon>
-                </v-btn>
-              </v-item>
-            </v-item-group>
-            <v-btn text @click="next" color="#ff6666">
-              <v-icon>mdi-chevron-double-right</v-icon>
-            </v-btn>
-          </v-card-actions>
+                  <video
+                    :id="i"
+                    :src="preview"
+                    type="video/mp4"
+                    width="100%"
+                    class="my-auto"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                  ></video>
+                </v-responsive>
+                <v-img
+                  v-else-if="preview.includes('data:image/gif', 0)"
+                  :src="preview"
+                  width="100%"
+                  :aspect-ratio="1"
+                  contain
+                  class="grey lighten-2"
+                ></v-img>
+                <v-responsive
+                  v-else
+                  class="align-center"
+                  aspect-ratio="1"
+                  style="background-color:#e0e0e0;"
+                >
+                  <Croppers
+                    :imgSrc="preview"
+                    :profile="false"
+                    @set-number="number = i"
+                    @set-data="addCoordi"
+                  />
+                </v-responsive>
+              </v-window-item>
+            </v-window>
 
-          <!-- 사진 비디오 입력 -->
-          <v-file-input
-            multiple
-            v-if="!isUpdatePage"
-            v-model="fileData"
-            prepend-icon
-            accept=".png, .jpeg, .gif, .jpg, .mp4"
-            outlined
-            solo
-            label="사진 또는 동영상 선택"
-            @change="previewImage"
-            color="#ff6666"
-            error-messages="20mb 이하 .png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
-          ></v-file-input>
-          <v-spacer></v-spacer>
-          <v-textarea
-            color="#ff6666"
-            v-model="feed.content"
-            auto-grow
-            label="내용"
-            outlined
-            solo
-            :error-messages="feed.content ? '' : '내용을 입력하세요'"
-            single-line
-            autocomplete="off"
-          ></v-textarea>
+            <v-card-actions class="justify-space-between">
+              <v-btn text @click="prev" color="#ff6666">
+                <v-icon>mdi-chevron-double-left</v-icon>
+              </v-btn>
+              <v-item-group v-model="i2" class="text-center" mandatory>
+                <v-item
+                  v-for="n in previews.length"
+                  :key="n"
+                  v-slot:default="{ active, toggle }"
+                >
+                  <v-btn
+                    :input-value="active"
+                    icon
+                    @click="toggle"
+                    color="#ff6666"
+                  >
+                    <v-icon>mdi-record</v-icon>
+                  </v-btn>
+                </v-item>
+              </v-item-group>
+              <v-btn text @click="next" color="#ff6666">
+                <v-icon>mdi-chevron-double-right</v-icon>
+              </v-btn>
+            </v-card-actions>
 
-          <v-spacer>
-            <br />
-          </v-spacer>
-          <div>
-            <v-btn
-              @click="$router.go(-1)"
-              class="white--text"
-              color="#666666"
-              width="99"
-              >취소</v-btn
-            >
-            <v-divider class="mr-5" vertical></v-divider>
-            <!-- 클릭하면 피드 상세 페이지로 -->
-            <v-btn
-              v-if="isUpdatePage"
-              :disabled="!feed.title || !feed.content || !fileData"
-              @click="updateFeedByFormData()"
+            <!-- 사진 비디오 입력 -->
+            <v-file-input
+              multiple
+              v-if="!isUpdatePage"
+              v-model="fileData"
+              prepend-icon
+              accept=".png, .jpeg, .gif, .jpg, .mp4"
+              outlined
+              solo
+              label="사진 또는 동영상 선택"
+              @change="previewImage"
               color="#ff6666"
-              class="white--text"
-              >수정 완료</v-btn
-            >
-            <v-btn
-              v-else
-              :disabled="!feed.title || !feed.content || !fileData.length"
-              @click="insertFeedByFormData()"
+              error-messages="20mb 이하 .png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
+            ></v-file-input>
+            <v-spacer></v-spacer>
+            <v-textarea
               color="#ff6666"
-              class="white--text"
-              >작성 완료</v-btn
-            >
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+              v-model="feed.content"
+              auto-grow
+              label="내용"
+              outlined
+              solo
+              :error-messages="feed.content ? '' : '내용을 입력하세요'"
+              single-line
+              autocomplete="off"
+            ></v-textarea>
+
+            <v-spacer>
+              <br />
+            </v-spacer>
+            <div>
+              <v-btn
+                @click="$router.go(-1)"
+                class="white--text"
+                color="#666666"
+                width="99"
+                >취소</v-btn
+              >
+              <v-divider class="mr-5" vertical></v-divider>
+              <!-- 클릭하면 피드 상세 페이지로 -->
+              <v-btn
+                v-if="isUpdatePage"
+                :disabled="!feed.title || !feed.content || !fileData"
+                @click="updateFeedByFormData()"
+                color="#ff6666"
+                class="white--text"
+                >수정 완료</v-btn
+              >
+              <v-btn
+                v-else
+                :disabled="!feed.title || !feed.content || !fileData.length"
+                @click="insertFeedByFormData(), (overlay = true)"
+                color="#ff6666"
+                class="white--text"
+                >작성 완료</v-btn
+              >
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+  </div>
 </template>
 
 <script>
 import swal from "sweetalert";
 
+import Croppers from "@/components/feed/item/Croppers";
+
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "FeedCreateView",
-  components: {},
+  components: { Croppers },
   computed: {
     ...mapState("contests", ["selectedContestFeed"]),
     isUpdatePage() {
@@ -152,6 +182,8 @@ export default {
   },
   data() {
     return {
+      number: null,
+      overlay: false,
       i2: 0,
       feedData: {},
       previews: [],
@@ -165,6 +197,15 @@ export default {
     };
   },
   methods: {
+    addCoordi(data) {
+      console.log("coordi", data);
+      this.fileData[this.number].coordi = data
+        .replace(/ /g, "")
+        .replace(/\r/g, "")
+        .replace(/\n/g, "");
+      console.log(this.fileData);
+      this.number = null;
+    },
     ...mapActions("contests", [
       "insertContestFeed",
       "updateContestFeed",
@@ -177,6 +218,7 @@ export default {
       this.i2 = this.i2 - 1 < 0 ? this.previews.length - 1 : this.i2 - 1;
     },
     previewImage(file) {
+      this.overlay = true;
       this.previews = [];
       this.fileData = [];
       this.i2 = 0;
@@ -189,6 +231,7 @@ export default {
           icon: "warning",
           dangerMode: true,
         });
+        this.overlay = false;
         return false;
       }
       for (let i = 0; i < file.length; i++) {
@@ -199,6 +242,7 @@ export default {
             icon: "warning",
             dangerMode: true,
           });
+          this.overlay = false;
           return false;
         } else if (
           !/.mp4/.test(file[i].name) &&
@@ -213,6 +257,7 @@ export default {
             icon: "error",
             dangerMode: true,
           });
+          this.overlay = false;
           return false;
         } else {
           // console.log(file[i]);
@@ -229,6 +274,9 @@ export default {
       }
       console.log(this.previews);
       console.log(this.fileData);
+      window.scrollTo(0, 0);
+      this.overlay = false;
+      swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
     },
     insertFeedByFormData() {
       this.feedData.feed = this.feed;

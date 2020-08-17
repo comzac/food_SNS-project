@@ -9,11 +9,8 @@
             max-width="614"
           >
             <!-- 작성자 -->
-            <Writer :user="selectedFeed.user" :item="false" />
-            <Media
-              :dbFiles="selectedFeed.feed.dbFiles"
-              @likeUnlike="feedLU()"
-            />
+            <Writer :recommand="false" :user="selectedFeed.user" :item="false" />
+            <Media :dbFiles="selectedFeed.feed.dbFiles" @likeUnlike="feedLU()" />
             <v-card-text>
               <!-- 본문 -->
               <Main
@@ -23,6 +20,7 @@
                 :flow="false"
                 :like="selectedFeed.like"
                 :likeCount="selectedFeed.likeCount"
+                :item="false"
                 @likeUnlike="feedLU()"
               />
               <!-- Comment module ?? -->

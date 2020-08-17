@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header v-if="isLoggedIn" />
+    <Header v-if="isLoggedIn && $route.name !== 'Login'" />
     <v-main>
       <transition name="view">
         <router-view @change-page="changePage" />
@@ -23,7 +23,10 @@
       </v-btn>
     </transition>
     <Signup v-if="$route.name == 'Login'" />
-    <Bottom v-if="isLoggedIn" v-show="$route.name !== 'FeedCreateView'" />
+    <Bottom
+      v-if="isLoggedIn && $route.name !== 'Login'"
+      v-show="$route.name !== 'FeedCreateView'"
+    />
   </v-app>
 </template>
 

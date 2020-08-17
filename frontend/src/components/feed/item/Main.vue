@@ -27,9 +27,16 @@
         <small>{{ ymd2 }}</small>
       </v-row>
     </p>
-    <p :class="overflow" @click="overflow2()">{{ feed.content }}</p>
+    <p v-if="item" :class="overflow" @click="overflow2()">
+      {{ feed.content }}
+    </p>
+    <p v-if="!item" style="white-space: pre-line" class="text-left">
+      {{ feed.content }}
+    </p>
     <div class="text-left" v-if="hashtag">
       <span
+        class="mr-2"
+        style="cursor: pointer;"
         v-for="tag in hashtag"
         :key="tag.id"
         @click="
@@ -55,6 +62,7 @@ export default {
     flow: Boolean,
     like: Boolean,
     likeCount: Number,
+    item: Boolean,
   },
   data() {
     return {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Follow</h1>
     <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
@@ -48,9 +47,9 @@ export default {
         // feed_data2.feed.id += 1;
         // this.feed_data.push(feed_data2);
         // this.page += 1;
-        this.feedParams.lastFidRecommand = 0;
         this.fetchFollowFeeds(this.feedParams).then((newFeeds) => {
           console.log("infinite scroll get");
+          // this.feedParams.lastFidRecommand = 0;
           newFeeds.forEach((feed) => {
             if (feed.recommand) {
               this.feedParams.lastFidRecommand = feed.feed.id;
@@ -68,7 +67,6 @@ export default {
   created() {
     console.log("created");
     this.clearFollowFeeds();
-    this.feedParams.lastFidRecommand = 0;
     this.fetchFollowFeeds(this.feedParams)
       .then((newFeeds) => {
         console.log("infinite scroll get");

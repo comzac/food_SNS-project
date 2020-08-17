@@ -33,7 +33,7 @@ public class LogQueryDsl extends QuerydslRepositorySupport{
 	 */
 	public List<Integer> findHidOrderByAccumulate(int uageGroup, int usex) {
 		QRecommand recommand = QRecommand.recommand;
-//		System.out.println("Rec: "+uageGroup+" "+usex);
+		System.out.println("Rec: "+uageGroup+" "+usex);
 
 		JPAQueryFactory query = new JPAQueryFactory(this.getEntityManager());
 		return query

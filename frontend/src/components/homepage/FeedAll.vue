@@ -47,9 +47,9 @@ export default {
         // feed_data2.feed.id += 1;
         // this.feed_data.push(feed_data2);
         // this.page += 1;
-        this.feedParams.lastFidRecommand = 0;
         this.fetchFeeds(this.feedParams).then((newFeeds) => {
           console.log("infinite scroll get");
+          // this.feedParams.lastFidRecommand = 0;
           newFeeds.forEach((feed) => {
             if (feed.recommand) {
               this.feedParams.lastFidRecommand = feed.feed.id;

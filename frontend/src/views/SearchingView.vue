@@ -7,22 +7,8 @@
             v-model="keyword"
             append-icon="mdi-magnify"
             @input="delaySearch()"
-            @click:append="
-              $router.push({
-                name: 'SearchedView',
-                params: {
-                  keyword: keyword.replace(/^#/g, '').replace(/ /g, ''),
-                },
-              })
-            "
-            @keyup.enter="
-              $router.push({
-                name: 'SearchedView',
-                params: {
-                  keyword: keyword.replace(/^#/g, '').replace(/ /g, ''),
-                },
-              })
-            "
+            @click:append="movetoSearched()"
+            @keyup.enter="movetoSearched()"
             label="검색어를 입력하세요"
             required
             autofocus
@@ -115,6 +101,16 @@ export default {
         this.search_users = [];
       }
     },
+    movetoSearched() {
+      if (this.keyword.replace(/^#/g, "").replace(/ /g, "")) {
+        this.$router.push({
+          name: "SearchedView",
+          params: {
+            keyword: this.keyword.replace(/^#/g, "").replace(/ /g, ""),
+          },
+        });
+      }
+    },
   },
   mounted() {
     this.$emit("change-page", 2);
@@ -122,4 +118,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

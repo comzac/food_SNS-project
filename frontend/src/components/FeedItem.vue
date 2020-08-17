@@ -10,7 +10,8 @@
             outlined
           >
             <!-- 작성자 -->
-            <Writer :user="feed.user" :item="true" />
+            <Writer :recommand="feed.recommand" :user="feed.user" :item="true" />
+
             <!-- 미디어 -->
             <Media :dbFiles="feed.feed.dbFiles" @likeUnlike="feedLU()" />
             <v-card-text>
@@ -21,6 +22,7 @@
                 :flow="true"
                 :like="feed.like"
                 :likeCount="feed.likeCount"
+                :item="true"
                 @likeUnlike="feedLU()"
               />
               <!-- 댓글 -->
