@@ -260,8 +260,7 @@ public class FeedServiceImpl implements FeedService {
 		if(!hidList.isEmpty()) {
 			// 추천할 피드없으면 해쉬태그 계속 타고 내려가기
 			for(int hid: hidList) {
-				recommandFeedList = feedQueryDsl.findByRecommandHid(hid, uid);	
-				if(!recommandFeedList.isEmpty()) break;
+				recommandFeedList.addAll(feedQueryDsl.findByRecommandHid(hid, uid));	
 			}
 		}
 		return recommandFeedList;
@@ -273,14 +272,11 @@ public class FeedServiceImpl implements FeedService {
 		List<Integer> hidList = logQueryDsl.findHidOrderByAccumulate(uageGroup, usex);
 		List<Feed> recommandFeedList = new ArrayList<Feed>();
 		
-		System.out.println("해쉬태그리스트: "+hidList.toString());
-		
 		Feed recommandFeed = new Feed();
 		boolean flag=false;
 		if(!hidList.isEmpty()) {
 			// 추천할 피드없으면 해쉬태그 계속 타고 내려가기
 			for(int hid: hidList) {
-				System.out.println("해쉬태그하나: "+hid);
 				if(flag) lastFidRecommand=Integer.MAX_VALUE;	// 해쉬태그 넘어가면 마지막 피드번호 갱신
 
 //				recommandFeedList = feedQueryDsl.findByRecommandHidFetchOne(hid, uid, lastFidRecommand);	

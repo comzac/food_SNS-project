@@ -7,11 +7,11 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item :value="0">
-        <FollowFeed />
+        <FollowFeed v-if="tab === 0" />
       </v-tab-item>
 
       <v-tab-item :value="1">
-        <FeedAll />
+        <FeedAll v-if="tab === 1" />
       </v-tab-item>
     </v-tabs-items>
 
