@@ -33,8 +33,14 @@ export default {
   methods: {
     ...mapActions("feeds", ["fetchFeeds", "clearFeeds"]),
     setFeeds(feeds) {
+      const ids = [];
+      this.feed_data.forEach((feed) => {
+        if (!ids.includes(feed.feed.id)) {
+          ids.push(feed.feed.id);
+        }
+      });
       feeds.forEach((feed) => {
-        if (!this.feed_data.includes(feed)) {
+        if (!ids.includes(feed.feed.id)) {
           this.feed_data.push(feed);
         }
       });
