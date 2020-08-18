@@ -1,78 +1,87 @@
 <template>
-  <v-container fill-height>
-    <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12">
-        <v-card flat width="350" class="mx-auto">
-          <h1 class="text-left" style="color: #ea907a;">로그인</h1>
-          <v-spacer>
-            <br />
-          </v-spacer>
-          <v-text-field
-            v-model="loginData.uid"
-            prepend-icon="mdi-account"
-            label="아이디를 입력하세요"
-            required
-            autofocus
-            color="#ea907a"
-            autocapitalize="off"
-            autocorrect="off"
-            autocomplete="off"
-          ></v-text-field>
-          <v-text-field
-            append-outer-icon
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="show1 = !show1"
-            :type="show1 ? 'text' : 'password'"
-            v-model="loginData.upw"
-            @keyup.enter="login(loginData)"
-            prepend-icon="mdi-lock"
-            label="비밀번호를 입력하세요."
-            required
-            color="#ea907a"
-            autocomplete="off"
-          ></v-text-field>
-          <div class="text-right">
-            <router-link
-              :to="{ name: 'RetrieveID' }"
-              class="text-decoration-none mr-2"
-              style="color: #ea907a;"
-            >아이디 찾기</router-link>
+  <div>
+    <v-container fill-height>
+      <v-row class="text-center" align="center" justify="center">
+        <v-col cols="12">
+          <v-card flat width="350" class="mx-auto">
+            <h1 class="text-left" style="color: #ea907a;">로그인</h1>
+            <v-spacer>
+              <br />
+            </v-spacer>
+            <v-text-field
+              v-model="loginData.uid"
+              prepend-icon="mdi-account"
+              label="아이디를 입력하세요"
+              required
+              autofocus
+              color="#ea907a"
+              autocapitalize="off"
+              autocorrect="off"
+              autocomplete="off"
+            ></v-text-field>
+            <v-text-field
+              append-outer-icon
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append="show1 = !show1"
+              :type="show1 ? 'text' : 'password'"
+              v-model="loginData.upw"
+              @keyup.enter="login(loginData)"
+              prepend-icon="mdi-lock"
+              label="비밀번호를 입력하세요."
+              required
+              color="#ea907a"
+              autocomplete="off"
+            ></v-text-field>
+            <div class="text-right">
+              <router-link
+                :to="{ name: 'RetrieveID' }"
+                class="text-decoration-none mr-2"
+                style="color: #ea907a;"
+                >아이디 찾기</router-link
+              >
 
-            <router-link
-              to="/user/password_choice_email"
-              class="text-decoration-none"
-              style="color: #ea907a;"
-            >비밀번호 찾기</router-link>
-          </div>
-          <v-spacer>
-            <br />
-          </v-spacer>
-          <v-btn
-            class="white--text"
-            color="#ea907a"
-            @click="login(loginData)"
-            :disabled="loginData.uid == 0 || loginData.upw.length < 8"
-            width="100%"
-            x-large
-          >로그인</v-btn>
-          <v-spacer>
-            <br />
-          </v-spacer>
-          <br />
-
-          <v-layout style="color: #ea907a;" justify-space-around>
-            <v-sheet
-              @click="googleLogin"
-              elevation="6"
-              class="d-flex justify-space-around align-center px-5 py-1 social-icon"
+              <router-link
+                to="/user/password_choice_email"
+                class="text-decoration-none"
+                style="color: #ea907a;"
+                >비밀번호 찾기</router-link
+              >
+            </div>
+            <v-spacer>
+              <br />
+            </v-spacer>
+            <v-btn
+              class="white--text"
+              color="#ea907a"
+              @click="login(loginData)"
+              :disabled="loginData.uid == 0 || loginData.upw.length < 8"
+              width="100%"
+              x-large
+              >로그인</v-btn
             >
-              <v-avatar class="mr-3 ml-n2">
-                <v-img max-width="30" contain src="@/assets/google-login.png" alt="Google" />
-              </v-avatar>
-              <h4 class="grey--text text--darken-2 mb-1">구글 계정으로 로그인</h4>
-            </v-sheet>
+            <v-spacer>
+              <br />
+            </v-spacer>
+            <v-layout style="color: #ea907a;" justify-space-around>
+              <v-sheet
+                @click="googleLogin"
+                elevation="6"
+                class="d-flex justify-space-around align-center px-5 py-1 social-icon"
+              >
+                <v-avatar class="mr-3 ml-n2">
+                  <v-img
+                    max-width="30"
+                    contain
+                    src="@/assets/google-login.png"
+                    alt="Google"
+                  />
+                </v-avatar>
+                <h4 class="grey--text text--darken-2 mb-1">
+                  구글 계정으로 로그인
+                </h4>
+              </v-sheet>
 
-            <!-- <v-spacer></v-spacer>
+              <!-- <v-spacer></v-spacer>
             <v-avatar color="#FFF3F2" class="social-icon google">
               <v-img max-width="30" contain src="@/assets/google-login.png" alt="Google" />
             </v-avatar>
@@ -90,11 +99,15 @@
               />
             </v-avatar>
             <v-spacer></v-spacer>-->
-          </v-layout>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+            </v-layout>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+  </div>
 </template>
 
 <script>
@@ -113,6 +126,11 @@ export default {
       "setUid",
       "postAuthData",
     ]),
+    login2(loginData) {
+      this.overlay = true;
+      this.login(loginData);
+      this.overlay = false;
+    },
     moveToSignup() {
       this.$router.push({ name: "Signup" });
     },
@@ -143,6 +161,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       loginData: {
         uid: "",
         upw: "",

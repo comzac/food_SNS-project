@@ -230,6 +230,7 @@ export default {
           text: "파일이 3개보다 많이 선택되었습니다.",
           icon: "warning",
           dangerMode: true,
+          buttons: [null, "확인"],
         });
         this.overlay = false;
         return false;
@@ -241,6 +242,7 @@ export default {
             text: "20mb보다 큰 파일이 선택되었습니다.",
             icon: "warning",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           this.overlay = false;
           return false;
@@ -256,6 +258,7 @@ export default {
             text: "파일 형식이 어긋납니다.",
             icon: "error",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           this.overlay = false;
           return false;
@@ -276,7 +279,9 @@ export default {
       console.log(this.fileData);
       window.scrollTo(0, 0);
       this.overlay = false;
-      swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
+      swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.", {
+        buttons: [null, "확인"],
+      });
     },
     insertFeedByFormData() {
       this.feedData.feed = this.feed;
@@ -302,6 +307,9 @@ export default {
     if (this.$route.params.fid) {
       this.getContestFeedDetail(this.$route.params.fid).then(this.initData());
     }
+  },
+  mounted() {
+    window.scrollTo(0, 0);
   },
   //   mounted() {
   //     this.$emit("change-page", 7);

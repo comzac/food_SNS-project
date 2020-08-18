@@ -27,9 +27,9 @@
       style="white-space: pre-line; cursor: default;"
       class="text-left"
     >{{ feed.content }}</p>
-    <div class="text-left" v-if="hashtag">
+    <div class="text-left mb-4" v-if="hashtag">
       <span
-        class="mr-2"
+        class="mr-2 mb-2"
         style="cursor: pointer;"
         v-for="tag in hashtag"
         :key="tag.id"
@@ -39,7 +39,9 @@
             params: { keyword: tag.content },
           })
         "
-      ># {{ tag.content }}</span>
+      >
+        <v-chip outlined color="grey darken-3"># {{ tag.content }}</v-chip>
+      </span>
     </div>
   </div>
 </template>
@@ -103,7 +105,7 @@ export default {
       tempElement.select();
       document.execCommand("copy");
       document.body.removeChild(tempElement);
-      swal("주소가 복사되었습니다.");
+      swal("주소가 복사되었습니다.", { buttons: [null, "확인"] });
     },
   },
 };

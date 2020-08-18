@@ -5,10 +5,20 @@
         <v-list two-line>
           <div
             style="text-align:center; margin-top:65px"
-            v-if="nonReadNotification.length === 0 && readNotification.length === 0"
+            v-if="
+              nonReadNotification.length === 0 && readNotification.length === 0
+            "
           >
-            <img class="d-flex d-sm-none mx-auto" style="height: 300px; opacity:0.3" :src="beeImg" />
-            <img class="d-none d-sm-flex mx-auto" style="height: 100px; opacity:0.3" :src="beeImg" />
+            <img
+              class="d-flex d-sm-none mx-auto"
+              style="height: 300px; opacity:0.3"
+              :src="beeImg"
+            />
+            <img
+              class="d-none d-sm-flex mx-auto"
+              style="height: 100px; opacity:0.3"
+              :src="beeImg"
+            />
             <template>
               <p style="opacity:0.5">알림이 없는데용 ^_^</p>
             </template>
@@ -72,6 +82,7 @@ export default {
   },
   mounted() {
     this.$emit("change-page", 3);
+    window.scrollTo(0, 0);
   },
 };
 </script>

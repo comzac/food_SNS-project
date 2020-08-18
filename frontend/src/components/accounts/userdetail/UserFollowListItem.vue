@@ -16,8 +16,20 @@
       </v-list-item-content>
 
       <v-list-item-action>
-        <v-chip v-if="!isFollow && !isMe" color="#2699fb" dark @click="follow(uid)">팔로우 신청</v-chip>
-        <v-chip v-if="isFollow && !isMe" color="#ff6666" outlined @click="follow(uid)">팔로우 취소</v-chip>
+        <v-chip
+          v-if="!isFollow && !isMe"
+          color="#2699fb"
+          dark
+          @click="follow(uid)"
+          >팔로우 신청</v-chip
+        >
+        <v-chip
+          v-if="isFollow && !isMe"
+          color="#ff6666"
+          outlined
+          @click="follow(uid)"
+          >팔로우 취소</v-chip
+        >
       </v-list-item-action>
     </v-list-item>
     <v-divider></v-divider>
@@ -78,8 +90,9 @@ export default {
             this.sendFollow(this.uid);
             swal({
               text: "팔로우가 취소되었습니다.",
-              dangerMode: true,
               icon: "success",
+              dangerMode: true,
+              buttons: [null, "확인"],
             });
             this.isFollow = !this.isFollow;
           }

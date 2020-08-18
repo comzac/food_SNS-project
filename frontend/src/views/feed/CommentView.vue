@@ -192,7 +192,7 @@
       </v-row>
     </v-container>
     <v-btn
-      color="#ff6666"
+      color="#ea907a"
       elevation="24"
       fixed
       bottom
@@ -258,7 +258,7 @@ export default {
           })
           .catch((err) => console.log(err.response));
       } else {
-        swal("댓글을 입력하세요.");
+        swal("댓글을 입력하세요.", { buttons: [null, "확인"] });
       }
     },
     deleteCommentAndFetch(id) {
@@ -266,8 +266,8 @@ export default {
         title: "삭제하시겠습니까?",
         text: "이 작업은 취소 할 수 없습니다.",
         icon: "warning",
-        buttons: true,
         dangerMode: true,
+        buttons: ["취소", "확인"],
       }).then((doDelete) => {
         if (doDelete) {
           this.deleteComment(id)
@@ -346,7 +346,11 @@ export default {
     },
 
     back() {
-      this.$router.go(-1);
+      this.$router.push({
+        name: "FeedView",
+        params: { fid: this.selectedFeed.feed.id },
+      });
+      // this.$router.go(-1);
     },
   },
   created() {
@@ -355,6 +359,9 @@ export default {
     this.fetchComments(this.fid).then(() => {
       this.comments = this.$store.state.comments;
     });
+  },
+  mounted() {
+    window.scrollTo(0, 0);
   },
   destroyed() {
     window.removeEventListener("scroll", this.scrollY);

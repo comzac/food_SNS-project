@@ -74,6 +74,7 @@ export default {
           text: "인증번호를 확인해주세요.",
           icon: "warning",
           dangerMode: true,
+          buttons: [null, "확인"],
         });
       }
     },

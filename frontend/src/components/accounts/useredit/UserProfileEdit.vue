@@ -14,38 +14,19 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-avatar
-            size="70"
-            :color="data.hasImage || imageData ? 'white' : 'grey'"
-          >
-            <v-icon large v-show="!data.hasImage && !imageData" dark
-              >mdi-account</v-icon
-            >
+          <v-avatar size="70" :color="data.hasImage || imageData ? 'white' : 'grey'">
+            <v-icon large v-show="!data.hasImage && !imageData" dark>mdi-account</v-icon>
             <v-img v-if="data.hasImage && !imageData" :src="authUserImgRoute" />
             <v-img v-if="imageData" :src="imageData" />
           </v-avatar>
         </v-col>
-        <v-col
-          v-if="!inputPhase"
-          cols="4"
-          class="d-flex justify-center align-center"
-        >
-          <v-btn
-            class="ml-4"
-            fab
-            dark
-            color="#ff6666"
-            @click="inputPhase = !inputPhase"
-          >
+        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
+          <v-btn class="ml-4" fab dark color="#ea907a" @click="inputPhase = !inputPhase">
             <v-icon large dark>mdi-image</v-icon>
           </v-btn>
         </v-col>
-        <v-col
-          v-if="!inputPhase"
-          cols="4"
-          class="d-flex justify-center align-center"
-        >
-          <v-btn fab dark color="#ff6666" @click="removeProfileImg">
+        <v-col v-if="!inputPhase" cols="4" class="d-flex justify-center align-center">
+          <v-btn fab dark color="#ea907a" @click="removeProfileImg">
             <v-icon large dark>mdi-cached</v-icon>
           </v-btn>
         </v-col>
@@ -62,18 +43,12 @@
             solo
             label="사진 선택"
             @change="previewImage"
-            color="#ff6666"
+            color="#ea907a"
             error-messages="png, jp(e)g, gif, jfif 형식 최대 2mb"
           ></v-file-input>
         </v-col>
         <v-col cols="2">
-          <v-btn
-            v-show="inputPhase"
-            fab
-            small
-            class="ml-n1 mt-5"
-            @click="resetSelectImg"
-          >
+          <v-btn v-show="inputPhase" fab small class="ml-n1 mt-5" @click="resetSelectImg">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -82,13 +57,13 @@
 
     <!-- 프로필 문구 -->
     <v-textarea
-      color="#ff6666"
+      color="#ea907a"
       class="mt-n3"
       rows="1"
       counter
       v-model="data.text"
       :rules="rules"
-      label="내용"
+      label="프로필 문구"
       outlined
       solo
       single-line
@@ -101,28 +76,21 @@
       prepend-icon="mdi-account-box"
       type="text"
       v-model="data.unick"
-      color="#ff6666"
+      color="#ea907a"
       append-outer-icon="mdi-check"
       @click:append-outer="nickCheck2(data.unick)"
       :error-messages="nickErrorMsg"
       @input="nickcheck = false"
       autocomplete="off"
     ></v-text-field>
+    <v-btn color="grey" class="white--text mx-3 mt-7" width="40%" @click="$router.go(-1)">취소</v-btn>
     <v-btn
-      color="grey"
-      class="white--text mx-3 mt-7"
-      width="40%"
-      @click="$router.go(-1)"
-      >취소</v-btn
-    >
-    <v-btn
-      color="#ff6666"
+      color="#ea907a"
       width="40%"
       class="white--text mx-3 mt-7"
       @click="proceed"
       :disabled="!dataChanged"
-      >진행</v-btn
-    >
+    >진행</v-btn>
   </v-col>
 </template>
 
@@ -188,7 +156,7 @@ export default {
     changeImage(cropImg) {
       this.imageData = cropImg;
     },
-    ...mapActions("accounts", ["nickCheck"]),
+    ...mapActions("accounts", ["nickCheck", "setAuthorized"]),
     ...mapActions("feeds", ["setUserProfileData"]),
     nickCheck2(unick) {
       // if분기로 받아온 unick과 입력한 값이 다를 때만 nickCheck 하도록
@@ -213,6 +181,7 @@ export default {
             text: "프로필 사진은 2mb 를 넘을 수 없습니다.",
             icon: "warning",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           return false;
         } else if (
@@ -232,6 +201,7 @@ export default {
             text: "파일 형식이 어긋납니다.",
             icon: "error",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           return false;
         } else {
@@ -247,7 +217,10 @@ export default {
           reader.readAsDataURL(file);
         }
         this.data.hasImage = true;
-        swal("프로필 사진이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
+        swal(
+          "프로필 사진이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.",
+          { buttons: [null, "확인"] }
+        );
       }
     },
     setInitData() {
@@ -264,12 +237,17 @@ export default {
           this.data.hasImage = true;
         }
         if (!this.dataChanged) {
-          swal("변경사항이 없습니다.");
+          swal("변경사항이 없습니다.", { buttons: [null, "확인"] });
           this.$router.go(-1);
         } else {
           this.setUserProfileData(this.data);
         }
-      } else swal({ text: "닉네임 중복체크를 해주세요.", dangerMode: true });
+      } else
+        swal({
+          text: "닉네임 중복체크를 해주세요.",
+          dangerMode: true,
+          buttons: [null, "확인"],
+        });
     },
     resetSelectImg() {
       this.inputPhase = !this.inputPhase;
@@ -281,13 +259,15 @@ export default {
         swal({
           text: "프로필 사진을 삭제하시겠습니까?",
           icon: "warning",
-          buttons: true,
           dangerMode: true,
+          buttons: [null, "확인"],
         }).then((willDelete) => {
           if (willDelete) {
             this.data.hasImage = false;
             swal("프로필 사진이 삭제되었습니다.", {
+              dangerMode: true,
               icon: "success",
+              buttons: [null, "확인"],
             });
           }
         });
