@@ -2,10 +2,10 @@
   <div>
     <v-row class="mx-0 mb-2">
       <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
-        <!-- <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon>-->
-        <img v-if="!like" :src="imgRoute.unlike" alt />
-        <img v-if="like" :src="imgRoute.like_small" alt s />
+        <v-icon v-if="like">mdi-heart</v-icon>
+        <v-icon v-if="!like">mdi-heart-outline</v-icon>
+        <!-- <img v-if="!like" :src="imgRoute.unlike" alt />
+        <img v-if="like" :src="imgRoute.like_small" alt s />-->
         <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
       </v-btn>
       <span style="font-size: 15px">{{ likeCount }}</span>

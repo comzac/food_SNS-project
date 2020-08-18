@@ -26,7 +26,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn color="grey darken-3" rounded small dark>참가</v-btn>
+      <v-btn color="grey darken-3" rounded small dark @click="moveToContestFeedCreate">참가</v-btn>
     </v-list-item>
   </v-card>
 </template>
