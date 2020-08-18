@@ -57,7 +57,8 @@ public class LikeController {
 		int notiUid = feedService.feedDetail(fid).getUid();
 		if(uid!=notiUid) {
 			notificationService.notificationInsert(NotificationNonRead.builder().state(2)
-					.uid(notiUid).lid(uid).fid(fid).regdate(new Date()).build());
+					.uid(notiUid).lid(uid).fid(fid)
+					.actionUid(uid).regdate(new Date()).build());
 		}
 
 		// for log

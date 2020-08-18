@@ -41,6 +41,7 @@ import com.ssafy.sub.service.CommentService;
 import com.ssafy.sub.service.FeedService;
 import com.ssafy.sub.service.FileStorageService;
 import com.ssafy.sub.service.LikeService;
+import com.ssafy.sub.service.NotificationService;
 import com.ssafy.sub.service.RelationService;
 import com.ssafy.sub.service.UserService;
 
@@ -71,6 +72,8 @@ public class FeedController {
 	private LikeService likeService;
 	@Autowired
 	private RelationService relationService;
+	@Autowired
+	private NotificationService notificationService;
 
 	@Autowired
 	LogController logController;
@@ -676,6 +679,7 @@ public class FeedController {
 		System.out.println("log - feedDelete");
 
 		feedService.feedDelete(id);
+		notificationService.feedDelete(id);
 
 		Result result = new Result(StatusCode.OK, ResponseMessage.DELETE_FEED, null);
 		return new ResponseEntity<Result>(result, HttpStatus.OK);

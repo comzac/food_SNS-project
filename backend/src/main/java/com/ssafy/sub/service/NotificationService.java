@@ -69,4 +69,10 @@ public interface NotificationService {
 	 */
 	public NotificationNonRead notificationInsert(NotificationNonRead notificationNonRead);
 
+	/**
+	 * 피드가 삭제됐을 때 피드 pk로 안읽은 알림, 읽은 알림 삭제
+	 * @param fid
+	 */
+	public void feedDelete(int fid);
+
 }

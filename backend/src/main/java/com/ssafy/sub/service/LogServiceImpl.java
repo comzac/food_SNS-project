@@ -22,7 +22,7 @@ public class LogServiceImpl implements LogService {
 	public void update(Recommand newRecommand) {
 		Recommand recommand = logQueryDsl.dupCehck(newRecommand);
 		if (recommand == null) { // 기록에 없다면,
-			System.out.println("기록 없");
+//			System.out.println("기록 없");
 			newRecommand.setAccumulate(newRecommand.getToday());
 			logRepo.save(newRecommand);
 		} else { // 기록이 있다면,

@@ -1,9 +1,7 @@
 package com.ssafy.sub.service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +41,7 @@ public class NotificationServiceImpl implements NotificationService {
 		NotificationRead read = notificationReadRepository.save(
 									NotificationRead.builder().uid(nonRead.getUid()).fid(nonRead.getFid())
 														.rid(nonRead.getRid()).lid(nonRead.getLid()).cid(nonRead.getCid())
+														.actionUid(nonRead.getActionUid())
 														.expiredate(expiredate).state(nonRead.getState()).build());
 		
 		return read;
@@ -70,6 +69,12 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public NotificationNonRead notificationInsert(NotificationNonRead notificationNonRead) {
 		return notificationReadRepository.save(notificationNonRead);
+	}
+
+	@Override
+	public void feedDelete(int fid) {
+		notificationNonReadRepository.deleteAllByFid(fid);
+		notificationReadRepository.deleteAllByFid(fid);
 	}
 	
 }
