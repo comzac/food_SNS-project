@@ -136,7 +136,7 @@ export default {
           commit("accounts/SET_USERSIMPLEDATA", res.data.data, {
             root: true,
           });
-          swal("프로필이 수정되었습니다.");
+          swal("프로필이 수정되었습니다.", { buttons: [null, "확인"] });
           router.go(-1);
         })
         .catch((err) => console.log(err));

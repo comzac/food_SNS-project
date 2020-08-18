@@ -72,8 +72,8 @@ export default {
         },
       },
       icon: "warning",
-      buttons: true,
       dangerMode: true,
+      buttons: ["취소", "확인"],
     }).then((value) => {
       console.log(value);
       if (value) {
@@ -87,6 +87,7 @@ export default {
               text: "비밀번호를 다시 한번 확인해주세요.",
               icon: "error",
               dangerMode: true,
+              buttons: [null, "확인"],
             }).then(() => this.$router.go(-1));
           }
         });
