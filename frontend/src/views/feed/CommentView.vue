@@ -356,6 +356,9 @@ export default {
       this.comments = this.$store.state.comments;
     });
   },
+  mounted() {
+    window.scrollTo(0, 0);
+  },
   destroyed() {
     window.removeEventListener("scroll", this.scrollY);
   },

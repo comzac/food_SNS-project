@@ -409,6 +409,7 @@ export default {
   },
   mounted() {
     this.$emit("change-page", 7);
+    window.scrollTo(0, 0);
   },
 };
 </script>

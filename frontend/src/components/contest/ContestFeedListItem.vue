@@ -1,7 +1,5 @@
 <template>
-  <div @click="
-      moveToContestFeed
-    ">
+  <div @click="moveToContestFeed">
     <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-3" />
     <v-img
       v-if="mediaRoute && mediaType != 'video/mp4'"
@@ -29,7 +27,7 @@
     </v-responsive>
     <h5 class="text-center">
       <img src="@/assets/like/contest_like.png" class="like-icon mb-n1 mt-1" />
-      {{likeCount}}
+      {{ likeCount }}
     </h5>
   </div>
 </template>

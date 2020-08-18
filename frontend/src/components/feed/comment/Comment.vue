@@ -5,8 +5,11 @@
       class="text-decoration-none"
       style="color: #ff6666;"
     >
-      <p class="text-left ma-0">
+      <p v-if="commentCount" class="text-left ma-0">
         <strong>댓글 {{ commentCount }}개 모두 보기</strong>
+      </p>
+      <p v-else class="text-left ma-0">
+        <strong>댓글 작성하기</strong>
       </p>
     </router-link>
     <v-list-item v-if="comments.length !== 0" class="ma-0 pa-0">
