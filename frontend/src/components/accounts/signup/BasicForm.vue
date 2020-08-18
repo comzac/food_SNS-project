@@ -108,7 +108,8 @@
         color="grey"
         class="white--text"
         @click="$router.push({ name: 'Login' }), setSignupData2({})"
-      >뒤로가기</v-btn>
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="
@@ -126,7 +127,8 @@
         @click="toEmailVerification()"
         color="#ea907a"
         class="white--text"
-      >다음으로</v-btn>
+        >다음으로</v-btn
+      >
     </div>
   </v-card>
 </template>
@@ -174,6 +176,7 @@ export default {
           swal({
             text: `${key2} 확인해주세요.`,
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           return;
         }

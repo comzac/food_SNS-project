@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
+      <v-btn
+        class="mr-1"
+        color="#ff6666"
+        icon
+        x-small
+        @click="$emit('likeUnlike')"
+      >
         <!-- <v-icon v-if="like">mdi-heart</v-icon>
         <v-icon v-if="!like">mdi-heart-outline</v-icon>-->
         <img v-if="!like" :src="imgRoute.unlike" alt />
@@ -26,8 +32,10 @@
       v-if="!item"
       style="white-space: pre-line; cursor: default;"
       class="text-left"
-    >{{ feed.content }}</p>
-    <div class="text-left" v-if="hashtag">
+    >
+      {{ feed.content }}
+    </p>
+    <div class="text-left mb-4" v-if="hashtag">
       <span
         class="mr-2"
         style="cursor: pointer;"
@@ -39,7 +47,8 @@
             params: { keyword: tag.content },
           })
         "
-      ># {{ tag.content }}</span>
+        ><v-chip outlined color="grey darken-3"> # {{ tag.content }} </v-chip>
+      </span>
     </div>
   </div>
 </template>
@@ -103,7 +112,7 @@ export default {
       tempElement.select();
       document.execCommand("copy");
       document.body.removeChild(tempElement);
-      swal("주소가 복사되었습니다.");
+      swal("주소가 복사되었습니다.", { buttons: [null, "확인"] });
     },
   },
 };

@@ -111,7 +111,7 @@ export default {
         console.log(code.data);
         if (code.status === 200) {
           signupEmailComponent.overlay = !signupEmailComponent.overlay;
-          swal("인증번호가 발송되었습니다.");
+          swal("인증번호가 발송되었습니다.", { buttons: [null, "확인"] });
           this.$emit("toEmailVerification", {
             confirmCode: code.data,
             uemail: email,
@@ -122,6 +122,7 @@ export default {
             text: "인증번호 발송에 실패하였습니다.",
             icon: "error",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
         }
       });
@@ -133,10 +134,11 @@ export default {
             text: "가입된 이메일이 아닙니다.",
             icon: "error",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           this.emailChecked = false;
         } else {
-          swal("가입된 이메일입니다.");
+          swal("가입된 이메일입니다.", { buttons: [null, "확인"] });
           this.emailChecked = true;
         }
         if (this.emailChecked) {

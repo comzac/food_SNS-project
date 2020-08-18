@@ -213,6 +213,7 @@ export default {
             text: "프로필 사진은 2mb 를 넘을 수 없습니다.",
             icon: "warning",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           return false;
         } else if (
@@ -232,6 +233,7 @@ export default {
             text: "파일 형식이 어긋납니다.",
             icon: "error",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           return false;
         } else {
@@ -247,7 +249,10 @@ export default {
           reader.readAsDataURL(file);
         }
         this.data.hasImage = true;
-        swal("프로필 사진이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
+        swal(
+          "프로필 사진이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.",
+          { buttons: [null, "확인"] }
+        );
       }
     },
     setInitData() {
@@ -264,12 +269,17 @@ export default {
           this.data.hasImage = true;
         }
         if (!this.dataChanged) {
-          swal("변경사항이 없습니다.");
+          swal("변경사항이 없습니다.", { buttons: [null, "확인"] });
           this.$router.go(-1);
         } else {
           this.setUserProfileData(this.data);
         }
-      } else swal({ text: "닉네임 중복체크를 해주세요.", dangerMode: true });
+      } else
+        swal({
+          text: "닉네임 중복체크를 해주세요.",
+          dangerMode: true,
+          buttons: [null, "확인"],
+        });
     },
     resetSelectImg() {
       this.inputPhase = !this.inputPhase;
@@ -281,13 +291,15 @@ export default {
         swal({
           text: "프로필 사진을 삭제하시겠습니까?",
           icon: "warning",
-          buttons: true,
           dangerMode: true,
+          buttons: [null, "확인"],
         }).then((willDelete) => {
           if (willDelete) {
             this.data.hasImage = false;
             swal("프로필 사진이 삭제되었습니다.", {
+              dangerMode: true,
               icon: "success",
+              buttons: [null, "확인"],
             });
           }
         });
