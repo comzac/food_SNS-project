@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 import LoginView from "@/views/LoginView";
 import SignupView from "@/views/SignupView";
@@ -184,6 +185,10 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.title) {
     document.title = to.meta.title;
+  }
+
+  if (to.name === "UserEdit" && from.name === "UserProfileEdit") {
+    store.dispatch("accounts/setAuthorized", true);
   }
 
   const publicPages = [

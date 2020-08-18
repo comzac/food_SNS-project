@@ -2,10 +2,7 @@
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <UserEdit
-          v-if="isAuthorized && page == '1'"
-          @pwChange="(page = '2'), setPage(2)"
-        />
+        <UserEdit v-if="isAuthorized && page == '1'" @pwChange="(page = '2'), setPage(2)" />
         <PasswordChange
           v-if="isAuthorized && page == '2'"
           @changePassword="doPasswordReset"
@@ -19,8 +16,10 @@
 <script>
 import cookies from "vue-cookies";
 import swal from "sweetalert";
+import router from "vue-router";
 
 import { mapActions } from "vuex";
+import store from "@/store";
 
 import UserEdit from "@/components/accounts/useredit/UserEdit";
 import PasswordChange from "@/components/accounts/passwordchange/PasswordChange";
@@ -62,39 +61,45 @@ export default {
   },
   mounted() {
     this.$emit("change-page", 1);
-    swal({
-      title: "비밀번호 입력",
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "계속하려면 비밀번호를 다시 입력해주세요.",
-          type: "password",
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.name !== "UserProfileEdit") {
+      swal({
+        title: "비밀번호 입력",
+        content: {
+          element: "input",
+          attributes: {
+            placeholder: "계속하려면 비밀번호를 다시 입력해주세요.",
+            type: "password",
+          },
         },
-      },
-      icon: "warning",
-      dangerMode: true,
-      buttons: ["취소", "확인"],
-    }).then((value) => {
-      console.log(value);
-      if (value) {
-        this.pwcheck(value).then((checkResult) => {
-          if (checkResult) {
-            this.setAuthorized(true);
-            this.isAuthorized = true;
-          } else {
-            swal({
-              title: "비밀번호 불일치",
-              text: "비밀번호를 다시 한번 확인해주세요.",
-              icon: "error",
-              dangerMode: true,
-              buttons: [null, "확인"],
-            }).then(() => this.$router.go(-1));
-          }
-        });
-      } else {
-        this.$router.go(-1);
-      }
-    });
+        icon: "warning",
+        dangerMode: true,
+        buttons: ["취소", "확인"],
+      }).then((value) => {
+        console.log(value);
+        if (value) {
+          store.dispatch("accounts/pwcheck", value).then((checkResult) => {
+            if (checkResult) {
+              store.dispatch("accounts/setAuthorized", true);
+              next();
+            } else {
+              swal({
+                title: "비밀번호 불일치",
+                text: "비밀번호를 다시 한번 확인해주세요.",
+                icon: "error",
+                dangerMode: true,
+                buttons: [null, "확인"],
+              }).then(() => router.go(-1));
+            }
+          });
+        } else {
+          router.go(-1);
+        }
+      });
+    } else {
+      next();
+    }
   },
 };
 </script>
