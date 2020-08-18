@@ -11,6 +11,7 @@ import UserFollowView from "@/views/user/UserFollowView";
 import UserEditView from "@/views/user/UserEditView";
 import UserProfileEditView from "@/views/user/UserProfileEditView";
 import UserAdditionalDataEditView from "@/views/user/UserAdditionalDataEditView";
+import SocialLoginDataInputView from "@/views/user/SocialLoginDataInputView";
 
 import Home from "@/views/Home";
 
@@ -99,6 +100,12 @@ const routes = [
     path: "/user/edit/additional",
     name: "UserAdditionalDataEdit",
     component: UserAdditionalDataEditView,
+    meta: { title: "추가정보 입력 · HoneyCombo" },
+  },
+  {
+    path: "/user/additionalinfo",
+    name: "SocialLoginDataInput",
+    component: SocialLoginDataInputView,
     meta: { title: "추가정보 입력 · HoneyCombo" },
   },
 
