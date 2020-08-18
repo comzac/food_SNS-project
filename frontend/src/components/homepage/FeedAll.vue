@@ -33,7 +33,12 @@ export default {
   methods: {
     ...mapActions("feeds", ["fetchFeeds", "clearFeeds"]),
     setFeeds(feeds) {
-      this.feed_data = this.feed_data.concat(feeds);
+      feeds.forEach((feed) => {
+        if (!this.feed_data.includes(feed)) {
+          this.feed_data.push(feed);
+        }
+      });
+      // this.feed_data = this.feed_data.concat(feeds);
     },
     infiniteScroll() {
       if (
