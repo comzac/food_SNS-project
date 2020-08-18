@@ -20,7 +20,7 @@
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-row>
-    <p class="text-left">
+    <p class="text-left" :style="item ? 'cursor:pointer;' : 'cursor:default;'">
       <v-row class="space-around mx-0" @click="overflow2()">
         <strong>{{ feed.title }}</strong>
         <v-spacer></v-spacer>
@@ -30,7 +30,11 @@
     <p v-if="item" :class="overflow" @click="overflow2()">
       {{ feed.content }}
     </p>
-    <p v-if="!item" style="white-space: pre-line" class="text-left">
+    <p
+      v-if="!item"
+      style="white-space: pre-line; cursor: default;"
+      class="text-left"
+    >
       {{ feed.content }}
     </p>
     <div class="text-left" v-if="hashtag">
