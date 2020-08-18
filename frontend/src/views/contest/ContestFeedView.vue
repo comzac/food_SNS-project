@@ -1,44 +1,64 @@
 <template>
-  <v-container>
-    <v-row class="text-center" align="center" justify="center">
-      <v-col cols="12">
-        <v-hover v-slot:default="{ hover }">
-          <v-card
-            :class="`elevation-${hover ? 24 : 6}`"
-            class="transition-swing mx-auto"
-            max-width="614"
-          >
-            <!-- 작성자 -->
-            <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
-            <Head v-if="selectedContestFeed" :feed="selectedContestFeed.contestFeed" />
-            <Media :dbFiles="selectedContestFeed.contestFeed.files" @likeUnlike="feedLU()" />
-            <v-card-text>
-              <!-- 본문 -->
-              <Main
+  <div>
+    <v-container>
+      <v-row class="text-center" align="center" justify="center">
+        <v-col cols="12">
+          <v-hover v-slot:default="{ hover }">
+            <v-card
+              :class="`elevation-${hover ? 24 : 6}`"
+              class="transition-swing mx-auto"
+              max-width="614"
+            >
+              <!-- 작성자 -->
+              <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
+              <Head
                 v-if="selectedContestFeed"
                 :feed="selectedContestFeed.contestFeed"
-                :flow="false"
-                :like="selectedContestFeed.islike"
-                :likeCount="selectedContestFeed.contestFeed.likeCount"
+              />
+              <Media
+                :dbFiles="selectedContestFeed.contestFeed.files"
                 @likeUnlike="feedLU()"
               />
-              <!-- Comment module ?? -->
-            </v-card-text>
-            <div v-if="selectedContestFeed.contestFeed.likeCount !== 0">
-              <SexChart v-if="sexData" :sexData="sexData" />
-              <AgeChart v-if="ageData" :ageData="ageData" />
-            </div>
-            <div v-else>
-              좋아요 데이터가 없습니다
-              <v-spacer>
-                <br />
-              </v-spacer>
-            </div>
-          </v-card>
-        </v-hover>
-      </v-col>
-    </v-row>
-  </v-container>
+              <v-card-text>
+                <!-- 본문 -->
+                <Main
+                  v-if="selectedContestFeed"
+                  :feed="selectedContestFeed.contestFeed"
+                  :flow="false"
+                  :like="selectedContestFeed.islike"
+                  :likeCount="selectedContestFeed.contestFeed.likeCount"
+                  @likeUnlike="feedLU()"
+                />
+                <!-- Comment module ?? -->
+              </v-card-text>
+              <div v-if="selectedContestFeed.contestFeed.likeCount !== 0">
+                <SexChart v-if="sexData" :sexData="sexData" />
+                <AgeChart v-if="ageData" :ageData="ageData" />
+              </div>
+              <div v-else>
+                좋아요 데이터가 없습니다
+                <v-spacer>
+                  <br />
+                </v-spacer>
+              </div>
+            </v-card>
+          </v-hover>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-btn
+      color="#ff6666"
+      elevation="24"
+      fixed
+      top
+      left
+      fab
+      @click="back()"
+      class="mt-14"
+    >
+      <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
+    </v-btn>
+  </div>
 </template>
 
 <script>
@@ -94,6 +114,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     ...mapActions("contests", [
       "getContestFeedDetail",
       "contestFeedLikeUnlike",
@@ -160,6 +183,9 @@ export default {
   },
   created() {
     this.initContestFeedDetail();
+  },
+  mounted() {
+    window.scrollTo(0, 0);
   },
 };
 </script>

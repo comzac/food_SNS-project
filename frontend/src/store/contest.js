@@ -9,6 +9,7 @@ export default {
     contestFeeds: null,
     contestList: null,
     currentContest: null,
+    currentContest2: null,
   },
   getters: {
     currentContestId: (state) => state.currentContest.cid,
@@ -26,8 +27,14 @@ export default {
     SET_CURRENTCONTEST(state, data) {
       state.currentContest = data;
     },
+    SET_CURRENTCONTEST2(state, item) {
+      state.currentContest2 = item;
+    },
   },
   actions: {
+    setContest({ commit }, item) {
+      commit("SET_CURRENTCONTEST2", item);
+    },
     getContestFeedDetail({ rootGetters, commit }, fid) {
       const config = rootGetters["accounts/config"];
       return axios

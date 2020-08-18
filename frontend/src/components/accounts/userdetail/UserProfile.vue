@@ -102,18 +102,32 @@ export default {
     },
     follow() {
       if (this.isFollow) {
-        const doubleCheck = confirm(
-          `${this.unick}님의 팔로우를 취소하시겠습니까?`
-        );
-        if (doubleCheck) {
-          this.sendFollow(this.uid);
-          swal({
-            text: "팔로우가 취소되었습니다.",
-            dangerMode: true,
-          });
-          this.isFollow = !this.isFollow;
-          this.numFollowers--;
-        }
+        swal({
+          text: `${this.unick}님의 팔로우를 취소하시겠습니까?`,
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            this.sendFollow(this.uid);
+            swal({
+              text: "팔로우가 취소되었습니다.",
+              dangerMode: true,
+              icon: "success",
+            });
+            this.isFollow = !this.isFollow;
+          }
+        });
+        // const doubleCheck = confirm(
+        //   `${this.unick}님의 팔로우를 취소하시겠습니까?`
+        // );
+        // if (doubleCheck) {
+        //   this.sendFollow(this.uid);
+        //   swal({
+        //     text: "팔로우가 취소되었습니다.",
+        //     dangerMode: true,
+        //   });
+        //   this.isFollow = !this.isFollow;
+        // }
       } else {
         this.sendFollow(this.uid);
         this.isFollow = !this.isFollow;

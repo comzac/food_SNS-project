@@ -9,8 +9,15 @@
             max-width="614"
           >
             <!-- 작성자 -->
-            <Writer :recommand="false" :user="selectedFeed.user" :item="false" />
-            <Media :dbFiles="selectedFeed.feed.dbFiles" @likeUnlike="feedLU()" />
+            <Writer
+              :recommand="false"
+              :user="selectedFeed.user"
+              :item="false"
+            />
+            <Media
+              :dbFiles="selectedFeed.feed.dbFiles"
+              @likeUnlike="feedLU()"
+            />
             <v-card-text>
               <!-- 본문 -->
               <Main
@@ -104,6 +111,9 @@ export default {
         parseInt(new Date(data.feed.regdate).getTime() / 1000) +
         1;
     });
+  },
+  mounted() {
+    window.scrollTo(0, 0);
   },
 };
 </script>

@@ -303,6 +303,9 @@ export default {
       this.getContestFeedDetail(this.$route.params.fid).then(this.initData());
     }
   },
+  mounted() {
+    window.scrollTo(0, 0);
+  },
   //   mounted() {
   //     this.$emit("change-page", 7);
   //   },

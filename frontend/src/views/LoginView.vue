@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
@@ -57,8 +58,6 @@
           >로그인</v-btn>
           <v-spacer>
             <br />
-          </v-spacer>
-          <br />
 
           <v-layout style="color: #ea907a;" justify-space-around>
             <v-sheet
@@ -72,7 +71,7 @@
               <h4 class="grey--text text--darken-2 mb-1">구글 계정으로 로그인</h4>
             </v-sheet>
 
-            <!-- <v-spacer></v-spacer>
+              <!-- <v-spacer></v-spacer>
             <v-avatar color="#FFF3F2" class="social-icon google">
               <v-img max-width="30" contain src="@/assets/google-login.png" alt="Google" />
             </v-avatar>
@@ -90,11 +89,15 @@
               />
             </v-avatar>
             <v-spacer></v-spacer>-->
-          </v-layout>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+            </v-layout>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-overlay :value="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+  </div>
 </template>
 
 <script>
@@ -113,6 +116,11 @@ export default {
       "setUid",
       "postAuthData",
     ]),
+    login2(loginData) {
+      this.overlay = true;
+      this.login(loginData);
+      this.overlay = false;
+    },
     moveToSignup() {
       this.$router.push({ name: "Signup" });
     },
@@ -143,6 +151,7 @@ export default {
   },
   data() {
     return {
+      overlay: false,
       loginData: {
         uid: "",
         upw: "",

@@ -20,7 +20,7 @@
           <v-list-item
             v-for="(item, index) in contestList"
             :key="index"
-            @click="getSelectedThemeFeeds(item.id)"
+            @click="getSelectedThemeFeeds(item.id), setContest(item)"
           >
             <v-list-item-title>{{ item.theme }}</v-list-item-title>
           </v-list-item>
@@ -42,14 +42,22 @@ export default {
   },
   computed: {
     ...mapState("contests", ["currentContest"]),
+    ...mapState("contests", ["currentContest2"]),
     currentTheme() {
-      if (this.currentContest) {
+      if (this.currentContest2) {
+        return this.currentContest2.theme;
+      } else if (this.currentContest) {
+        // if (this.currentContest) {
         return this.currentContest.theme;
       } else return false;
     },
   },
   methods: {
-    ...mapActions("contests", ["getContestData"]),
+    ...mapActions("contests", [
+      "getContestData",
+      "setContest",
+      "setContestFeed",
+    ]),
     getSelectedThemeFeeds(cid) {
       const route = SERVER.ROUTES.contest.URL + cid;
       const data = {
@@ -61,6 +69,11 @@ export default {
     moveToContestFeedCreate() {
       this.$router.push({ name: "ContestFeedCreate" });
     },
+  },
+  mounted() {
+    if (this.currentContest2) {
+      this.getSelectedThemeFeeds(this.currentContest2.id);
+    }
   },
 };
 </script>
