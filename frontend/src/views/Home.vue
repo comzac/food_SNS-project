@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="tab" background-color="transparent" color="#ff6666" centered>
+    <v-tabs v-model="tab" background-color="transparent" color="grey darken-3" centered>
       <v-tab>Followers</v-tab>
       <v-tab>All</v-tab>
     </v-tabs>

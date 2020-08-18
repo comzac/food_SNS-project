@@ -30,17 +30,9 @@
       <br />
     </v-spacer>
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')"
-        >뒤로가기</v-btn
-      >
+      <v-btn color="grey" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
-      <v-btn
-        color="#ff6666"
-        class="white--text"
-        :disabled="!isSubmit"
-        @click="verify()"
-        >회원가입 완료</v-btn
-      >
+      <v-btn color="#ea907a" class="white--text" :disabled="!isSubmit" @click="verify()">회원가입 완료</v-btn>
     </div>
     <v-spacer>
       <br />
@@ -66,7 +58,7 @@ export default {
     this.component = this;
   },
   watch: {
-    confirm: function() {
+    confirm: function () {
       this.checkForm();
     },
   },

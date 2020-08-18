@@ -1,22 +1,16 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn
-        class="mr-1"
-        color="#ff6666"
-        icon
-        x-small
-        @click="$emit('likeUnlike')"
-      >
+      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
         <!-- <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon> -->
-        <img v-if="!like" :src="imgRoute.unlike" alt="" />
-        <img v-if="like" :src="imgRoute.like_small" alt="" s />
+        <v-icon v-if="!like">mdi-heart-outline</v-icon>-->
+        <img v-if="!like" :src="imgRoute.unlike" alt />
+        <img v-if="like" :src="imgRoute.like_small" alt s />
         <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
       </v-btn>
       <span style="font-size: 15px">{{ likeCount }}</span>
       <v-spacer></v-spacer>
-      <v-btn class="share-btn" color="#ff6666" icon x-small @click="share()">
+      <v-btn class="share-btn" color="#ea907a" icon x-small @click="share()">
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-row>
@@ -27,12 +21,8 @@
         <small>{{ ymd2 }}</small>
       </v-row>
     </p>
-    <p v-if="item" :class="overflow" @click="overflow2()">
-      {{ feed.content }}
-    </p>
-    <p v-if="!item" style="white-space: pre-line" class="text-left">
-      {{ feed.content }}
-    </p>
+    <p v-if="item" :class="overflow" @click="overflow2()">{{ feed.content }}</p>
+    <p v-if="!item" style="white-space: pre-line" class="text-left">{{ feed.content }}</p>
     <div class="text-left" v-if="hashtag">
       <span
         class="mr-2"
@@ -45,8 +35,7 @@
             params: { keyword: tag.content },
           })
         "
-        ># {{ tag.content }}</span
-      >
+      ># {{ tag.content }}</span>
     </div>
   </div>
 </template>

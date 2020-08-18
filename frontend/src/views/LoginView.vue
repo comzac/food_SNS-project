@@ -3,7 +3,7 @@
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
         <v-card flat width="350" class="mx-auto">
-          <h1 class="text-left" style="color: #ff6666;">Login</h1>
+          <h1 class="text-left" style="color: #ea907a;">로그인</h1>
           <v-spacer>
             <br />
           </v-spacer>
@@ -13,7 +13,7 @@
             label="아이디를 입력하세요"
             required
             autofocus
-            color="#ff6666"
+            color="#ea907a"
             autocapitalize="off"
             autocorrect="off"
             autocomplete="off"
@@ -28,56 +28,48 @@
             prepend-icon="mdi-lock"
             label="비밀번호를 입력하세요."
             required
-            color="#ff6666"
+            color="#ea907a"
             autocomplete="off"
           ></v-text-field>
           <div class="text-right">
             <router-link
               :to="{ name: 'RetrieveID' }"
               class="text-decoration-none mr-2"
-              style="color: #ff6666;"
-              >아이디 찾기</router-link
-            >
+              style="color: #ea907a;"
+            >아이디 찾기</router-link>
 
             <router-link
               to="/user/password_choice_email"
               class="text-decoration-none"
-              style="color: #ff6666;"
-              >비밀번호 찾기</router-link
-            >
+              style="color: #ea907a;"
+            >비밀번호 찾기</router-link>
           </div>
           <v-spacer>
             <br />
           </v-spacer>
           <v-btn
             class="white--text"
-            color="#ff6666"
+            color="#ea907a"
             @click="login(loginData)"
             :disabled="loginData.uid == 0 || loginData.upw.length < 8"
             width="100%"
             x-large
-            >LOGIN</v-btn
-          >
+          >로그인</v-btn>
           <v-spacer>
             <br />
           </v-spacer>
           <br />
 
-          <v-layout style="color: #ff6666;" justify-space-around>
+          <v-layout style="color: #ea907a;" justify-space-around>
             <v-sheet
               @click="googleLogin"
               elevation="6"
               class="d-flex justify-space-around align-center px-5 py-1 social-icon"
             >
               <v-avatar class="mr-3 ml-n2">
-                <v-img
-                  max-width="30"
-                  contain
-                  src="@/assets/google-login.png"
-                  alt="Google"
-                />
+                <v-img max-width="30" contain src="@/assets/google-login.png" alt="Google" />
               </v-avatar>
-              <h4 class="grey--text text--darken-2 mb-1">Log in with Google</h4>
+              <h4 class="grey--text text--darken-2 mb-1">구글 계정으로 로그인</h4>
             </v-sheet>
 
             <!-- <v-spacer></v-spacer>
@@ -180,7 +172,7 @@ export default {
 }
 
 /* .google:hover {
-  border: 1px solid #ff6666 !important;
+  border: 1px solid #ea907a !important;
 }
 
 .naver:hover {

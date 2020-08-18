@@ -3,7 +3,7 @@
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
         <v-card flat width="614" class="mx-auto">
-          <h1 class="text-left" style="color: #ff6666;">스까무라</h1>
+          <h1 class="text-left ml-3 mb-n3" style="color: #424242;">이번주의 칵테일</h1>
           <br />
           <v-row class="ma-0 align-center justify-center">
             <v-col cols="6" v-for="(liquor, n) in liquor_data" :key="n" @click="modal(liquor)">

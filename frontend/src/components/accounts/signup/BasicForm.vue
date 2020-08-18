@@ -79,7 +79,7 @@
     ></v-text-field>
 
     <v-radio-group v-model="signupData.usex" row>
-      <v-btn icon color="#ff6666">
+      <v-btn icon color="#ea907a">
         <v-icon>mdi-gender-male-female</v-icon>
       </v-btn>
       <!-- <v-text-field
@@ -87,17 +87,17 @@
             flat
             dense
             readonly
-            color="#ff6666"
+            color="#ea907a"
             :error-messages="signupData.usex?'':'성별을 선택해주세요'"
             :value="signupData.usex==1?'남성':signupData.usex==2?'여성':''"
       ></v-text-field>-->
       <v-spacer></v-spacer>
-      <v-radio color="#ff6666" label="남성" value="1"></v-radio>
-      <v-btn icon :color="signupData.usex == 1 ? '#ff6666' : ''">
+      <v-radio color="#ea907a" label="남성" value="1"></v-radio>
+      <v-btn icon :color="signupData.usex == 1 ? '#ea907a' : ''">
         <v-icon>mdi-gender-male</v-icon>
       </v-btn>
-      <v-radio color="#ff6666" label="여성" value="2"></v-radio>
-      <v-btn icon :color="signupData.usex == 2 ? '#ff6666' : ''">
+      <v-radio color="#ea907a" label="여성" value="2"></v-radio>
+      <v-btn icon :color="signupData.usex == 2 ? '#ea907a' : ''">
         <v-icon>mdi-gender-female</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
@@ -105,7 +105,7 @@
     <!-- 영문, 숫자 혼용 확인 필요 -->
     <div>
       <v-btn
-        color="#ff6666"
+        color="grey"
         class="white--text"
         @click="$router.push({ name: 'Login' }), setSignupData2({})"
       >뒤로가기</v-btn>
@@ -124,7 +124,7 @@
             !pwdCheck2(signupData.upw, signupData.upw2)
         "
         @click="toEmailVerification()"
-        color="#ff6666"
+        color="#ea907a"
         class="white--text"
       >다음으로</v-btn>
     </div>

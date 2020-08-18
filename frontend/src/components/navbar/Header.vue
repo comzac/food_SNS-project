@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-hidden">
-    <v-app-bar app color="#ff6666" dark height="56px">
+    <v-app-bar app color="#ea907a" dark height="56px">
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
@@ -20,10 +20,7 @@
           <v-icon>mdi-login</v-icon>
         </v-btn>
       </router-link>
-      <router-link
-        class="text-decoration-none"
-        :to="{ name: 'FeedCreateView' }"
-      >
+      <router-link class="text-decoration-none" :to="{ name: 'FeedCreateView' }">
         <v-btn icon v-if="isLoggedIn" class="mr-n3">
           <v-icon>mdi-lead-pencil</v-icon>
         </v-btn>
@@ -34,7 +31,7 @@
       v-model="drawer"
       fixed
       temporary
-      color="#ff6666"
+      color="#ea907a"
       class="whtie--text"
       width="200px"
     >
@@ -52,9 +49,11 @@
               <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="white--text">{{
+              <v-list-item-title class="white--text">
+                {{
                 authUserUnick
-              }}</v-list-item-title>
+                }}
+              </v-list-item-title>
               <v-list-item-subtitle class="white--text">
                 <small>{{ authUserUid }}</small>
               </v-list-item-subtitle>
@@ -64,11 +63,7 @@
         <v-spacer>
           <br />
         </v-spacer>
-        <v-list-item-group
-          v-model="selection"
-          active-class="white--text"
-          mandatory
-        >
+        <v-list-item-group v-model="selection" active-class="white--text" mandatory>
           <div v-for="(listItem, i) in listItemData" :key="i">
             <NavigationListItem
               v-show="i !== 7"
@@ -84,7 +79,7 @@
           </div>
         </v-list-item-group>
       </v-list>
-      <v-list color="#ff6666" flat align="center">
+      <v-list color="#ea907a" flat align="center">
         <v-btn class="red--text text--lighten-2" rounded @click="logout">
           <strong>로그아웃</strong>
         </v-btn>
@@ -107,37 +102,37 @@ export default {
   data: () => ({
     drawer: false,
     listItemData: [
-      { id: "1", link: { name: "Home" }, icon: "mdi-home", title: "Home" },
+      { id: "1", link: { name: "Home" }, icon: "mdi-home", title: "홈" },
       {
         id: "2",
         link: { name: "UserEdit" },
         icon: "mdi-account",
-        title: "Account",
+        title: "계정관리",
       },
       {
         id: "3",
         link: { name: "SearchingView" },
         icon: "mdi-magnify",
-        title: "Search",
+        title: "검색",
       },
       {
         id: "4",
         link: { name: "NotificationView" },
         icon: "mdi-bell",
-        title: "Notification",
+        title: "알림",
       },
       {
         id: "5",
         link: { name: "ContestList" },
         icon: "mdi-trophy",
-        title: "Contest",
+        title: "꿀조합대회",
       },
       {
         id: "6",
         link: { name: "Liquor" },
         // icon: "mdi-glass-mug-variant",
         icon: "mdi-glass-cocktail",
-        title: "Liquor",
+        title: "칵테일",
       },
     ],
   }),

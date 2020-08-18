@@ -34,17 +34,14 @@
       <br />
     </v-spacer>
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')"
-        >뒤로가기</v-btn
-      >
+      <v-btn color="grey" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="!emailChecked"
         @click="emailVerification(email)"
-        color="#ff6666"
+        color="#ea907a"
         class="white--text"
-        >다음으로</v-btn
-      >
+      >다음으로</v-btn>
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
@@ -73,7 +70,7 @@ export default {
     this.component = this;
   },
   watch: {
-    email: function() {
+    email: function () {
       this.checkForm();
     },
   },

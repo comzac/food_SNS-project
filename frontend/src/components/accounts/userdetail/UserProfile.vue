@@ -12,20 +12,8 @@
       <v-btn v-if="mypage" color="grey" fab small dark @click="toProfileEdit">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-chip
-        v-if="!mypage && !isFollow"
-        color="#2699fb"
-        dark
-        @click="follow(uid)"
-        >Follow</v-chip
-      >
-      <v-chip
-        v-if="!mypage && isFollow"
-        color="#ff6666"
-        outlined
-        @click="follow(uid)"
-        >Unfollow</v-chip
-      >
+      <v-chip v-if="!mypage && !isFollow" color="#2699fb" dark @click="follow(uid)">팔로우 신청</v-chip>
+      <v-chip v-if="!mypage && isFollow" color="#ff6666" outlined @click="follow(uid)">팔로우 취소</v-chip>
     </v-list-item>
 
     <v-card-text class="text-center">{{ profileText }}</v-card-text>
@@ -34,21 +22,21 @@
       <v-btn text disabled class="non-active">
         <div class="d-flex flex-column">
           <span>{{ numPosts }}</span>
-          <span class="caption font-weight-light">POSTS</span>
+          <span class="caption font-weight-light">게시글</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
       <v-btn text @click="moveToFollowers">
         <div class="d-flex flex-column">
           <span>{{ numFollowers }}</span>
-          <span class="caption font-weight-light">FOLLOWERS</span>
+          <span class="caption font-weight-light">팔로워</span>
         </div>
       </v-btn>
       <v-divider vertical></v-divider>
       <v-btn text @click="moveToFollowings">
         <div class="d-flex flex-column">
           <span>{{ numFollowings }}</span>
-          <span class="caption font-weight-light">FOLLOWINGS</span>
+          <span class="caption font-weight-light">팔로잉</span>
         </div>
       </v-btn>
     </v-card-actions>

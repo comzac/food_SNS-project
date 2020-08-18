@@ -22,12 +22,12 @@
       class="text-decoration-none"
     >
       <v-list-item-content>
-        <v-list-item-title class="text-left red--text text--lighten-2">
+        <v-list-item-title class="text-left black--text">
           {{
           user.unick
           }}
         </v-list-item-title>
-        <v-list-item-subtitle class="text-left red--text text--lighten-2">
+        <v-list-item-subtitle class="text-left black--text">
           {{
           user.uid
           }}

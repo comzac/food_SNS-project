@@ -3,9 +3,17 @@
     <v-list-item class="justify-center mb-5">
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn dark v-bind="attrs" v-on="on" class="mr-5 contest-btn">
+          <v-btn
+            outlined
+            rounded
+            v-bind="attrs"
+            v-on="on"
+            class="mr-5 contest-btn"
+            color="grey darken-3"
+          >
             <v-icon left>mdi-trophy</v-icon>
             {{ currentTheme }}
+            <v-icon right>mdi-chevron-down</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -18,9 +26,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn color="black" fab small dark class="ml-5">
-        <v-icon @click="moveToContestFeedCreate">mdi-pencil</v-icon>
-      </v-btn>
+      <v-btn color="grey darken-3" rounded small dark>참가</v-btn>
     </v-list-item>
   </v-card>
 </template>

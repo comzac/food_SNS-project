@@ -16,20 +16,8 @@
       </v-list-item-content>
 
       <v-list-item-action>
-        <v-chip
-          v-if="!isFollow && !isMe"
-          color="#2699fb"
-          dark
-          @click="follow(uid)"
-          >Follow</v-chip
-        >
-        <v-chip
-          v-if="isFollow && !isMe"
-          color="#ff6666"
-          outlined
-          @click="follow(uid)"
-          >Unfollow</v-chip
-        >
+        <v-chip v-if="!isFollow && !isMe" color="#2699fb" dark @click="follow(uid)">팔로우 신청</v-chip>
+        <v-chip v-if="isFollow && !isMe" color="#ff6666" outlined @click="follow(uid)">팔로우 취소</v-chip>
       </v-list-item-action>
     </v-list-item>
     <v-divider></v-divider>
@@ -83,7 +71,7 @@ export default {
       if (this.isFollow) {
         swal({
           text: `${this.unick}님의 팔로우를 취소하시겠습니까?`,
-          buttons: true,
+          buttons: ["취소", "확인"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
