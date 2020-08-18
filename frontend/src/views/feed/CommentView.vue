@@ -346,7 +346,11 @@ export default {
     },
 
     back() {
-      this.$router.go(-1);
+      this.$router.push({
+        name: "FeedView",
+        params: { fid: this.selectedFeed.feed.id },
+      });
+      // this.$router.go(-1);
     },
   },
   created() {

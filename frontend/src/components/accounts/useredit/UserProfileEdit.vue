@@ -88,7 +88,7 @@
       counter
       v-model="data.text"
       :rules="rules"
-      label="내용"
+      label="프로필 문구"
       outlined
       solo
       single-line

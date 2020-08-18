@@ -37,7 +37,7 @@
     </p>
     <div class="text-left mb-4" v-if="hashtag">
       <span
-        class="mr-2"
+        class="mr-2 mb-2"
         style="cursor: pointer;"
         v-for="tag in hashtag"
         :key="tag.id"
