@@ -12,8 +12,20 @@
       <v-btn v-if="mypage" color="grey" fab small dark @click="toProfileEdit">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
-      <v-chip v-if="!mypage && !isFollow" color="#2699fb" dark @click="follow(uid)">팔로우 신청</v-chip>
-      <v-chip v-if="!mypage && isFollow" color="#ff6666" outlined @click="follow(uid)">팔로우 취소</v-chip>
+      <v-chip
+        v-if="!mypage && !isFollow"
+        color="#2699fb"
+        dark
+        @click="follow(uid)"
+        >팔로우 신청</v-chip
+      >
+      <v-chip
+        v-if="!mypage && isFollow"
+        color="#ff6666"
+        outlined
+        @click="follow(uid)"
+        >팔로우 취소</v-chip
+      >
     </v-list-item>
 
     <v-card-text class="text-center">{{ profileText }}</v-card-text>
@@ -104,8 +116,8 @@ export default {
       if (this.isFollow) {
         swal({
           text: `${this.unick}님의 팔로우를 취소하시겠습니까?`,
-          buttons: true,
           dangerMode: true,
+          buttons: ["취소", "확인"],
         }).then((willDelete) => {
           if (willDelete) {
             this.sendFollow(this.uid);
@@ -113,6 +125,7 @@ export default {
               text: "팔로우가 취소되었습니다.",
               dangerMode: true,
               icon: "success",
+              buttons: [null, "확인"],
             });
             this.isFollow = !this.isFollow;
           }

@@ -297,6 +297,7 @@ export default {
           if (willDelete) {
             this.data.hasImage = false;
             swal("프로필 사진이 삭제되었습니다.", {
+              dangerMode: true,
               icon: "success",
               buttons: [null, "확인"],
             });

@@ -47,7 +47,7 @@
       </v-row>
     </v-container>
     <v-btn
-      color="#ff6666"
+      color="#ea907a"
       elevation="24"
       fixed
       top
