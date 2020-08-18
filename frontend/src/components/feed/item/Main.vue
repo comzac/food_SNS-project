@@ -1,17 +1,11 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn
-        class="mr-1"
-        color="#ff6666"
-        icon
-        x-small
-        @click="$emit('likeUnlike')"
-      >
-        <!-- <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon>-->
-        <img v-if="!like" :src="imgRoute.unlike" alt />
-        <img v-if="like" :src="imgRoute.like_small" alt s />
+      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
+        <v-icon v-if="like">mdi-heart</v-icon>
+        <v-icon v-if="!like">mdi-heart-outline</v-icon>
+        <!-- <img v-if="!like" :src="imgRoute.unlike" alt />
+        <img v-if="like" :src="imgRoute.like_small" alt s />-->
         <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
       </v-btn>
       <span style="font-size: 15px">{{ likeCount }}</span>
@@ -32,9 +26,7 @@
       v-if="!item"
       style="white-space: pre-line; cursor: default;"
       class="text-left"
-    >
-      {{ feed.content }}
-    </p>
+    >{{ feed.content }}</p>
     <div class="text-left mb-4" v-if="hashtag">
       <span
         class="mr-2 mb-2"
@@ -47,7 +39,8 @@
             params: { keyword: tag.content },
           })
         "
-        ><v-chip outlined color="grey darken-3"> # {{ tag.content }} </v-chip>
+      >
+        <v-chip outlined color="grey darken-3"># {{ tag.content }}</v-chip>
       </span>
     </div>
   </div>
