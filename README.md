@@ -1,23 +1,53 @@
-# :honey_pot: Honey-Combo :honeybee:
+# :honey_pot: Honey-Combo :bee:
 
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus?style=plastic) 
 
 1인 가구를 위한 음식 꿀조합 공유 SNS
 
 
+<br>
 
 ## Content
 
-[TOC]
+[:honey_pot: Honey-Combo :bee:](#-honey-combo-)  
+
+   - [Content](#content)  
+   - [Intro](#intro)  
+   - [Project documentation](#project-documentation)  
+   - [Project introduction](#project-introduction)  
+     - [Demos](#-demos) 
+     - [Environment setup](#-environment-setup)
+       - [Common development tools & environment](#common-development-tools-environment)
+       - [Front-end development tools & environment](#front-end-development-tools-environment)
+       - [Back-end development tools & environment](#back-end-development-tools-environment)
+     - [Stack](#-stack)  
+     - [Technical selection](#-technical-selection)  
+       - [Front-end technology](#front-end-technology)
+       - [Back-end technology](#back-end-technology)
+     - [ERD](#-erd)  
+     - [Build steps](#-build-steps)
+       - [Front-end](#front-end)
+         - [Project setup](#project-setup)
+         - [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
+         - [Compiles and minifies for production](#compiles-and-minifies-for-production)
+         - [Lints and fixes files](#lints-and-fixes-files)
+       - [Back-end](#back-end)
+         - [build.gradle](#buildgradle)
+         - [approperties.yml](#appropertiesyml)
+         - [Project build](#project-build)
+         - [Project run](#project-run)
+   - [License](#license)  
+   - [Contact :mailbox_with_mail:](#contact-)
 
 
+<br>
 
 ## Intro
 
 20대 및 30대 자취생을 위한 음식 꿀조합 공유 SNS
 
 
-
+<br>
 
 
 ## Project documentation
@@ -26,7 +56,7 @@
 * http://honeycombo.online:8080/swagger-ui.html
 
 
-
+<br>
 
 
 ## Project introduction
@@ -45,14 +75,16 @@
    - 관리자가 매주 새로운 주류 조합을 게시합니다.
 
 
+<br>
 
-### :floppy_disk:Demos
+### :floppy_disk: Demos
 
 Check our [Demos](http://honeycombo.online)
 
 
+<br>
 
-### :floppy_disk:Environment setup
+### :floppy_disk: Environment setup
 
 Make sure you have installed all of the following prerequisites on your development machine:
 
@@ -72,14 +104,16 @@ Make sure you have installed all of the following prerequisites on your developm
 * Gradle 6
 
 
+<br>
 
-### :floppy_disk:Stack
+### :floppy_disk: Stack
 
 ![stack](/uploads/1998b9a000c7faf7cf1e64ce382c4baf/stack.png)
 
 
+<br>
 
-### :floppy_disk:Technical selection
+### :floppy_disk: Technical selection
 
 #### Front-end technology
 
@@ -108,14 +142,16 @@ Make sure you have installed all of the following prerequisites on your developm
 | Swagger-UI      | Document production tool         | https://github.com/swagger-api/swagger-ui  |
 
 
+<br>
 
-### :floppy_disk:ERD
+### :floppy_disk: ERD
 
 ![ERD](/uploads/4a3553df95063dedcb2f70de36914421/ERD.png)
 
 
+<br>
 
-### :floppy_disk:Build steps
+### :floppy_disk: Build steps
 
 #### Front-end 
 
@@ -222,26 +258,26 @@ dependencies {
    compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
    // social
    
-	// 1. oauth
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	// 2. thymeleaf
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	// 3. h2database
-	runtimeOnly 'com.h2database:h2'
-	// security, jpa, web, lombok 등 중복 // 
+   // 1. oauth
+   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+   // 2. thymeleaf
+   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+   // 3. h2database
+   runtimeOnly 'com.h2database:h2'
+   // security, jpa, web, lombok 등 중복 // 
 
 
-	// 구글 소셜
-	// https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
-	compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
-	// https://mvnrepository.com/artifact/com.google.auth/google-auth-library-credentials
-	compile group: 'com.google.auth', name: 'google-auth-library-credentials', version: '0.21.1'
-	// https://mvnrepository.com/artifact/com.google.api-client/google-api-client
-	compile group: 'com.google.api-client', name: 'google-api-client', version: '1.30.10'
-	// https://mvnrepository.com/artifact/com.google.api-client/google-api-client-jackson2
-	compile group: 'com.google.api-client', name: 'google-api-client-jackson2', version: '1.27.0'
-	// https://mvnrepository.com/artifact/com.google.http-client/google-http-client-jackson2
-	compile group: 'com.google.http-client', name: 'google-http-client-jackson2', version: '1.35.0'
+   // 구글 소셜
+   // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
+   compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
+   // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-credentials
+   compile group: 'com.google.auth', name: 'google-auth-library-credentials', version: '0.21.1'
+   // https://mvnrepository.com/artifact/com.google.api-client/google-api-client
+   compile group: 'com.google.api-client', name: 'google-api-client', version: '1.30.10'
+   // https://mvnrepository.com/artifact/com.google.api-client/google-api-client-jackson2
+   compile group: 'com.google.api-client', name: 'google-api-client-jackson2', version: '1.27.0'
+   // https://mvnrepository.com/artifact/com.google.http-client/google-http-client-jackson2
+   compile group: 'com.google.http-client', name: 'google-http-client-jackson2', version: '1.35.0'
 
 }
 
@@ -370,7 +406,7 @@ $ java -jar demo-0.0.1-SNAPSHOT.war
 
 
 
-
+<br>
 
 ## License
 
@@ -392,13 +428,12 @@ limitations under the License.
 
 
 
+<br>
 
-
-## Contact​ :mailbox_with_mail:
+## Contact :mailbox_with_mail:
 
 * 김세훈 | Sehoon Kim | kimsae123@naver.com
 * 김순빈 | Soonbeen Kim | ksb940925@gmail.com
 * 류승민 | Seungmin Ryu | dkqyqytt@gmail.com
 * 이선수 | Sunsoo Lee | tjstn921030@gmail.com
 * 서용준 | Yongjoon Seo | koreakkrea12@naver.com
-
