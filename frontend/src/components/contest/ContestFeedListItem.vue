@@ -1,5 +1,17 @@
 <template>
-  <div @click="moveToContestFeed">
+  <div @click="moveToContestFeed" :class="{inRank: isInRank}">
+    <v-col v-if="rank === 0" class="d-flex justify-center align-end">
+      <v-icon large color="#FFD700">mdi-crown</v-icon>
+      <h2>{{ rank+1 }}등</h2>
+    </v-col>
+    <v-col v-if="rank === 1" class="d-flex justify-center align-center">
+      <v-icon color="#C0C0C0">mdi-crown</v-icon>
+      <h3 class="mt-2">{{ rank+1}}등</h3>
+    </v-col>
+    <v-col v-if="rank === 2" class="d-flex justify-center align-center">
+      <v-icon color="#cd7f32">mdi-crown</v-icon>
+      <h3 class="mt-2">3등</h3>
+    </v-col>
     <v-img v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-3" />
     <v-img
       v-if="mediaRoute && mediaType != 'video/mp4'"
@@ -25,6 +37,7 @@
         playsinline
       ></video>
     </v-responsive>
+    <!-- <h5 class="text-center feedTitle">{{ feed.title }}</h5> -->
     <h5 class="text-center">
       <img src="@/assets/like/contest_like.png" class="like-icon mb-n1 mt-1" />
       {{ likeCount }}
@@ -38,6 +51,7 @@ import SERVER from "@/api/api";
 export default {
   props: {
     feed: Object,
+    rank: Number,
   },
   computed: {
     fid() {
@@ -60,6 +74,10 @@ export default {
     },
     likeCount() {
       return this.feed.likeCount;
+    },
+    isInRank() {
+      if (this.rank >= 0 && this.rank < 3) return true;
+      else return false;
     },
   },
   methods: {
@@ -87,5 +105,14 @@ export default {
 .like-icon {
   width: 18px;
   height: 18px;
+}
+
+.inRank {
+  border: 1px solid #ea907a;
+  /* padding: 2px; */
+}
+
+h5 .feedTitle {
+  color: #aacdbe;
 }
 </style>
