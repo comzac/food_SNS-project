@@ -26,7 +26,13 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn color="grey darken-3" rounded small dark @click="moveToContestFeedCreate">참가</v-btn>
+      <v-btn
+        color="grey darken-3 participate-btn"
+        rounded
+        small
+        dark
+        @click="moveToContestFeedCreate"
+      >참가</v-btn>
     </v-list-item>
   </v-card>
 </template>
@@ -99,5 +105,9 @@ button.non-active.theme--light.v-btn.v-btn--disabled {
 .v-menu__content > div:nth-child(1) > div.v-list-item:hover {
   cursor: pointer;
   background-color: #f6f6f6;
+}
+
+.v-btn:not(.v-btn--round).v-size--small.participate-btn {
+  height: 34px;
 }
 </style>
