@@ -2,11 +2,7 @@
   <v-container class="signup" fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <BasicForm
-          v-if="page == 1"
-          @toEmailVerification="setSignupData"
-          :signupData2="signupData"
-        />
+        <BasicForm v-if="page == 1" @toEmailVerification="setSignupData" :signupData2="signupData" />
         <SignupEmail
           v-if="page == 2"
           @toEmailVerification="emailVerification"
@@ -73,7 +69,7 @@ export default {
       this.signup(this.signupData);
       swal(
         "가입되었습니다!",
-        `${this.signupData.unick} 님 환영합니다.`,
+        `${this.signupData.unick} 님\n허니콤보에 오신 것을 환영합니다.`,
         "success",
         { buttons: [null, "확인"] }
       );
