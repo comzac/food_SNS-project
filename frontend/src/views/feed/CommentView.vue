@@ -63,13 +63,15 @@
                 >
                   <v-list-item-avatar
                     class="mr-2"
-                    :color="comment.comment.user.uprofile ? 'white' : 'grey'"
+                    :color="
+                      comment.comment.user.uprofile.name ? 'white' : 'grey'
+                    "
                   >
-                    <v-icon v-if="!comment.comment.user.uprofile" dark
+                    <v-icon v-if="!comment.comment.user.uprofile.name" dark
                       >mdi-account</v-icon
                     >
                     <v-img
-                      v-if="comment.comment.user.uprofile"
+                      v-if="comment.comment.user.uprofile.name"
                       :src="media_dir + comment.comment.user.uprofile.name"
                     />
                   </v-list-item-avatar>
@@ -146,10 +148,10 @@
                 </v-menu>
                 <v-btn
                   v-if="authUserUnick !== comment.comment.user.unick"
-                  class="mr-1"
+                  class="mr-1 mt-2"
                   color="#ff6666"
                   icon
-                  x-small
+                  small
                   @click="
                     commentLike({
                       comment: comment,
@@ -170,7 +172,6 @@
                     v-if="comment.islike"
                     :src="imgRoute.like_small"
                     alt=""
-                    s
                   />
                   <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
                 </v-btn>
