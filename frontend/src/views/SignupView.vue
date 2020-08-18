@@ -72,7 +72,7 @@ export default {
       console.log(this.signupData);
       this.signup(this.signupData);
       swal(
-        "회원가입 완료",
+        "가입되었습니다!",
         `${this.signupData.unick} 님 환영합니다.`,
         "success",
         { buttons: [null, "확인"] }

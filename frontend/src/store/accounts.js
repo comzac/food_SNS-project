@@ -403,6 +403,11 @@ export default {
           .then((res) => {
             console.log(res);
             commit("SET_USERSIMPLEDATA", res.data.data);
+            const ubirth = state.userSimpleData.ubirth;
+            const usex = state.userSimpleData.usex;
+            if (!ubirth || !usex) {
+              router.push({ name: "SocialLoginDataInput" });
+            }
           })
           .catch((err) => console.log(err));
       }
