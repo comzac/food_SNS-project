@@ -1,17 +1,17 @@
 <template>
   <div>
     <v-tabs v-model="tab" background-color="transparent" color="grey darken-3" centered>
-      <v-tab>Followers</v-tab>
       <v-tab>All</v-tab>
+      <v-tab>Followers</v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
       <v-tab-item :value="0">
-        <FollowFeed v-if="tab === 0" />
+        <FeedAll v-if="tab === 0" />
       </v-tab-item>
 
       <v-tab-item :value="1">
-        <FeedAll v-if="tab === 1" />
+        <FollowFeed v-if="tab === 1" />
       </v-tab-item>
     </v-tabs-items>
 

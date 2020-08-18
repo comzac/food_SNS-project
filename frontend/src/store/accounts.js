@@ -148,7 +148,6 @@ export default {
           swal({
             text: "로그인 정보를 확인해주세요.",
             dangerMode: true,
-            buttons: [null, "확인"],
           });
           console.log(err);
         });
@@ -195,7 +194,7 @@ export default {
 
     idCheck({ commit }, uid) {
       if (uid === "") {
-        swal("아이디를 입력하세요.", { buttons: ["확인"] });
+        swal("아이디를 입력하세요.");
         commit("SET_IDCHECK", false);
         return false;
       }
@@ -209,7 +208,7 @@ export default {
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
-            swal("사용 가능한 아이디입니다.", { buttons: [null, "확인"] });
+            swal("사용 가능한 아이디입니다.");
             // commit("SET_IDCHECK", true);
             // commit("SET_SIGNUPID", uid);
             return true;
@@ -217,7 +216,6 @@ export default {
             swal({
               text: "이미 사용 중인 아이디입니다.",
               dangerMode: true,
-              buttons: [null, "확인"],
             });
             // commit("SET_IDCHECK", false);
             return false;
@@ -227,7 +225,7 @@ export default {
     },
     idCheck2({ commit }, uid) {
       if (uid === "") {
-        swal("아이디를 입력하세요", { buttons: [null, "확인"] });
+        swal("아이디를 입력하세요");
         commit("SET_IDCHECK", false);
         return false;
       }
@@ -243,11 +241,10 @@ export default {
             swal({
               text: "가입되지 않은 아이디입니다.",
               dangerMode: true,
-              buttons: [null, "확인"],
             });
             return true;
           } else {
-            swal("가입된 아이디입니다.", { buttons: [null, "확인"] });
+            swal("가입된 아이디입니다.");
             return false;
           }
         })
@@ -256,7 +253,7 @@ export default {
 
     nickCheck(context, unick) {
       if (unick === "") {
-        swal("별명을 입력하세요", { buttons: [null, "확인"] });
+        swal("별명을 입력하세요");
         // commit("SET_IDCHECK", false);
         return false;
       }
@@ -270,7 +267,7 @@ export default {
         .then((res) => {
           // console.log(res.data);
           if (res.data === "success") {
-            swal("사용 가능한 별명입니다.", { buttons: [null, "확인"] });
+            swal("사용 가능한 별명입니다.");
             // commit("SET_NICKCHECK", true);
             // commit("SET_SIGNUPNICK", unick);
             return true;
@@ -278,7 +275,6 @@ export default {
             swal({
               text: "이미 사용 중인 별명입니다.",
               dangerMode: true,
-              buttons: [null, "확인"],
             });
             // commit("SET_NICKCHECK", false);
             return false;
@@ -319,7 +315,7 @@ export default {
         )
         .then((confirmCode) => {
           if (confirmCode === "fail") {
-            swal("이메일을 확인해주세요.", { buttons: [null, "확인"] });
+            swal("이메일을 확인해주세요.");
             return "";
           } else {
             commit("SET_CODE", confirmCode.data);
@@ -362,14 +358,13 @@ export default {
         .then((res) => {
           console.log("res : ", res);
           if (res.data === "success") {
-            swal("비밀번호가 변경되었습니다.", { buttons: [null, "확인"] });
+            swal("비밀번호가 변경되었습니다.");
             router.push({ name: "Login" });
           } else {
             swal({
               text: "변경 실패",
               icon: "error",
               dangerMode: true,
-              buttons: [null, "확인"],
             });
           }
         })
@@ -403,11 +398,6 @@ export default {
           .then((res) => {
             console.log(res);
             commit("SET_USERSIMPLEDATA", res.data.data);
-            const ubirth = state.userSimpleData.ubirth;
-            const usex = state.userSimpleData.usex;
-            if (!ubirth || !usex) {
-              router.push({ name: "SocialLoginDataInput" });
-            }
           })
           .catch((err) => console.log(err));
       }
@@ -417,8 +407,8 @@ export default {
         title: "탈퇴하시겠습니까?",
         text: "이 작업은 취소 할 수 없습니다.",
         icon: "warning",
+        buttons: true,
         dangerMode: true,
-        buttons: ["취소", "확인"],
       }).then((willDelete) => {
         if (willDelete) {
           const uid = state.userSimpleData.uid;
@@ -436,7 +426,6 @@ export default {
             .catch((err) => console.log(err));
           swal("회원 탈퇴가 완료되었습니다.", {
             icon: "success",
-            buttons: [null, "확인"],
           });
         }
       });
