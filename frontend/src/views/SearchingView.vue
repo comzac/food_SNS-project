@@ -50,6 +50,15 @@
               readonly
             ></v-text-field>
           </div>
+          <span v-show="keyword == ''" v-for="num in lotto" :key="num">
+            <v-btn
+              color="#ffb6b6"
+              class="white--text mr-1 mb-1"
+              @click="(keyword = recommends[num]), delaySearch(), lottoNum()"
+            >
+              # {{ recommends[num] }}
+            </v-btn>
+          </span>
         </v-card>
       </v-col>
     </v-row>
@@ -69,9 +78,43 @@ export default {
       timer: null,
       search_items: [],
       search_users: [],
+      recommends: [
+        "",
+        "간단",
+        "편의점",
+        "디저트",
+        "후식",
+        "맛있어",
+        "스까무라",
+        "저렴이",
+        "이국적",
+        "조합",
+        "자취",
+        "야식",
+        "배고파",
+        "초간단",
+        "자취요리",
+        "매운맛",
+      ],
+      lotto: [],
     };
   },
   methods: {
+    lottoNum() {
+      let lotto = [];
+      let i = 0;
+      while (i < 3) {
+        let n = Math.floor(Math.random() * 14) + 1;
+        if (!sameNum(n)) {
+          lotto.push(n);
+          i++;
+        }
+      }
+      function sameNum(n) {
+        return lotto.find((e) => e === n);
+      }
+      this.lotto = lotto;
+    },
     // delaysearch
     delaySearch() {
       if (this.timer) {
@@ -114,6 +157,8 @@ export default {
   },
   mounted() {
     this.$emit("change-page", 2);
+    this.lottoNum();
+    console.log(this.lotto);
   },
 };
 </script>
