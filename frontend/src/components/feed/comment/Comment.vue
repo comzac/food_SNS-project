@@ -17,9 +17,9 @@
         class="text-decoration-none"
       >
         <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-        <v-list-item-avatar class="mr-5" :color="comment.user.uprofile ? 'white' : 'grey'">
-          <v-icon v-if="!comment.user.uprofile" dark>mdi-account</v-icon>
-          <v-img v-if="comment.user.uprofile" :src="media_dir + comment.user.uprofile.name" />
+        <v-list-item-avatar class="mr-5" :color="commentHasProfileImg ? 'white' : 'grey'">
+          <v-icon v-if="!commentHasProfileImg" dark>mdi-account</v-icon>
+          <v-img v-if="commentHasProfileImg" :src="commentProfileImgRoute" />
         </v-list-item-avatar>
       </router-link>
       <v-list-item-content class="text-left">
@@ -59,6 +59,17 @@ export default {
   computed: {
     comment() {
       return this.comments[0];
+    },
+    commentHasProfileImg() {
+      if (this.comment.user.uprofile) {
+        if (this.comment.user.uprofile.name) return true;
+        else return false;
+      } else return false;
+    },
+    commentProfileImgRoute() {
+      if (this.commentHasProfileImg) {
+        return this.media_dir + this.comment.user.uprofile.name;
+      } else return "";
     },
   },
   methods: {

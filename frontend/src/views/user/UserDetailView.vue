@@ -5,7 +5,16 @@
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
-    <v-btn color="#ea907a" elevation="24" fixed bottom left fab @click="back()" class="mb-14">
+    <v-btn
+      color="#ea907a"
+      elevation="24"
+      fixed
+      bottom
+      left
+      fab
+      @click="back()"
+      class="mb-14"
+    >
       <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
     </v-btn>
   </div>
