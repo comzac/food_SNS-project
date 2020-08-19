@@ -5,7 +5,7 @@ export default {
   // MEDIA_DIR: "http://127.0.0.1:8887/",
   // MEDIA_DIR: "http://127.0.0.1:8887/",
   // MEDIA_DIR: "http://localhost/media/",
-  MEDIA_DIR: "http://127.0.0.1:8887/",
+  // MEDIA_DIR: "http://127.0.0.1:8887/",
   // MEDIA_DIR: "http://172.30.1.16/media/",
   MEDIA_DIR: "http://i3a108.p.ssafy.io/media/",
   ROUTES: {
