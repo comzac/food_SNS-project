@@ -62,12 +62,12 @@
                   <v-list-item-avatar
                     class="mr-2"
                     :color="
-                      comment.comment.user.uprofile.name ? 'white' : 'grey'
+                      comment.comment.user.uprofile ? 'white' : 'grey'
                     "
                   >
-                    <v-icon v-if="!comment.comment.user.uprofile.name" dark>mdi-account</v-icon>
+                    <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="comment.comment.user.uprofile.name"
+                      v-if="comment.comment.user.uprofile"
                       :src="media_dir + comment.comment.user.uprofile.name"
                     />
                   </v-list-item-avatar>
