@@ -2,10 +2,7 @@
   <v-container fill-height>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <IdCheck
-          v-if="page == '1'"
-          @toEmailCheck="(page = '2'), setId, setPage(2)"
-        />
+        <IdCheck v-if="page == '1'" @toEmailCheck="toPageTwo" />
         <PasswordChoiceEmail
           v-if="page == '2'"
           @toEmailVerification="setConfirmCode"
@@ -56,6 +53,11 @@ export default {
     };
   },
   methods: {
+    toPageTwo(id) {
+      this.setId(id);
+      this.page = "2";
+      this.setPage(2);
+    },
     ...mapActions("accounts", ["pwreset", "setPage", "setEmail", "setCode"]),
     setConfirmCode(userEmailData) {
       this.userEmailData.uemail = userEmailData.uemail;

@@ -5,12 +5,12 @@
     <br />
     <v-text-field
       v-model="confirm"
-      :error-messages="error.confirm"
+      :messages="error.confirm"
       label="Verification Code"
       outlined
       solo
       required
-      color="#ea907a"
+      color="#424242"
       class="mt-10 mb-7"
       autocomplete="off"
       @keypress.enter="verify"
@@ -19,9 +19,15 @@
     <br />
 
     <div>
-      <v-btn color="#ea907a" class="white--text" @click="pageDown">뒤로가기</v-btn>
+      <v-btn color="grey" class="white--text" @click="pageDown">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
-      <v-btn :disabled="!isSubmit" @click="verify" color="#ea907a" class="white--text">다음으로</v-btn>
+      <v-btn
+        :disabled="!isSubmit"
+        @click="verify"
+        color="#ea907a"
+        class="white--text"
+        >다음으로</v-btn
+      >
     </div>
   </v-card>
 </template>
@@ -37,7 +43,7 @@ export default {
     this.component = this;
   },
   watch: {
-    confirm: function () {
+    confirm: function() {
       this.checkForm();
     },
   },

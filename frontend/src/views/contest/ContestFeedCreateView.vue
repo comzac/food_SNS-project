@@ -11,12 +11,28 @@
               name="title"
               type="text"
               v-model="feed.title"
-              color="#ff6666"
-              :error-messages="feed.title ? '' : '제목을 입력해주세요'"
+              color="#424242"
+              :messages="feed.title ? '' : '제목을 입력해주세요'"
               autocapitalize="off"
               autocorrect="off"
               autocomplete="off"
             ></v-text-field>
+
+            <v-spacer></v-spacer>
+
+            <v-textarea
+              color="#424242"
+              v-model="feed.content"
+              auto-grow
+              label="내용"
+              outlined
+              solo
+              :messages="feed.content ? '' : '내용을 입력하세요'"
+              single-line
+              autocomplete="off"
+            ></v-textarea>
+            <v-spacer> </v-spacer>
+
             <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
             <v-window v-model="i2" continuous>
               <v-window-item v-if="fileData == ''">
@@ -27,6 +43,7 @@
                   contain
                   class="grey lighten-2"
                   style="opacity: 0.6;"
+                  @click="showInput()"
                 ></v-img>
               </v-window-item>
               <v-window-item v-for="(preview, i) in previews" :key="i">
@@ -73,7 +90,7 @@
             </v-window>
 
             <v-card-actions class="justify-space-between">
-              <v-btn text @click="prev" color="#ff6666">
+              <v-btn text @click="prev" color="#ea907a">
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
               <v-item-group v-model="i2" class="text-center" mandatory>
@@ -86,44 +103,32 @@
                     :input-value="active"
                     icon
                     @click="toggle"
-                    color="#ff6666"
+                    color="#ea907a"
                   >
                     <v-icon>mdi-record</v-icon>
                   </v-btn>
                 </v-item>
               </v-item-group>
-              <v-btn text @click="next" color="#ff6666">
+              <v-btn text @click="next" color="#ea907a">
                 <v-icon>mdi-chevron-double-right</v-icon>
               </v-btn>
             </v-card-actions>
 
             <!-- 사진 비디오 입력 -->
             <v-file-input
+              ref="inputfile"
               multiple
               v-if="!isUpdatePage"
               v-model="fileData"
               prepend-icon
-              accept=".png, .jpeg, .gif, .jpg, .mp4"
+              accept=".png, .jp(e)g, .gif, .jfif, .mp4"
               outlined
               solo
               label="사진 또는 동영상 선택"
               @change="previewImage"
-              color="#ff6666"
-              error-messages="20mb 이하 .png, jpeg, gif, jpg .mp4 파일만 최대 3개 업로드 됩니다."
+              color="#424242"
+              messages="20mb 이하 .png, jp(e)g, gif, jfif .mp4 파일만 최대 3개 업로드 됩니다."
             ></v-file-input>
-            <v-spacer></v-spacer>
-            <v-textarea
-              color="#ff6666"
-              v-model="feed.content"
-              auto-grow
-              label="내용"
-              outlined
-              solo
-              :error-messages="feed.content ? '' : '내용을 입력하세요'"
-              single-line
-              autocomplete="off"
-            ></v-textarea>
-
             <v-spacer>
               <br />
             </v-spacer>
@@ -131,7 +136,7 @@
               <v-btn
                 @click="$router.go(-1)"
                 class="white--text"
-                color="#666666"
+                color="grey"
                 width="99"
                 >취소</v-btn
               >
@@ -141,7 +146,7 @@
                 v-if="isUpdatePage"
                 :disabled="!feed.title || !feed.content || !fileData"
                 @click="updateFeedByFormData()"
-                color="#ff6666"
+                color="#ea907a"
                 class="white--text"
                 >수정 완료</v-btn
               >
@@ -149,7 +154,7 @@
                 v-else
                 :disabled="!feed.title || !feed.content || !fileData.length"
                 @click="insertFeedByFormData(), (overlay = true)"
-                color="#ff6666"
+                color="#ea907a"
                 class="white--text"
                 >작성 완료</v-btn
               >
@@ -197,6 +202,9 @@ export default {
     };
   },
   methods: {
+    showInput() {
+      this.$refs.inputfile.$refs.input.click();
+    },
     addCoordi(data) {
       console.log("coordi", data);
       this.fileData[this.number].coordi = data
@@ -250,6 +258,7 @@ export default {
           !/.mp4/.test(file[i].name) &&
           !/.png/.test(file[i].name) &&
           !/.gif/.test(file[i].name) &&
+          !/.jfif/.test(file[i].name) &&
           !/.jpg/.test(file[i].name) &&
           !/.jpeg/.test(file[i].name)
         ) {
