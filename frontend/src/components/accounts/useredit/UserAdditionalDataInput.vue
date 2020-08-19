@@ -10,33 +10,33 @@
           v-model="additionalData.ubirth"
           :error-messages="additionalData.ubirth ? '' : '생년월일을 입력해주세요'"
           type="date"
-          color="#ff6666"
+          color="#ea907a"
           autocomplete="off"
         ></v-text-field>
         <v-radio-group v-model="additionalData.usex" row>
-          <v-btn icon color="#ff6666">
+          <v-btn icon color="#ea907a">
             <v-icon>mdi-gender-male-female</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-radio color="#ff6666" label="남성" value="1"></v-radio>
-          <v-btn icon :color="additionalData.usex == 1 ? '#ff6666' : ''">
+          <v-radio color="#ea907a" label="남성" value="1"></v-radio>
+          <v-btn icon :color="additionalData.usex == 1 ? '#ea907a' : ''">
             <v-icon>mdi-gender-male</v-icon>
           </v-btn>
-          <v-radio color="#ff6666" label="여성" value="2"></v-radio>
-          <v-btn icon :color="additionalData.usex == 2 ? '#ff6666' : ''">
+          <v-radio color="#ea907a" label="여성" value="2"></v-radio>
+          <v-btn icon :color="additionalData.usex == 2 ? '#ea907a' : ''">
             <v-icon>mdi-gender-female</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
         </v-radio-group>
         <div class="mt-5">
           <v-btn
-            color="#ff6666"
+            color="grey"
             v-if="$route.name === 'SocialLoginDataInput'"
             class="white--text"
             @click="$emit('pageDown')"
           >뒤로가기</v-btn>
           <v-btn
-            color="#ff6666"
+            color="grey"
             v-if="$route.name !== 'SocialLoginDataInput'"
             class="white--text"
             @click="$router.go(-1)"
@@ -45,14 +45,14 @@
           <v-btn
             v-if="$route.name === 'SocialLoginDataInput'"
             :disabled="!additionalData.ubirth || !additionalData.usex"
-            color="#ff6666"
+            color="#ea907a"
             class="white--text"
             @click="conductAndReturn"
           >가입완료</v-btn>
           <v-btn
             v-if="$route.name !== 'SocialLoginDataInput'"
             :disabled="!additionalData.ubirth || !additionalData.usex"
-            color="#ff6666"
+            color="#ea907a"
             class="white--text"
             @click="conductAndReturn"
           >다음으로</v-btn>
