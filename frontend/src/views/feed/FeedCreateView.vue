@@ -18,6 +18,58 @@
               autocomplete="off"
             ></v-text-field>
 
+            <v-spacer></v-spacer>
+
+            <v-textarea
+              color="#ff6666"
+              v-model="feed.content"
+              auto-grow
+              label="내용"
+              outlined
+              solo
+              :error-messages="feed.content ? '' : '내용을 입력하세요'"
+              autocomplete="off"
+            ></v-textarea>
+            <v-spacer>
+              <br />
+            </v-spacer>
+            <v-spacer>
+              <br />
+            </v-spacer>
+            <!-- 수정 필요 -->
+            <v-text-field
+              label="태그"
+              outlined
+              solo
+              name="태그"
+              type="text"
+              v-model="hashtag"
+              append-icon="mdi-plus"
+              @click:append="createHashtag(hashtag)"
+              @keyup.enter.space.,="createHashtag(hashtag)"
+              error-messages="스페이스바 혹은 엔터, 콤마를 사용하여 태그를 구분할 수 있습니다"
+              autocapitalize="off"
+              autocorrect="off"
+              autocomplete="off"
+            ></v-text-field>
+            <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
+              <v-btn
+                outlined
+                rounded
+                solo
+                name="title"
+                type="text"
+                v-model="feed.title"
+                color="#424242"
+                small
+                @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
+                class="mr-2 mb-2"
+              ># {{ tag }}</v-btn>
+            </div>
+            <v-spacer>
+              <br />
+            </v-spacer>
+
             <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
             <v-window v-model="i2" continuous>
               <v-window-item v-if="fileData == ''">
@@ -28,6 +80,7 @@
                   contain
                   class="grey lighten-2"
                   style="opacity: 0.6;"
+                  @click="showInput()"
                 ></v-img>
               </v-window-item>
               <v-window-item v-for="(preview, i) in previews" :key="i">
@@ -78,18 +131,8 @@
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
               <v-item-group v-model="i2" class="text-center" mandatory>
-                <v-item
-                  v-for="n in previews.length"
-                  :key="n"
-                  v-slot:default="{ active, toggle }"
-                >
-                  <v-btn
-                    :input-value="active"
-                    icon
-                    x-small
-                    @click="toggle"
-                    color="#ff6666"
-                  >
+                <v-item v-for="n in previews.length" :key="n" v-slot:default="{ active, toggle }">
+                  <v-btn :input-value="active" icon x-small @click="toggle" color="#ff6666">
                     <v-icon>mdi-record</v-icon>
                   </v-btn>
                 </v-item>
@@ -101,7 +144,9 @@
 
             <!-- 사진 비디오 입력 -->
             <v-file-input
+              ref="inputfile"
               multiple
+              counter
               v-if="!isUpdatePage"
               v-model="fileData"
               prepend-icon
@@ -113,69 +158,11 @@
               color="#ff6666"
               error-messages="20mb 이하 .png, jp(e)g, gif, jfif .mp4 파일만 최대 8개 업로드 됩니다."
             ></v-file-input>
-            <v-spacer></v-spacer>
 
-            <v-textarea
-              color="#ff6666"
-              v-model="feed.content"
-              auto-grow
-              label="내용"
-              outlined
-              solo
-              :error-messages="feed.content ? '' : '내용을 입력하세요'"
-              autocomplete="off"
-            ></v-textarea>
-            <v-spacer>
-              <br />
-            </v-spacer>
-            <v-spacer>
-              <br />
-            </v-spacer>
-            <!-- 수정 필요 -->
-            <v-text-field
-              label="태그"
-              outlined
-              solo
-              name="태그"
-              type="text"
-              v-model="hashtag"
-              append-icon="mdi-plus"
-              @click:append="createHashtag(hashtag)"
-              @keyup.enter.space.,="createHashtag(hashtag)"
-              error-messages="스페이스바 혹은 엔터, 콤마를 사용하여 태그를 구분할 수 있습니다"
-              autocapitalize="off"
-              autocorrect="off"
-              autocomplete="off"
-            ></v-text-field>
-            <div
-              v-for="tag in feedhashtag"
-              :key="tag"
-              style="display: inline-block;"
-            >
-              <v-btn
-                outlined
-                solo
-                name="title"
-                type="text"
-                v-model="feed.title"
-                color="#ff6666"
-                small
-                @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
-                ># {{ tag }}</v-btn
-              >
-            </div>
-            <v-spacer>
-              <br />
-            </v-spacer>
             <div>
-              <v-btn
-                @click="$router.go(-1)"
-                class="white--text"
-                color="#666666"
-                width="99"
-                >취소</v-btn
-              >
+              <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
               <v-divider class="mr-5" vertical></v-divider>
+
               <!-- 클릭하면 피드 상세 페이지로 -->
               <v-btn
                 v-if="isUpdatePage"
@@ -183,16 +170,14 @@
                 @click="updateFeedByFormData()"
                 color="#ff6666"
                 class="white--text"
-                >작성 완료</v-btn
-              >
+              >작성 완료</v-btn>
               <v-btn
                 v-else
                 :disabled="!feed.title || !feed.content || !fileData.length"
                 @click="insertFeedByFormData(), (overlay = true)"
                 color="#ff6666"
                 class="white--text"
-                >작성 완료</v-btn
-              >
+              >작성 완료</v-btn>
             </div>
           </v-card>
         </v-col>
@@ -239,6 +224,9 @@ export default {
     };
   },
   methods: {
+    showInput() {
+      this.$refs.inputfile.$refs.input.click();
+    },
     addCoordi(data) {
       console.log("coordi", data);
       this.fileData[this.number].coordi = data
@@ -268,6 +256,7 @@ export default {
           text: "파일이 8개보다 많이 선택되었습니다.",
           icon: "warning",
           dangerMode: true,
+          buttons: [null, "확인"],
         });
         this.overlay = false;
         return false;
@@ -279,6 +268,7 @@ export default {
             text: "20mb보다 큰 파일이 선택되었습니다.",
             icon: "warning",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
 
           this.overlay = false;
@@ -297,6 +287,7 @@ export default {
             text: "파일 형식이 어긋납니다.",
             icon: "error",
             dangerMode: true,
+            buttons: [null, "확인"],
           });
           this.overlay = false;
           return false;
@@ -333,7 +324,9 @@ export default {
       // }
       window.scrollTo(0, 0);
       this.overlay = false;
-      swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.");
+      swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.", {
+        buttons: [null, "확인"],
+      });
     },
     insertFeedByFormData() {
       this.feedData.feed = this.feed;
@@ -409,6 +402,7 @@ export default {
   },
   mounted() {
     this.$emit("change-page", 7);
+    window.scrollTo(0, 0);
   },
 };
 </script>

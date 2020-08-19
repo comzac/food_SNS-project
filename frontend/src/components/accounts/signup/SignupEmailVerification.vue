@@ -30,12 +30,12 @@
       <br />
     </v-spacer>
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$emit('pageDown')"
+      <v-btn color="grey" class="white--text" @click="$emit('pageDown')"
         >뒤로가기</v-btn
       >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
-        color="#ff6666"
+        color="#ea907a"
         class="white--text"
         :disabled="!isSubmit"
         @click="verify()"
@@ -95,6 +95,7 @@ export default {
         swal({
           text: "인증번호를 확인해주세요",
           dangerMode: true,
+          buttons: [null, "확인"],
         });
       }
     },

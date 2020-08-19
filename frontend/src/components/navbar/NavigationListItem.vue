@@ -5,7 +5,7 @@
         <v-icon>{{ listItem.icon }}</v-icon>
       </v-list-item-icon>
       <v-list-item-title>{{ listItem.title }}</v-list-item-title>
-      <div v-if="listItem.title === 'Notification'">
+      <div v-if="listItem.title === '알림'">
         <span class="mr-1">{{ nonReadCount }}</span>
       </div>
     </v-list-item>

@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation app background-color="#ff6666">
+  <v-bottom-navigation app background-color="#ea907a">
     <router-link :to="{ name: 'Home' }" class="text-decoration-none">
       <v-btn height="56">
         <v-icon color="#ffffff">mdi-home</v-icon>
@@ -27,7 +27,7 @@
     <router-link :to="{ name: 'NotificationView' }" class="text-decoration-none">
       <v-btn height="56">
         <v-icon color="#ffffff">mdi-bell</v-icon>
-        <v-badge v-if="nonReadCount" color="yellow" dot class="ml-3"></v-badge>
+        <v-badge v-if="nonReadCount" color="#f4f7c5" dot class="ml-3"></v-badge>
       </v-btn>
     </router-link>
   </v-bottom-navigation>

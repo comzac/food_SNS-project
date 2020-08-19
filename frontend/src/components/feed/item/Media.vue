@@ -32,7 +32,7 @@
     </v-window>
 
     <v-card-actions class="justify-space-between">
-      <v-btn text @click="prev" color="#ff6666">
+      <v-btn text @click="prev" color="grey">
         <v-icon>mdi-chevron-double-left</v-icon>
       </v-btn>
       <v-item-group v-model="i2" class="text-center" mandatory>
@@ -46,13 +46,13 @@
             x-small
             icon
             @click="toggle"
-            color="#ff6666"
+            color="grey"
           >
             <v-icon>mdi-record</v-icon>
           </v-btn>
         </v-item>
       </v-item-group>
-      <v-btn text @click="next" color="#ff6666">
+      <v-btn text @click="next" color="grey">
         <v-icon>mdi-chevron-double-right</v-icon>
       </v-btn>
     </v-card-actions>
