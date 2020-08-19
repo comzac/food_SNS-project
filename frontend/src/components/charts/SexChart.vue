@@ -20,7 +20,7 @@ export default {
                 weight: "bold",
                 size: 20,
               },
-              formatter: function (value, context) {
+              formatter: function(value, context) {
                 let likeCount = context.dataset.data.reduce(
                   (acc, cur) => acc + cur,
                   0
@@ -81,7 +81,7 @@ export default {
                   weight: "bold",
                   size: 20,
                 },
-                formatter: function (value, context) {
+                formatter: function(value, context) {
                   let likeCount = context.dataset.data.reduce(
                     (acc, cur) => acc + cur,
                     0

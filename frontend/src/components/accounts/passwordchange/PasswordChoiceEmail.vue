@@ -1,27 +1,42 @@
 <template>
   <v-card class="mx-auto" flat max-width="350">
-    <h1 class="text-left ml-3" style="color:#ea907a;" v-if="isRetrieveIDPage">아이디 찾기</h1>
-    <h1 class="text-left ml-3" style="color:#ea907a;" v-if="!isRetrieveIDPage">비밀번호 찾기</h1>
+    <h1 class="text-left ml-3" style="color:#ea907a;" v-if="isRetrieveIDPage">
+      아이디 찾기
+    </h1>
+    <h1 class="text-left ml-3" style="color:#ea907a;" v-if="!isRetrieveIDPage">
+      비밀번호 찾기
+    </h1>
     <br />
     <br />
     <v-text-field
       v-model="email"
-      :error-messages="error.email"
+      :messages="error.email"
+      @input="emailChecked = false"
       label="E-mail."
       outlined
       solo
       required
       autofocus
-      append-outer-icon="mdi-check"
-      @click:append-outer="emailCheck2(email)"
-      color="#ea907a"
+      color="#424242"
       class="mt-10 mb-7"
       autocomplete="off"
-    ></v-text-field>
+    >
+      <v-icon
+        slot="append"
+        :color="emailChecked ? '' : '#ea907a'"
+        @click="emailCheck2(email)"
+        >mdi-check</v-icon
+      >
+    </v-text-field>
     <br />
     <br />
     <div>
-      <v-btn color="#ea907a" class="white--text" @click="$emit('pageDown'), $emit('go-back')">뒤로가기</v-btn>
+      <v-btn
+        color="grey"
+        class="white--text"
+        @click="$emit('pageDown'), $emit('go-back')"
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         v-if="isRetrieveIDPage"
@@ -29,14 +44,16 @@
         @click="emailVerification(email)"
         color="#ea907a"
         class="white--text"
-      >인증번호 받기</v-btn>
+        >인증번호 받기</v-btn
+      >
       <v-btn
         v-if="!isRetrieveIDPage"
         :disabled="!emailChecked"
         @click="emailVerification(email)"
         color="#ea907a"
         class="white--text"
-      >인증번호 받기</v-btn>
+        >인증번호 받기</v-btn
+      >
 
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -72,7 +89,7 @@ export default {
     },
   },
   watch: {
-    email: function () {
+    email: function() {
       this.checkForm();
     },
   },
