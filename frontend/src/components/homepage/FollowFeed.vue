@@ -3,6 +3,11 @@
     <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
+    <v-container fill-height justify-center>
+      <h2 class="text-center" :v-if="feed_data === []">
+        팔로우 중인 회원이 없습니다.
+      </h2>
+    </v-container>
   </div>
 </template>
 

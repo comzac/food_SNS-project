@@ -6,36 +6,45 @@
         :to="{ name: 'RetrieveID' }"
         class="text-decoration-none mr-2"
         style="color: #ea907a;"
-      >아이디 찾기</router-link>
+        >아이디 찾기</router-link
+      >
     </div>
     <br />
     <br />
     <v-text-field
       v-model="id"
-      :error-messages="error.id"
+      :messages="error.id"
       label="ID."
       outlined
       solo
       required
       autofocus
-      append-outer-icon="mdi-check"
       @input="idChecked = false"
-      @click:append-outer="idCheck3(id)"
-      color="#ea907a"
+      color="#424242"
       class="mt-10 mb-7"
       autocomplete="off"
-    ></v-text-field>
+    >
+      <v-icon
+        slot="append"
+        :color="idChecked ? '' : '#ea907a'"
+        @click="idCheck3(id)"
+        >mdi-check</v-icon
+      >
+    </v-text-field>
     <br />
     <br />
     <div>
-      <v-btn color="#ea907a" class="white--text" @click="$router.go(-1)">뒤로가기</v-btn>
+      <v-btn color="grey" class="white--text" @click="$router.go(-1)"
+        >뒤로가기</v-btn
+      >
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="!id.length || !idChecked"
         color="#ea907a"
         @click="$emit('toEmailCheck', id), setUid(id)"
         class="white--text"
-      >다음으로</v-btn>
+        >다음으로</v-btn
+      >
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
