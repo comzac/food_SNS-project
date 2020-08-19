@@ -1,13 +1,12 @@
 <template>
   <v-card class="mx-auto" flat max-width="350">
-    <h1 class="text-left ml-3" style="color:#ff6666;">비밀번호 찾기</h1>
+    <h1 class="text-left ml-3" style="color:#ea907a;">비밀번호 찾기</h1>
     <div class="text-right">
       <router-link
         :to="{ name: 'RetrieveID' }"
         class="text-decoration-none mr-2"
-        style="color: #ff6666;"
-        >아이디 찾기</router-link
-      >
+        style="color: #ea907a;"
+      >아이디 찾기</router-link>
     </div>
     <br />
     <br />
@@ -22,24 +21,21 @@
       append-outer-icon="mdi-check"
       @input="idChecked = false"
       @click:append-outer="idCheck3(id)"
-      color="#ff6666"
+      color="#ea907a"
       class="mt-10 mb-7"
       autocomplete="off"
     ></v-text-field>
     <br />
     <br />
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="$router.go(-1)"
-        >뒤로가기</v-btn
-      >
+      <v-btn color="#ea907a" class="white--text" @click="$router.go(-1)">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="!id.length || !idChecked"
-        color="#ff6666"
+        color="#ea907a"
         @click="$emit('toEmailCheck', id), setUid(id)"
         class="white--text"
-        >다음으로</v-btn
-      >
+      >다음으로</v-btn>
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
