@@ -189,7 +189,6 @@ public class FeedServiceImpl implements FeedService {
 		feedHashtagQueryDsl.feedHashtagDeleteByFid(fid);
 		for(Hashtag h: hashtagList) {
 			content = h.getContent();
-			System.out.println();
 			
 			if(hashtagRepository.findByContent(content)!=null) {
 				hid = hashtagRepository.findByContent(content).getId();
@@ -200,8 +199,12 @@ public class FeedServiceImpl implements FeedService {
 				hid = hashtag.getId();
 			}
 			
-			feedHashtag.setFeedHashtagkey(new FeedHashtagKey(fid, hid));
-			feedHashtagRepository.save(feedHashtag);
+			System.out.println(feedHashtagQueryDsl.findFeedHashtag(fid, hid).toString());
+			if(feedHashtagQueryDsl.findFeedHashtag(fid, hid).size()==0) {
+				feedHashtag.setFeedHashtagkey(new FeedHashtagKey(fid, hid));
+				feedHashtagRepository.save(feedHashtag);
+			}
+			
 		}
 		
 		return hashtagList;

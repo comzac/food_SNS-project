@@ -656,7 +656,8 @@ public class FeedController {
 
 		// hashtag는 일단 빈칸
 		List<Hashtag> hashtagList = feedAll.getHashtag();
-		feedService.feedHashtagListUpdate(feed.getId(), hashtagList);
+		feedService.feedHashtagListUpdate(id, hashtagList);
+//		System.out.println(id+" "+feed.getId()+" "+hashtagList.toString());
 
 		FeedAll updateFeedAll = new FeedAll();
 		updateFeedAll.setFeed(updateFeed);
