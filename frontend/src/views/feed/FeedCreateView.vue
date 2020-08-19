@@ -52,11 +52,7 @@
               autocorrect="off"
               autocomplete="off"
             ></v-text-field>
-            <div
-              v-for="tag in feedhashtag"
-              :key="tag"
-              style="display: inline-block;"
-            >
+            <div v-for="tag in feedhashtag" :key="tag" style="display: inline-block;">
               <v-btn
                 outlined
                 rounded
@@ -64,12 +60,11 @@
                 name="title"
                 type="text"
                 v-model="feed.title"
-                color="#ff6666"
+                color="#424242"
                 small
                 @click="feedhashtag.splice(feedhashtag.indexOf(tag), 1)"
-                class="mr-2"
-                ># {{ tag }}</v-btn
-              >
+                class="mr-2 mb-2"
+              ># {{ tag }}</v-btn>
             </div>
             <v-spacer>
               <br />
@@ -136,18 +131,8 @@
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
               <v-item-group v-model="i2" class="text-center" mandatory>
-                <v-item
-                  v-for="n in previews.length"
-                  :key="n"
-                  v-slot:default="{ active, toggle }"
-                >
-                  <v-btn
-                    :input-value="active"
-                    icon
-                    x-small
-                    @click="toggle"
-                    color="#ff6666"
-                  >
+                <v-item v-for="n in previews.length" :key="n" v-slot:default="{ active, toggle }">
+                  <v-btn :input-value="active" icon x-small @click="toggle" color="#ff6666">
                     <v-icon>mdi-record</v-icon>
                   </v-btn>
                 </v-item>
@@ -175,13 +160,7 @@
             ></v-file-input>
 
             <div>
-              <v-btn
-                @click="$router.go(-1)"
-                class="white--text"
-                color="#666666"
-                width="99"
-                >취소</v-btn
-              >
+              <v-btn @click="$router.go(-1)" class="white--text" color="#666666" width="99">취소</v-btn>
               <v-divider class="mr-5" vertical></v-divider>
 
               <!-- 클릭하면 피드 상세 페이지로 -->
@@ -191,16 +170,14 @@
                 @click="updateFeedByFormData()"
                 color="#ff6666"
                 class="white--text"
-                >작성 완료</v-btn
-              >
+              >작성 완료</v-btn>
               <v-btn
                 v-else
                 :disabled="!feed.title || !feed.content || !fileData.length"
                 @click="insertFeedByFormData(), (overlay = true)"
                 color="#ff6666"
                 class="white--text"
-                >작성 완료</v-btn
-              >
+              >작성 완료</v-btn>
             </div>
           </v-card>
         </v-col>

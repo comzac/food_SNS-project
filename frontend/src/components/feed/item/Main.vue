@@ -8,7 +8,7 @@
         <img v-if="like" :src="imgRoute.like_small" alt s />-->
         <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
       </v-btn>
-      <span style="font-size: 15px">{{ likeCount }}</span>
+      <span style="font-size: 15px; margin-top: -2px;">{{ likeCount }}</span>
       <v-spacer></v-spacer>
       <v-btn class="share-btn" color="#ea907a" icon x-small @click="share()">
         <v-icon>mdi-share-variant</v-icon>
@@ -16,7 +16,7 @@
     </v-row>
     <p class="text-left" :style="item ? 'cursor:pointer;' : 'cursor:default;'">
       <v-row class="space-around mx-0" @click="overflow2()">
-        <strong>{{ feed.title }}</strong>
+        <strong class="grey--text text--darken-3 feed-title">{{ feed.title }}</strong>
         <v-spacer></v-spacer>
         <small>{{ ymd2 }}</small>
       </v-row>
@@ -29,7 +29,7 @@
     >{{ feed.content }}</p>
     <div class="text-left mb-4" v-if="hashtag">
       <span
-        class="mr-2 mb-2"
+        class="mr-2"
         style="cursor: pointer;"
         v-for="tag in hashtag"
         :key="tag.id"
@@ -40,7 +40,7 @@
           })
         "
       >
-        <v-chip outlined color="grey darken-3"># {{ tag.content }}</v-chip>
+        <v-chip outlined small color="grey darken-3" class="mb-2"># {{ tag.content }}</v-chip>
       </span>
     </div>
   </div>
@@ -124,5 +124,9 @@ img {
 }
 p:hover {
   cursor: pointer;
+}
+
+strong.grey--text.feed-title {
+  font-size: 18px;
 }
 </style>

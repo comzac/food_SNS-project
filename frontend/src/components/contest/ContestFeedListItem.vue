@@ -40,7 +40,7 @@
       ></video>
     </v-responsive>
 
-    <h5 class="text-center">{{ title }}</h5>
+    <h5 class="text-center feed-title">{{ title }}</h5>
     <h5 class="text-center">
       <img src="@/assets/like/contest_like.png" class="like-icon mb-n1 mt-1" />
       {{ likeCount }}
@@ -124,5 +124,9 @@ export default {
 .inRank {
   border: 2px solid #ea907a;
   /* padding: 2px; */
+}
+
+h5.feed-title {
+  cursor: pointer;
 }
 </style>
