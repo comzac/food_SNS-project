@@ -1,39 +1,33 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn
-        class="mr-1"
-        color="#ff6666"
-        icon
-        x-small
-        @click="$emit('likeUnlike')"
-      >
-        <!-- <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon> -->
-        <img v-if="!like" :src="imgRoute.unlike" alt="" />
-        <img v-if="like" :src="imgRoute.like_small" alt="" s />
+      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
+        <v-icon v-if="like">mdi-heart</v-icon>
+        <v-icon v-if="!like">mdi-heart-outline</v-icon>
+        <!-- <img v-if="!like" :src="imgRoute.unlike" alt />
+        <img v-if="like" :src="imgRoute.like_small" alt s />-->
         <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
       </v-btn>
-      <span style="font-size: 15px">{{ likeCount }}</span>
+      <span style="font-size: 15px; margin-top: -2px;">{{ likeCount }}</span>
       <v-spacer></v-spacer>
-      <v-btn class="share-btn" color="#ff6666" icon x-small @click="share()">
+      <v-btn class="share-btn" color="#ea907a" icon x-small @click="share()">
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-row>
-    <p class="text-left">
+    <p class="text-left" :style="item ? 'cursor:pointer;' : 'cursor:default;'">
       <v-row class="space-around mx-0" @click="overflow2()">
-        <strong>{{ feed.title }}</strong>
+        <strong class="grey--text text--darken-3 feed-title">{{ feed.title }}</strong>
         <v-spacer></v-spacer>
         <small>{{ ymd2 }}</small>
       </v-row>
     </p>
-    <p v-if="item" :class="overflow" @click="overflow2()">
-      {{ feed.content }}
-    </p>
-    <p v-if="!item" style="white-space: pre-line" class="text-left">
-      {{ feed.content }}
-    </p>
-    <div class="text-left" v-if="hashtag">
+    <p v-if="item" :class="overflow" @click="overflow2()">{{ feed.content }}</p>
+    <p
+      v-if="!item"
+      style="white-space: pre-line; cursor: default;"
+      class="text-left"
+    >{{ feed.content }}</p>
+    <div class="text-left mb-4" v-if="hashtag">
       <span
         class="mr-2"
         style="cursor: pointer;"
@@ -45,8 +39,9 @@
             params: { keyword: tag.content },
           })
         "
-        ># {{ tag.content }}</span
       >
+        <v-chip outlined small color="grey darken-3" class="mb-2"># {{ tag.content }}</v-chip>
+      </span>
     </div>
   </div>
 </template>
@@ -110,7 +105,7 @@ export default {
       tempElement.select();
       document.execCommand("copy");
       document.body.removeChild(tempElement);
-      swal("주소가 복사되었습니다.");
+      swal("주소가 복사되었습니다.", { buttons: [null, "확인"] });
     },
   },
 };
@@ -129,5 +124,9 @@ img {
 }
 p:hover {
   cursor: pointer;
+}
+
+strong.grey--text.feed-title {
+  font-size: 18px;
 }
 </style>

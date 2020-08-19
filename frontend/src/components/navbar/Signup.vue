@@ -1,14 +1,8 @@
 <template>
   <router-link to="/signup">
-    <v-footer
-      absolute
-      class="font-weight-medium"
-      color="#ff6666"
-      dark
-      height="56"
-    >
+    <v-footer absolute class="font-weight-medium" color="#ea907a" dark height="56">
       <v-col class="text-center" cols="12">
-        <strong>SIGN UP</strong>
+        <strong>가입하기</strong>
       </v-col>
     </v-footer>
   </router-link>

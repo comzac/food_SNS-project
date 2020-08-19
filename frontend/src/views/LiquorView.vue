@@ -3,19 +3,35 @@
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
         <v-card flat width="614" class="mx-auto">
-          <h1 class="text-left" style="color: #ff6666;">스까무라</h1>
+          <h1 class="text-left ml-3 mb-n3" style="color: #424242;">
+            이번주의 칵테일
+          </h1>
           <br />
           <v-row class="ma-0 align-center justify-center">
-            <v-col cols="6" v-for="(liquor, n) in liquor_data" :key="n" @click="modal(liquor)">
+            <v-col
+              cols="6"
+              v-for="(liquor, n) in liquor_data"
+              :key="n"
+              @click="modal(liquor)"
+            >
               <!-- 모달 방식 -->
               <v-dialog v-model="liquor.datum2.dialog" width="295">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-card v-bind="attrs" v-on="on" max-width="295px" class="mx-auto">
-                    <img class="liquor-image" :src="liquor.datum2.liquorimg" width="100%" />
+                  <v-card
+                    v-bind="attrs"
+                    v-on="on"
+                    max-width="295px"
+                    class="mx-auto"
+                  >
+                    <img
+                      class="liquor-image"
+                      :src="liquor.datum2.liquorimg"
+                      width="100%"
+                    />
                     <br />
                     <strong>
                       <h4
-                        style="background-color: #ffb3b3;"
+                        style="background-color: #fbc687; color: #424242;"
                         class="pa-1 text-center"
                         v-html="liquor.datum2.liquor"
                       ></h4>

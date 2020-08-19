@@ -33,7 +33,18 @@ export default {
   methods: {
     ...mapActions("feeds", ["fetchFollowFeeds", "clearFollowFeeds"]),
     setFeeds(feeds) {
-      this.feed_data = this.feed_data.concat(feeds);
+      const ids = [];
+      this.feed_data.forEach((feed) => {
+        if (!ids.includes(feed.feed.id)) {
+          ids.push(feed.feed.id);
+        }
+      });
+      feeds.forEach((feed) => {
+        if (!ids.includes(feed.feed.id)) {
+          this.feed_data.push(feed);
+        }
+      });
+      // this.feed_data = this.feed_data.concat(feeds);
     },
     infiniteScroll() {
       if (

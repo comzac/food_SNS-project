@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 import LoginView from "@/views/LoginView";
 import SignupView from "@/views/SignupView";
@@ -11,6 +12,7 @@ import UserFollowView from "@/views/user/UserFollowView";
 import UserEditView from "@/views/user/UserEditView";
 import UserProfileEditView from "@/views/user/UserProfileEditView";
 import UserAdditionalDataEditView from "@/views/user/UserAdditionalDataEditView";
+import SocialLoginDataInputView from "@/views/user/SocialLoginDataInputView";
 
 import Home from "@/views/Home";
 
@@ -101,6 +103,12 @@ const routes = [
     component: UserAdditionalDataEditView,
     meta: { title: "추가정보 입력 · HoneyCombo" },
   },
+  {
+    path: "/user/additionalinfo",
+    name: "SocialLoginDataInput",
+    component: SocialLoginDataInputView,
+    meta: { title: "추가정보 입력 · HoneyCombo" },
+  },
 
   // feed
   {
@@ -177,6 +185,10 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.title) {
     document.title = to.meta.title;
+  }
+
+  if (to.name === "UserEdit" && from.name === "UserProfileEdit") {
+    store.dispatch("accounts/setAuthorized", true);
   }
 
   const publicPages = [

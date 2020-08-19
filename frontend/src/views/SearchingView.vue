@@ -12,7 +12,7 @@
             label="검색어를 입력하세요"
             required
             autofocus
-            color="#ff6666"
+            color="#ea907a"
             autocapitalize="off"
             autocorrect="off"
             autocomplete="off"
@@ -31,7 +31,6 @@
                   Object.values(item)[0]
                 } 개`
               "
-              color="#ff6666"
               readonly
             ></v-text-field>
           </div>
@@ -46,10 +45,22 @@
               :value="
                 ` ${search_user.unick} - 작성 게시물 ${search_user.cnt} 개`
               "
-              color="#ff6666"
               readonly
             ></v-text-field>
           </div>
+          <div class="text-left caption font-weight-bold mb-2">이 검색어는 어떠세요?</div>
+          <!-- <span v-show="keyword == ''">
+            <v-icon color="red" class="mb-1 mr-3 ml-n5">mdi-fire</v-icon>
+          </span>-->
+          <span v-show="keyword == ''" v-for="num in lotto" :key="num">
+            <v-btn
+              rounded
+              outlined
+              color="#424242"
+              class="mr-1 mb-1"
+              @click="(keyword = recommends[num]), delaySearch(), lottoNum()"
+            ># {{ recommends[num] }}</v-btn>
+          </span>
         </v-card>
       </v-col>
     </v-row>
@@ -69,9 +80,42 @@ export default {
       timer: null,
       search_items: [],
       search_users: [],
+      recommends: [
+        "",
+        "간단",
+        "편의점",
+        "디저트",
+        "후식",
+        "맛있어",
+        "저렴이",
+        "이국적",
+        "조합",
+        "자취",
+        "야식",
+        "배고파",
+        "초간단",
+        "자취요리",
+        "매운맛",
+      ],
+      lotto: [],
     };
   },
   methods: {
+    lottoNum() {
+      let lotto = [];
+      let i = 0;
+      while (i < 3) {
+        let n = Math.floor(Math.random() * 14) + 1;
+        if (!sameNum(n)) {
+          lotto.push(n);
+          i++;
+        }
+      }
+      function sameNum(n) {
+        return lotto.find((e) => e === n);
+      }
+      this.lotto = lotto;
+    },
     // delaysearch
     delaySearch() {
       if (this.timer) {
@@ -79,7 +123,7 @@ export default {
         this.timer = null;
       }
       const obj = this;
-      this.timer = setTimeout(function() {
+      this.timer = setTimeout(function () {
         obj.search();
       }, 500);
     },
@@ -114,6 +158,8 @@ export default {
   },
   mounted() {
     this.$emit("change-page", 2);
+    this.lottoNum();
+    console.log(this.lotto);
   },
 };
 </script>

@@ -3,8 +3,8 @@
     <v-card max-width="614" class="mx-auto" flat>
       <v-container>
         <v-row class="mx-0 align-center">
-          <h1 class="red--text text--lighten-2"># {{ keyword }}</h1>
-          <h1 v-if="keyword2 !== ''" class="red--text text--lighten-2 ml-4">
+          <h1 style="color: #ea907a;"># {{ keyword }}</h1>
+          <h1 v-if="keyword2 !== ''" class="ml-4" style="color: #ea907a;">
             # {{ keyword2 }}
           </h1>
         </v-row>
@@ -32,7 +32,7 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
     <v-btn
-      color="#ff6666"
+      color="#ea907a"
       elevation="24"
       fixed
       bottom
