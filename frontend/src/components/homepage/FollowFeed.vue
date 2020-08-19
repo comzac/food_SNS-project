@@ -3,8 +3,8 @@
     <div class="home" v-for="(feed, i) in feed_data" :key="i">
       <FeedItem :feed="feed" style="max-width: 614;" />
     </div>
-    <v-container fill-height justify-center>
-      <h2 class="text-center" :v-if="feed_data === []">
+    <v-container v-if="!follow" fill-height justify-center>
+      <h2 class="text-center">
         팔로우 중인 회원이 없습니다.
       </h2>
     </v-container>
@@ -27,6 +27,7 @@ export default {
   data() {
     return {
       // feed 를 page 를 증가시키면서 하나씩 받아와야 할 듯
+      follow: true,
       page: 1,
       feedParams: {
         lastFid: 100000,
@@ -37,6 +38,7 @@ export default {
   },
   methods: {
     ...mapActions("feeds", ["fetchFollowFeeds", "clearFollowFeeds"]),
+
     setFeeds(feeds) {
       const ids = [];
       this.feed_data.forEach((feed) => {
@@ -64,7 +66,7 @@ export default {
         // this.feed_data.push(feed_data2);
         // this.page += 1;
         this.fetchFollowFeeds(this.feedParams).then((newFeeds) => {
-          console.log("infinite scroll get");
+          // console.log("infinite scroll get");
           // this.feedParams.lastFidRecommand = 0;
           newFeeds.forEach((feed) => {
             if (feed.recommand) {
@@ -81,11 +83,19 @@ export default {
     },
   },
   created() {
-    console.log("created");
+    // console.log("created");
     this.clearFollowFeeds();
     this.fetchFollowFeeds(this.feedParams)
       .then((newFeeds) => {
-        console.log("infinite scroll get");
+        // console.log("newFeeds", newFeeds);
+        if (newFeeds.length) {
+          this.follow = true;
+          // console.log("not change");
+        } else {
+          this.follow = false;
+          // console.log("change");
+        }
+        // console.log("infinite scroll get");
         newFeeds.forEach((feed) => {
           if (feed.recommand) {
             this.feedParams.lastFidRecommand = feed.feed.id;
@@ -106,7 +116,7 @@ export default {
     this.$emit("change-page", 0);
   },
   destroyed() {
-    console.log("destroyed");
+    // console.log("destroyed");
     window.removeEventListener("scroll", this.infiniteScroll);
   },
 };

@@ -50,8 +50,14 @@
                 </v-text-field>
               </v-col>
             </v-row>
-            <div v-for="(comment, idx) in comments.comments" :key="comment.comment.id">
-              <v-list-item class="ma-0 pa-0 align-start" :id="'a' + comment.comment.id">
+            <div
+              v-for="(comment, idx) in comments.comments"
+              :key="comment.comment.id"
+            >
+              <v-list-item
+                class="ma-0 pa-0 align-start"
+                :id="'a' + comment.comment.id"
+              >
                 <router-link
                   :to="{
                     name: 'UserDetail',
@@ -61,11 +67,11 @@
                 >
                   <v-list-item-avatar
                     class="mr-2"
-                    :color="
-                      comment.comment.user.uprofile ? 'white' : 'grey'
-                    "
+                    :color="comment.comment.user.uprofile ? 'white' : 'grey'"
                   >
-                    <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
+                    <v-icon v-if="!comment.comment.user.uprofile" dark
+                      >mdi-account</v-icon
+                    >
                     <v-img
                       v-if="comment.comment.user.uprofile"
                       :src="media_dir + comment.comment.user.uprofile.name"
@@ -80,27 +86,32 @@
                   <v-list-item-title class="mb-1 black--text">
                     {{ comment.comment.user.unick }}
                     <span style="font-size: 0.7rem; color: grey;">
-                      {{
-                      computeYMD(comment.comment.regdate)
-                      }}
+                      {{ computeYMD(comment.comment.regdate) }}
                     </span>
                   </v-list-item-title>
                   <!-- </router-link> -->
-                  <v-list-item-subtitle class="black--text mb-1" style="white-space:normal">
+                  <v-list-item-subtitle
+                    class="black--text mb-1"
+                    style="white-space:normal"
+                  >
                     {{ comment.comment.content }}
                     <span style="font-size: 0.7rem; color: grey;">
-                      {{
-                      comment.comment.editdate ? "(수정됨)" : ""
-                      }}
+                      {{ comment.comment.editdate ? "(수정됨)" : "" }}
                     </span>
                   </v-list-item-subtitle>
-                  <v-list-item-subtitle class="gray--text" style="font-size: 0.7rem">
+                  <v-list-item-subtitle
+                    class="gray--text"
+                    style="font-size: 0.7rem"
+                  >
                     <!-- {{ computeYMD(comment.comment.regdate) }} -->
                     <!-- {{ comment.comment.editdate ? "(수정됨)" : "" }} -->
                     좋아요 {{ comment.likeCount }}개
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-menu v-if="authUserUnick === comment.comment.user.unick" bottom>
+                <v-menu
+                  v-if="authUserUnick === comment.comment.user.unick"
+                  bottom
+                >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
                       <v-icon>mdi-dots-horizontal</v-icon>
@@ -113,22 +124,30 @@
                       v-if="authUserUnick === comment.comment.user.unick"
                       @click="showEdit(comment.comment.id)"
                     >
-                      <v-list-item-title class="blue--text text-lighten-2">댓글 수정</v-list-item-title>
+                      <v-list-item-title class="blue--text text-lighten-2"
+                        >댓글 수정</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item
                       v-if="authUserUnick === comment.comment.user.unick"
                       @click="deleteCommentAndFetch(comment.comment.id)"
                     >
-                      <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
+                      <v-list-item-title class="red--text text-lighten-2"
+                        >댓글 삭제</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item
                       v-if="authUserUnick !== comment.comment.user.unick"
                       @click="() => {}"
                     >
-                      <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
+                      <v-list-item-title class="red--text text-lighten-2"
+                        >댓글 신고</v-list-item-title
+                      >
                     </v-list-item>
                     <v-list-item @click="() => {}">
-                      <v-list-item-title class="blue--text text-lighten-2">취소</v-list-item-title>
+                      <v-list-item-title class="blue--text text-lighten-2"
+                        >취소</v-list-item-title
+                      >
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -167,7 +186,16 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-btn color="#ea907a" elevation="24" fixed bottom left fab @click="back()" class="mb-14">
+    <v-btn
+      color="#ea907a"
+      elevation="24"
+      fixed
+      bottom
+      left
+      fab
+      @click="back()"
+      class="mb-14"
+    >
       <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
     </v-btn>
   </div>
@@ -253,7 +281,7 @@ export default {
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(regdate).getTime() / 1000) +
         1;
-      var ymd2 = function (ymd) {
+      var ymd2 = function(ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
         } else if (ymd < 3600) {
