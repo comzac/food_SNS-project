@@ -12,12 +12,12 @@
     </v-spacer>
     <v-text-field
       v-model="confirm"
-      :error-messages="error.confirm"
+      :messages="error.confirm"
       label="Verification Code"
       outlined
       solo
       required
-      color="#ff6666"
+      color="#424242"
       autocomplete="off"
     ></v-text-field>
     <v-spacer>

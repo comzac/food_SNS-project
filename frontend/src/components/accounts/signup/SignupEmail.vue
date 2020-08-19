@@ -12,18 +12,22 @@
     </v-spacer>
     <v-text-field
       v-model="email"
-      :error-messages="error.email"
+      :messages="error.email"
       label="E-mail."
       @input="emailChecked = false"
       outlined
       solo
       required
       autofocus
-      append-outer-icon="mdi-check"
-      @click:append-outer="emailCheck2(email)"
-      color="#ff6666"
+      color="#424242"
       autocomplete="off"
-    ></v-text-field>
+    >
+      <v-icon
+        slot="append"
+        :color="emailChecked ? '' : '#ea907a'"
+        @click="emailCheck2(email)"
+      >mdi-check</v-icon>
+    </v-text-field>
     <v-spacer>
       <br />
       <br />
@@ -34,17 +38,14 @@
       <br />
     </v-spacer>
     <div>
-      <v-btn color="grey" class="white--text" @click="$emit('pageDown')"
-        >뒤로가기</v-btn
-      >
+      <v-btn color="grey" class="white--text" @click="$emit('pageDown')">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
       <v-btn
         :disabled="!emailChecked"
         @click="emailVerification(email)"
         color="#ea907a"
         class="white--text"
-        >다음으로</v-btn
-      >
+      >인증번호 받기</v-btn>
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
@@ -73,7 +74,7 @@ export default {
     this.component = this;
   },
   watch: {
-    email: function() {
+    email: function () {
       this.checkForm();
     },
   },

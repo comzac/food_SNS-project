@@ -12,13 +12,21 @@ export default {
         datasets: [
           {
             label: "좋아요",
-            backgroundColor: "#f87979",
+            backgroundColor: ["#6ba292", "#EDCA6B"],
             barThickness: 60,
             datalabels: {
               color: "white",
               font: {
                 weight: "bold",
                 size: 20,
+              },
+              formatter: function (value, context) {
+                let likeCount = context.dataset.data.reduce(
+                  (acc, cur) => acc + cur,
+                  0
+                );
+                console.log(likeCount, context);
+                return Math.round((value / likeCount) * 100) + "%";
               },
             },
             data: [this.sexData.male, this.sexData.female],
@@ -48,7 +56,7 @@ export default {
           ],
         },
         legend: {
-          display: true,
+          display: false,
         },
         responsive: true,
         maintainAspectRatio: false,
@@ -65,13 +73,21 @@ export default {
           datasets: [
             {
               label: "좋아요",
-              backgroundColor: "#f87979",
+              backgroundColor: ["#6ba292", "#EDCA6B"],
               barThickness: 60,
               datalabels: {
                 color: "white",
                 font: {
                   weight: "bold",
                   size: 20,
+                },
+                formatter: function (value, context) {
+                  let likeCount = context.dataset.data.reduce(
+                    (acc, cur) => acc + cur,
+                    0
+                  );
+                  console.log(likeCount, context);
+                  return Math.round((value / likeCount) * 100) + "%";
                 },
               },
               data: [newData.male, newData.female],
@@ -82,10 +98,19 @@ export default {
       },
     },
   },
+  computed: {
+    likeCount() {
+      return this.sexData.male + this.sexData.female;
+    },
+  },
   mounted() {
     this.renderChart(this.chartdata, this.options);
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+#bar-chart {
+  padding: 20px;
+}
+</style>

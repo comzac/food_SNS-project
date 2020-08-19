@@ -11,14 +11,8 @@
             >
               <!-- 작성자 -->
               <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
-              <Head
-                v-if="selectedContestFeed"
-                :feed="selectedContestFeed.contestFeed"
-              />
-              <Media
-                :dbFiles="selectedContestFeed.contestFeed.files"
-                @likeUnlike="feedLU()"
-              />
+              <Head v-if="selectedContestFeed" :feed="selectedContestFeed.contestFeed" />
+              <Media :dbFiles="selectedContestFeed.contestFeed.files" @likeUnlike="feedLU()" />
               <v-card-text>
                 <!-- 본문 -->
                 <Main
@@ -46,16 +40,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-btn
-      color="#ea907a"
-      elevation="24"
-      fixed
-      top
-      left
-      fab
-      @click="back()"
-      class="mt-14"
-    >
+    <v-btn color="#ea907a" elevation="24" fixed bottom left small fab @click="back()" class="mb-14">
       <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
     </v-btn>
   </div>
