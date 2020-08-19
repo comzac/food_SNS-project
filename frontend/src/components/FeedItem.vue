@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-hover v-slot:default="{ hover }">
           <v-card
-            :class="`elevation-${hover ? 24 : 6}`"
+            :class="[`elevation-${hover ? 24 : 6}`, {'recommanded-feed': feed.recommand }]"
             class="transition-swing ma-auto"
             max-width="614"
             outlined
@@ -80,4 +80,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.recommanded-feed {
+  background-color: antiquewhite;
+}
+</style>
