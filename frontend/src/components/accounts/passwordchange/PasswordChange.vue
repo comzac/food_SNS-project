@@ -1,19 +1,10 @@
 <template>
   <div>
-    <v-btn
-      fab
-      color="#ff6666"
-      dark
-      top
-      left
-      absolute
-      class="mt-11"
-      @click="$emit('pageDown')"
-    >
+    <v-btn fab color="#ea907a" dark top left absolute class="mt-11" @click="$emit('pageDown')">
       <v-icon>mdi-arrow-left-bold</v-icon>
     </v-btn>
     <v-card class="mx-auto" flat max-width="350">
-      <h1 class="text-left ml-3" style="color:#ff6666;">비밀번호 변경</h1>
+      <h1 class="text-left ml-3" style="color:#ea907a;">비밀번호 변경</h1>
 
       <v-text-field
         v-model="password"
@@ -25,7 +16,7 @@
         outlined
         solo
         required
-        color="#ff6666"
+        color="#ea907a"
         class="mt-10 mb-3"
         autocomplete="off"
       ></v-text-field>
@@ -35,25 +26,25 @@
         :error-messages="error.passwordConfirm"
         :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
         @click:append="show2 = !show2"
+        @keypress.enter="changePassword"
         :type="show2 ? 'text' : 'password'"
         label="Password Confirmation"
         outlined
         solo
         required
-        color="#ff6666"
+        color="#ea907a"
         class="mt-3 mb-7"
         autocomplete="off"
       ></v-text-field>
 
       <v-btn
-        color="#ff6666"
+        color="#ea907a"
         class="white--text"
         :disabled="!isSubmit || password != passwordConfirm"
         width="100%"
         x-large
         @click="changePassword"
-        >비밀번호 변경</v-btn
-      >
+      >비밀번호 변경</v-btn>
     </v-card>
   </div>
 </template>

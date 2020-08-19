@@ -160,17 +160,17 @@ export default {
               },
               {
                 label: "밀키스",
-                backgroundColor: "#f87979",
+                backgroundColor: "#C7B48E",
                 data: [30],
               },
               {
                 label: "블루 레모네이드",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#6E7096",
                 data: [30],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [40],
               },
               {
@@ -197,17 +197,17 @@ export default {
               },
               {
                 label: "모구모구",
-                backgroundColor: "#f87979",
+                backgroundColor: "#ff7171",
                 data: [30],
               },
               {
                 label: "스파클링",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#6e6d6d",
                 data: [30],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [40],
               },
               {
@@ -234,17 +234,17 @@ export default {
               },
               {
                 label: "모구모구",
-                backgroundColor: "#f87979",
+                backgroundColor: "#ff7171",
                 data: [35],
               },
               {
                 label: "유어스 자몽",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#ea5455",
                 data: [35],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [30],
               },
               {
@@ -271,12 +271,12 @@ export default {
               },
               {
                 label: "갈아만든 배",
-                backgroundColor: "#f87979",
+                backgroundColor: "#d8ba8a",
                 data: [50],
               },
               {
                 label: "갈아만든 유자",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#EEC439",
                 data: [50],
               },
               {
@@ -303,17 +303,17 @@ export default {
               },
               {
                 label: "토닉워터",
-                backgroundColor: "#f87979",
+                backgroundColor: "#68b0ab",
                 data: [40],
               },
               {
                 label: "슈웹스",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#8fc0a9",
                 data: [30],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [30],
               },
               {
@@ -340,12 +340,12 @@ export default {
               },
               {
                 label: "쏘토닉",
-                backgroundColor: "#f87979",
+                backgroundColor: "#ddb34e",
                 data: [70],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [30],
               },
               {
@@ -372,17 +372,17 @@ export default {
               },
               {
                 label: "메로나",
-                backgroundColor: "#f87979",
+                backgroundColor: "#ade498",
                 data: [40],
               },
               {
                 label: "사이다",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#7fdbda",
                 data: [30],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [30],
               },
               {
@@ -409,17 +409,17 @@ export default {
               },
               {
                 label: "폴라포",
-                backgroundColor: "#f87979",
+                backgroundColor: "#440047",
                 data: [30],
               },
               {
                 label: "슈웹스",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#8fc0a9",
                 data: [30],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [40],
               },
               {
@@ -446,17 +446,17 @@ export default {
               },
               {
                 label: "스크류바",
-                backgroundColor: "#f87979",
+                backgroundColor: "#e84a5f",
                 data: [30],
               },
               {
                 label: "사이다",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#7fdbda",
                 data: [30],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [40],
               },
               {
@@ -483,17 +483,17 @@ export default {
               },
               {
                 label: "아이스 초코",
-                backgroundColor: "#f87979",
+                backgroundColor: "#411f1f",
                 data: [40],
               },
               {
                 label: "바나나 우유",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#deb34e",
                 data: [30],
               },
               {
                 label: "위스키",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#56556e",
                 data: [30],
               },
               {
@@ -520,17 +520,17 @@ export default {
               },
               {
                 label: "녹차라떼",
-                backgroundColor: "#f87979",
+                backgroundColor: "#799351",
                 data: [50],
               },
               {
                 label: "초코우유",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#411f1f",
                 data: [20],
               },
               {
                 label: "위스키",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#56556e",
                 data: [30],
               },
               {
@@ -557,17 +557,17 @@ export default {
               },
               {
                 label: "딸기우유",
-                backgroundColor: "#f87979",
+                backgroundColor: "#d54062",
                 data: [35],
               },
               {
                 label: "수박에이드",
-                backgroundColor: "#3D5B96",
+                backgroundColor: "#206a5d",
                 data: [35],
               },
               {
                 label: "소주",
-                backgroundColor: "#6937a1",
+                backgroundColor: "#519872",
                 data: [30],
               },
               {
