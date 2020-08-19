@@ -9,7 +9,7 @@
     <transition v-if="$route.name !== 'CommentView'" name="slide-fade">
       <v-btn
         v-show="scrollY"
-        color="#ff6666"
+        color="#ea907a"
         elevation="24"
         fixed
         small

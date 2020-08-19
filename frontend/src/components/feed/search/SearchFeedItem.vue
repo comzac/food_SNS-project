@@ -6,6 +6,7 @@
         params: { fid: fid, uid: $route.params.uid },
       })
     "
+    style="cursor: pointer;"
   >
     <!-- <v-img  v-if="!mediaRoute" :aspect-ratio="1" contain class="grey darken-4" /> -->
     <v-img

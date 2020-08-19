@@ -85,6 +85,7 @@ export default {
               text: "비밀번호를 다시 한번 확인해주세요.",
               icon: "error",
               dangerMode: true,
+              buttons: [null, "확인"],
             });
           }
           this.password = "";

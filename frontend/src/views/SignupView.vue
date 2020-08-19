@@ -68,9 +68,10 @@ export default {
       console.log(this.signupData);
       this.signup(this.signupData);
       swal(
-        "회원가입이 완료되었습니다!",
-        `${this.signupData.unick} 님 환영합니다.`,
-        "success"
+        "가입되었습니다!",
+        `${this.signupData.unick} 님\n허니콤보에 오신 것을 환영합니다.`,
+        "success",
+        { buttons: [null, "확인"] }
       );
       this.setSignupData2({});
       this.setPage(1);
