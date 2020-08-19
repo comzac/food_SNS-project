@@ -121,7 +121,10 @@
                     >
                       <v-list-item-title class="red--text text-lighten-2">댓글 삭제</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="() => {}">
+                    <v-list-item
+                      v-if="authUserUnick !== comment.comment.user.unick"
+                      @click="() => {}"
+                    >
                       <v-list-item-title class="red--text text-lighten-2">댓글 신고</v-list-item-title>
                     </v-list-item>
                     <v-list-item @click="() => {}">
@@ -142,10 +145,10 @@
                     })
                   "
                 >
-                  <!-- <v-icon v-if="comment.islike">mdi-heart</v-icon>
-                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>-->
-                  <img class="like-btn" v-if="!comment.islike" :src="imgRoute.unlike" alt />
-                  <img class="like-btn" v-if="comment.islike" :src="imgRoute.like_small" alt />
+                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
+                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
+                  <!-- <img class="like-btn" v-if="!comment.islike" :src="imgRoute.unlike" alt />
+                  <img class="like-btn" v-if="comment.islike" :src="imgRoute.like_small" alt />-->
                   <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
                 </v-btn>
                 <!-- <span>{{comment.likeCount }}</span> -->

@@ -11,8 +11,14 @@
             >
               <!-- 작성자 -->
               <!-- <Writer :user="selectedContestFeed.user" :item="false" /> -->
-              <Head v-if="selectedContestFeed" :feed="selectedContestFeed.contestFeed" />
-              <Media :dbFiles="selectedContestFeed.contestFeed.files" @likeUnlike="feedLU()" />
+              <Head
+                v-if="selectedContestFeed"
+                :feed="selectedContestFeed.contestFeed"
+              />
+              <Media
+                :dbFiles="selectedContestFeed.contestFeed.files"
+                @likeUnlike="feedLU()"
+              />
               <v-card-text>
                 <!-- 본문 -->
                 <Main
@@ -26,6 +32,7 @@
                 <!-- Comment module ?? -->
               </v-card-text>
               <div v-if="selectedContestFeed.contestFeed.likeCount !== 0">
+                <!-- <Gender v-if="sexData" :sexData="sexData" /> -->
                 <SexChart v-if="sexData" :sexData="sexData" />
                 <AgeChart v-if="ageData" :ageData="ageData" />
               </div>
@@ -40,7 +47,17 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-btn color="#ea907a" elevation="24" fixed bottom left small fab @click="back()" class="mb-14">
+    <v-btn
+      color="#ea907a"
+      elevation="24"
+      fixed
+      bottom
+      left
+      small
+      fab
+      @click="back()"
+      class="mb-14"
+    >
       <v-icon color="#ffffff">mdi-arrow-left-bold</v-icon>
     </v-btn>
   </div>
@@ -54,6 +71,7 @@ import Main from "@/components/feed/item/Main";
 import Media from "@/components/feed/item/Media";
 import AgeChart from "@/components/charts/AgeChart";
 import SexChart from "@/components/charts/SexChart";
+// import Gender from "@/components/Gender";
 
 export default {
   name: "FeedView",
@@ -63,6 +81,7 @@ export default {
     Media,
     AgeChart,
     SexChart,
+    // Gender,
   },
   computed: {
     ...mapState("contests", ["selectedContestFeed"]),

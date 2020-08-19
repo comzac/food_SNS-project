@@ -9,7 +9,7 @@
     <br />
     <br />
     <v-btn
-      color="#ff6666"
+      color="#ea907a"
       class="white--text"
       @click="$router.push({ name: 'Login' })"
       >로그인하기</v-btn
@@ -17,7 +17,7 @@
     <v-divider class="mr-5" vertical></v-divider>
     <v-btn
       @click="$router.push({ name: 'PasswordChoiceEmail' })"
-      color="#ff6666"
+      color="#ea907a"
       class="white--text"
       >비밀번호찾기</v-btn
     >
