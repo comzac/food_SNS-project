@@ -61,14 +61,12 @@
                 >
                   <v-list-item-avatar
                     class="mr-2"
-                    :color="
-                      comment.comment.user.uprofile ? 'white' : 'grey'
-                    "
+                    :color="commentHasProfileImg(comment) ? 'white' : 'grey'"
                   >
-                    <v-icon v-if="!comment.comment.user.uprofile" dark>mdi-account</v-icon>
+                    <v-icon v-if="!commentHasProfileImg(comment)" dark>mdi-account</v-icon>
                     <v-img
-                      v-if="comment.comment.user.uprofile"
-                      :src="media_dir + comment.comment.user.uprofile.name"
+                      v-if="commentHasProfileImg(comment)"
+                      :src="commentProfileImgRoute(comment)"
                     />
                   </v-list-item-avatar>
                 </router-link>
@@ -79,20 +77,16 @@
                   >-->
                   <v-list-item-title class="mb-1 black--text">
                     {{ comment.comment.user.unick }}
-                    <span style="font-size: 0.7rem; color: grey;">
-                      {{
-                      computeYMD(comment.comment.regdate)
-                      }}
-                    </span>
+                    <span
+                      style="font-size: 0.7rem; color: grey;"
+                    >{{ computeYMD(comment.comment.regdate) }}</span>
                   </v-list-item-title>
                   <!-- </router-link> -->
                   <v-list-item-subtitle class="black--text mb-1" style="white-space:normal">
                     {{ comment.comment.content }}
-                    <span style="font-size: 0.7rem; color: grey;">
-                      {{
-                      comment.comment.editdate ? "(수정됨)" : ""
-                      }}
-                    </span>
+                    <span
+                      style="font-size: 0.7rem; color: grey;"
+                    >{{ comment.comment.editdate ? "(수정됨)" : "" }}</span>
                   </v-list-item-subtitle>
                   <v-list-item-subtitle class="gray--text" style="font-size: 0.7rem">
                     <!-- {{ computeYMD(comment.comment.regdate) }} -->
@@ -203,6 +197,21 @@ export default {
     ...mapState("feeds", ["selectedFeed"]),
     // ...mapState("comments", ["comments"]),
     ...mapGetters("accounts", ["authUserImgRoute", "authUserUnick"]),
+    commentHasProfileImg() {
+      return (target) => {
+        if (target.comment.user.uprofile) {
+          if (target.comment.user.uprofile.name) return true;
+          else return false;
+        } else return false;
+      };
+    },
+    commentProfileImgRoute() {
+      return (target) => {
+        if (target.commentHasProfileImg) {
+          return this.media_dir + target.comment.user.uprofile.name;
+        } else return "";
+      };
+    },
   },
   methods: {
     ...mapActions("feeds", ["getFeedDetail"]),
