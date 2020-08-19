@@ -11,8 +11,8 @@
               name="title"
               type="text"
               v-model="feed.title"
-              color="#ff6666"
-              :error-messages="feed.title ? '' : '제목을 입력해주세요'"
+              color="#424242"
+              :messages="feed.title ? '' : '제목을 입력하세요'"
               autocapitalize="off"
               autocorrect="off"
               autocomplete="off"
@@ -21,23 +21,19 @@
             <v-spacer></v-spacer>
 
             <v-textarea
-              color="#ff6666"
+              color="#424242"
               v-model="feed.content"
               auto-grow
               label="내용"
               outlined
               solo
-              :error-messages="feed.content ? '' : '내용을 입력하세요'"
+              :messages="feed.content ? '' : '내용을 입력하세요'"
               autocomplete="off"
             ></v-textarea>
-            <v-spacer>
-              <br />
-            </v-spacer>
-            <v-spacer>
-              <br />
-            </v-spacer>
+            <v-spacer> </v-spacer>
             <!-- 수정 필요 -->
             <v-text-field
+              color="#424242"
               label="태그"
               outlined
               solo
@@ -47,7 +43,7 @@
               append-icon="mdi-plus"
               @click:append="createHashtag(hashtag)"
               @keyup.enter.space.,="createHashtag(hashtag)"
-              error-messages="스페이스바 혹은 엔터, 콤마를 사용하여 태그를 구분할 수 있습니다"
+              messages="스페이스바 혹은 엔터, 콤마를 사용하여 태그를 구분할 수 있습니다"
               autocapitalize="off"
               autocorrect="off"
               autocomplete="off"
@@ -132,7 +128,7 @@
             </v-window>
 
             <v-card-actions class="justify-space-between">
-              <v-btn text @click="prev" color="#ff6666">
+              <v-btn text @click="prev" color="#ea907a">
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
               <v-item-group v-model="i2" class="text-center" mandatory>
@@ -146,13 +142,13 @@
                     icon
                     x-small
                     @click="toggle"
-                    color="#ff6666"
+                    color="#ea907a"
                   >
                     <v-icon>mdi-record</v-icon>
                   </v-btn>
                 </v-item>
               </v-item-group>
-              <v-btn text @click="next" color="#ff6666">
+              <v-btn text @click="next" color="#ea907a">
                 <v-icon>mdi-chevron-double-right</v-icon>
               </v-btn>
             </v-card-actions>
@@ -170,15 +166,15 @@
               solo
               label="사진 또는 동영상 선택"
               @change="previewImage"
-              color="#ff6666"
-              error-messages="20mb 이하 .png, jp(e)g, gif, jfif .mp4 파일만 최대 8개 업로드 됩니다."
+              color="#424242"
+              messages="20mb 이하 .png, jp(e)g, gif, jfif .mp4 파일만 최대 8개 업로드 됩니다."
             ></v-file-input>
 
             <div>
               <v-btn
                 @click="$router.go(-1)"
                 class="white--text"
-                color="#666666"
+                color="grey"
                 width="99"
                 >취소</v-btn
               >
@@ -189,7 +185,7 @@
                 v-if="isUpdatePage"
                 :disabled="!feed.title || !feed.content || !fileData"
                 @click="updateFeedByFormData()"
-                color="#ff6666"
+                color="#fbc687"
                 class="white--text"
                 >작성 완료</v-btn
               >
@@ -197,7 +193,7 @@
                 v-else
                 :disabled="!feed.title || !feed.content || !fileData.length"
                 @click="insertFeedByFormData(), (overlay = true)"
-                color="#ff6666"
+                color="#ea907a"
                 class="white--text"
                 >작성 완료</v-btn
               >
