@@ -6,16 +6,21 @@
       prepend-icon="mdi-account"
       type="text"
       v-model="signupData.uid"
-      color="#ff6666"
-      append-outer-icon="mdi-check"
-      @click:append-outer="idCheck2(signupData.uid)"
-      :error-messages="idcheck ? '' : '오른쪽의 체크를 눌러 중복확인해주세요'"
+      color="#424242"
+      :messages="idcheck ? '' : '오른쪽의 체크를 눌러 중복확인해주세요'"
       @input="idcheck = false"
       autofocus
       autocapitalize="off"
       autocorrect="off"
       autocomplete="off"
-    ></v-text-field>
+    >
+      <v-icon
+        slot="append"
+        :color="idcheck ? '' : '#ea907a'"
+        @click="idCheck2(signupData.uid)"
+        >mdi-check</v-icon
+      >
+    </v-text-field>
 
     <v-text-field
       label="별명"
@@ -23,13 +28,18 @@
       prepend-icon="mdi-account-box"
       type="text"
       v-model="signupData.unick"
-      color="#ff6666"
-      append-outer-icon="mdi-check"
-      @click:append-outer="nickCheck2(signupData.unick)"
-      :error-messages="nickcheck ? '' : '오른쪽의 체크를 눌러 중복확인해주세요'"
+      color="#424242"
+      :messages="nickcheck ? '' : '오른쪽의 체크를 눌러 중복확인해주세요'"
       @input="nickcheck = false"
       autocomplete="off"
-    ></v-text-field>
+    >
+      <v-icon
+        slot="append"
+        :color="nickcheck ? '' : '#ea907a'"
+        @click="nickCheck2(signupData.unick)"
+        >mdi-check</v-icon
+      >
+    </v-text-field>
 
     <v-text-field
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -39,8 +49,8 @@
       name="password"
       prepend-icon="mdi-lock-outline"
       v-model="signupData.upw"
-      color="#ff6666"
-      :error-messages="
+      color="#424242"
+      :messages="
         pwdCheck(signupData.upw)
           ? ''
           : '비밀번호는 영문과 숫자를 섞어서 8자 이상 되어야 합니다'
@@ -56,8 +66,8 @@
       name="password confirm"
       prepend-icon="mdi-lock-outline"
       v-model="signupData.upw2"
-      color="#ff6666"
-      :error-messages="
+      color="#424242"
+      :messages="
         pwdCheck2(signupData.upw, signupData.upw2)
           ? ''
           : '비밀번호와 동일하게 입력해주세요'
@@ -71,15 +81,15 @@
       prepend-icon="mdi-cake-variant"
       type="date"
       v-model="signupData.ubirth"
-      color="#ff6666"
-      :error-messages="signupData.ubirth ? '' : '생년월일을 입력해주세요'"
+      color="#424242"
+      :messages="signupData.ubirth ? '' : '생년월일을 입력해주세요'"
       autocomplete="off"
       max="2100-12-31"
       min="1900-01-01"
     ></v-text-field>
 
     <v-radio-group v-model="signupData.usex" row>
-      <v-btn icon color="#ea907a">
+      <v-btn icon color="#757575">
         <v-icon>mdi-gender-male-female</v-icon>
       </v-btn>
       <!-- <v-text-field
@@ -147,6 +157,7 @@ export default {
     if (this.signupData2 != {}) {
       this.signupData = this.signupData2;
     }
+    console.log(this.$refs.id);
   },
   data() {
     return {
@@ -221,4 +232,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
