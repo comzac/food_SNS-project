@@ -207,7 +207,7 @@ export default {
     },
     commentProfileImgRoute() {
       return (target) => {
-        if (target.commentHasProfileImg) {
+        if (this.commentHasProfileImg(target)) {
           return this.media_dir + target.comment.user.uprofile.name;
         } else return "";
       };
