@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +18,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.sub.dto.ContestFeedFiles;
@@ -47,9 +45,34 @@ public class FileStorageService {
 	private DBProfileRepository dbProfileRepository; // 프로필 multipartfile 관리 repo
 	@Autowired
 	private ContestFeedFilesRepository contestFeedFilesRepository; // 콘테스트 multipartfile 관리 repo
-
 	@Value("${spring.file.location}") // multipartfile 로컬 저장소 경로 (.yml 내)
 	private String filePath;
+
+	class PicInfo {
+		public int x;
+		public int y;
+		public int width;
+		public int height;
+		public boolean isCoordi;
+
+		public PicInfo() {
+			this.x = 0;
+			this.y = 0;
+			this.width = 400;
+			this.height = 400;
+			this.isCoordi = false;
+		}
+
+		public PicInfo(int x, int y, int width, int height, boolean isCoordi) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+			this.isCoordi = isCoordi;
+		}
+
+	}
 
 	/***
 	 * 유저프로필의 문구 및 프로필 사진 저장 기능
@@ -57,79 +80,40 @@ public class FileStorageService {
 	 * @param file
 	 * @param text
 	 * @param uid
-	 * @param coordi 
+	 * @param coordi
 	 * @return DBProfile (저장 or 변환된 프로필 정보)
 	 * @throws FileStorageException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@Transactional
-	public DBProfile storeProfile(MultipartFile file, String text, String uid, String coordi) throws FileStorageException, IOException {
+	public DBProfile storeProfile(MultipartFile file, String text, String uid, String coordi)
+			throws FileStorageException, IOException {
 
 		Optional<DBProfile> updateProfile = dbProfileRepository.findByUid(uid);
 		String extension = file.getContentType().split("/")[1];
 
-		int x, y, width, height, oldW, oldH;
-		x = y = 0;
-		width = height = 400;
-		boolean isCoordi = false;
-		if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-				|| extension.equals("jfif")) {
-			BufferedImage image = ImageIO.read(file.getInputStream());
+		PicInfo picInfo = new PicInfo();
 
-			width = oldW = image.getWidth();
-			height = oldH = image.getHeight();
-		}
+		picInfo = calculate(picInfo, extension, file, coordi);
 
-		if (!coordi.equals("")) { // 크롭 한 경우,
-			isCoordi = true;
-			String parse;
-			parse = coordi.replace("{", "");
-			parse = coordi.replace("{", "");
-			String[] coordis = parse.split(",");
-			List<String> pos = new ArrayList<String>();
-			for (String string : coordis) {
-				pos.add(string.split(":")[1]);
-			}
-			x = (int) Float.parseFloat(pos.get(0));
-			y = (int) Float.parseFloat(pos.get(1));
-			width = (int) Float.parseFloat(pos.get(2));
-			height = (int) Float.parseFloat(pos.get(3));
-		} else {
-			if (width >= height && width > 400) {
-				height = (int) (height * (400 / (double) width));
-				width = 400;
-			} else if (width <= height && height > 400) {
-				width = (int) (width * (400 / (double) height));
-				height = 400;
-			} else if (width < 400 && width >= height) {
-				height = (int) (height * (400 / (double) width));
-				width = 400;
-			} else if (width <= height && height < 400) {
-				width = (int) (width * (400 / (double) height));
-				height = 400;
-			}
-		}
 		String filename = null;
 
 		if (!updateProfile.isPresent()) {
 
-			///
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String format = file.getOriginalFilename().substring(pos);
-
 			filename = UUID.randomUUID() + format;
 
-			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-					|| extension.equals("jfif")) {
+			if (imgCheck(extension)) {
 
 				File out = new File(filePath + File.separator + filename);
-				if (isCoordi) {
-					BufferedImage img = resize(file.getInputStream(), x, y, width, height);
+				if (picInfo.isCoordi) {
+					BufferedImage img = resize(file.getInputStream(), picInfo.x, picInfo.y, picInfo.width,
+							picInfo.height);
 					BufferedImage img2 = resize(img, 400, 400);
 					ImageIO.write(img2, extension, out);
 				} else {
-					System.out.println("no크롭");
-					BufferedImage img = resize(file.getInputStream(), width, height);
+					BufferedImage img = resize(file.getInputStream(), picInfo.width, picInfo.height);
 					ImageIO.write(img, extension, out);
 				}
 
@@ -137,7 +121,6 @@ public class FileStorageService {
 				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(filename));
 			}
 
-			///
 			DBProfile dbProfile = DBProfile.builder().uid(uid).name(filename).type(file.getContentType()).text(text)
 					.build();
 			return dbProfileRepository.save(dbProfile);
@@ -153,23 +136,22 @@ public class FileStorageService {
 			} else {
 				System.out.println("파일이 존재하지 않습니다.");
 			}
-			///
 			int pos = file.getOriginalFilename().lastIndexOf(".");
 			String format = file.getOriginalFilename().substring(pos);
 
 			filename = UUID.randomUUID() + format;
 
-			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-					|| extension.equals("jfif")) {
+			if (imgCheck(extension)) {
 
 				File out = new File(filePath + File.separator + filename);
-				if (isCoordi) {
-					BufferedImage img = resize(file.getInputStream(), x, y, width, height);
+				if (picInfo.isCoordi) {
+					BufferedImage img = resize(file.getInputStream(), picInfo.x, picInfo.y, picInfo.width,
+							picInfo.height);
 					BufferedImage img2 = resize(img, 400, 400);
 					ImageIO.write(img2, extension, out);
 				} else {
 					System.out.println("no크롭");
-					BufferedImage img = resize(file.getInputStream(), width, height);
+					BufferedImage img = resize(file.getInputStream(), picInfo.width, picInfo.height);
 					ImageIO.write(img, extension, out);
 				}
 
@@ -177,7 +159,6 @@ public class FileStorageService {
 				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(filename));
 			}
 
-			///
 			DBProfile dbProfile = DBProfile.builder().uid(uid).name(filename).type(file.getContentType()).text(text)
 					.build();
 			updateProfile.get().setUid(uid);
@@ -187,20 +168,6 @@ public class FileStorageService {
 
 			return updateProfile.get();
 		}
-	}
-
-	/***
-	 * uid에 해당하는 프로필 정보에 이미지 데이터 유무 확인
-	 * 
-	 * @param uid
-	 * @return boolean
-	 */
-	public boolean hasProfile(String uid) {
-		DBProfile dbProfile = dbProfileRepository.findByUid(uid).get();
-		if (dbProfile.getName() != null)
-			return true;
-		else
-			return false;
 	}
 
 	/***
@@ -252,17 +219,118 @@ public class FileStorageService {
 
 		String extension = file.getContentType().split("/")[1];
 
-		int x, y, width, height, oldW, oldH;
-		x = y = 0;
-		width = height = 400;
-		boolean isCoordi = false;
-		if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-				|| extension.equals("jfif")) {
+		PicInfo picInfo = new PicInfo();
+
+		picInfo = calculate(picInfo, extension, file, coordi);
+
+		String result = null;
+		try {
+			int pos = file.getOriginalFilename().lastIndexOf(".");
+			String format = file.getOriginalFilename().substring(pos);
+
+			result = UUID.randomUUID() + format;
+
+			if (imgCheck(extension)) {
+
+				File out = new File(filePath + File.separator + result);
+				if (picInfo.isCoordi) {
+					BufferedImage img = resize(file.getInputStream(), picInfo.x, picInfo.y, picInfo.width,
+							picInfo.height);
+					BufferedImage img2 = resize(img, 400, 400);
+					ImageIO.write(img2, extension, out);
+				} else {
+					System.out.println("no크롭");
+					BufferedImage img = resize(file.getInputStream(), picInfo.width, picInfo.height);
+					ImageIO.write(img, extension, out);
+				}
+
+			} else {
+				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
+			}
+
+			dbFileRepository.save(new DBFile(fid, result, file.getContentType()));
+		} catch (Exception e) {
+			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+		}
+		return result;
+	}
+
+	/***
+	 * 콘테스트 피드 multipartfile 저장
+	 * 
+	 * @param file
+	 * @param fid
+	 * @return ContestFeedFiles
+	 * @throws FileStorageException
+	 * @throws IOException
+	 */
+	public ContestFeedFiles storeContestFile(MultipartFile file, int fid, String coordi)
+			throws FileStorageException, IOException {
+
+		String extension = file.getContentType().split("/")[1];
+		ContestFeedFiles cfFiles = null;
+
+		PicInfo picInfo = new PicInfo();
+
+		picInfo = calculate(picInfo, extension, file, coordi);
+
+		String result = null;
+		try {
+			int pos = file.getOriginalFilename().lastIndexOf(".");
+			String format = file.getOriginalFilename().substring(pos);
+
+			result = UUID.randomUUID() + format;
+
+			if (imgCheck(extension)) {
+
+				File out = new File(filePath + File.separator + result);
+				if (picInfo.isCoordi) {
+					BufferedImage img = resize(file.getInputStream(), picInfo.x, picInfo.y, picInfo.width,
+							picInfo.height);
+					BufferedImage img2 = resize(img, 400, 400);
+					ImageIO.write(img2, extension, out);
+				} else {
+					System.out.println("no크롭");
+					BufferedImage img = resize(file.getInputStream(), picInfo.width, picInfo.height);
+					ImageIO.write(img, extension, out);
+				}
+			} else {
+				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+		}
+		cfFiles = ContestFeedFiles.builder().cfid(fid).name(result).type(file.getContentType()).build();
+		return contestFeedFilesRepository.save(cfFiles);
+
+	}
+
+	/***
+	 * 사진 정보를 기반으로 좌표와 길이를 계산하는 함수
+	 * 
+	 * @param picInfo
+	 * @param extension
+	 * @param file
+	 * @param coordi
+	 * @return PicInfo
+	 * @throws IOException
+	 */
+	public PicInfo calculate(PicInfo picInfo, String extension, MultipartFile file, String coordi) throws IOException {
+		int x, y, width, height;
+		boolean isCoordi;
+		x = picInfo.x;
+		y = picInfo.y;
+		width = picInfo.width;
+		height = picInfo.height;
+		isCoordi = picInfo.isCoordi;
+
+		if (imgCheck(extension)) {
 			BufferedImage image = ImageIO.read(file.getInputStream());
 
-			width = oldW = image.getWidth();
-			height = oldH = image.getHeight();
+			width = image.getWidth();
+			height = image.getHeight();
 		}
+
 		if (!coordi.equals("")) { // 크롭 한 경우,
 			isCoordi = true;
 			String parse;
@@ -292,48 +360,21 @@ public class FileStorageService {
 				height = 400;
 			}
 		}
-		String result = null;
-		try {
-			int pos = file.getOriginalFilename().lastIndexOf(".");
-			String format = file.getOriginalFilename().substring(pos);
-
-			result = UUID.randomUUID() + format;
-
-			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-					|| extension.equals("jfif")) {
-
-				File out = new File(filePath + File.separator + result);
-				if (isCoordi) {
-					BufferedImage img = resize(file.getInputStream(), x, y, width, height);
-					BufferedImage img2 = resize(img, 400, 400);
-					ImageIO.write(img2, extension, out);
-				} else {
-					System.out.println("no크롭");
-					BufferedImage img = resize(file.getInputStream(), width, height);
-					ImageIO.write(img, extension, out);
-				}
-
-			} else {
-				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
-			}
-
-			dbFileRepository.save(new DBFile(fid, result, file.getContentType()));
-		} catch (Exception e) {
-			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-		}
-		return result;
+		PicInfo info = new PicInfo(x, y, width, height, isCoordi);
+		return info;
 	}
 
-	public static BufferedImage resize(InputStream inputStream, int width, int height) throws IOException {
-		BufferedImage inputImage = ImageIO.read(inputStream);
-		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType()); // 사진틀
-		Graphics2D graphics2D = outputImage.createGraphics();
-		graphics2D.drawImage(inputImage, 0, 0, width, height, null); // 그릴 곳
-		graphics2D.dispose();
-
-		return outputImage;
-	}
-
+	/***
+	 * 지정된 범위 안의 이미지를 새로 그리는 함수
+	 * 
+	 * @param inputStream
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @return BufferedImage
+	 * @throws IOException
+	 */
 	public static BufferedImage resize(InputStream inputStream, int x, int y, int width, int height)
 			throws IOException {
 		BufferedImage inputImage = ImageIO.read(inputStream);
@@ -368,6 +409,25 @@ public class FileStorageService {
 	}
 
 	/***
+	 * 사이즈 지정값(400x400) 이미지 리사이징 기능 (1번 파라미터의 자료형 차이)
+	 * 
+	 * @param inputStream
+	 * @param width
+	 * @param height
+	 * @return BufferedImage
+	 * @throws IOException
+	 */
+	public static BufferedImage resize(InputStream inputStream, int width, int height) throws IOException {
+		BufferedImage inputImage = ImageIO.read(inputStream);
+		BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType()); // 사진틀
+		Graphics2D graphics2D = outputImage.createGraphics();
+		graphics2D.drawImage(inputImage, 0, 0, width, height, null); // 그릴 곳
+		graphics2D.dispose();
+
+		return outputImage;
+	}
+
+	/***
 	 * fid(feed pk)의 DBFile list 정보 호출
 	 * 
 	 * @param fid
@@ -380,92 +440,6 @@ public class FileStorageService {
 	}
 
 	/***
-	 * 콘테스트 피드 multipartfile 저장
-	 * 
-	 * @param file
-	 * @param fid
-	 * @return ContestFeedFiles
-	 * @throws FileStorageException
-	 * @throws IOException 
-	 */
-	public ContestFeedFiles storeContestFile(MultipartFile file, int fid, String coordi) throws FileStorageException, IOException {
-
-
-		String extension = file.getContentType().split("/")[1];
-		ContestFeedFiles cfFiles = null;
-
-		int x, y, width, height, oldW, oldH;
-		x = y = 0;
-		width = height = 400;
-		boolean isCoordi = false;
-		if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-				|| extension.equals("jfif")) {
-			BufferedImage image = ImageIO.read(file.getInputStream());
-
-			width = oldW = image.getWidth();
-			height = oldH = image.getHeight();
-		}
-		if (!coordi.equals("")) { // 크롭 한 경우,
-			isCoordi = true;
-			String parse;
-			parse = coordi.replace("{", "");
-			parse = coordi.replace("{", "");
-			String[] coordis = parse.split(",");
-			List<String> pos = new ArrayList<String>();
-			for (String string : coordis) {
-				pos.add(string.split(":")[1]);
-			}
-			x = (int) Float.parseFloat(pos.get(0));
-			y = (int) Float.parseFloat(pos.get(1));
-			width = (int) Float.parseFloat(pos.get(2));
-			height = (int) Float.parseFloat(pos.get(3));
-		} else {
-			if (width >= height && width > 400) {
-				height = (int) (height * (400 / (double) width));
-				width = 400;
-			} else if (width <= height && height > 400) {
-				width = (int) (width * (400 / (double) height));
-				height = 400;
-			} else if (width < 400 && width >= height) {
-				height = (int) (height * (400 / (double) width));
-				width = 400;
-			} else if (width <= height && height < 400) {
-				width = (int) (width * (400 / (double) height));
-				height = 400;
-			}
-		}
-		String result = null;
-		try {
-			int pos = file.getOriginalFilename().lastIndexOf(".");
-			String format = file.getOriginalFilename().substring(pos);
-
-			result = UUID.randomUUID() + format;
-
-			if (extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
-					|| extension.equals("jfif")) {
-
-				File out = new File(filePath + File.separator + result);
-				if (isCoordi) {
-					BufferedImage img = resize(file.getInputStream(), x, y, width, height);
-					BufferedImage img2 = resize(img, 400, 400);
-					ImageIO.write(img2, extension, out);
-				} else {
-					System.out.println("no크롭");
-					BufferedImage img = resize(file.getInputStream(), width, height);
-					ImageIO.write(img, extension, out);
-				}
-			} else {
-				Files.copy(file.getInputStream(), Paths.get(filePath).resolve(result));
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-		}
-		cfFiles = ContestFeedFiles.builder().cfid(fid).name(result).type(file.getContentType()).build();
-		return contestFeedFilesRepository.save(cfFiles);
-		
-	}
-
-	/***
 	 * fid(contestfeed pk)의 ContestFeedFiles list 정보 호출
 	 * 
 	 * @param fid
@@ -474,5 +448,32 @@ public class FileStorageService {
 	 */
 	public List<ContestFeedFiles> getContestFiles(int fid) throws MyFileNotFoundException {
 		return contestFeedFilesRepository.findAllByCfid(fid);
+	}
+
+	/***
+	 * uid에 해당하는 프로필 정보에 이미지 데이터 유무 확인
+	 * 
+	 * @param uid
+	 * @return boolean
+	 */
+	public boolean hasProfile(String uid) {
+		DBProfile dbProfile = dbProfileRepository.findByUid(uid).get();
+		if (dbProfile.getName() != null)
+			return true;
+		else
+			return false;
+	}
+	
+	/***
+	 * image 확장자 확인 (jpeg, png, tiff, jfif만 허용)
+	 * 
+	 * @param extension
+	 * @return boolean
+	 */
+	public boolean imgCheck(String extension) {
+		if(extension.equals("jpeg") || extension.equals("png") || extension.equals("tiff")
+				|| extension.equals("jfif"))
+			return true;
+		return false;
 	}
 }
