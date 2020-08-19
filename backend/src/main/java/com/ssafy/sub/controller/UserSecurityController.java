@@ -208,14 +208,28 @@ public class UserSecurityController {
 
 			int random = new Random().nextInt(900000) + 100000;
 			String upw = String.valueOf(random);
-			googleUser = User.builder().uemail(email).uid(email.split("@")[0]).unick(email.split("@")[0])
-					.upw(passwordEncoder.encode(upw)).uregdate(new Date()).roles(Collections.singletonList("ROLE_USER")) // 최초
-																															// 가입시
-																															// //
-																															// USER
-																															// 로
-																															// 설정
+			String email_id = email.split("@")[0];
+			String email_company = email.split("@")[1].split("\\.")[0];
+			System.out.println(email_company);
+			String uIdNick = email_id+"_"+email_company; //이메일 아이디+회사 조합으로 아이디와 닉네임 생성
+			
+			try {
+				// 해당 uIdNick 유저 id로 있다면
+				userService.findByUid(uIdNick);
+				uIdNick=email;
+			} catch(Exception e) {
+				// 해당 uIdNick 유저 id로는 없는데 유저 nick으로 있다면
+				if(userService.nickcheck(uIdNick)!=null) uIdNick=email;
+			}
+			
+			googleUser = User.builder()
+					.uemail(email)
+					.uid(uIdNick)	
+					.upw(passwordEncoder.encode(upw))
+					.unick(uIdNick)
+					.uregdate(new Date()).roles(Collections.singletonList("ROLE_USER")) // 최초 가입시 User로 설정
 					.build();
+			
 			if (userService.findByUemail(email) == null) { // 가입정보가 없으면,
 				googleUser = userRepository.save(googleUser);
 			} else { // 가입정보가 있다면,
@@ -405,7 +419,7 @@ public class UserSecurityController {
 
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header") })
-	@ApiOperation(value = "회원 단건 조회", notes = "회원아이디로 회원을 조회한다")
+	@ApiOperation(value = "회원  조회", notes = "회원아이디로 회원을 조회한다")
 	@GetMapping(value = "/{uid}")
 	public ResponseEntity findUserById(@PathVariable String uid) {
 		User user = userService.findByUid(uid);
@@ -446,6 +460,7 @@ public class UserSecurityController {
 		
 		System.out.println(userUpdate.toString());
 		userService.userUpdate(user);
+		System.out.println(user.toString());
 		return new ResponseEntity<Result>(new Result(StatusCode.OK, ResponseMessage.UPDATE_USER, user), HttpStatus.OK);
 	}
 

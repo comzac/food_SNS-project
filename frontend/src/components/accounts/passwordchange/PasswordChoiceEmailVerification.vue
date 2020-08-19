@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" flat max-width="350">
-    <h1 class="text-left ml-3" style="color:#ff6666;">인증번호 입력</h1>
+    <h1 class="text-left ml-3" style="color:#ea907a;">인증번호 입력</h1>
     <br />
     <br />
     <v-text-field
@@ -10,7 +10,7 @@
       outlined
       solo
       required
-      color="#ff6666"
+      color="#ea907a"
       class="mt-10 mb-7"
       autocomplete="off"
       @keypress.enter="verify"
@@ -19,17 +19,9 @@
     <br />
 
     <div>
-      <v-btn color="#ff6666" class="white--text" @click="pageDown"
-        >뒤로가기</v-btn
-      >
+      <v-btn color="#ea907a" class="white--text" @click="pageDown">뒤로가기</v-btn>
       <v-divider class="mr-5" vertical></v-divider>
-      <v-btn
-        :disabled="!isSubmit"
-        @click="verify"
-        color="#ff6666"
-        class="white--text"
-        >다음으로</v-btn
-      >
+      <v-btn :disabled="!isSubmit" @click="verify" color="#ea907a" class="white--text">다음으로</v-btn>
     </div>
   </v-card>
 </template>
@@ -45,7 +37,7 @@ export default {
     this.component = this;
   },
   watch: {
-    confirm: function() {
+    confirm: function () {
       this.checkForm();
     },
   },
