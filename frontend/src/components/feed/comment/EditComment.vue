@@ -15,7 +15,7 @@
         label="댓글수정"
         type="text"
         v-model="comment.content"
-        color="#ff6666"
+        color="#424242"
         @keyup.enter="editComment()"
         autocomplete="off"
         autofocus
@@ -25,7 +25,7 @@
       <v-icon @click="editComment()">mdi-send</v-icon>
     </v-col>
     <v-col cols="1" style="padding: 0px; margin: auto">
-      <v-icon @click="closeEditComment">mdi-window-close</v-icon>
+      <v-icon @click="closeEditComment()">mdi-window-close</v-icon>
     </v-col>
   </v-row>
 </template>
@@ -37,6 +37,7 @@ export default {
   name: "EditComment",
   props: {
     comment: Object,
+    idx: Number,
     cid: Number,
   },
   components: {},
@@ -49,15 +50,14 @@ export default {
       this.comment.editdate = new Date();
       // axios 로  this.comment 전송??
       // emit 해서 comments data 다시 받아오게
-      // console.log("asdfasdf", this.cid);
       this.updateComment(this.comment)
         .then(() => {
-          this.$emit("editComment", this.cid);
+          this.$emit("edit-comment", this.idx);
         })
         .catch((err) => console.log(err.response));
     },
     closeEditComment() {
-      this.$emit("close-edit-comment", this.comment.id);
+      this.$emit("close-edit-comment", this.idx);
     },
   },
   created() {
