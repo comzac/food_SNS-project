@@ -4,7 +4,7 @@
 
 
 
-Honey-Combo` 는 1인 가구를 위한 음식 조합을 공유하기 위한 소셜 네트워크 서비스(Social Networking Service, SNS) 입니다. 사용자가 직접 요리한 사진을 피드로 게시해 여러 사용자들과 공유하며 소통할 수 있습니다.
+`Honey-Combo` 는 1인 가구를 위한 음식 조합을 공유하기 위한 소셜 네트워크 서비스(Social Networking Service, SNS) 입니다. 사용자가 직접 요리한 사진을 피드로 게시해 여러 사용자들과 공유하며 소통할 수 있습니다.
 
 1. Common Service
    - 꿀조합 피드 게시, 댓글, 좋아요 서비스를 제공합니다.
