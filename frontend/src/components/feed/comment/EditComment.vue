@@ -37,6 +37,7 @@ export default {
   name: "EditComment",
   props: {
     comment: Object,
+    idx: Number,
     cid: Number,
   },
   components: {},
@@ -51,14 +52,12 @@ export default {
       // emit 해서 comments data 다시 받아오게
       this.updateComment(this.comment)
         .then(() => {
-          this.$emit("edit-comment", this.cid);
+          this.$emit("edit-comment", this.idx);
         })
         .catch((err) => console.log(err.response));
-      // 여기만 작동한다
-      this.$emit("edit-comment-2", this.cid);
     },
     closeEditComment() {
-      this.$emit("close-edit-comment", this.cid);
+      this.$emit("close-edit-comment", this.idx);
     },
   },
   created() {

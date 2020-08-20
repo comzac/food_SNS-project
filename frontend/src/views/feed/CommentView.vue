@@ -77,10 +77,7 @@
               v-for="(comment, idx) in comments.comments"
               :key="comment.comment.id"
             >
-              <v-list-item
-                class="ma-0 pa-0 align-start"
-                :id="'a' + comment.comment.id"
-              >
+              <v-list-item class="ma-0 pa-0 align-start" :id="'a' + idx">
                 <router-link
                   :to="{
                     name: 'UserDetail',
@@ -145,7 +142,7 @@
                     <!-- user 비교 필요 -->
                     <v-list-item
                       v-if="authUserUnick === comment.comment.user.unick"
-                      @click="showEdit(comment.comment.id)"
+                      @click="showEdit(idx)"
                     >
                       <v-list-item-title class="blue--text text-lighten-2"
                         >댓글 수정</v-list-item-title
@@ -203,12 +200,12 @@
               </v-list-item>
               <EditComment
                 class="update"
-                :id="'b' + comment.comment.id"
+                :id="'b' + idx"
+                :idx="idx"
                 :cid="comment.comment.id"
                 style="display: none;"
                 :comment="comment.comment"
                 @edit-comment="editComment"
-                @edit-comment2="editComment2"
                 @close-edit-comment="closeEditComment"
               />
             </div>
@@ -349,16 +346,16 @@ export default {
       };
       return ymd2(ymd);
     },
-    showEdit(comment_id) {
-      const update = document.getElementsByClassName("update");
-      update.forEach((item) => (item.style = "display: none;"));
-      document.getElementById(`a${comment_id}`).style = "display: none;";
-      document.getElementById(`b${comment_id}`).style = "display: show;";
+    showEdit(idx) {
+      // const update = document.getElementsByClassName("update");
+      // update.forEach((item) => (item.style = "display: none;"));
+      document.getElementById(`a${idx}`).style = "display: none;";
+      document.getElementById(`b${idx}`).style = "display: show;";
     },
 
-    editComment(cid) {
+    editComment(idx) {
       // const update = document.getElementsByClassName("update");
-      document.getElementById(`b${cid}`).style = "display: none;";
+      document.getElementById(`b${idx}`).style = "display: none;";
 
       // update.forEach((item) => (item.style = "display: none;"));
       this.fetchComments(this.fid).then(() => {
@@ -366,15 +363,11 @@ export default {
       });
       // this.comments = this.$store.state.comments;
       // this.fetchComment(this.fid);
-      document.getElementById(`a${cid}`).style = "display: show;";
+      document.getElementById(`a${idx}`).style = "display: show;";
     },
 
-    editComment2(cid) {
-      window.setTimeout(this.editComment, 500, cid);
-    },
-
-    closeEditComment(id) {
-      document.getElementById(`b${id}`).style = "display: none;";
+    closeEditComment(idx) {
+      document.getElementById(`b${idx}`).style = "display: none;";
     },
 
     commentLike(commentData) {
