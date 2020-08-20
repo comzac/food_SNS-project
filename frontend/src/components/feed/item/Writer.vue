@@ -34,7 +34,7 @@
     <v-spacer></v-spacer>
     <v-menu v-if="!item" left bottom>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="#ff6666" icon v-bind="attrs" v-on="on">
+        <v-btn color="#ea907a" icon v-bind="attrs" v-on="on">
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>

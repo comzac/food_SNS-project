@@ -87,12 +87,12 @@ export default {
     ...mapActions("feeds", ["getFeedDetail"]),
     ...mapActions("feeds", ["feedLikeUnlike"]),
     feedLU() {
-      console.log("likeunlike");
+      // console.log("likeunlike");
       const likeData = {
         fid: this.$route.params.fid,
         like: this.selectedFeed.like,
       };
-      console.log(likeData);
+      // console.log(likeData);
       this.feedLikeUnlike(likeData).then(() => {
         if (this.selectedFeed.like) {
           this.selectedFeed.likeCount -= 1;
@@ -105,7 +105,7 @@ export default {
   },
   created() {
     this.getFeedDetail(this.$route.params.fid).then((data) => {
-      console.log(data);
+      // console.log(data);
       this.ymd =
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(data.feed.regdate).getTime() / 1000) +

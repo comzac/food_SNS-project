@@ -40,13 +40,15 @@
               :to="{ name: 'RetrieveID' }"
               class="text-decoration-none mr-2"
               style="color: #ea907a;"
-            >아이디 찾기</router-link>
+              >아이디 찾기</router-link
+            >
 
             <router-link
               to="/user/password_choice_email"
               class="text-decoration-none"
               style="color: #ea907a;"
-            >비밀번호 찾기</router-link>
+              >비밀번호 찾기</router-link
+            >
           </div>
           <v-spacer>
             <br />
@@ -58,7 +60,8 @@
             :disabled="loginData.uid == 0 || loginData.upw.length < 8"
             width="100%"
             x-large
-          >로그인</v-btn>
+            >로그인</v-btn
+          >
           <v-spacer>
             <br />
           </v-spacer>
@@ -69,9 +72,16 @@
               class="d-flex justify-space-around align-center px-5 py-1 social-icon"
             >
               <v-avatar class="mr-3 ml-n2">
-                <v-img max-width="30" contain src="@/assets/google-login.png" alt="Google" />
+                <v-img
+                  max-width="30"
+                  contain
+                  src="@/assets/google-login.png"
+                  alt="Google"
+                />
               </v-avatar>
-              <h4 class="grey--text text--darken-2 mb-1">구글 계정으로 로그인</h4>
+              <h4 class="grey--text text--darken-2 mb-1">
+                구글 계정으로 로그인
+              </h4>
             </v-sheet>
           </v-layout>
         </v-card>

@@ -24,7 +24,9 @@
     </transition>
     <Signup v-if="$route.name == 'Login'" />
     <Bottom
-      v-if="isLoggedIn && $route.name !== 'Login'"
+      v-if="
+        isLoggedIn && $route.name !== 'Login' && $route.name !== 'CommentView'
+      "
       v-show="$route.name !== 'FeedCreateView'"
     />
   </v-app>
