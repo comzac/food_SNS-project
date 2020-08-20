@@ -27,12 +27,14 @@
         </v-list>
       </v-menu>
       <v-btn
+        v-if="contestList[0].theme == currentTheme"
         color="grey darken-3 participate-btn"
         rounded
         small
         dark
         @click="moveToContestFeedCreate"
-      >참가</v-btn>
+        >참가</v-btn
+      >
     </v-list-item>
   </v-card>
 </template>
@@ -45,6 +47,11 @@ import SERVER from "@/api/api";
 export default {
   props: {
     contestList: Array,
+  },
+  data() {
+    return {
+      recent: null,
+    };
   },
   computed: {
     ...mapState("contests", ["currentContest"]),
