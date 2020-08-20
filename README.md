@@ -4,7 +4,7 @@
 
 
 
-`Honey-Combo` 는 1인 가구를 위한 음식 조합을 공유하기 위한 소셜 네트워크 서비스(Social Networking Service, SNS) 입니다. 사용자가 직접 요리한 사진을 피드로 게시해 여러 사용자들과 공유하며 소통할 수 있습니다.
+Honey-Combo` 는 1인 가구를 위한 음식 조합을 공유하기 위한 소셜 네트워크 서비스(Social Networking Service, SNS) 입니다. 사용자가 직접 요리한 사진을 피드로 게시해 여러 사용자들과 공유하며 소통할 수 있습니다.
 
 1. Common Service
    - 꿀조합 피드 게시, 댓글, 좋아요 서비스를 제공합니다.
@@ -18,6 +18,8 @@
    - 관리자가 매주 새로운 주류 조합을 게시합니다.
 
 [<img src="/uploads/678293e8c7eb2f43bc67389391d19739/crop.gif" width=200>](http://honeycombo.online)를 클릭해 사이트를 확인하세요 :slightly_smiling_face:
+
+:earth_asia: 번역: [KR](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/blob/master/README.md) [US](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/tree/master/docs/README.md)
 
 
 
@@ -71,7 +73,7 @@
 
 1. 데이터베이스를 설정합니다.
 
-   - [honey-combo.sql]()을 참고해서 데이터베이스를 생성합니다. ([여기](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/uploads/4a3553df95063dedcb2f70de36914421/ERD.png)를 눌러 erd를 확인하세요.)
+   - [honey-combo.sql](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/tree/master/docs/honey-combo.sql)을 참고해서 데이터베이스를 생성합니다. ([여기](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/tree/master/docs/honeycombo_erd.png)를 눌러 erd를 확인하세요.)
 
    - `application.yml`에 데이터베이스 설정을 추가합니다.
 
