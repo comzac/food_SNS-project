@@ -2,17 +2,22 @@
   <div>
     <v-row class="mx-0 mb-2">
       <v-btn
-        class="mr-1"
+        class="mr-1 like-btn"
+        id="like-btn"
         color="#ff6666"
         icon
         x-small
-        @click="$emit('likeUnlike')"
+        @click="$emit('likeUnlike'), animate()"
       >
-        <v-icon v-if="like">mdi-heart</v-icon>
-        <v-icon v-if="!like">mdi-heart-outline</v-icon>
-        <!-- <img v-if="!like" :src="imgRoute.unlike" alt />
+        <i>
+          <v-icon v-if="!like">mdi-heart-outline</v-icon>
+        </i>
+        <i>
+          <v-icon v-if="like">mdi-heart</v-icon>
+          <!-- <img v-if="!like" :src="imgRoute.unlike" alt />
         <img v-if="like" :src="imgRoute.like_small" alt s />-->
-        <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
+          <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
+        </i>
       </v-btn>
       <span style="font-size: 15px; margin-top: -2px;">{{ likeCount }}</span>
       <v-spacer></v-spacer>
@@ -122,6 +127,11 @@ export default {
     },
   },
   methods: {
+    animate() {
+      const a = document.getElementById("like-btn");
+      a.classList.remove("like-btn");
+      a.classList.add("like-btn");
+    },
     overflow2() {
       if (this.flow) {
         this.$router.push({ name: "FeedView", params: { fid: this.feed.id } });
@@ -146,6 +156,9 @@ export default {
       swal("주소가 복사되었습니다.", { buttons: [null, "확인"] });
     },
   },
+  updated() {
+    this.animate();
+  },
 };
 </script>
 
@@ -166,5 +179,19 @@ p:hover {
 
 strong.grey--text.feed-title {
   font-size: 18px;
+}
+
+.like-btn i {
+  animation: scaleBounce 0.3s alternate;
+  animation-iteration-count: 2;
+}
+
+@keyframes scaleBounce {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1.5);
+  }
 }
 </style>

@@ -12,7 +12,7 @@
           <video
             :src="media_dir + file.name"
             type="video/mp4"
-            class="my-auto"
+            class="my-auto scale"
             width="100%"
             autoplay
             loop
@@ -20,14 +20,20 @@
             playsinline
           ></video>
         </v-responsive>
-        <v-img
+        <v-responsive
           v-if="file.type !== 'video/mp4'"
-          :aspect-ratio="1"
-          contain
-          class="grey lighten-2"
-          :src="media_dir + file.name"
-          width="100%"
-        ></v-img>
+          class="align-center"
+          aspect-ratio="1"
+          style="background-color: #e0e0e0;"
+        >
+          <v-img
+            :aspect-ratio="1"
+            contain
+            class="grey lighten-2 scale"
+            :src="media_dir + file.name"
+            width="100%"
+          ></v-img>
+        </v-responsive>
       </v-window-item>
     </v-window>
 
@@ -97,4 +103,20 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.scale {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transition: all 0.3s ease-in-out; /* 부드러운 모션을 위해 추가*/
+}
+.scale:hover {
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+}
+</style>
