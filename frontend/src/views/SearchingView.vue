@@ -48,18 +48,24 @@
               readonly
             ></v-text-field>
           </div>
-          <div class="text-left caption font-weight-bold mb-2">이 검색어는 어떠세요?</div>
+          <div
+            v-show="recommendBoolean"
+            class="text-left caption font-weight-bold mb-2"
+          >
+            이 검색어는 어떠세요?
+          </div>
           <!-- <span v-show="keyword == ''">
             <v-icon color="red" class="mb-1 mr-3 ml-n5">mdi-fire</v-icon>
           </span>-->
-          <span v-show="keyword == ''" v-for="num in lotto" :key="num">
+          <span v-show="recommendBoolean" v-for="num in lotto" :key="num">
             <v-btn
               rounded
               outlined
               color="#424242"
               class="mr-1 mb-1"
               @click="(keyword = recommends[num]), delaySearch(), lottoNum()"
-            ># {{ recommends[num] }}</v-btn>
+              ># {{ recommends[num] }}</v-btn
+            >
           </span>
         </v-card>
       </v-col>
@@ -75,6 +81,7 @@ export default {
   components: {},
   data() {
     return {
+      recommendBoolean: true,
       keyword: "",
       keyword2: "",
       timer: null,
@@ -123,7 +130,7 @@ export default {
         this.timer = null;
       }
       const obj = this;
-      this.timer = setTimeout(function () {
+      this.timer = setTimeout(function() {
         obj.search();
       }, 500);
     },
@@ -131,9 +138,10 @@ export default {
     // search 여기 만들든지 (검색어 전달하는 함수) mapActions 같은걸로 하든지
     search() {
       if (this.keyword != "") {
+        this.recommendBoolean = false;
         this.searchKeyword(this.keyword)
           .then((res) => {
-            console.log("res", res);
+            // console.log("res", res);
             this.search_items = res.data.hashtag;
             this.search_users = res.data.unick;
           })
@@ -143,6 +151,7 @@ export default {
       } else {
         this.search_items = [];
         this.search_users = [];
+        this.recommendBoolean = true;
       }
     },
     movetoSearched() {
@@ -159,7 +168,7 @@ export default {
   mounted() {
     this.$emit("change-page", 2);
     this.lottoNum();
-    console.log(this.lotto);
+    // console.log(this.lotto);
   },
 };
 </script>

@@ -71,7 +71,7 @@ export default {
     ...mapActions("accounts", ["idCheck2", "setUid"]),
     idCheck3(id) {
       this.idCheck2(id).then((res) => {
-        console.log("res", res);
+        // console.log("res", res);
         if (res === false) {
           this.idChecked = true;
         } else {

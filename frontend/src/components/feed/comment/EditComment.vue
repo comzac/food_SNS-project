@@ -49,7 +49,7 @@ export default {
       this.comment.editdate = new Date();
       // axios 로  this.comment 전송??
       // emit 해서 comments data 다시 받아오게
-      console.log("asdfasdf", this.cid);
+      // console.log("asdfasdf", this.cid);
       this.updateComment(this.comment)
         .then(() => {
           this.$emit("editComment", this.cid);

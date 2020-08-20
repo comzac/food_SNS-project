@@ -111,27 +111,27 @@ export default {
   },
   watch() {
     this.getContestFeedDetail(this.$route.params.fid).then((data) => {
-      console.log("watch");
-      console.log(data.statistics);
+      // console.log("watch");
+      // console.log(data.statistics);
       this.ageData = data.statistics.uage;
       this.sexData = data.statistics.usex;
     });
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      this.$router.push({ name: "ContestList" });
     },
     ...mapActions("contests", [
       "getContestFeedDetail",
       "contestFeedLikeUnlike",
     ]),
     feedLU() {
-      console.log("likeunlike");
+      // console.log("likeunlike");
       const likeData = {
         fid: this.$route.params.fid,
         like: this.selectedContestFeed.islike,
       };
-      console.log(likeData);
+      // console.log(likeData);
       this.contestFeedLikeUnlike(likeData).then(() => {
         if (this.selectedContestFeed.islike) {
           this.selectedContestFeed.contestFeed.likeCount -= 1;

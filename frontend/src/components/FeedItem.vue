@@ -4,13 +4,20 @@
       <v-col cols="12">
         <v-hover v-slot:default="{ hover }">
           <v-card
-            :class="[`elevation-${hover ? 24 : 6}`, {'recommanded-feed': feed.recommand }]"
+            :class="[
+              `elevation-${hover ? 24 : 6}`,
+              { 'recommanded-feed': feed.recommand },
+            ]"
             class="transition-swing ma-auto"
             max-width="614"
             outlined
           >
             <!-- 작성자 -->
-            <Writer :recommand="feed.recommand" :user="feed.user" :item="true" />
+            <Writer
+              :recommand="feed.recommand"
+              :user="feed.user"
+              :item="true"
+            />
 
             <!-- 미디어 -->
             <Media :dbFiles="feed.feed.dbFiles" @likeUnlike="feedLU()" />
@@ -64,9 +71,9 @@ export default {
   methods: {
     ...mapActions("feeds", ["feedLikeUnlike"]),
     feedLU() {
-      console.log("likeunlike");
+      // console.log("likeunlike");
       const likeData = { fid: this.feed.feed.id, like: this.feed.like };
-      console.log(likeData);
+      // console.log(likeData);
       this.feedLikeUnlike(likeData).then(() => {
         if (this.feed.like) {
           this.feed.likeCount -= 1;

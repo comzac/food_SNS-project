@@ -17,14 +17,14 @@
         color="#2699fb"
         dark
         @click="follow(uid)"
-        >팔로우 신청</v-chip
+        >팔로우</v-chip
       >
       <v-chip
         v-if="!mypage && isFollow"
         color="#ff6666"
         outlined
         @click="follow(uid)"
-        >팔로우 취소</v-chip
+        >언팔로우</v-chip
       >
     </v-list-item>
 

@@ -34,7 +34,7 @@
             <v-spacer> </v-spacer>
 
             <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-            <v-window v-model="i2" continuous>
+            <v-window v-if="!isUpdatePage" v-model="i2" continuous>
               <v-window-item v-if="fileData == ''">
                 <v-img
                   :src="require('@/assets/bees/bee.png')"
@@ -89,7 +89,7 @@
               </v-window-item>
             </v-window>
 
-            <v-card-actions class="justify-space-between">
+            <v-card-actions v-if="!isUpdatePage" class="justify-space-between">
               <v-btn text @click="prev" color="#ea907a">
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
@@ -206,12 +206,12 @@ export default {
       this.$refs.inputfile.$refs.input.click();
     },
     addCoordi(data) {
-      console.log("coordi", data);
+      // console.log("coordi", data);
       this.fileData[this.number].coordi = data
         .replace(/ /g, "")
         .replace(/\r/g, "")
         .replace(/\n/g, "");
-      console.log(this.fileData);
+      // console.log(this.fileData);
       this.number = null;
     },
     ...mapActions("contests", [
@@ -230,7 +230,7 @@ export default {
       this.previews = [];
       this.fileData = [];
       this.i2 = 0;
-      console.log(file);
+      // console.log(file);
       if (file.length > 3) {
         // console.log(file.length);
         swal({
@@ -284,8 +284,8 @@ export default {
         };
         reader.readAsDataURL(this.fileData[i]);
       }
-      console.log(this.previews);
-      console.log(this.fileData);
+      // console.log(this.previews);
+      // console.log(this.fileData);
       window.scrollTo(0, 0);
       this.overlay = false;
       swal("미디어 파일이 업로드되었습니다.\n사진 파일은 수정이 가능합니다.", {

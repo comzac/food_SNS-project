@@ -1,11 +1,30 @@
 <template>
   <div>
-    <v-btn fab color="#ea907a" dark bottom left absolute class="mb-11" @click="$router.go(-1)">
+    <v-btn
+      fab
+      color="#ea907a"
+      dark
+      bottom
+      left
+      absolute
+      class="mb-11"
+      @click="$router.go(-1)"
+    >
       <v-icon>mdi-arrow-left-bold</v-icon>
     </v-btn>
     <v-card class="mx-auto" flat max-width="975" outlined>
-      <h2 class="text-left red--text text--lighten-2 ml-3 follow-title" v-if="followerView">팔로워 목록</h2>
-      <h2 class="text-left red--text text--lighten-2 ml-3 follow-title" v-if="followingView">팔로잉 목록</h2>
+      <h2
+        class="text-left red--text text--lighten-2 ml-3 follow-title"
+        v-if="followerView"
+      >
+        팔로워 목록
+      </h2>
+      <h2
+        class="text-left red--text text--lighten-2 ml-3 follow-title"
+        v-if="followingView"
+      >
+        팔로잉 목록
+      </h2>
 
       <UserFollowList v-if="userFollows" :userFollows="userFollows" />
     </v-card>
