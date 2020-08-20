@@ -1,17 +1,23 @@
 <template>
   <v-row class="text-center" align="center" justify="center">
     <v-col cols="12">
-      <h2 class="text-left red--text text--lighten-2 ml-3 mb-8">추가정보 입력</h2>
+      <h2 class="text-left red--text text--lighten-2 ml-3 mb-8">
+        추가정보 입력
+      </h2>
       <v-card class="mx-auto" flat max-width="350">
         <v-text-field
           label="생년월일"
           name="dob"
           prepend-icon="mdi-cake-variant"
           v-model="additionalData.ubirth"
-          :error-messages="additionalData.ubirth ? '' : '생년월일을 입력해주세요'"
+          :error-messages="
+            additionalData.ubirth ? '' : '생년월일을 입력해주세요'
+          "
           type="date"
           color="#ea907a"
           autocomplete="off"
+          max="2100-12-31"
+          min="1900-01-01"
         ></v-text-field>
         <v-radio-group v-model="additionalData.usex" row>
           <v-btn icon color="#ea907a">
@@ -34,13 +40,15 @@
             v-if="$route.name === 'SocialLoginDataInput'"
             class="white--text"
             @click="$emit('pageDown')"
-          >뒤로가기</v-btn>
+            >뒤로가기</v-btn
+          >
           <v-btn
             color="grey"
             v-if="$route.name !== 'SocialLoginDataInput'"
             class="white--text"
             @click="$router.go(-1)"
-          >뒤로가기</v-btn>
+            >뒤로가기</v-btn
+          >
           <v-divider class="mr-5" vertical></v-divider>
           <v-btn
             v-if="$route.name === 'SocialLoginDataInput'"
@@ -48,14 +56,16 @@
             color="#ea907a"
             class="white--text"
             @click="conductAndReturn"
-          >가입완료</v-btn>
+            >가입완료</v-btn
+          >
           <v-btn
             v-if="$route.name !== 'SocialLoginDataInput'"
             :disabled="!additionalData.ubirth || !additionalData.usex"
             color="#ea907a"
             class="white--text"
             @click="conductAndReturn"
-          >다음으로</v-btn>
+            >다음으로</v-btn
+          >
         </div>
       </v-card>
     </v-col>
@@ -90,5 +100,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
