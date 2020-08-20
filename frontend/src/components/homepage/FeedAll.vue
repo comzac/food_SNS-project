@@ -59,7 +59,7 @@ export default {
         // this.feed_data.push(feed_data2);
         // this.page += 1;
         this.fetchFeeds(this.feedParams).then((newFeeds) => {
-          console.log("infinite scroll get");
+          // console.log("infinite scroll get");
           // this.feedParams.lastFidRecommand = 0;
           newFeeds.forEach((feed) => {
             if (feed.recommand) {
@@ -76,12 +76,12 @@ export default {
     },
   },
   created() {
-    console.log("createdAll");
+    // console.log("createdAll");
     this.clearFeeds();
     this.fetchFeeds(this.feedParams)
       .then((newFeeds) => {
         // console.log(newFeeds);
-        console.log("infinite scroll get");
+        // console.log("infinite scroll get");
         newFeeds.forEach((feed) => {
           // console.log(feed);
           if (feed.recommand) {
@@ -104,7 +104,7 @@ export default {
     this.$emit("change-page", 0);
   },
   destroyed() {
-    console.log("destroyed");
+    // console.log("destroyed");
     window.removeEventListener("scroll", this.infiniteScroll);
   },
 };

@@ -1,67 +1,10 @@
 # :honey_pot: Honey-Combo :bee:
 
-![GitHub](https://img.shields.io/github/license/mashape/apistatus?style=plastic) 
-
-1인 가구를 위한 음식 꿀조합 공유 SNS
+ ![Github](https://img.shields.io/badge/vue-2.6.11-%234FC08D?style=plastic&logo=Vue.js)![Github](https://img.shields.io/badge/spring_boot-2.3.1-%236DB33F?style=plastic&logo=Spring)![Github](https://img.shields.io/badge/MySQL-8.0-%234479A1?style=plastic&logo=mysql)![Github](https://img.shields.io/badge/Redis-3.0-%23DC382D?style=plastic&logo=Redis)![Github](https://img.shields.io/badge/build-passing-brightgreen?style=plastic)
 
 
-<br>
 
-## Content
-
-[:honey_pot: Honey-Combo :bee:](#-honey-combo-)  
-
-   - [Content](#content)  
-   - [Intro](#intro)  
-   - [Project documentation](#project-documentation)  
-   - [Project introduction](#project-introduction)  
-     - [Demos](#-demos) 
-     - [Environment setup](#-environment-setup)
-       - [Common development tools & environment](#common-development-tools-environment)
-       - [Front-end development tools & environment](#front-end-development-tools-environment)
-       - [Back-end development tools & environment](#back-end-development-tools-environment)
-     - [Stack](#-stack)  
-     - [Technical selection](#-technical-selection)  
-       - [Front-end technology](#front-end-technology)
-       - [Back-end technology](#back-end-technology)
-     - [ERD](#-erd)  
-     - [Build steps](#-build-steps)
-       - [Front-end](#front-end)
-         - [Project setup](#project-setup)
-         - [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
-         - [Compiles and minifies for production](#compiles-and-minifies-for-production)
-         - [Lints and fixes files](#lints-and-fixes-files)
-       - [Back-end](#back-end)
-         - [build.gradle](#buildgradle)
-         - [approperties.yml](#appropertiesyml)
-         - [Project build](#project-build)
-         - [Project run](#project-run)
-   - [License](#license)  
-   - [Contact :mailbox_with_mail:](#contact-)
-
-
-<br>
-
-## Intro
-
-20대 및 30대 자취생을 위한 음식 꿀조합 공유 SNS
-
-
-<br>
-
-
-## Project documentation
-
-* https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108
-* http://honeycombo.online:8080/swagger-ui.html
-
-
-<br>
-
-
-## Project introduction
-
-"Honey-combo"는 1인 가구의 식사 해결을 위해 유저들 간의 음식 조합을 공유하기 위한 SNS입니다. 
+`Honey-Combo` 는 1인 가구를 위한 음식 조합을 공유하기 위한 소셜 네트워크 서비스(Social Networking Service, SNS) 입니다. 사용자가 직접 요리한 사진을 피드로 게시해 여러 사용자들과 공유하며 소통할 수 있습니다.
 
 1. Common Service
    - 꿀조합 피드 게시, 댓글, 좋아요 서비스를 제공합니다.
@@ -74,48 +17,147 @@
 3. Liquors Service
    - 관리자가 매주 새로운 주류 조합을 게시합니다.
 
-
-<br>
-
-### :floppy_disk: Demos
-
-Check our [Demos](http://honeycombo.online)
+[여기](http://honeycombo.online)를 클릭해 사이트를 확인하세요 :slightly_smiling_face:
 
 
-<br>
 
-### :floppy_disk: Environment setup
+* 시연영상
 
-Make sure you have installed all of the following prerequisites on your development machine:
+  * 로그인, 피드, 댓글, 좋아요, 팔로우 서비스
 
-#### Common development tools & environment
-
-* OS: Windows 10
-* Java 8
-* AWS EC2
-
-#### Front-end development tools & environment
-
-* IDE: Visual Studio Code
-
-#### Back-end development tools & environment
-
-* IDE: Spring Tool Suite 3
-* Gradle 6
+    <img src="/uploads/1dcd54a17522cbd3fd09a4abc6862e56/로그인.gif" width=350><img src="/uploads/3cc8f6f82f85117aba2fec74745b0822/피드작성.gif" width=350><img src="/uploads/6e3a18b408e58cdbc6aaa5d236a8972e/댓글.gif" width=350>
 
 
-<br>
 
-### :floppy_disk: Stack
+## 목차
+
+[:honey_pot: Honey-Combo :bee:](#-honey-combo-)  
+
+   - [시작하기](#시작하기)
+     - [시작하기에 앞서](#시작하기에-앞서)
+     - [설치하기](#설치하기)
+     - [실행하기](#실행하기)
+     - [배포하기](#배포하기)
+     - [데모](#데모)
+- [지원하는 브라우저](#지원하는-브라우저)
+- [사용된 도구](#사용된-도구)
+- [사용된 기술](#사용된-기술)
+- [저자](#저자)
+- [라이센스](#라이센스)
+- [참고](참고)
+
+
+
+## :runner: 시작하기
+
+아래 방법을 따르시면 프로젝트를 실행시킬 수 있습니다.
+
+### 시작하기에 앞서
+
+* [Windows 10](https://www.microsoft.com/en-us/software-download/windows10)
+* [JDK 1.8](https://www.oracle.com/kr/java/technologies/javase/javase-jdk8-downloads.html)
+* [Node.js 12.8.1](https://nodejs.org/ko/download/)
+* [MySQL 8.0](https://www.mysql.com/downloads/)
+
+### 설치하기
+
+1. 깃헙의 레포지토리를 클론합니다.
+
+   ```
+   $ git clone https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108.git
+   ```
+
+2. yarn을 설치합니다.
+
+   ```
+   $ yarn install
+   ```
+
+### 실행하기
+
+`Honey-combo` 서비스를 사용하기 위해서는 다음과 같은 방법으로 실행합니다:
+
+1. 데이터베이스를 설정합니다.
+
+   - [honey-combo.sql]()을 참고해서 데이터베이스를 생성합니다. ([여기]()를 눌러 erd를 확인하세요.)
+
+   - `application.yml`에 데이터베이스 설정을 추가합니다.
+
+     ```
+     spring:
+       datasource:
+         driver-class-name: com.mysql.cj.jdbc.Driver
+         url : jdbc:mysql://localhost:3306/honeycombo?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+         username : {데이터베이스 계정 아이디}
+         password : {데이터베이스 계정 비밀번호}
+     ```
+
+2. 백엔드 서버를 실행합니다.
+
+   - IDE에 import 후 실행합니다.
+
+     : IntelliJ, STS와 같은 IDE를 사용하는 경우, `backend`를 import하여 실행합니다.
+
+   - war파일을 생성 후 실행합니다.
+
+     ```
+     $ gradlew -DskipTests=true build
+     ```
+
+     ```
+     $ java -jar [filename].war
+     ```
+
+3. 프론트엔드를 실행합니다.
+
+   ```
+   $ yarn serve
+   ```
+
+### 배포하기
+
+해당 서비스는 `AWS EC2`를 이용하여 배포하였습니다. 사전에 [여기]()를 참고해서 `AWS EC2`계정을 생성하세요.
+
+배포를 하기위해서는 다음과 같은 방법으로 실행합니다:
+
+1. AWS EC2 인스턴스 생성
+2. JDK 설치 (환경변수 설정)
+3. DB 설치 (해당 프로젝트에서 MySQL 사용)
+4. gradle wrapper을 위한 버전 설정 (6.0.0 이상)
+5. gradle clean build 실행 (war 파일 생성)
+6. yarn build (dist 폴더 생성)
+7. Nginx (front-end, back-end 경로 설정)
+
+### 데모
+
+[여기](http://honeycombo.onle)를 클릭하세요.
+
+
+
+## :globe_with_meridians: 지원하는 브라우저
+
+| 크롬   | 사파리 | edge   | firefox |
+| ------ | ------ | ------ | ------- |
+| latest | latest | latest | latest  |
+
+
+
+## :hammer_and_wrench: ​사용된 도구
+
+* Vue.js 2.6.11
+* vue/cli 4.4.6
+* yarn 1.22.4
+* Spring boot 2.3.1
+* Gradle 6.4.1
+* IDE: Visual Studio Code 1.48, Spring Tool Suite 3
+
+
+
+## :desktop_computer: ​사용된 기술
 
 ![stack](/uploads/1998b9a000c7faf7cf1e64ce382c4baf/stack.png)
 
-
-<br>
-
-### :floppy_disk: Technical selection
-
-#### Front-end technology
+#### 프론트엔드
 
 | Technology  | Description                     | Official website               |
 | ----------- | ------------------------------- | ------------------------------ |
@@ -126,7 +168,7 @@ Make sure you have installed all of the following prerequisites on your developm
 | Vuetify     | Vue UI library                  | https://vuetifyjs.com/         |
 | vue-chartjs | Wrapper for Chart.js in vue     | https://vue-chartjs.org/       |
 
-#### Back-end technology
+#### 백엔드
 
 | Technology      | Dscription                       | Official Website                           |
 | --------------- | -------------------------------- | ------------------------------------------ |
@@ -141,274 +183,26 @@ Make sure you have installed all of the following prerequisites on your developm
 | OAuth           | Authentication and authorization | https://oauth.net/                         |
 | Swagger-UI      | Document production tool         | https://github.com/swagger-api/swagger-ui  |
 
-
-<br>
-
-### :floppy_disk: ERD
-
-![ERD](/uploads/4a3553df95063dedcb2f70de36914421/ERD.png)
-
-
-<br>
-
-### :floppy_disk: Build steps
-
-#### Front-end 
-
-##### Project setup
-
-```
-$ yarn install
-```
-
-##### Compiles and hot-reloads for development
-
-```
-$ yarn serve
-```
-
-##### Compiles and minifies for production
-
-```
-$ yarn build
-```
-
-##### Lints and fixes files
-
-```
-$ yarn lint
-```
+* spring security + jwt + redis 이용
+* google api + oauth 이용
+* jpa와 querydsl 이용
+* 추천 시스템
+* aws ec2 + nginx + docker (추후적용) 이용해 배포
+* embedded redis가 아닌 리얼 redis적용 생각해봐야함
 
 
 
-#### Back-end
+## 👤 저자
 
-##### build.gradle
-
-```groovy
-plugins {
-   id 'org.springframework.boot' version '2.3.1.RELEASE'
-   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-   id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
-   id 'java'
-   id 'war'
-}
-
-group = 'com.ssafy'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
-
-repositories {
-   mavenCentral()
-}
-
-dependencies {
-   implementation 'org.springframework.boot:spring-boot-starter-web'
-   implementation 'org.springframework.boot:spring-boot-starter-web-services'
-   //compile('org.springframework.session:spring-session')
-   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
-   developmentOnly 'org.springframework.boot:spring-boot-devtools'
-   runtimeOnly 'mysql:mysql-connector-java'
-   providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-   testImplementation('org.springframework.boot:spring-boot-starter-test') {
-      exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-   }
-
-   // for jsp
-   implementation 'javax.servlet:jstl'
-   implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-   
-   // for aop
-   compile 'org.springframework.boot:spring-boot-starter-aop'
-      
-   //Swagger2
-   compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-   
-   // mail
-   implementation 'org.springframework.boot:spring-boot-starter-mail'
-   
-   // jpa
-   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-   
-   // query dsl 
-   compile("com.querydsl:querydsl-apt") 
-   compile("com.querydsl:querydsl-jpa")
-   
-   // spring security
-   implementation 'org.springframework.boot:spring-boot-starter-security'
-   testImplementation('org.springframework.boot:spring-boot-starter-test') {
-       exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-   }
-   testImplementation 'org.springframework.security:spring-security-test'
-   
-   // jwt
-   implementation 'io.jsonwebtoken:jjwt:0.9.1'
-   
-   // lombok
-   compileOnly 'org.projectlombok:lombok'
-   annotationProcessor 'org.projectlombok:lombok'
-   
-   // Redis
-   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-   implementation 'it.ozimov:embedded-redis:0.7.2'
-   // https://mvnrepository.com/artifact/com.github.kstyrc/embedded-redis
-   testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
-   // https://mvnrepository.com/artifact/redis.clients/jedis
-   compile group: 'redis.clients', name: 'jedis', version: '3.3.0'
-   // social
-   
-   // 1. oauth
-   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-   // 2. thymeleaf
-   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-   // 3. h2database
-   runtimeOnly 'com.h2database:h2'
-   // security, jpa, web, lombok 등 중복 // 
-
-
-   // 구글 소셜
-   // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
-   compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
-   // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-credentials
-   compile group: 'com.google.auth', name: 'google-auth-library-credentials', version: '0.21.1'
-   // https://mvnrepository.com/artifact/com.google.api-client/google-api-client
-   compile group: 'com.google.api-client', name: 'google-api-client', version: '1.30.10'
-   // https://mvnrepository.com/artifact/com.google.api-client/google-api-client-jackson2
-   compile group: 'com.google.api-client', name: 'google-api-client-jackson2', version: '1.27.0'
-   // https://mvnrepository.com/artifact/com.google.http-client/google-http-client-jackson2
-   compile group: 'com.google.http-client', name: 'google-http-client-jackson2', version: '1.35.0'
-
-}
-
-// querydsl 적용 
-apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용 
-def querydslSrcDir = 'src/main/generated'
-
-querydsl {
-	 library = "com.querydsl:querydsl-apt" 
-	 jpa = true 
-	 querydslSourcesDir = querydslSrcDir 
-}
-
-compileQuerydsl{
-	 options.annotationProcessorPath = configurations.querydsl 
-} 
-
-configurations {
-	querydsl.extendsFrom compileClasspath 
-} 
-  
-sourceSets {
-   main {
-	    java{ 
-	    	srcDirs = ['src/main/java', querydslSrcDir] 
-	    	} 
-    	} 
-}
-
-tasks.withType(JavaCompile) { 
-	options.annotationProcessorGeneratedSourcesDirectory = file(querydslSrcDir) 
-}
-
-test {
-   useJUnitPlatform()
-}
-```
-
-##### approperties.yml
-
- ```
-custom: 
-  oauth2: 
-    kakao: 
-      client-id: -
-      client-secret: -
-      scope: profile, account_email, gender, age_range, birthday
-    naver: 
-      client-id: - 
-      client-secret: -
-server:
-  port: 8080
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url : jdbc:mysql://localhost:3306/dbtest?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username : -
-    password : -
-  mail:
-    host : smtp.gmail.com
-    port : 587
-    username : -
-    password : -
-    properties:
-      mail:
-        smtp:
-          auth : true
-          timeout : 5000
-          starttls:
-            enable : true    
-  jpa:
-    properties:
-      hibernate: 
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    hibernate:
-      ddl-auto: update
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 2KB
-      max-file-size: 200MB
-      max-request-size: 215MB
-  redis:
-    host: localhost
-    port: 6379
-    database: 0
-  h2:
-    console:
-      enabled: true
-      path: /console
-  thymeleaf: 
-    cache: false 
-  security: 
-    oauth2: 
-      client: 
-        registration: 
-          google: 
-            client-id: -
-            client-secret: -
-            scope : email, profile
-  file:
-    location: - #파일이 저장될 폴더 위치
-  
-logging:
-  level:
-    root: info
-  file:
-    name: ./log/local #파일이 저장될 폴더 위치
-  recommand:
-    root: ./log/ #파일이 저장될 폴더 위치
-
- ```
-
-##### Project build
-
-```
-$ gradle build
-```
-
-##### Project run
-
-```
-// 해당 파일이 있는 위치
-$ java -jar demo-0.0.1-SNAPSHOT.war
-```
+* 김세훈 - Sehoon Kim - kimsae123@naver.com
+* 김순빈 - Soonbeen Kim - ksb940925@gmail.com
+* 류승민 - Seungmin Ryu - dkqyqytt@gmail.com
+* 이선수 - Sunsoo Lee - tjstn921030@gmail.com
+* 서용준 - Yongjoon Seo - koreakkrea12@naver.com
 
 
 
-<br>
-
-## License
+## :page_with_curl: 라이센스
 
 ```
 Copyright (c) 2015 Juns Alen
@@ -428,12 +222,8 @@ limitations under the License.
 
 
 
-<br>
+## 참고
 
-## Contact :mailbox_with_mail:
+* https://gist.github.com/taeukme/e004e01963190615d308a16bcd6e6040
 
-* 김세훈 | Sehoon Kim | kimsae123@naver.com
-* 김순빈 | Soonbeen Kim | ksb940925@gmail.com
-* 류승민 | Seungmin Ryu | dkqyqytt@gmail.com
-* 이선수 | Sunsoo Lee | tjstn921030@gmail.com
-* 서용준 | Yongjoon Seo | koreakkrea12@naver.com
+* https://github.com/naver/egjs-flicking

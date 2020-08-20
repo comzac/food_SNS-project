@@ -6,28 +6,53 @@
         <v-col cols="12">
           <v-card class="mx-auto" flat max-width="975" outlined>
             <v-list-item>
-              <v-list-item-avatar size="80" :color="authUserImgRoute ? 'white' : 'grey'">
-                <v-icon x-large v-if="!authUserImgRoute" dark>mdi-account</v-icon>
+              <v-list-item-avatar
+                size="80"
+                :color="authUserImgRoute ? 'white' : 'grey'"
+              >
+                <v-icon x-large v-if="!authUserImgRoute" dark
+                  >mdi-account</v-icon
+                >
                 <v-img v-if="authUserImgRoute" :src="authUserImgRoute" />
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title class="title">{{ authUserUnick }}</v-list-item-title>
+                <v-list-item-title class="title">{{
+                  authUserUnick
+                }}</v-list-item-title>
                 <v-list-item-subtitle>{{ authUserUid }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
-              <v-card-text class="text-center">{{ authUserProfileText }}</v-card-text>
+              <v-card-text class="text-center">{{
+                authUserProfileText
+              }}</v-card-text>
             </v-list-item>
           </v-card>
         </v-col>
         <v-col cols="12">
-          <v-btn @click="toProfileEdit" large color="#2699fb" width="100%" dark>프로필 변경</v-btn>
+          <v-btn @click="toProfileEdit" large color="#5CC4CF" width="100%" dark
+            >프로필 변경</v-btn
+          >
         </v-col>
         <v-col cols="12">
-          <v-btn @click="$emit('pwChange')" large color="#2699fb" width="100%" dark>비밀번호 변경</v-btn>
+          <v-btn
+            @click="$emit('pwChange')"
+            large
+            color="#5CC4CF"
+            width="100%"
+            dark
+            >비밀번호 변경</v-btn
+          >
         </v-col>
         <v-col cols="12">
-          <v-btn large color="#D50000" width="100%" dark @click="deleteUser">회원 탈퇴</v-btn>
+          <v-btn
+            large
+            color="red lighten-2"
+            width="100%"
+            dark
+            @click="deleteUser"
+            >회원 탈퇴</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>

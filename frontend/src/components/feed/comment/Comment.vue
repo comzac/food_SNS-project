@@ -17,7 +17,10 @@
         class="text-decoration-none"
       >
         <!-- comment 밑에 usernick 이랑 userprofile 같이 넘겨줘야 할듯?? -->
-        <v-list-item-avatar class="mr-5" :color="commentHasProfileImg ? 'white' : 'grey'">
+        <v-list-item-avatar
+          class="mr-5"
+          :color="commentHasProfileImg ? 'white' : 'grey'"
+        >
           <v-icon v-if="!commentHasProfileImg" dark>mdi-account</v-icon>
           <v-img v-if="commentHasProfileImg" :src="commentProfileImgRoute" />
         </v-list-item-avatar>
@@ -27,9 +30,13 @@
           :to="{ name: 'UserDetail', params: { uid: comment.user.uid } }"
           class="text-decoration-none"
         >
-          <v-list-item-title class="black--text">{{ comment.user.unick }}</v-list-item-title>
+          <v-list-item-title class="black--text">{{
+            comment.user.unick
+          }}</v-list-item-title>
         </router-link>
-        <v-list-item-subtitle class="black--text">{{ comment.content }}</v-list-item-subtitle>
+        <v-list-item-subtitle class="black--text">{{
+          comment.content
+        }}</v-list-item-subtitle>
         <v-list-item-subtitle class="gray--text">
           {{ computeYMD(comment.regdate) }}
           {{ comment.editdate ? "(수정됨)" : "" }}
@@ -82,7 +89,7 @@ export default {
         parseInt(new Date().getTime() / 1000) -
         parseInt(new Date(regdate).getTime() / 1000) +
         1;
-      var ymd2 = function (ymd) {
+      var ymd2 = function(ymd) {
         if (ymd < 60) {
           return `${ymd}초 전`;
         } else if (ymd < 3600) {

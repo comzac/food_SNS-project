@@ -46,7 +46,7 @@ export default {
           config
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit("SET_SELECTEDCONTESTFEED", res.data.data);
           return res.data.data;
         })
@@ -59,7 +59,7 @@ export default {
         .get(SERVER.BASE_URL + data.route, rootGetters["accounts/config"])
         .then((res) => {
           if (data.mode === "oneList") {
-            console.log(res.data.data);
+            // console.log(res.data.data);
             commit("SET_CONTESTFEEDS", res.data.data.contestFeedAll);
             const contestData = {
               theme: res.data.data.theme,
@@ -90,7 +90,7 @@ export default {
     },
     contestFeedLikeUnlike({ rootGetters }, likeData) {
       const config = rootGetters["accounts/config"];
-      console.log("fid", likeData.fid, "like", likeData.like);
+      // console.log("fid", likeData.fid, "like", likeData.like);
       if (likeData.like) {
         axios
           .delete(
@@ -100,7 +100,7 @@ export default {
               likeData.fid,
             config
           )
-          .then((res) => console.log(res))
+          // .then((res) => console.log(res))
           .catch((err) => console.error(err));
       } else {
         axios
@@ -112,7 +112,7 @@ export default {
             null,
             config
           )
-          .then((res) => console.log(res))
+          // .then((res) => console.log(res))
           .catch((err) => console.error(err));
       }
     },
@@ -156,7 +156,7 @@ export default {
           config
         )
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           // id = res.data.data;
           form.append("fid", res.data.data);
           return axios.post(
@@ -167,8 +167,8 @@ export default {
             config
           );
         })
-        .then((res) => {
-          console.log("res:", res);
+        .then(() => {
+          // console.log("res:", res);
           router.push({ name: "ContestList" });
         })
         .catch((err) => console.log(err.response));
@@ -184,7 +184,7 @@ export default {
       newFeedData.cid = getters.currentContestId;
       // console.log("lastFeedData");
       // console.log(newFeedData);
-      console.log(feedData);
+      // console.log(feedData);
       axios
         .put(
           SERVER.BASE_URL +
@@ -194,8 +194,8 @@ export default {
           newFeedData,
           config
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           router.push({ name: "ContestFeed", params: { fid: id } });
         })
         .catch((err) => {
@@ -214,8 +214,8 @@ export default {
             id,
           config
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           router.push({ name: "ContestList" });
         })
         .catch((err) => {
