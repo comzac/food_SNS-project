@@ -1,6 +1,12 @@
 <template>
   <v-app>
-    <Header v-if="isLoggedIn && $route.name !== 'Login'" />
+    <Header
+      v-if="
+        isLoggedIn &&
+          $route.name !== 'Login' &&
+          $route.name !== 'SocialLoginDataInput'
+      "
+    />
     <v-main>
       <transition name="view">
         <router-view @change-page="changePage" />
@@ -25,7 +31,10 @@
     <Signup v-if="$route.name == 'Login'" />
     <Bottom
       v-if="
-        isLoggedIn && $route.name !== 'Login' && $route.name !== 'CommentView'
+        isLoggedIn &&
+          $route.name !== 'Login' &&
+          $route.name !== 'CommentView' &&
+          $route.name !== 'SocialLoginDataInput'
       "
       v-show="$route.name !== 'FeedCreateView'"
     />
