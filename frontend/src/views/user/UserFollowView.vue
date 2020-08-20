@@ -6,13 +6,14 @@
       dark
       bottom
       left
-      absolute
-      class="mb-11"
+      fixed
+      small
+      class="mb-14"
       @click="$router.go(-1)"
     >
       <v-icon>mdi-arrow-left-bold</v-icon>
     </v-btn>
-    <v-card class="mx-auto" flat max-width="975" outlined>
+    <v-card class="mx-auto mb-18" flat max-width="975" outlined>
       <h2
         class="text-left red--text text--lighten-2 ml-3 follow-title"
         v-if="followerView"
@@ -76,7 +77,7 @@ export default {
 }
 
 h2.follow-title {
-  margin-top: 14vh;
-  margin-bottom: 2vh;
+  margin-top: 14px;
+  margin-bottom: 14px;
 }
 </style>
