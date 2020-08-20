@@ -62,7 +62,7 @@ export default {
     updateComment({ rootGetters }, commentData) {
       const config = rootGetters["accounts/config"];
       const id = commentData.id;
-      delete commentData.id;
+      // delete commentData.id;
       return (
         axios
           .put(

@@ -7,7 +7,7 @@
           <h1
             v-if="keyword2 !== ''"
             class="ml-4"
-            style="color: #ea907a; white-space: pre-line"
+            style="color: #ea907a; white-space: pre-line;  word-break:break-all;"
           >
             # {{ keyword2 }}
           </h1>
