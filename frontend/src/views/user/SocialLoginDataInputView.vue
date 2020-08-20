@@ -53,7 +53,7 @@ export default {
           changeData
         )
         .then((res) => {
-          console.log("res : ", res);
+          // console.log("res : ", res);
           if (res.data === "success") {
             this.page = "2";
             this.setPage(this.page);

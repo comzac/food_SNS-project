@@ -140,7 +140,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit("SET_TOKEN", res.headers.token);
           router.push({ name: "Home" });
         })
@@ -172,7 +172,7 @@ export default {
     },
 
     logout({ commit, getters, dispatch }) {
-      console.log(getters.config);
+      // console.log(getters.config);
       axios
         .get(
           SERVER.BASE_URL +
@@ -180,9 +180,9 @@ export default {
             SERVER.ROUTES.accounts.logout,
           getters.config
         )
-        .then((res) => {
-          console.log(res);
-        })
+        // .then((res) => {
+        //   console.log(res);
+        // })
         .catch((err) => console.log(err.response));
 
       commit("SET_TOKEN", null);
@@ -347,7 +347,7 @@ export default {
     },
 
     pwreset(context, userEmailData) {
-      console.log(userEmailData);
+      // console.log(userEmailData);
       axios
         .put(
           SERVER.BASE_URL +
@@ -356,7 +356,7 @@ export default {
           userEmailData
         )
         .then((res) => {
-          console.log("res : ", res);
+          // console.log("res : ", res);
           if (res.data === "success") {
             swal("비밀번호가 변경되었습니다.");
             router.push({ name: "Login" });
@@ -396,7 +396,7 @@ export default {
             getters.config
           )
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             commit("SET_USERSIMPLEDATA", res.data.data);
             const ubirth = state.userSimpleData.ubirth;
             const usex = state.userSimpleData.usex;
@@ -464,7 +464,7 @@ export default {
           data,
           getters.config
         )
-        .then((res) => console.log(res))
+        // .then((res) => console.log(res))
         .catch((err) => console.log(err.response));
     },
     getUserFollowList({ commit, getters }, option) {
@@ -480,7 +480,7 @@ export default {
         .catch((err) => console.log(err.response));
     },
     setAdditionalUserData({ state, commit, getters }, data) {
-      console.log("data : ", data);
+      // console.log("data : ", data);
       const userEditRoute =
         SERVER.BASE_URL + SERVER.ROUTES.accounts.URL + state.userSimpleData.uid;
       const simpleUserRoute =
@@ -489,12 +489,12 @@ export default {
         SERVER.ROUTES.accounts.simple;
       axios
         .put(userEditRoute, data, getters.config)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           return axios.get(simpleUserRoute, getters.config);
         })
         .then((res) => {
-          console.log("res : ", res.data.data);
+          // console.log("res : ", res.data.data);
           commit("SET_USERSIMPLEDATA", res.data.data);
         })
         .catch((err) => console.log(err));

@@ -25,7 +25,7 @@ export default {
                   (acc, cur) => acc + cur,
                   0
                 );
-                console.log(likeCount, context);
+                // console.log(likeCount, context);
                 return Math.round((value / likeCount) * 100) + "%";
               },
             },
@@ -41,6 +41,7 @@ export default {
               ticks: {
                 beginAtZero: true,
                 stepSize: 1,
+                display: false,
               },
               gridLines: {
                 display: false,
@@ -86,7 +87,7 @@ export default {
                     (acc, cur) => acc + cur,
                     0
                   );
-                  console.log(likeCount, context);
+                  // console.log(likeCount, context);
                   return Math.round((value / likeCount) * 100) + "%";
                 },
               },

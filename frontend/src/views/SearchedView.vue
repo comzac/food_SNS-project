@@ -4,12 +4,17 @@
       <v-container>
         <v-row class="mx-0 align-center">
           <h1 style="color: #ea907a;"># {{ keyword }}</h1>
-          <h1 v-if="keyword2 !== ''" class="ml-4" style="color: #ea907a;">
+          <h1
+            v-if="keyword2 !== ''"
+            class="ml-4"
+            style="color: #ea907a; white-space: pre-line"
+          >
             # {{ keyword2 }}
           </h1>
         </v-row>
         <v-spacer></v-spacer>
         <v-text-field
+          v-if="searched_items.length"
           v-model="keyword2"
           @input="changeItem()"
           append-icon="mdi-magnify"
@@ -21,6 +26,17 @@
           autocomplete="off"
           class="mb-0 pb-0"
         ></v-text-field>
+
+        <h2 v-if="!searched_items.length" class="mx-0" style="color: #424242;">
+          관련된 게시글이 없습니다.
+        </h2>
+        <h2
+          v-if="keyword2 !== '' && !searched_items2.length"
+          class="mx-0"
+          style="color: #424242;"
+        >
+          관련된 게시글이 없습니다.
+        </h2>
       </v-container>
     </v-card>
     <SearchFeedList
@@ -28,6 +44,7 @@
       :feeds="searched_items"
     />
     <SearchFeedList v-if="keyword2 !== ''" :feeds="searched_items2" />
+
     <v-overlay :value="overlay">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
