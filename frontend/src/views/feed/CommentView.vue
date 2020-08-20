@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <v-text-field
-      style="position: fixed; bottom: 0; width: 100%; z-index: 2"
+      style="position: fixed; bottom: 0; width: 100%; z-index: 2;; justify: center;"
       solo
       flat
       outlined
@@ -177,6 +177,7 @@
                 <v-btn
                   v-if="authUserUnick !== comment.comment.user.unick"
                   class="mr-1 mt-2"
+                  :id="idx"
                   color="#ff6666"
                   icon
                   small
@@ -184,11 +185,16 @@
                     commentLike({
                       comment: comment,
                       idx: idx,
-                    })
+                    }),
+                      animate(idx)
                   "
                 >
-                  <v-icon v-if="comment.islike">mdi-heart</v-icon>
-                  <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
+                  <i>
+                    <v-icon v-if="comment.islike">mdi-heart</v-icon>
+                  </i>
+                  <i>
+                    <v-icon v-if="!comment.islike">mdi-heart-outline</v-icon>
+                  </i>
                   <!-- <img class="like-btn" v-if="!comment.islike" :src="imgRoute.unlike" alt />
                   <img class="like-btn" v-if="comment.islike" :src="imgRoute.like_small" alt />-->
                   <!-- <img v-if="like" :src="imgRoute.like_big" alt="" /> -->
@@ -201,7 +207,8 @@
                 :cid="comment.comment.id"
                 style="display: none;"
                 :comment="comment.comment"
-                @editComment="editComment"
+                @edit-comment="editComment"
+                @edit-comment2="editComment2"
                 @close-edit-comment="closeEditComment"
               />
             </div>
@@ -272,6 +279,11 @@ export default {
     },
   },
   methods: {
+    animate(idx) {
+      const a = document.getElementById(idx);
+      a.classList.remove("like-btn");
+      a.classList.add("like-btn");
+    },
     ...mapActions("feeds", ["getFeedDetail"]),
     ...mapActions("comments", [
       "fetchComments",
@@ -343,21 +355,26 @@ export default {
       document.getElementById(`a${comment_id}`).style = "display: none;";
       document.getElementById(`b${comment_id}`).style = "display: show;";
     },
-    editComment(comment_id) {
+
+    editComment(cid) {
       // const update = document.getElementsByClassName("update");
-      // console.log("asdf", comment_id);
-      document.getElementById(`b${comment_id}`).style = "display: none;";
+      document.getElementById(`b${cid}`).style = "display: none;";
 
       // update.forEach((item) => (item.style = "display: none;"));
       this.fetchComments(this.fid).then(() => {
         this.comments = this.$store.state.comments;
       });
-      document.getElementById(`a${comment_id}`).style = "display: show;";
-
+      // this.comments = this.$store.state.comments;
       // this.fetchComment(this.fid);
+      document.getElementById(`a${cid}`).style = "display: show;";
     },
+
+    editComment2(cid) {
+      window.setTimeout(this.editComment, 500, cid);
+    },
+
     closeEditComment(id) {
-      document.getElementById(`${id}`).style = "display:none;";
+      document.getElementById(`b${id}`).style = "display: none;";
     },
 
     commentLike(commentData) {
@@ -423,5 +440,19 @@ div .v-list-item__subtitle .black--text {
 img.like-btn {
   width: 18px;
   height: 18px;
+}
+
+.like-btn i {
+  animation: scaleBounce 0.3s alternate;
+  animation-iteration-count: 2;
+}
+
+@keyframes scaleBounce {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: scale(1.5);
+  }
 }
 </style>

@@ -13,6 +13,7 @@
           :error-messages="
             additionalData.ubirth ? '' : '생년월일을 입력해주세요'
           "
+          onkeydown="return false"
           type="date"
           color="#ea907a"
           autocomplete="off"

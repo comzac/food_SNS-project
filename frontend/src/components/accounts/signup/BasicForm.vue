@@ -82,6 +82,7 @@
       type="date"
       v-model="signupData.ubirth"
       color="#424242"
+      onkeydown="return false"
       :messages="signupData.ubirth ? '' : '생년월일을 입력해주세요'"
       autocomplete="off"
       max="2100-12-31"
