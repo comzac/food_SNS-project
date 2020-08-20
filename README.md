@@ -17,34 +17,26 @@
 3. Liquors Service
    - 관리자가 매주 새로운 주류 조합을 게시합니다.
 
-[여기](http://honeycombo.online)를 클릭해 사이트를 확인하세요 :slightly_smiling_face:
+[<img src="/uploads/678293e8c7eb2f43bc67389391d19739/crop.gif" width=200>](http://honeycombo.online)를 클릭해 사이트를 확인하세요 :slightly_smiling_face:
 
 
 
-* 시연영상
-
-  * 로그인, 피드, 댓글, 좋아요, 팔로우 서비스
-
-    <img src="/uploads/1dcd54a17522cbd3fd09a4abc6862e56/로그인.gif" width=350><img src="/uploads/3cc8f6f82f85117aba2fec74745b0822/피드작성.gif" width=350><img src="/uploads/6e3a18b408e58cdbc6aaa5d236a8972e/댓글.gif" width=350>
-
-
-
-## 목차
+## 📌 목차
 
 [:honey_pot: Honey-Combo :bee:](#-honey-combo-)  
 
-   - [시작하기](#시작하기)
+   - [시작하기](#-시작하기)
      - [시작하기에 앞서](#시작하기에-앞서)
      - [설치하기](#설치하기)
      - [실행하기](#실행하기)
      - [배포하기](#배포하기)
      - [데모](#데모)
-- [지원하는 브라우저](#지원하는-브라우저)
-- [사용된 도구](#사용된-도구)
-- [사용된 기술](#사용된-기술)
-- [저자](#저자)
-- [라이센스](#라이센스)
-- [참고](참고)
+- [지원하는 브라우저](#-지원하는-브라우저)
+- [사용된 도구](#-사용된-도구)
+- [사용된 기술](#-사용된-기술)
+- [저자](#-저자)
+- [라이센스](#-라이센스)
+- [참고](#-참고)
 
 
 
@@ -79,7 +71,7 @@
 
 1. 데이터베이스를 설정합니다.
 
-   - [honey-combo.sql]()을 참고해서 데이터베이스를 생성합니다. ([여기]()를 눌러 erd를 확인하세요.)
+   - [honey-combo.sql]()을 참고해서 데이터베이스를 생성합니다. ([여기](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/uploads/4a3553df95063dedcb2f70de36914421/ERD.png)를 눌러 erd를 확인하세요.)
 
    - `application.yml`에 데이터베이스 설정을 추가합니다.
 
@@ -116,7 +108,7 @@
 
 ### 배포하기
 
-해당 서비스는 `AWS EC2`를 이용하여 배포하였습니다. 사전에 [여기]()를 참고해서 `AWS EC2`계정을 생성하세요.
+해당 서비스는 `AWS EC2`를 이용하여 배포하였습니다. 사전에 [여기](https://victorydntmd.tistory.com/61)를 참고해서 `AWS EC2`계정을 생성하세요.
 
 배포를 하기위해서는 다음과 같은 방법으로 실행합니다:
 
@@ -136,9 +128,9 @@
 
 ## :globe_with_meridians: 지원하는 브라우저
 
-| 크롬   | 사파리 | edge   | firefox |
-| ------ | ------ | ------ | ------- |
-| latest | latest | latest | latest  |
+| <img src='/uploads/36874cdc0e0e6d724b92241664c99b9f/chrome_logo.png' width=60> | <img src='/uploads/74b4e657301cecd856ac88327e369ad9/Mozilla_Firefox_logo_2013.png' width=60> | <img src='/uploads/f1be4a8b751857b900b8a70a36c54c3d/micro-edge.png' width=60> | <img src='/uploads/74b4e657301cecd856ac88327e369ad9/Mozilla_Firefox_logo_2013.png' width=60> |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                            latest                            |                            latest                            |                            latest                            |                            latest                            |
 
 
 
@@ -155,18 +147,23 @@
 
 ## :desktop_computer: ​사용된 기술
 
-![stack](/uploads/1998b9a000c7faf7cf1e64ce382c4baf/stack.png)
+<img src="/uploads/1998b9a000c7faf7cf1e64ce382c4baf/stack.png" width=850>
 
 #### 프론트엔드
 
-| Technology  | Description                     | Official website               |
-| ----------- | ------------------------------- | ------------------------------ |
-| Vue         | Front-end framework             | https://vuejs.org/             |
-| Vue-router  | Routing library                 | https://router.vuejs.org/      |
-| Vuex        | Global State Management library | https://vuex.vuejs.org/        |
-| Axios       | HTTP communication library      | https://github.com/axios/axios |
-| Vuetify     | Vue UI library                  | https://vuetifyjs.com/         |
-| vue-chartjs | Wrapper for Chart.js in vue     | https://vue-chartjs.org/       |
+| Technology          | Description                                                  | Official website                                  |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------- |
+| Vue                 | Front-end framework                                          | https://vuejs.org/                                |
+| Vue-router          | Routing library                                              | https://router.vuejs.org/                         |
+| Vuex                | Global State Management library                              | https://vuex.vuejs.org/                           |
+| vuex-persistedstate | Persist and rehydrate your Vuex state between page reloads   | https://www.npmjs.com/package/vuex-persistedstate |
+| Axios               | HTTP communication library                                   | https://github.com/axios/axios                    |
+| Vuetify             | Vue UI library                                               | https://vuetifyjs.com/                            |
+| vue-cookies         | A simple Vue.js plugin for handling browser cookies          | https://www.npmjs.com/package/vue-cookies         |
+| vue-chartjs         | Wrapper for Chart.js in vue                                  | https://vue-chartjs.org/                          |
+| vue-cropperjs       | A Vue wrapper component for [cropperjs](https://github.com/fengyuanchen/cropperjs) | https://www.npmjs.com/package/vue-cropperjs       |
+| sweetalert          | A beautiful replacement for messages                         | https://sweetalert.js.org/guides/                 |
+| vue-google-oauth2   | Handling Google sign-in and sign-out for Vue.js applications | https://www.npmjs.com/package/vue-google-oauth2   |
 
 #### 백엔드
 
@@ -183,12 +180,32 @@
 | OAuth           | Authentication and authorization | https://oauth.net/                         |
 | Swagger-UI      | Document production tool         | https://github.com/swagger-api/swagger-ui  |
 
-* spring security + jwt + redis 이용
-* google api + oauth 이용
-* jpa와 querydsl 이용
-* 추천 시스템
-* aws ec2 + nginx + docker (추후적용) 이용해 배포
-* embedded redis가 아닌 리얼 redis적용 생각해봐야함
+* Spring security와 JWT(JSON Web Token)를 이용해 사용자 인증 및 인가 과정을 거쳐 웹 어플리케이션의 보안을 구성하였습니다.
+* 로그인한 사용자의 인증 토큰을 인-메모리 데이터 저장소인 Redis에 저장하여 로그인 및 로그아웃한 사용자를 관리하였습니다.
+* 인증 프로토콜 중 하나인 OAuth2(Open Authorization) 를 통해 구글 소셜 로그인을 구현하였습니다.
+* JPA(Java Persistence API) + Spring Data JPA 를 사용하여 객체들과 테이블, 레코드를 자동으로 관리하며 기본적인 쿼리를 자동으로 생성합니다.
+* QueryDSL을 이용해 타입에 안전한 방식으로 동적 쿼리를 생성해 SQL문을 문자열로 작성하거나 XML파일에 작성하지 않고  코드로 작성합니다.
+* 사용자의 성별과 연령대를 기반으로 피드 게시, 피드 좋아요, 피드 상세 조회, 검색 로그 데이터를 분석해 추천 서비스를 제공합니다.
+* AWS EC2와 Nginx를 이용하여 서비스를 배포하였습니다.
+
+#### 추후 적용
+
+* 추가로 docker를 사용하여 배포할 예정입니다.
+
+
+
+## :vhs: 시연 영상
+
+* [시연 영상]()
+* 로그인, 피드, 댓글, 좋아요, 팔로우, 알림 서비스
+  * <img src="/uploads/1dcd54a17522cbd3fd09a4abc6862e56/로그인.gif" width=350>
+  * <img src="/uploads/3cc8f6f82f85117aba2fec74745b0822/피드작성.gif" width=350>
+  * <img src="/uploads/6e3a18b408e58cdbc6aaa5d236a8972e/댓글.gif" width=350>
+  * <img src="/uploads/9a7a7d5256d1cc83b1868e938fdc524b/알림.gif" width=350>
+* 콘테스트 서비스
+  * <img src="/uploads/4da0d5f3562de88d3e2c87f7f50ab264/콘테스트.gif" width=350>
+* 주류 서비스
+  * <img src="/uploads/0379ea40cb5b2cc9ccf4808f02912b6b/주류.gif" width=350>
 
 
 
@@ -222,7 +239,7 @@ limitations under the License.
 
 
 
-## 참고
+## :books: 참고
 
 * https://gist.github.com/taeukme/e004e01963190615d308a16bcd6e6040
 
