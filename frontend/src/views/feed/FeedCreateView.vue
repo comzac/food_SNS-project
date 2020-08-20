@@ -43,7 +43,7 @@
               append-icon="mdi-plus"
               @click:append="createHashtag(hashtag)"
               @keyup.enter.space.,="createHashtag(hashtag)"
-              messages="스페이스바 혹은 엔터, 콤마를 사용하여 태그를 구분할 수 있습니다"
+              messages="태그를 추가하세요"
               autocapitalize="off"
               autocorrect="off"
               autocomplete="off"
@@ -72,7 +72,7 @@
             </v-spacer>
 
             <!-- 비디오, 사진 미디어로 한번에 처리 ?? -->
-            <v-window v-model="i2" continuous>
+            <v-window v-if="!isUpdatePage" v-model="i2" continuous>
               <v-window-item v-if="fileData == ''">
                 <v-img
                   :src="require('@/assets/bees/bee.png')"
@@ -127,7 +127,7 @@
               </v-window-item>
             </v-window>
 
-            <v-card-actions class="justify-space-between">
+            <v-card-actions v-if="!isUpdatePage" class="justify-space-between">
               <v-btn text @click="prev" color="#ea907a">
                 <v-icon>mdi-chevron-double-left</v-icon>
               </v-btn>
@@ -185,7 +185,7 @@
                 v-if="isUpdatePage"
                 :disabled="!feed.title || !feed.content || !fileData"
                 @click="updateFeedByFormData()"
-                color="#fbc687"
+                color="#ea907a"
                 class="white--text"
                 >작성 완료</v-btn
               >
@@ -247,12 +247,12 @@ export default {
       this.$refs.inputfile.$refs.input.click();
     },
     addCoordi(data) {
-      console.log("coordi", data);
+      // console.log("coordi", data);
       this.fileData[this.number].coordi = data
         .replace(/ /g, "")
         .replace(/\r/g, "")
         .replace(/\n/g, "");
-      console.log(this.fileData);
+      // console.log(this.fileData);
       this.number = null;
     },
     ...mapActions("feeds", ["insertFeed", "updateFeed", "getFeedDetail"]),
@@ -267,7 +267,7 @@ export default {
       this.previews = [];
       this.fileData = [];
       this.i2 = 0;
-      console.log(file);
+      // console.log(file);
       if (file.length > 8) {
         // console.log(file.length);
         swal({
@@ -323,8 +323,8 @@ export default {
         };
         reader.readAsDataURL(this.fileData[i]);
       }
-      console.log(this.previews);
-      console.log(this.fileData);
+      // console.log(this.previews);
+      // console.log(this.fileData);
       // if (file.size > 20 * 1024 * 1024) {
       //   alert("파일 사이즈가 20mb 보다 큽니다.");
       //   return false;
@@ -391,14 +391,14 @@ export default {
         .replace(/ /gi, "")
         .replace(/,/gi, "")
         .toUpperCase();
-      console.log(hashtag);
+      // console.log(hashtag);
       if (this.feedhashtag.includes(hashtag) || hashtag == "") {
         this.hashtag = "";
       } else {
         this.feedhashtag.push(hashtag);
         this.hashtag = "";
       }
-      console.log(this.feedhashtag);
+      // console.log(this.feedhashtag);
     },
 
     initData() {
@@ -407,8 +407,8 @@ export default {
       // this.fileData = this.selectedFeed.dbFiles;
       // this.feedhashtag = this.selectedFeed.hashtag;
       this.selectedFeed.hashtag.forEach((tag) => {
-        console.log("aa");
-        console.log(tag);
+        // console.log("aa");
+        // console.log(tag);
         this.feedhashtag.push(tag.content);
       });
     },

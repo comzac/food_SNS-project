@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     infiniteScroll() {
-      console.log("asdf");
+      // console.log("asdf");
     },
   },
   created() {

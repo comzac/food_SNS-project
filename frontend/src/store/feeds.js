@@ -41,7 +41,7 @@ export default {
       const config = rootGetters["accounts/config"];
       // console.log(config);
       config.params = feedParams;
-      console.log(config);
+      // console.log(config);
       return axios
         .get(
           SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + SERVER.ROUTES.feeds.page,
@@ -52,7 +52,7 @@ export default {
           return res;
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit("SET_FEEDS", res.data.feedAll);
           return res.data.feedAll;
         })
@@ -80,7 +80,7 @@ export default {
           return res;
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit("SET_FOLLOWFEEDS", res.data.feedAll);
           return res.data.feedAll;
         })
@@ -102,7 +102,7 @@ export default {
           config
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit("SET_USERPROFILEDATA", res.data);
         })
         .catch((err) => console.log(err.response));
@@ -123,7 +123,7 @@ export default {
           .replace(/\n/g, "")
       );
       formData.append("coordi", "");
-      console.log(data.hasImage);
+      // console.log(data.hasImage);
       axios
         .post(
           SERVER.BASE_URL +
@@ -143,13 +143,13 @@ export default {
     },
 
     insertFeed({ rootGetters }, feedData) {
-      console.log("feedDataa", feedData);
+      // console.log("feedDataa", feedData);
       const config = rootGetters["accounts/config"];
       const form = new FormData();
       const mediaData = feedData.dbFiles;
-      console.log("dbFiles", feedData.dbFiles);
+      // console.log("dbFiles", feedData.dbFiles);
       delete feedData.dbFiles;
-      console.log(config);
+      // console.log(config);
       mediaData.forEach((file) => {
         form.append("files", file);
         form.append(
@@ -164,11 +164,11 @@ export default {
       });
       form.append("coordi", "");
       // let id;
-      console.log("form", feedData);
+      // console.log("form", feedData);
       axios
         .post(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL, feedData, config)
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           // id = res.data.data;
           form.append("fid", res.data.data);
           return axios.post(
@@ -179,8 +179,8 @@ export default {
             config
           );
         })
-        .then((res) => {
-          console.log("res:", res);
+        .then(() => {
+          // console.log("res:", res);
           router.push({ name: "Home" });
         })
         .catch((err) => console.log(err.response));
@@ -191,7 +191,7 @@ export default {
       return axios
         .get(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           commit("SET_SELECTEDFEED", res.data.feedAll[0]);
           return res.data.feedAll[0];
         })
@@ -204,8 +204,8 @@ export default {
       delete feedData.id;
       axios
         .put(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, feedData, config)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           router.push({ name: "FeedView", params: { fid: id } });
         })
         .catch((err) => console.log(err));
@@ -215,8 +215,8 @@ export default {
       const config = rootGetters["accounts/config"];
       axios
         .delete(SERVER.BASE_URL + SERVER.ROUTES.feeds.URL + id, config)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           router.push({ name: "Home" });
         })
         .catch((err) => console.log(err));
@@ -224,14 +224,14 @@ export default {
 
     feedLikeUnlike({ rootGetters }, likeData) {
       const config = rootGetters["accounts/config"];
-      console.log("fid", likeData.fid, "like", likeData.like);
+      // console.log("fid", likeData.fid, "like", likeData.like);
       if (likeData.like) {
         axios
           .delete(
             SERVER.BASE_URL + SERVER.ROUTES.likes.feed + likeData.fid,
             config
           )
-          .then((res) => console.log(res))
+          // .then((res) => console.log(res))
           .catch((err) => console.error(err));
       } else {
         axios
@@ -240,21 +240,21 @@ export default {
             null,
             config
           )
-          .then((res) => console.log(res))
+          // .then((res) => console.log(res))
           .catch((err) => console.error(err));
       }
     },
     searchKeyword({ rootGetters }, keyword) {
-      console.log(keyword);
+      // console.log(keyword);
       keyword = keyword.replace(/ /g, "");
       const config = rootGetters["accounts/config"];
-      console.log(
-        SERVER.BASE_URL +
-          SERVER.ROUTES.feeds.URL +
-          SERVER.ROUTES.feeds.search +
-          "/temp/" +
-          keyword
-      );
+      // console.log(
+      //   SERVER.BASE_URL +
+      //     SERVER.ROUTES.feeds.URL +
+      //     SERVER.ROUTES.feeds.search +
+      //     "/temp/" +
+      //     keyword
+      // );
       return axios
         .get(
           SERVER.BASE_URL +

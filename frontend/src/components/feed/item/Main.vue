@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-row class="mx-0 mb-2">
-      <v-btn class="mr-1" color="#ff6666" icon x-small @click="$emit('likeUnlike')">
+      <v-btn
+        class="mr-1"
+        color="#ff6666"
+        icon
+        x-small
+        @click="$emit('likeUnlike')"
+      >
         <v-icon v-if="like">mdi-heart</v-icon>
         <v-icon v-if="!like">mdi-heart-outline</v-icon>
         <!-- <img v-if="!like" :src="imgRoute.unlike" alt />
@@ -10,13 +16,32 @@
       </v-btn>
       <span style="font-size: 15px; margin-top: -2px;">{{ likeCount }}</span>
       <v-spacer></v-spacer>
-      <v-btn class="share-btn" color="#ea907a" icon x-small @click="share()">
+      <v-btn
+        v-if="$route.name != 'ContestFeed'"
+        class="share-btn"
+        color="#ea907a"
+        icon
+        x-small
+        @click="share1()"
+      >
+        <v-icon>mdi-share-variant</v-icon>
+      </v-btn>
+      <v-btn
+        v-else
+        class="share-btn"
+        color="#ea907a"
+        icon
+        x-small
+        @click="share2()"
+      >
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
     </v-row>
     <p class="text-left" :style="item ? 'cursor:pointer;' : 'cursor:default;'">
       <v-row class="space-around mx-0" @click="overflow2()">
-        <strong class="grey--text text--darken-3 feed-title">{{ feed.title }}</strong>
+        <strong class="grey--text text--darken-3 feed-title">{{
+          feed.title
+        }}</strong>
         <v-spacer></v-spacer>
         <small>{{ ymd2 }}</small>
       </v-row>
@@ -26,7 +51,9 @@
       v-if="!item"
       style="white-space: pre-line; cursor: default;"
       class="text-left"
-    >{{ feed.content }}</p>
+    >
+      {{ feed.content }}
+    </p>
     <div class="text-left mb-4" v-if="hashtag">
       <span
         class="mr-2"
@@ -40,7 +67,9 @@
           })
         "
       >
-        <v-chip outlined small color="grey darken-3" class="mb-2"># {{ tag.content }}</v-chip>
+        <v-chip outlined small color="grey darken-3" class="mb-2"
+          ># {{ tag.content }}</v-chip
+        >
       </span>
     </div>
   </div>
@@ -98,10 +127,19 @@ export default {
         this.$router.push({ name: "FeedView", params: { fid: this.feed.id } });
       }
     },
-    share() {
+    share1() {
       var tempElement = document.createElement("textarea");
       document.body.appendChild(tempElement);
       tempElement.value = `honeycombo.online/feed/${this.feed.id}`;
+      tempElement.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempElement);
+      swal("주소가 복사되었습니다.", { buttons: [null, "확인"] });
+    },
+    share2() {
+      var tempElement = document.createElement("textarea");
+      document.body.appendChild(tempElement);
+      tempElement.value = `honeycombo.online/contest/${this.feed.id}`;
       tempElement.select();
       document.execCommand("copy");
       document.body.removeChild(tempElement);

@@ -157,7 +157,7 @@ export default {
     if (this.signupData2 != {}) {
       this.signupData = this.signupData2;
     }
-    console.log(this.$refs.id);
+    // console.log(this.$refs.id);
   },
   data() {
     return {

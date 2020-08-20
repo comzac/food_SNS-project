@@ -114,7 +114,7 @@ export default {
       const signupEmailComponent = this;
       signupEmailComponent.overlay = !signupEmailComponent.overlay;
       this.getConfirmCode(email).then((code) => {
-        console.log(code.data);
+        // console.log(code.data);
         if (code.status === 200) {
           signupEmailComponent.overlay = !signupEmailComponent.overlay;
           swal("인증번호가 발송되었습니다.", { buttons: [null, "확인"] });

@@ -2,7 +2,10 @@
   <v-container fill-height fluid>
     <v-row class="text-center" align="center" justify="center">
       <v-col cols="12">
-        <UserEdit v-if="isAuthorized && page == '1'" @pwChange="(page = '2'), setPage(2)" />
+        <UserEdit
+          v-if="isAuthorized && page == '1'"
+          @pwChange="(page = '2'), setPage(2)"
+        />
         <PasswordChange
           v-if="isAuthorized && page == '2'"
           @changePassword="doPasswordReset"
@@ -77,7 +80,7 @@ export default {
         dangerMode: true,
         buttons: ["취소", "확인"],
       }).then((value) => {
-        console.log(value);
+        // console.log(value);
         if (value) {
           store.dispatch("accounts/pwcheck", value).then((checkResult) => {
             if (checkResult) {

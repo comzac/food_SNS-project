@@ -50,7 +50,7 @@ export default {
         axios
           .get(SERVER.BASE_URL + SERVER.ROUTES.notifications.URL, config)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             commit("SET_NOTIFICATIONCOUNT", res.data.data);
           })
           .catch((err) => console.log(err.response));
@@ -59,7 +59,7 @@ export default {
     clear: {
       root: true,
       handler({ state, commit }) {
-        console.log("clear");
+        // console.log("clear");
         clearInterval(state.poll);
         commit("SET_POLL", null);
         commit("SET_NOTIFICATIONCOUNT", 0);
@@ -68,7 +68,7 @@ export default {
 
     getNotifications({ rootGetters, commit }) {
       const config = rootGetters["accounts/config"];
-      console.log(config);
+      // console.log(config);
       return axios
         .get(
           SERVER.BASE_URL +
@@ -77,7 +77,7 @@ export default {
           config
         )
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           commit("SET_NONREADNOTIFICATION", res.data.data.nonReadNotification);
           commit("SET_READNOTIFICATION", res.data.data.readNotification);
           return res.data.data;
@@ -93,14 +93,14 @@ export default {
           SERVER.BASE_URL + SERVER.ROUTES.notifications.URL + notifyId,
           config
         )
-        .then((res) => {
-          console.log(res);
-        })
+        // .then((res) => {
+        //   console.log(res);
+        // })
         .catch((err) => console.log(err.response));
     },
 
     reduceNotifyCount({ commit }) {
-      console.log("reduce");
+      // console.log("reduce");
       commit("REDUCE_NOTIFYCOUNT");
     },
   },
