@@ -77,11 +77,11 @@ export default {
   },
   methods: {
     getMedia(dbFiles) {
-      console.log(dbFiles);
+      // console.log(dbFiles);
       for (let i = 0; i < dbFiles.length; i++) {
         let reader = new FileReader();
         reader.onload = () => {
-          console.log(reader.result);
+          // console.log(reader.result);
           this.previews.push(reader.result);
         };
         reader.readAsDataURL(this.dbFiles[i]);
