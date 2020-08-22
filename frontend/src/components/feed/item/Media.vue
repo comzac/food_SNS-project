@@ -104,13 +104,13 @@ export default {
 </script>
 
 <style scoped>
-.scale {
+/* .scale {
   transform: scale(1);
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);
   -o-transform: scale(1);
-  transition: all 0.3s ease-in-out; /* 부드러운 모션을 위해 추가*/
+  transition: all 0.3s ease-in-out;
 }
 .scale:hover {
   transform: scale(1.2);
@@ -118,5 +118,5 @@ export default {
   -moz-transform: scale(1.2);
   -ms-transform: scale(1.2);
   -o-transform: scale(1.2);
-}
+} */
 </style>

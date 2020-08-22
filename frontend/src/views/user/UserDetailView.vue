@@ -11,6 +11,7 @@
       fixed
       bottom
       left
+      small
       fab
       @click="back()"
       class="mb-14"

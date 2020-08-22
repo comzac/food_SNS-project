@@ -368,6 +368,7 @@ export default {
 
     closeEditComment(idx) {
       document.getElementById(`b${idx}`).style = "display: none;";
+      document.getElementById(`a${idx}`).style = "display: show;";
     },
 
     commentLike(commentData) {
