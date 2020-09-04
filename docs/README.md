@@ -1,6 +1,12 @@
-# :honey_pot: Honey-combo :bee:
+<img src='https://user-images.githubusercontent.com/19357410/91040270-e3acae00-e648-11ea-96f8-d2022d22c741.gif'>
+
+# <center> :honey_pot: Honey-combo :bee: </center> 
 
 ![Github](https://img.shields.io/badge/vue-2.6.11-%234FC08D?style=plastic&logo=Vue.js)![Github](https://img.shields.io/badge/spring_boot-2.3.1-%236DB33F?style=plastic&logo=Spring)![Github](https://img.shields.io/badge/MySQL-8.0-%234479A1?style=plastic&logo=mysql)![Github](https://img.shields.io/badge/Redis-3.0-%23DC382D?style=plastic&logo=Redis)![Github](https://img.shields.io/badge/build-passing-brightgreen?style=plastic)
+
+
+
+:earth_asia: Translation: [KR](https://github.com/YongjoonSeo/1st_pjt_301/blob/master/README.md) [US](https://github.com/YongjoonSeo/1st_pjt_301/blob/master/docs/README.md)
 
 
 
@@ -17,9 +23,9 @@
 3. Liquors Service
    - The admin posts a new liquor combination feed every week.
 
-You can see our homepage [<img src='/uploads/678293e8c7eb2f43bc67389391d19739/crop.gif' width=200>](http://honeycombo.online) :slightly_smiling_face:
+You can see our homepage [here](http://honeycombo.online)​ :slightly_smiling_face:
 
-:earth_americas: Translation: [US](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/tree/master/docs/README.md) [KR](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/blob/master/README.md) 
+
 
 
 
@@ -59,7 +65,7 @@ To install `honey-combo`, follow these steps:
 1. Clone the repository
 
    ```
-   $ git clone https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108.git
+   $ git clone https://github.com/YongjoonSeo/1st_pjt_301.git
    ```
 
 2. Install yarn packages
@@ -74,7 +80,7 @@ To use `honey-combo`, follow these steps:
 
 1. Create Database
 
-   - Create database by referring to [honey-combo.sql](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/tree/master/docs/honey-combo.sql) ([here](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a108/tree/master/docs/honeycombo_erd.png) is ERD)
+   - Create database by referring to [honey-combo.sql](https://github.com/YongjoonSeo/1st_pjt_301/blob/master/docs/honey-combo.sql) ([here](https://github.com/YongjoonSeo/1st_pjt_301/blob/master/docs/honeycombo_erd.png) is ERD)
 
    - Add database settings to the `application.yml`
 
@@ -110,7 +116,7 @@ To use `honey-combo`, follow these steps:
 
 ### Deploying Honey-combo
 
-Before you start make sure you have `AWS EC2`. You can find out how to do that [here]().
+Before you start make sure you have `AWS EC2`. You can find out how to do that [here](https://victorydntmd.tistory.com/61).
 
 To deploy `Honey-combo`, follow these steps:
 
@@ -126,7 +132,7 @@ To deploy `Honey-combo`, follow these steps:
 
 ## :globe_with_meridians: Browser Support
 
-| <img src='/uploads/36874cdc0e0e6d724b92241664c99b9f/chrome_logo.png' width=60> | <img src='/uploads/74b4e657301cecd856ac88327e369ad9/Mozilla_Firefox_logo_2013.png' width=60> | <img src='/uploads/f1be4a8b751857b900b8a70a36c54c3d/micro-edge.png' width=60> | <img src='/uploads/74b4e657301cecd856ac88327e369ad9/Mozilla_Firefox_logo_2013.png' width=60> |
+| <img src='https://user-images.githubusercontent.com/19357410/91040268-e27b8100-e648-11ea-9dfa-21123112fd23.png' width=60> | <img src='https://user-images.githubusercontent.com/19357410/91040279-e7403500-e648-11ea-8b38-07049ca300af.png' width=60> | <img src='https://user-images.githubusercontent.com/19357410/91040276-e6a79e80-e648-11ea-8c97-ddc1d35d761c.png' width=60> | <img src='https://user-images.githubusercontent.com/19357410/91040282-e7403500-e648-11ea-9f42-d8abd35e9b50.png' width=60> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | latest                                                       | latest                                                       | latest                                                       | latest                                                       |
 
@@ -145,7 +151,7 @@ To deploy `Honey-combo`, follow these steps:
 
 ## :desktop_computer: Technical selection
 
-<img src='/uploads/1998b9a000c7faf7cf1e64ce382c4baf/stack.png' width=850>
+<img src="https://user-images.githubusercontent.com/19357410/91040283-e7d8cb80-e648-11ea-8724-e20afcbefcc4.png" width=850>
 
 #### Front-end technology
 
@@ -195,16 +201,16 @@ To deploy `Honey-combo`, follow these steps:
 ## :vhs: Demos
 
 * You can see [here](http://honeycombo.online)
-* [Video]()
+* [Video](https://github.com/YongjoonSeo/1st_pjt_301/blob/master/docs/HONEYCOMBO_UCC_LOW.mp4)
 * Common Service
-  * <img src="/uploads/1dcd54a17522cbd3fd09a4abc6862e56/로그인.gif" width=350>
-  * <img src="/uploads/3cc8f6f82f85117aba2fec74745b0822/피드작성.gif" width=350>
-  * <img src="/uploads/6e3a18b408e58cdbc6aaa5d236a8972e/댓글.gif" width=350>
-  * <img src="/uploads/9a7a7d5256d1cc83b1868e938fdc524b/알림.gif" width=350>
+  * <img src="https://user-images.githubusercontent.com/19357410/91041095-62eeb180-e64a-11ea-9614-ec12760ad28b.gif" width=350>
+  * <img src="https://user-images.githubusercontent.com/19357410/91041119-6bdf8300-e64a-11ea-9f3c-b98d2d5e032f.gif" width=350>
+  * <img src="https://user-images.githubusercontent.com/19357410/91041081-5e29fd80-e64a-11ea-8f44-7f77596022ce.gif" width=350>
+  * <img src="https://user-images.githubusercontent.com/19357410/91041105-65510b80-e64a-11ea-8ac7-5bede39d7493.gif" width=350>
 * Contest Service
-  * <img src="/uploads/4da0d5f3562de88d3e2c87f7f50ab264/콘테스트.gif" width=350>
+  * <img src="https://user-images.githubusercontent.com/19357410/91041112-68e49280-e64a-11ea-9c86-d76ac9142956.gif" width=350>
 * Liquors Service
-  * <img src="/uploads/0379ea40cb5b2cc9ccf4808f02912b6b/주류.gif" width=350>
+  * <img src="https://user-images.githubusercontent.com/19357410/91041106-66823880-e64a-11ea-8b99-3c3f60538de4.gif" width=350>
 
 
 
